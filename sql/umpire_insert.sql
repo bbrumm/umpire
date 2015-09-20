@@ -1756,3 +1756,6 @@ INSERT INTO `umpire`.`dates` (`ID`, `saturday_date`) VALUES ('50', '2015-12-12')
 INSERT INTO `umpire`.`dates` (`ID`, `saturday_date`) VALUES ('51', '2015-12-19');
 INSERT INTO `umpire`.`dates` (`ID`, `saturday_date`) VALUES ('52', '2015-12-26');
 
+
+INSERT INTO `umpire`.`test_report`
+SELECT ID, first_name, last_name FROM umpire.umpire;

@@ -18,6 +18,20 @@ CREATE SCHEMA IF NOT EXISTS `umpire` DEFAULT CHARACTER SET latin1 ;
 USE `umpire` ;
 
 -- -----------------------------------------------------
+-- Table `umpire`.`test_report`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `umpire`.`test_report` ;
+
+CREATE TABLE IF NOT EXISTS `umpire`.`test_report` (
+  `ID` INT(11) NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(100) NULL DEFAULT NULL,
+  `last_name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
 -- Table `umpire`.`age_group`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `umpire`.`age_group` ;
@@ -243,7 +257,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`match` (
   `ID` INT(11) NOT NULL AUTO_INCREMENT,
   `round_id` INT(11) NULL DEFAULT NULL,
   `ground_id` INT(11) NULL DEFAULT NULL,
-  `match_time` DATETIME NULL DEFAULT NULL,
+  `match_time` TIME NULL DEFAULT NULL,
   `home_team_id` INT(11) NULL DEFAULT NULL,
   `away_team_id` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
