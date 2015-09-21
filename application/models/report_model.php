@@ -21,7 +21,9 @@ class report_model extends CI_Model {
 		
 		$uniqueColumnGroup = $this->getDistinctListForGrouping(array('short_league_name', 'club_name'), $reportToDisplay->getResultArray());
 		//$uniqueColumnGroup2 = $this->getDistinctListForGrouping('club_name', $reportToDisplay->getResultArray());
-		$uniqueRowGroup = $this->getDistinctListForGrouping('full_name', $reportToDisplay->getResultArray());
+		$uniqueRowGroup = $this->getDistinctListForGrouping(array('full_name'), $reportToDisplay->getResultArray());
+		
+		//print_r($uniqueRowGroup);
 		
 		$reportToDisplay->setColumnGroupingArray($uniqueColumnGroup);
 		$reportToDisplay->setRowGroupingArray($uniqueRowGroup);
@@ -39,10 +41,12 @@ class report_model extends CI_Model {
 		echo "</pre>";
 		
 		for ($i=0, $numItems = count($pResultArray); $i < $numItems; $i++) {
-			//if (!in_array_r($pResultArray, $fieldList)) {
-				$fieldList[$i][0] = $pResultArray[$i]['short_league_name'];
-				$fieldList[$i][1] = $pResultArray[$i]['club_name'];
-			//}
+			if (array_key_exists(0, $pArrayFieldName)) {
+				$fieldList[$i][0] = $pResultArray[$i][$pArrayFieldName[0]];
+			}
+			if (array_key_exists(1, $pArrayFieldName)) {
+				$fieldList[$i][1] = $pResultArray[$i][$pArrayFieldName[1]];
+			}
 		}
 		echo "<pre>";
 		//print_r($fieldList);
@@ -51,10 +55,12 @@ class report_model extends CI_Model {
 		
 		//array_multisort($uniqueFieldList[1], SORT_ASC, SORT_STRING);
 		
-		usort($uniqueFieldList, 'sortByOrder');
+		
+		//$uniqueFieldList = $this->sortArray($uniqueFieldList, 0, 1);
+		usort($uniqueFieldList, 'sortArray');
 		
 		echo "<pre>";
-		print_r($uniqueFieldList);
+		//print_r($uniqueFieldList);
 		echo "</pre>";
 
 		
@@ -62,5 +68,7 @@ class report_model extends CI_Model {
 		
 		
 	}
+	
+
 	
 }
