@@ -506,3 +506,4 @@ $config['proxy_ips'] = '';
 
 $config['css'] = 'css/style.css';
 
+$config['encryption_key'] = 'Type in your key';
