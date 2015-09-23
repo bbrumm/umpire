@@ -12,4 +12,7 @@ echo "<link rel='stylesheet' type='text/css' href='". asset_url() . $data['css']
 
 <div class="menuBar">
 	<div class="menuLink"><a href='home'>Home Page</a></div>
+	<?php
+	echo "<div class='menuLink'><a href='home/do_logout'>Logout</a></div>";
+	?>
 </div>

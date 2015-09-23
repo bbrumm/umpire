@@ -6,4 +6,6 @@ CREATE TABLE IF NOT EXISTS umpire_users (
     PRIMARY KEY (id)
 );
 
-INSERT INTO umpire_users (id, user_name, user_email, user_password) VALUES (1, 'bb', 'bb@bb.com', 'aa');
+
+INSERT INTO umpire_users (id, user_name, user_email, user_password) VALUES (1, 'bb', 'bb@bb.com', MD5('aa'));
+
