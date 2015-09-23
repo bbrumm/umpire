@@ -17,21 +17,22 @@ print_r($_POST);
 echo "</pre>";
 
 /*
-echo "Row groups:";
+echo "Results:";
 echo "<BR />";
 echo "<pre>";
-//print_r($loadedRowGroupings);
+print_r($loadedResultArray);
 echo "</pre>";
 */
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
-echo "<table border='1'>";
+echo "<table class='reportTable'>";
+
 
 //Show one header row for each group
 for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 	?>
 	<tr>
-	<td>
+	<td class='cellNormal'>
 	<?php
 	if ($i == (count($loadedColumnGroupings[0])-1)) {
 		echo "Name";
@@ -41,7 +42,13 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 
 	<?php
 	for ($j=0; $j < count($loadedColumnGroupings); $j++) {
-		echo "<td>".$loadedColumnGroupings[$j][$i]."</td>";
+		if ($columnLabels[$i] == 'club_name') {
+			//Club names are displayed differently
+			$cellClass = "rotate";
+		} else {
+			$cellClass = "columnHeadingNormal";
+		}
+		echo "<th class='$cellClass'><div>".$loadedColumnGroupings[$j][$i]."</div></td>";
 	}
 	//echo "<td>".$a."</td>";
 	?>
@@ -65,7 +72,7 @@ foreach ($loadedRowGroupings as $reportRow):
 	$loopCounter++;
 	
 	echo "<tr>";
-	echo "<td>";
+	echo "<td class='cellNormal'>";
 	echo $reportRow[0];
 	echo "</td>";
 	
@@ -81,8 +88,7 @@ foreach ($loadedRowGroupings as $reportRow):
 				//Row value matches. Check columns
 				if ($resultRow[$columnLabels[0]] == $loadedColumnGroupings[$i][0] && $resultRow[$columnLabels[1]] == $loadedColumnGroupings[$i][1]) {
 					//Column values match.
-					echo "<td>" . $resultRow[$fieldToDisplay] . "</td>";
-					
+					echo "<td class='cellNormal'>" . $resultRow[$fieldToDisplay] . "</td>";
 					$matchFound = true;
 					break 1;
 				}
@@ -90,7 +96,7 @@ foreach ($loadedRowGroupings as $reportRow):
 		endforeach;
 		
 		if ($matchFound == false) {
-			echo "<td>". $noDataValueToDisplay ."</td>";
+			echo "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
 		}
 	}
 endforeach;
