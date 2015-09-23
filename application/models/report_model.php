@@ -9,7 +9,7 @@ class report_model extends CI_Model {
 	
 	public function get_report() {
 		$reportToDisplay = new UserReport();
-		$reportToDisplay->setReportType($_POST['reportName'], $_POST['age'], $_POST['umpireType']);
+		$reportToDisplay->setReportType($_POST['reportName'], $_POST['season'], $_POST['age'], $_POST['umpireType'], $_POST['league']);
 		$query = $this->db->query($reportToDisplay->getReportQuery());
 		
 		$reportToDisplay->setResultArray($query->result_array());
@@ -26,7 +26,7 @@ class report_model extends CI_Model {
 	private function getDistinctListForGrouping($pArrayFieldName, $pResultArray) {
 		$fieldList = array();
 		
-		echo "<pre>";
+		////echo "<pre>";
 		//print_r($pResultArray);
 		echo "</pre>";
 		

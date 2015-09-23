@@ -1,6 +1,5 @@
-
-
 <?php
+
 $loadedColumnGroupings = $loadedReportItem->getColumnGroupingArray();
 $loadedRowGroupings = $loadedReportItem->getRowGroupingArray();
 $loadedResultArray = $loadedReportItem->getResultArray();
@@ -13,9 +12,9 @@ $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 /*echo "Column groups:";
 echo "<BR />";
 */
-//echo "<pre>";
-//print_r($_POST);
-//echo "</pre>";
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
 
 /*
 echo "Row groups:";
@@ -25,8 +24,7 @@ echo "<pre>";
 echo "</pre>";
 */
 
-echo "<a href='home'>Home Page</a><BR />";
-echo "<h2>". $loadedReportItem->getReportTitle() ."</h2>";
+echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 echo "<table border='1'>";
 
 //Show one header row for each group
