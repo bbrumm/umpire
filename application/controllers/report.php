@@ -7,9 +7,7 @@ class report extends CI_Controller {
 		$this->load->helper('url_helper');
 	}
 	
-	
 	public function index() {
-		
 		$data['loadedReportItem'] = $this->report_model->get_report();
 		$data['title'] = 'Test Report';
 		
@@ -18,7 +16,4 @@ class report extends CI_Controller {
 		$this->load->view('templates/footer');
 		
 	}
-	
-
-	
 }

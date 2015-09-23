@@ -8,28 +8,18 @@ class report_model extends CI_Model {
 	}
 	
 	public function get_report() {
-		//Only gets the test report at the moment.
-
-		
 		$reportToDisplay = new UserReport();
-		$reportToDisplay->setReportType(5);
-		
-		//print_r($reportToDisplay);
+		$reportToDisplay->setReportType($_POST['reportName'], $_POST['age'], $_POST['umpireType']);
 		$query = $this->db->query($reportToDisplay->getReportQuery());
 		
 		$reportToDisplay->setResultArray($query->result_array());
 		
 		$uniqueColumnGroup = $this->getDistinctListForGrouping(array('short_league_name', 'club_name'), $reportToDisplay->getResultArray());
-		//$uniqueColumnGroup2 = $this->getDistinctListForGrouping('club_name', $reportToDisplay->getResultArray());
 		$uniqueRowGroup = $this->getDistinctListForGrouping(array('full_name'), $reportToDisplay->getResultArray());
-		
-		//print_r($uniqueRowGroup);
-		
 		$reportToDisplay->setColumnGroupingArray($uniqueColumnGroup);
 		$reportToDisplay->setRowGroupingArray($uniqueRowGroup);
 		
 		return $reportToDisplay;
-		
 	}
 	
 	//Create distinct arrays for grouping purposes
@@ -52,23 +42,12 @@ class report_model extends CI_Model {
 		//print_r($fieldList);
 		echo "</pre>";
 		$uniqueFieldList = array_unique($fieldList, SORT_REGULAR );
-		
-		//array_multisort($uniqueFieldList[1], SORT_ASC, SORT_STRING);
-		
-		
-		//$uniqueFieldList = $this->sortArray($uniqueFieldList, 0, 1);
+
 		usort($uniqueFieldList, 'sortArray');
 		
-		echo "<pre>";
+		//echo "<pre>";
 		//print_r($uniqueFieldList);
-		echo "</pre>";
-
-		
+		//echo "</pre>";
 		return $uniqueFieldList;
-		
-		
 	}
-	
-
-	
 }
