@@ -52,6 +52,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'login';
 $route['report/(:any)'] = 'report/view';
 $route['report'] = 'report';
-$route['news'] = 'news';
+//$route['verifyLogin'] = 'verifyLogin';
 //$route['(:any)'] = 'pages/view/$1';
 

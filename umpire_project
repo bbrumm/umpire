@@ -1,0 +1,31 @@
+<NotepadPlus>
+    <Project name="Umpire">
+        <Folder name="Models">
+            <File name="application\models\login_model.php" />
+            <File name="application\models\report.php" />
+            <File name="application\models\report_model.php" />
+            <File name="application\models\report_query.php" />
+            <File name="application\models\ReportDisplayOptions.php" />
+            <File name="application\models\UserReport.php" />
+        </Folder>
+        <Folder name="Controllers">
+            <File name="application\controllers\home.php" />
+            <File name="application\controllers\login.php" />
+            <File name="application\controllers\Pages.php" />
+            <File name="application\controllers\report.php" />
+            <File name="application\controllers\verifyLogin.php" />
+        </Folder>
+        <Folder name="Views">
+            <File name="application\views\home_view.php" />
+            <File name="application\views\login_view.php" />
+            <File name="application\views\pages\home.php" />
+            <File name="application\views\templates\footer.php" />
+            <File name="application\views\templates\header.php" />
+        </Folder>
+        <Folder name="Config">
+            <File name="system\core\Config.php" />
+            <File name="application\config\routes.php" />
+        </Folder>
+        <File name="assets\css\style.css" />
+    </Project>
+</NotepadPlus>

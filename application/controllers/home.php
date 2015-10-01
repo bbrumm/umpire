@@ -13,7 +13,11 @@ class Home extends CI_Controller {
    {
      $session_data = $this->session->userdata('logged_in');
      $data['username'] = $session_data['username'];
-     $this->load->view('home', $data);
+	 
+	 $this->load->view('templates/header', $data);
+	 $this->load->view('pages/report_home', $data);
+	 $this->load->view('templates/footer');
+	 
    }
    else
    {
@@ -27,6 +31,7 @@ class Home extends CI_Controller {
  {
    $this->session->unset_userdata('logged_in');
    session_destroy();
+   //Reloads itself, causing the index() method above to be called.
    redirect('home', 'refresh');
  }
 
