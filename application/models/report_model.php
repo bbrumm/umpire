@@ -7,9 +7,9 @@ class report_model extends CI_Model {
 		$this->load->database();
 	}
 	
-	public function get_report() {
+	public function get_report($reportParameters) {
 		$reportToDisplay = new UserReport();
-		$reportToDisplay->setReportType($_POST['reportName'], $_POST['season'], $_POST['age'], $_POST['umpireType'], $_POST['league']);
+		$reportToDisplay->setReportType($reportParameters);
 		$query = $this->db->query($reportToDisplay->getReportQuery());
 		
 		$reportToDisplay->setResultArray($query->result_array());
@@ -27,7 +27,7 @@ class report_model extends CI_Model {
 		
 		////echo "<pre>";
 		//print_r($pResultArray);
-		echo "</pre>";
+		//echo "</pre>";
 		
 		for ($i=0, $numItems = count($pResultArray); $i < $numItems; $i++) {
 			if (array_key_exists(0, $pArrayFieldName)) {
@@ -37,9 +37,9 @@ class report_model extends CI_Model {
 				$fieldList[$i][1] = $pResultArray[$i][$pArrayFieldName[1]];
 			}
 		}
-		echo "<pre>";
+		//echo "<pre>";
 		//print_r($fieldList);
-		echo "</pre>";
+		//echo "</pre>";
 		$uniqueFieldList = array_unique($fieldList, SORT_REGULAR );
 
 		usort($uniqueFieldList, 'sortArray');

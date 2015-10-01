@@ -11,26 +11,11 @@ $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 
 
-/*echo "Column groups:";
-echo "<BR />";
-*/
-/*
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";
-*/
-/*
-echo "Merge Group:";
-echo "<BR />";
-echo "<pre>";
-print_r($countOfEachColumnHeading);
-echo "</pre>";
-*/
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 echo "<table class='reportTable'>";
 
-
+echo "<thead>";
 //Show one header row for each group
 for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 	
@@ -41,6 +26,7 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 	echo "</pre>";
 	*/
 	?>
+	
 	<tr>
 	<td class='columnHeadingNormal'>
 	<?php
@@ -77,7 +63,7 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 				$cellClass = "columnHeadingNormal";
 			}
 			
-			echo "<th class='$cellClass' colspan='$colspanForCell'><div>".$loadedColumnGroupings[$j][$i]."</div></td>";
+			echo "<th class='$cellClass' colspan='$colspanForCell'><div>".$loadedColumnGroupings[$j][$i]."</div></th>";
 		}
 		//else
 		//nothing - don't even write a td		
@@ -85,9 +71,10 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 	//echo "<td>".$a."</td>";
 	?>
 	</tr>
+	
 <?php	
 }
-
+echo "</thead>";
 /*
 echo count($loadedRowGroupings) . "<BR />"; 
 echo count($loadedResultArray) . "<BR />"; 
@@ -98,7 +85,7 @@ echo count($loadedColumnGroupings) . "<BR />";
 $loopCounter = 0;
 
 $matchFound = false;
-
+echo "<tbody>";
 //Loop through rows
 //foreach ($loadedResultArray as $reportItem): 
 foreach ($loadedRowGroupings as $reportRow): 
@@ -133,11 +120,13 @@ foreach ($loadedRowGroupings as $reportRow):
 			echo "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
 		}
 	}
+	echo "</tr>";
 	$this->benchmark->mark('point 05.2');
 endforeach;
-echo "</tr>";	
+	
 
-echo "Loop counter: " . $loopCounter ."<BR />";	
+echo "</tbody>";
+//echo "Loop counter: " . $loopCounter ."<BR />";	
 
 
 

@@ -10,8 +10,23 @@ class Report extends CI_Controller {
 	}
 	
 	public function index() {
-		$data['loadedReportItem'] = $this->report_model->get_report();
+		$reportParameters = array(
+			'reportName' => $_POST['reportName'], 
+			'season' => $_POST['season'], 
+			'age' => $_POST['age'], 
+			'umpireType' => $_POST['umpireType'], 
+			'league' => $_POST['league']);
+		$data['loadedReportItem'] = $this->report_model->get_report($reportParameters);
 		$data['title'] = 'Test Report';
+		
+		
+		echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
+		echo "<input type='hidden' name='reportName' value='". $_POST['reportName'] ."' />";
+		echo "<input type='hidden' name='season' value='". $_POST['season'] ."' />";
+		echo "<input type='hidden' name='age' value='". $_POST['age'] ."' />";
+		echo "<input type='hidden' name='umpireType' value='". $_POST['umpireType'] ."' />";
+		echo "<input type='hidden' name='league' value='". $_POST['league'] ."' />";
+		echo "</form>";	
 		
 		
 		$this->load->view('templates/header', $data);

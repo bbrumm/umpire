@@ -24,8 +24,11 @@ class UserReport {
 		$this->reportDisplayOptions = new ReportDisplayOptions();
 	}
 	
-	public function setReportType($pReportTypeID, $pSeason, $pAgeGroup, $pUmpireType, $pLeague) {
-		if ($pReportTypeID == 5) {
+	public function setReportType($reportParameters) {
+		/*echo "<pre>";
+		print_r($reportParameters);
+		echo "</pre>";*/
+		if ($reportParameters['reportName'] == 5) {
 			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport05);
 			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport05);
 			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport05);
@@ -34,12 +37,12 @@ class UserReport {
 			
 			
 			
-			$whereClause = $this->buildWhereClause('2015', $pAgeGroup, $pUmpireType, $pLeague);
+			$whereClause = $this->buildWhereClause($reportParameters['season'], $reportParameters['age'], $reportParameters['umpireType'], $reportParameters['league']);
 			$queryForReport = "SELECT full_name, club_name, short_league_name, SUM(match_count) as match_count FROM mv_report_05 $whereClause GROUP BY full_name, club_name, short_league_name";
 			
-			$this->reportTitle = "05 - Umpires and Clubs - $pAgeGroup - $pUmpireType";
+			$this->reportTitle = "05 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
 			
-			echo $queryForReport;
+			//echo $queryForReport;
 			$this->reportQuery = $queryForReport;
 			
 		}
