@@ -30,6 +30,8 @@ class UserReport {
 			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport05);
 			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport05);
 			$this->reportDisplayOptions->setNoDataValue("");
+			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
+			
 			
 			
 			$whereClause = $this->buildWhereClause('2015', $pAgeGroup, $pUmpireType, $pLeague);
@@ -109,8 +111,6 @@ class UserReport {
 		return $whereClause;
 	}
 	
-	
-
 }
 
 

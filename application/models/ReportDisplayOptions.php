@@ -6,6 +6,7 @@ class ReportDisplayOptions {
 	private $rowGroup;
 	private $fieldToDisplay;
 	private $noDataValue;
+	private $mergeColumnGroup;
 	
 	public function __construct() {
 		
@@ -28,6 +29,12 @@ class ReportDisplayOptions {
 		return $this->noDataValue;
 	}
 	
+	public function getMergeColumnGroup() {
+		return $this->mergeColumnGroup;
+	}
+	
+	
+	
 	//SET functions
 	public function setColumnGroup($pColumnGroupArray) {
 		$this->columnGroup = $pColumnGroupArray;
@@ -45,6 +52,9 @@ class ReportDisplayOptions {
 		$this->noDataValue = $pNoDataValue;
 	}
 	
+	public function setMergeColumnGroup($pMergeColumnValue) {
+		$this->mergeColumnGroup = $pMergeColumnValue;
+	}
 	
 }
 

@@ -21,11 +21,13 @@
             <File name="application\views\pages\home.php" />
             <File name="application\views\templates\footer.php" />
             <File name="application\views\templates\header.php" />
+            <File name="application\views\report\single_report_view.php" />
         </Folder>
         <Folder name="Config">
             <File name="system\core\Config.php" />
             <File name="application\config\routes.php" />
         </Folder>
         <File name="assets\css\style.css" />
+        <File name="application\helpers\cell_formatting_helper.php" />
     </Project>
 </NotepadPlus>

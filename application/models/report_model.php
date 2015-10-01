@@ -13,7 +13,6 @@ class report_model extends CI_Model {
 		$query = $this->db->query($reportToDisplay->getReportQuery());
 		
 		$reportToDisplay->setResultArray($query->result_array());
-		
 		$uniqueColumnGroup = $this->getDistinctListForGrouping(array('short_league_name', 'club_name'), $reportToDisplay->getResultArray());
 		$uniqueRowGroup = $this->getDistinctListForGrouping(array('full_name'), $reportToDisplay->getResultArray());
 		$reportToDisplay->setColumnGroupingArray($uniqueColumnGroup);

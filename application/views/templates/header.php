@@ -9,10 +9,13 @@ echo "<link rel='stylesheet' type='text/css' href='". asset_url() . $data['css']
 	</head>
 <body>
 <div class="mainBanner">Umpire Reporting</div>
-
-<div class="menuBar">
-	<div class="menuLink"><a href='home'>Home Page</a></div>
-	<?php
-	echo "<div class='menuLink'><a href='home/logout'>Logout</a></div>";
+<?php
+if($this->session->userdata('logged_in')) {
+?>
+	<div class="menuBar">
+		<a href='home'><div class="menuBarLink">Home Page</div></a>
+		<?php
+		echo "<a href='home/logout'><div class='menuBarLink'>Logout</div></a>";
+}
 	?>
 </div>

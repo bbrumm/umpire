@@ -6,6 +6,8 @@ Black: 000000
 Grey:  C0C0C0
 Teal:  1B3450
 
+Buttons: 147fc7
+
 */
 
 body {
@@ -19,13 +21,27 @@ body {
 
 h1 {
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-	font-size: 24px;
+	font-size: 30px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 26.4px;
 	text-align: center;
 }
+
+h2 {
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 15.4px;
+	text-align: center;
+}
+
+
+
+
 
 .mainBanner {
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
@@ -54,14 +70,31 @@ h1 {
 	line-height: 26.4px;
 	text-align:left;
 	
+	position:relative;
+    overflow:hidden;
+    white-space: nowrap;
+	
 	/*color: #FFFFFF;*/
 	background-color: #C0C0C0;
 	
 	width: 100%;
-	padding-top: 10px;
-    padding-bottom: 10px;
+	/*padding-top: 10px;
+    padding-bottom: 10px;*/
 	
 }
+
+.menuBarLink {
+	text-align:left;
+	font-size: 16px;
+	color: #111F80;
+	display: inline-block;
+	padding: 5px 15px 5px 15px;
+}
+
+.menuBarLink:hover {
+	  background: #3cb0fd;
+}
+
 
 .footer {
     width: 100%;
@@ -71,11 +104,6 @@ h1 {
 	background-color: #FFFFFF;
 }
 
-.menuLink {
-	font-size: 16px;
-	color: #111F80;
-
-}
 
 a {
 	color: 000080;
@@ -89,6 +117,7 @@ Table Formatting - Reports
 .reportTable {
 	border: 1px solid black;
 	width: 100%;
+	border-collapse: collapse;
 }
 
 th {
@@ -127,17 +156,175 @@ th.rotate > div > span {
 	border: 1px solid black;
 }
 
+.cellNumber {
+	border: 1px solid black;
+	text-align:right;
+}
 
-.oddROw {
+
+tr:nth-child(even) {
+	background: #e5e5e5;
+}
+
+tr:nth-child(odd) {
+	background: #ffffff;
+}
+
+/*
+Conditional Cell Formatting
+*/
+
+.cellLevel4 {
+	background:#FF0000;
+	color:#FFFFFF;
+	
+}
+
+.cellLevel3 {
+	background:#33CC33;
+	
+}
+
+.cellLevel2 {
+	background:#FF9900;
+
+}
+
+.cellLevel1 {
+	background:#FFFF00;
+
+}
+
+
+
+/*
+Report Selection
+*/
+
+.reportSelectorRow {
+	width:100%;
+	position:relative;
+    overflow:hidden;
+    white-space: nowrap;
+	text-align:center;
+}
+
+
+.reportSelectorLabel {
+	width:50%;
+	text-align:right;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	font-size: 16px;
+	padding:5px;
+	/*font-weight: bold;*/
 	
 	
 }
 
+.reportSelectorControl {
+	width:50%;
+	text-align:left;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	padding:5px;
+	
+}
 
-.evenRow {
+select {
+  margin: 5px;
+  background: transparent;
+  /*width: 150px;*/
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #000;
+  /*height: 34px;*/
+  /*-webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;*/
+}
+
+
+
+/*
+Buttons
+*/
+
+.btn {
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 19px;
+  background: #147fc7;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  border:none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+
+/*
+Login Page
+*/
+
+.loginFieldRow {
+	width:100%;
+	position:relative;
+    overflow:hidden;
+    white-space: nowrap;
+	text-align:center;
+	
+}
+
+.loginLabel {
+	width:50%;
+	text-align:right;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	font-size: 16px;
+	padding:5px;
+	/*font-weight: bold;*/
 	
 	
 }
 
+.loginControl {
+	width:50%;
+	text-align:left;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	padding:5px;
+	
+}
 
+.customTextBox
+{ 
+	background:#F8F8F8;
+	color:#999999;
+	border:1px solid #DCDCDC;
+	border-radius:2px ;
+	font-size:16px ;
+	height: 30px ;
+	line-height:30px ;
+	width: 250px ;
+	padding: 10px ;
+	box-shadow: 0px 0px 8px #DCDCDC; 
+	-webkit-box-shadow: 0px 0px 8px #DCDCDC; 
+	-moz-box-shadow: 0px 0px 8px #DCDCDC; 
+}
+
+.validationError {
+	color:red;
+	font-weight:bold;
+	width:100%;
+	text-align:center;
+}
 

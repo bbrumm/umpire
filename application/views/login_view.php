@@ -1,19 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
-   <title>Simple Login with CodeIgniter</title>
+   <title>Umpire Reporting - Login</title>
  </head>
  <body>
-   <h1>Simple Login with CodeIgniter</h1>
-   <?php echo validation_errors(); ?>
-   <?php echo form_open('VerifyLogin'); ?>
-     <label for="username">Username:</label>
-     <input type="text" size="20" id="username" name="username"/>
-     <br/>
-     <label for="password">Password:</label>
-     <input type="password" size="20" id="passowrd" name="password"/>
-     <br/>
-     <input type="submit" value="Login"/>
+	<h2>Login</h2>
+	<?php
+	echo "<div class='validationError'>". validation_errors() ."</div>"; 
+	?>
+	<?php echo form_open('VerifyLogin'); ?>
+	
+	<div class="loginFieldRow">
+		<span class="loginLabel"><label for="username">Username:</label><span>
+		<span class="loginControl"><input type="text" size="20" id="username" name="username" class="customTextBox"/><span>
+	</div>
+    <br/>
+	<div class="loginFieldRow">
+		<span class="loginLabel"><label for="password">Password:</label><span>
+		<span class="loginControl"><input type="password" size="20" id="passowrd" name="password" class="customTextBox"/><span>
+    </div>
+	<br/>
+	<div class="reportSelectorRow">
+		<input type="submit" value="Login" class="btn">
+	</div>
+
    </form>
  </body>
 </html>
