@@ -32,6 +32,7 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 	<?php
 	if ($i == (count($loadedColumnGroupings[0])-1)) {
 		echo "Name";
+		echo "<div class='cellNameSize'> </div>";
 	}
 	?>
 	</td>
@@ -39,6 +40,8 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 	<?php
 	for ($j=0; $j < count($loadedColumnGroupings); $j++) {
 		//Check if cell should be merged
+		
+		
 		if ($j==0) {
 			$proceed = true;
 		} else {
@@ -52,17 +55,18 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 		
 		if ($proceed) {
 			//print cell with colspan value
-			//TODO: RESUME HERE
-			//echo "input(".$loadedColumnGroupings[$j][$i].")";
 			$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$i]];
-			//echo "COLSPAN FOR CELL(".$colspanForCell.")<BR />";
 			if ($columnLabels[$i] == 'club_name') {
 				//Club names are displayed differently
-				$cellClass = "rotate";
+				if ($PDFLayout) {
+					$cellClass = "rotatePDF";
+					
+				} else {
+					$cellClass = "rotate";
+				}
 			} else {
 				$cellClass = "columnHeadingNormal";
 			}
-			
 			echo "<th class='$cellClass' colspan='$colspanForCell'><div>".$loadedColumnGroupings[$j][$i]."</div></th>";
 		}
 		//else

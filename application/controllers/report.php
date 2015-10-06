@@ -18,6 +18,7 @@ class Report extends CI_Controller {
 			'league' => $_POST['league']);
 		$data['loadedReportItem'] = $this->report_model->get_report($reportParameters);
 		$data['title'] = 'Test Report';
+		$data['PDFLayout'] = FALSE;
 		
 		
 		echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";

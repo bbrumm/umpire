@@ -5,7 +5,7 @@
 <?php
 $this->load->helper('url');       
 $data['css'] = $this->config->item('css'); 
-echo "<link rel='stylesheet' type='text/css' href='". asset_url() . $data['css'] ."' />";
+echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />";
 ?>	
 	</head>
 <body>

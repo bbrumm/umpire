@@ -118,7 +118,18 @@ Table Formatting - Reports
 	border: 1px solid black;
 	width: 100%;
 	border-collapse: collapse;
+	table-layout: fixed;
 }
+
+.columnName {
+	width:10%;
+}
+
+.columnData {
+	width:5px;
+}
+
+
 
 th {
 	border: 1px solid black;
@@ -131,13 +142,28 @@ th.rotate {
 }
 
 th.rotate > div {
+  /*width: 30px;*/
   transform: 
     /* Magic Numbers */
     translate(0px, 60px)
     /* 45 is really 360 - 45 */
 	/*Updated */
     rotate(270deg);
-    width: 30px;
+   
+}
+
+th.rotatePDF > div {
+  /*width: 30px;
+  width:5px;
+  height:150px;*/
+  
+  transform: 
+    /* Magic Numbers */
+    translate(0px, 60px)
+    /* 45 is really 360 - 45 */
+	/*Updated */
+    rotate(270deg);
+   
 }
 
 /*
@@ -154,6 +180,10 @@ th.rotate > div > span {
 
 .cellNormal {
 	border: 1px solid black;
+}
+
+.cellNameSize {
+	width:50px;
 }
 
 .cellNumber {
