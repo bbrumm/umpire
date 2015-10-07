@@ -16,7 +16,9 @@ if($this->session->userdata('logged_in')) {
 	<div class="menuBar">
 		<a href='home'><div class="menuBarLink">Home Page</div></a>
 		<?php
+		echo "<a href='ImportFileSelector'><div class='menuBarLink'>Import File</div></a>";
 		echo "<a href='home/logout'><div class='menuBarLink'>Logout</div></a>";
+		
 }
 
 if ($this->uri->segment(1) == 'report') {

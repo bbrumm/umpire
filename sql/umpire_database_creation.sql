@@ -249,11 +249,11 @@ CREATE INDEX `fk_team_club_idx` ON `umpire`.`team` (`club_id` ASC);
 
 
 -- -----------------------------------------------------
--- Table `umpire`.`match`
+-- Table `umpire`.`match_played`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `umpire`.`match` ;
+DROP TABLE IF EXISTS `umpire`.`match_played` ;
 
-CREATE TABLE IF NOT EXISTS `umpire`.`match` (
+CREATE TABLE IF NOT EXISTS `umpire`.`match_played` (
   `ID` INT(11) NOT NULL AUTO_INCREMENT,
   `round_id` INT(11) NULL DEFAULT NULL,
   `ground_id` INT(11) NULL DEFAULT NULL,
@@ -279,11 +279,11 @@ CREATE TABLE IF NOT EXISTS `umpire`.`match` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
-CREATE INDEX `fk_match_round_idx` ON `umpire`.`match` (`round_id` ASC);
+CREATE INDEX `fk_match_round_idx` ON `umpire`.`match_played` (`round_id` ASC);
 
-CREATE INDEX `fk_match_ground_idx` ON `umpire`.`match` (`ground_id` ASC);
+CREATE INDEX `fk_match_ground_idx` ON `umpire`.`match_played` (`ground_id` ASC);
 
-CREATE INDEX `fk_match_team_idx` ON `umpire`.`match` (`home_team_id` ASC);
+CREATE INDEX `fk_match_team_idx` ON `umpire`.`match_played` (`home_team_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -455,7 +455,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`umpire_name_type_match` (
   PRIMARY KEY (`ID`),
   CONSTRAINT `fk_untm_match`
     FOREIGN KEY (`match_id`)
-    REFERENCES `umpire`.`match` (`ID`)
+    REFERENCES `umpire`.`match_played` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_untm_unt`

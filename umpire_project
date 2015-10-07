@@ -18,10 +18,11 @@
         <Folder name="Views">
             <File name="application\views\home_view.php" />
             <File name="application\views\login_view.php" />
-            <File name="application\views\pages\home.php" />
             <File name="application\views\templates\footer.php" />
             <File name="application\views\templates\header.php" />
             <File name="application\views\report\single_report_view.php" />
+            <File name="application\views\pages\report_home.php" />
+            <File name="application\views\login_view.php" />
         </Folder>
         <Folder name="Config">
             <File name="system\core\Config.php" />
