@@ -131,47 +131,102 @@ Table Formatting - Reports
 
 
 
-th {
-	border: 1px solid black;
-}
-
+/*
 th.rotate {
-  /* Something you can count on */
+ 
   height: 170px;
   white-space: nowrap;
+
 }
 
 th.rotate > div {
-  /*width: 30px;*/
   transform: 
-    /* Magic Numbers */
-    translate(0px, 60px)
-    /* 45 is really 360 - 45 */
-	/*Updated */
-    rotate(270deg);
+    
+    translate(25px, 51px)
+    rotate(315deg);
+  width: 30px;
    
 }
 
 th.rotatePDF > div {
-  /*width: 30px;
-  width:5px;
-  height:150px;*/
-  
   transform: 
-    /* Magic Numbers */
     translate(0px, 60px)
-    /* 45 is really 360 - 45 */
-	/*Updated */
     rotate(270deg);
-   
 }
 
-/*
+
 th.rotate > div > span {
   border-bottom: 1px solid #ccc;
-  padding: 5px 10px;
 }
 */
+
+
+/*
+thead th {
+   -moz-transform: rotate(-90deg); 
+   -o-transform: rotate(-90deg);  
+   -webkit-transform: rotate(-90deg); 
+   filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=3); 
+   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
+   vertical-align: top;
+   padding: 15px 0;
+   white-space: nowrap;
+	
+} 
+
+th {
+
+  font-weight: normal;
+  border: 1px solid black;
+  padding:0px;
+	
+}
+td, th {
+  padding: 10px;
+  text-align: center;
+  
+ 
+}
+*/
+
+.normalHeadingText {
+  padding: 10px;
+  text-align: center;
+}
+
+ .rotate_text
+      {
+	 -moz-transform:rotate(-90deg); 
+	 -moz-transform-origin: top left;
+	 -webkit-transform: rotate(-90deg);
+	 -webkit-transform-origin: top left;
+	 -o-transform: rotate(-90deg);
+	 -o-transform-origin:  top left;
+	  position:relative;
+	 top:20px;
+	 width:180px;
+	 padding: 0px 0px 0px 0px;
+	 /*background-color:yellow;*/
+  }
+
+ .rotated_cell
+      {
+	 height:200px;
+	 vertical-align:bottom;
+	 padding: 0px 0px 10px 0px;
+   /*background-color:red;*/
+      }
+  
+th, td 
+  {
+	  border: 1px solid black;
+	  /*width: 20px;*/
+  }
+	  
+	  
+	  
+	  
+	  
 
 .columnHeadingNormal {
 	font-weight: bold;
@@ -183,7 +238,7 @@ th.rotate > div > span {
 }
 
 .cellNameSize {
-	width:50px;
+	width:150px;
 }
 
 .cellNumber {

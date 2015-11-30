@@ -28,11 +28,11 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 	?>
 	
 	<tr>
-	<td class='columnHeadingNormal'>
+	<td class='columnHeadingNormal cellNameSize'>
 	<?php
 	if ($i == (count($loadedColumnGroupings[0])-1)) {
 		echo "Name";
-		echo "<div class='cellNameSize'> </div>";
+		/*echo "<div class='cellNameSize'> </div>";*/
 	}
 	?>
 	</td>
@@ -60,14 +60,17 @@ for ($i=0; $i < count($loadedColumnGroupings[0]); $i++) {
 				//Club names are displayed differently
 				if ($PDFLayout) {
 					$cellClass = "rotatePDF";
+					$divClass = "rotate_text";
 					
 				} else {
-					$cellClass = "rotate";
+					$cellClass = "rotated_cell";
+					$divClass = "rotate_text";
 				}
 			} else {
 				$cellClass = "columnHeadingNormal";
+				$divClass = "normalHeadingText";
 			}
-			echo "<th class='$cellClass' colspan='$colspanForCell'><div>".$loadedColumnGroupings[$j][$i]."</div></th>";
+			echo "<td class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$i]."</div></td>";
 		}
 		//else
 		//nothing - don't even write a td		

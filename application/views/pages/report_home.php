@@ -1,7 +1,10 @@
 <h2>Select a Report</h2>
 <?php
 $startDirName = "http://localhost/umpire/umpire";
-echo "<form action='$startDirName/index.php/report' method='POST'>";
+//echo APPPATH;
+//echo "<form action='".APPPATH."index.php\report' method='POST'>";
+echo form_open('report');
+
 ?>
 <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Season:</span>

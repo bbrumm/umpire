@@ -15,6 +15,7 @@ class Home extends CI_Controller {
      $data['username'] = $session_data['username'];
 	 
 	 $this->load->view('templates/header', $data);
+	 $this->load->helper('form');
 	 $this->load->view('pages/report_home', $data);
 	 $this->load->view('templates/footer');
 	 
