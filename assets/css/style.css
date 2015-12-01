@@ -204,14 +204,14 @@ td, th {
 	 -o-transform-origin:  top left;
 	  position:relative;
 	 top:20px;
-	 width:180px;
+	 width:250px;
 	 padding: 0px 0px 0px 0px;
 	 /*background-color:yellow;*/
   }
 
  .rotated_cell
       {
-	 height:200px;
+	 height:250px;
 	 vertical-align:bottom;
 	 padding: 0px 0px 10px 0px;
    /*background-color:red;*/
@@ -238,7 +238,7 @@ th, td
 }
 
 .cellNameSize {
-	width:150px;
+	width:230px;
 }
 
 .cellNumber {

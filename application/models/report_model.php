@@ -10,15 +10,38 @@ class report_model extends CI_Model {
 	}
 	
 	public function get_report($reportParameters) {
+		
+		$startTime = time();
+		
 		$reportToDisplay = new UserReport();
 		$reportToDisplay->setReportType($reportParameters);
 		$query = $this->db->query($reportToDisplay->getReportQuery());
 		
 		$reportToDisplay->setResultArray($query->result_array());
-		$uniqueColumnGroup = $this->getDistinctListForGrouping(array('short_league_name', 'club_name'), $reportToDisplay->getResultArray());
-		$uniqueRowGroup = $this->getDistinctListForGrouping(array('full_name'), $reportToDisplay->getResultArray());
-		$reportToDisplay->setColumnGroupingArray($uniqueColumnGroup);
-		$reportToDisplay->setRowGroupingArray($uniqueRowGroup);
+		//$uniqueColumnGroup = $this->getDistinctListForGrouping(array('short_league_name', 'club_name'), $reportToDisplay->getResultArray());
+		//$uniqueRowGroup = $this->getDistinctListForGrouping(array('full_name'), $reportToDisplay->getResultArray());
+		
+		//Load the results from the queries for the column labels and row labels from the database and store them in an array
+		$columnLabelQuery = $this->db->query($reportToDisplay->getReportColumnLabelQuery());
+		$reportToDisplay->setColumnLabelResultArray($columnLabelQuery->result_array());
+		
+		$rowLabelQuery = $this->db->query($reportToDisplay->getReportRowLabelQuery());
+		$reportToDisplay->setRowLabelResultArray($rowLabelQuery->result_array());
+		
+		/*
+		echo "Row Label Array<pre>";
+		print_r($rowLabelQuery->result_array());
+		echo "</pre>";
+		*/
+		//$reportToDisplay->setColumnGroupingArray($uniqueColumnGroup);
+		//$reportToDisplay->setRowGroupingArray($uniqueRowGroup);
+		
+		$reportToDisplay->setColumnGroupingArray($columnLabelQuery->result_array());
+		$reportToDisplay->setRowGroupingArray($rowLabelQuery->result_array());
+		
+		
+		$endTime = time();
+		/*echo "<BR />getReport Time Taken (s) (" . ($endTime - $startTime) . ")<BR/>";*/
 		
 		return $reportToDisplay;
 	}
@@ -27,10 +50,11 @@ class report_model extends CI_Model {
 	private function getDistinctListForGrouping($pArrayFieldName, $pResultArray) {
 		$fieldList = array();
 		
-		////echo "<pre>";
-		//print_r($pResultArray);
-		//echo "</pre>";
-		
+		/*
+		echo "<pre>";
+		print_r($pResultArray);
+		echo "</pre>";
+		*/
 		for ($i=0, $numItems = count($pResultArray); $i < $numItems; $i++) {
 			if (array_key_exists(0, $pArrayFieldName)) {
 				$fieldList[$i][0] = $pResultArray[$i][$pArrayFieldName[0]];
@@ -39,9 +63,11 @@ class report_model extends CI_Model {
 				$fieldList[$i][1] = $pResultArray[$i][$pArrayFieldName[1]];
 			}
 		}
-		//echo "<pre>";
-		//print_r($fieldList);
-		//echo "</pre>";
+		/*
+		echo "<pre>";
+		print_r($fieldList);
+		echo "</pre>";
+		*/
 		$uniqueFieldList = array_unique($fieldList, SORT_REGULAR );
 
 		usort($uniqueFieldList, 'sortArray');

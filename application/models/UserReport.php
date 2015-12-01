@@ -17,6 +17,10 @@ class UserReport {
 	private $columnGroupingArray;
 	private $rowGroupingArray;
 	private $reportTitle;
+	private $reportColumnLabelQuery;
+	private $reportRowLabelQuery;
+	private $columnLabelResultArray;
+	private $rowLabelResultArray;
 
 	public $reportDisplayOptions;
 	
@@ -35,15 +39,15 @@ class UserReport {
 			$this->reportDisplayOptions->setNoDataValue("");
 			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
 			
-			
-			
 			$whereClause = $this->buildWhereClause($reportParameters['season'], $reportParameters['age'], $reportParameters['umpireType'], $reportParameters['league']);
 			$queryForReport = "SELECT full_name, club_name, short_league_name, SUM(match_count) as match_count FROM mv_report_05 $whereClause GROUP BY full_name, club_name, short_league_name";
-			
+
 			$this->reportTitle = "05 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
 			
-			//echo $queryForReport;
+			echo $queryForReport;
 			$this->reportQuery = $queryForReport;
+			$this->reportColumnLabelQuery = "SELECT DISTINCT short_league_name, club_name FROM mv_report_05 $whereClause ORDER BY short_league_name, club_name";
+			$this->reportRowLabelQuery = "SELECT DISTINCT full_name FROM mv_report_05 $whereClause ORDER BY full_name ASC";
 			
 		}
 		
@@ -51,7 +55,6 @@ class UserReport {
 	
 	public function getReportQuery() {
 		return $this->reportQuery;
-		
 	}
 	
 	public function setResultArray($pResultArray) {
@@ -87,8 +90,38 @@ class UserReport {
 		
 	}
 	
+	public function getReportColumnLabelQuery() {
+		return $this->reportColumnLabelQuery;
+	}
+	
+	public function getReportRowLabelQuery() {
+		return $this->reportRowLabelQuery;
+	}
+	
+	public function setColumnLabelResultArray($pResultArray) {
+		$this->columnLabelResultArray = $pResultArray;
+	}
+	
+	public function getColumnLabelResultArray() {
+		return $this->columnLabelResultArray;
+	}
+	
+	public function setRowLabelResultArray($pResultArray) {
+		$this->rowLabelR = $pResultArray;
+	}
+	
+	public function getRowLabelResultArray() {
+		return $this->rowLabelResultArray;
+	}
+	
+	
+	
+	
 	private function buildWhereClause($pSeason, $pAgeGroup, $pUmpireType, $pLeague) {
-		$whereClause = "WHERE ";
+		if ($pAgeGroup != 'All' || $pUmpireType != 'All' || $pLeague != 'All') {
+			$whereClause = "WHERE ";
+		}
+		
 		$addAndKeyword = FALSE;
 		if ($pAgeGroup != 'All') {
 			$whereClause .= "age_group = '$pAgeGroup' ";
