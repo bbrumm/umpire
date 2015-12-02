@@ -15,8 +15,8 @@ $countFirstLoadedColumnGroupings = count($loadedColumnGroupings[0]);
 
 $startTime = time();
 /*
-echo "<pre>";
-print_r($loadedColumnGroupings);
+echo "<BR/>loadedResultArray:<pre>";
+print_r($loadedResultArray);
 echo "</pre>";
 */
 
@@ -26,13 +26,7 @@ echo "<table class='reportTable'>";
 echo "<thead>";
 //Show one header row for each group
 for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
-	//echo "<BR/>Count loadedColumnGroupings[0] = ". count($loadedColumnGroupings[0]) ."<BR/>";
-	$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $i));
-	/*
-	echo "Count Group:<BR /><pre>";
-	print_r($countOfEachColumnHeading);
-	echo "</pre>";
-	*/
+	$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
 	?>
 	
 	<tr>
@@ -40,22 +34,17 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 	<?php
 	if ($i == ($countFirstLoadedColumnGroupings-1)) {
 		echo "Name";
-		/*echo "<div class='cellNameSize'> </div>";*/
 	}
 	?>
 	</td>
 
 	<?php
-	//echo "<BR/>Count loadedColumnGroupings = ". count($loadedColumnGroupings) ."<BR/>";
-	
 	for ($j=0; $j < $countLoadedColumnGroupings; $j++) {
 		//Check if cell should be merged
-		
-		
 		if ($j==0) {
 			$proceed = true;
 		} else {
-			if ($loadedColumnGroupings[$j][$i] != $loadedColumnGroupings[$j-1][$i]) {
+			if ($loadedColumnGroupings[$j][$columnLabels[$i]] != $loadedColumnGroupings[$j-1][$columnLabels[$i]]) {
 				//proceed
 				$proceed = true;
 			} else {
@@ -65,12 +54,12 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 		
 		if ($proceed) {
 			//print cell with colspan value
-			
 			if ($columnLabels[$i] == 'club_name') {
 				//Club names are displayed differently
 				$colspanForCell = 1;
 				if ($PDFLayout) {
-					$cellClass = "rotatePDF";
+					//$cellClass = "rotatePDF";
+					$cellClass = "rotated_cell";
 					$divClass = "rotate_text";
 					
 				} else {
@@ -78,11 +67,11 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 					$divClass = "rotate_text";
 				}
 			} else {
-				$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$i]];
+				$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
 				$cellClass = "columnHeadingNormal";
 				$divClass = "normalHeadingText";
 			}
-			echo "<td class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$i]."</div></td>";
+			echo "<td class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></td>";
 		}
 		//else
 		//nothing - don't even write a td		
@@ -105,71 +94,124 @@ $loopCounter = 0;
 
 $matchFound = false;
 
+echo "<tbody>";
+//Loop through rows
+//$this->benchmark->mark('point 05.1');
+
+$currentReportRowLabel;
+$currentColumnLabelFirst;
+$currentColumnLabelSecond;
+
+/*
 $set1 = 0;
 $set2 = 0;
 $set3 = 0;
 $set4 = 0;
 $set5 = 0;
+*/
 
-echo "<tbody>";
-//Loop through rows
-//foreach ($loadedResultArray as $reportItem): 
-//$this->benchmark->mark('point 05.1');
+$tableRowOutput;
+
+
 foreach ($loadedRowGroupings as $reportRow): 
-	$loopCounter++;
+	//$loopCounter++;
+/*
+	echo "reportRow:<BR /><pre>";
+	print_r($reportRow);
+	echo "</pre>";
 	
-	echo "<tr>";
-	echo "<td class='cellNormal'>";
-	echo $reportRow[0];
-	echo "</td>";
+	echo "columnLabels:<BR /><pre>";
+	print_r($columnLabels);
+	echo "</pre>";
+	*/
+	
+	$tableRowOutput = "<tr><td class='cellNormal'>" . $reportRow[$rowLabels[0]] . "</td>";
+	
 	
 	//Check if result array matches
-	
-	//echo "<BR/>Count loadedColumnGroupings = ". count($loadedColumnGroupings) ."<BR/>";
 	//$set1start = time();
 	
+	$currentReportRowLabel = $reportRow[$rowLabels[0]];
+	
+	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
-		$loopCounter++;
+		//$loopCounter++;
 		$matchFound = false;
 		//$set2start = time();
+		//$this->benchmark->mark('point 02 start');
+		$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
+		$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
+		
+		//Loop through each row record from the database
+		/*
+		loadedResultArray is in this format:
+			[3559] => Array
+			(
+				[full_name] => Zarb, Jonathan
+				[club_name] => Torquay
+				[short_league_name] => None
+				[match_count] => 1
+			)
+		
+		*/
+		
+		
 		foreach ($loadedResultArray as $resultRow): 
-			$loopCounter++;
+		
+			
 			//$set3start = time();
-			if ($resultRow[$rowLabels[0]] == $reportRow[0]) {
+			//$this->benchmark->mark('point 03 start');
+			
+			//Check row labels match first, as there are more distinct values
+			if ($resultRow[$rowLabels[0]] == $currentReportRowLabel) {
 				//Row value matches. Check columns
-				//$set4start = time();
-				if ($resultRow[$columnLabels[0]] == $loadedColumnGroupings[$i][0]) {
-					if($resultRow[$columnLabels[1]] == $loadedColumnGroupings[$i][1]) {
+				if ($resultRow[$columnLabels[0]] == $currentColumnLabelFirst) {
+					if($resultRow[$columnLabels[1]] == $currentColumnLabelSecond) {
+						
+						//$loopCounter++;
+						
 						//Column values match.
 						//Check for value, then apply conditional formatting
 						//$set5start = time();
-						//echo "<td class='". getCellClassNameFromOutputValue($resultRow[$fieldToDisplay]) ."'>" . $resultRow[$fieldToDisplay] . "</td>";
-						echo "<td class='cellNumber cellNormal'>" . $resultRow[$fieldToDisplay] . "</td>";
+						$tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$fieldToDisplay]) ."'>" . $resultRow[$fieldToDisplay] . "</td>";
+						//$tableRowOutput .= "<td class='cellNumber cellNormal'>" . $resultRow[$fieldToDisplay] . "</td>";
 						$matchFound = true;
-						break 1;
+						
 						//$set5 = $set5 + time() - $set5start;
+						break 1;
+						
 					}
+					
 				}
+				
 				//$set4 = $set4 + time() - $set4start;
 			}
 			
 			//$set3 = $set3 + time() - $set3start;
+			//$this->benchmark->mark('point 03 end');
+			
 		endforeach;
 		
-		//$set2 = $set2 + time() - $set2start;
 		
+		//$set2 = $set2 + time() - $set2start;
+		//$this->benchmark->mark('point 02 end');
 		
 		if ($matchFound == false) {
-			echo "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
+			$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
 		}
+		
 	}
 	
 	//$set1 = $set1 + time() - $set1start;
 	
-	echo "</tr>";
+	//Output entire line here
+	
+	$tableRowOutput .= "</tr>";
+	echo $tableRowOutput;
 	
 endforeach;
-	//$this->benchmark->mark('point 05.2');
+
+$this->benchmark->mark('point 05.2');
 
 echo "</tbody>";
 //echo "Loop counter: " . $loopCounter ."<BR />";	
@@ -184,6 +226,8 @@ echo "set4 ($set4)<BR/>";
 echo "set5 ($set5)<BR/>";
 */
 //echo "05.2(". $this->benchmark->elapsed_time('point 05.1', 'point 05.2') .")<BR />";
+//echo "02(". $this->benchmark->elapsed_time('point 02 start', 'point 02 end') .")<BR />";
+//echo "03(". $this->benchmark->elapsed_time('point 03 start', 'point 03 end') .")<BR />";
 
 ?>
 
