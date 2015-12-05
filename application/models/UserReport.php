@@ -1,6 +1,6 @@
 <?php
 require_once('ReportDisplayOptions.php');
-class UserReport {
+class UserReport extends CI_Model {
 	
 	private $columnGroupForReport05 = array(
 				'short_league_name',
@@ -17,6 +17,7 @@ class UserReport {
 	private $columnGroupingArray;
 	private $rowGroupingArray;
 	private $reportTitle;
+	private $reportTableName;
 	private $reportColumnLabelQuery;
 	private $reportRowLabelQuery;
 	private $columnLabelResultArray;
@@ -26,6 +27,7 @@ class UserReport {
 	
 	public function __construct() {
 		$this->reportDisplayOptions = new ReportDisplayOptions();
+		$this->load->database();
 	}
 	
 	public function setReportType($reportParameters) {
@@ -38,20 +40,13 @@ class UserReport {
 			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport05);
 			$this->reportDisplayOptions->setNoDataValue("");
 			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
-			
-			$whereClause = $this->buildWhereClause($reportParameters['season'], $reportParameters['age'], $reportParameters['umpireType'], $reportParameters['league']);
-			$queryForReport = "SELECT full_name, club_name, short_league_name, SUM(match_count) as match_count FROM mv_report_05 $whereClause GROUP BY full_name, club_name, short_league_name";
-
 			$this->reportTitle = "05 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
-			
-			echo $queryForReport;
-			$this->reportQuery = $queryForReport;
-			$this->reportColumnLabelQuery = "SELECT DISTINCT short_league_name, club_name FROM mv_report_05 $whereClause ORDER BY short_league_name, club_name";
-			$this->reportRowLabelQuery = "SELECT DISTINCT full_name FROM mv_report_05 $whereClause ORDER BY full_name ASC";
-			
+
 		}
 		
 	}
+	
+	
 	
 	public function getReportQuery() {
 		return $this->reportQuery;
@@ -117,35 +112,6 @@ class UserReport {
 	
 	
 	
-	private function buildWhereClause($pSeason, $pAgeGroup, $pUmpireType, $pLeague) {
-		if ($pAgeGroup != 'All' || $pUmpireType != 'All' || $pLeague != 'All') {
-			$whereClause = "WHERE ";
-		}
-		
-		$addAndKeyword = FALSE;
-		if ($pAgeGroup != 'All') {
-			$whereClause .= "age_group = '$pAgeGroup' ";
-			$addAndKeyword = TRUE;
-		}
-		
-		if ($pUmpireType != 'All') {
-			if ($addAndKeyword) {
-				$whereClause .= "AND ";
-				$addAndKeyword = FALSE;
-			}
-			$whereClause .= "umpire_type_name = '$pUmpireType' ";
-			$addAndKeyword = TRUE;
-		}
-		
-		if ($pLeague != 'All') {
-			if ($addAndKeyword) {
-				$whereClause .= "AND ";
-				$addAndKeyword = FALSE;
-			}
-			$whereClause .= "short_league_name = '$pLeague'";
-		}
-		return $whereClause;
-	}
 	
 }
 

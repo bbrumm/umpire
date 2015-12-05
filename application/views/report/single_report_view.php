@@ -1,7 +1,9 @@
 <?php
 
-$loadedColumnGroupings = $loadedReportItem->getColumnGroupingArray();
-$loadedRowGroupings = $loadedReportItem->getRowGroupingArray();
+//$loadedColumnGroupings = $loadedReportItem->getColumnGroupingArray();
+$loadedColumnGroupings = $loadedReportItem->getColumnLabelResultArray();
+
+//$loadedRowGroupings = $loadedReportItem->getRowGroupingArray();
 $loadedResultArray = $loadedReportItem->getResultArray();
 $reportDisplayOptions = $loadedReportItem->getDisplayOptions();
 $columnLabels = $reportDisplayOptions->getColumnGroup();
@@ -10,23 +12,40 @@ $rowLabels = $reportDisplayOptions->getRowGroup();
 $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 
+//$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countLoadedColumnGroupings = count($loadedColumnGroupings);
-$countFirstLoadedColumnGroupings = count($loadedColumnGroupings[0]);
+//$countFirstLoadedColumnGroupings = count($loadedColumnGroupings[0]);
+$countFirstLoadedColumnGroupings = count($columnLabels);
 
 $startTime = time();
 /*
-echo "<BR/>loadedResultArray:<pre>";
-print_r($loadedResultArray);
+echo "<BR/>loadedColumnGroupings:<pre>";
+print_r($loadedColumnGroupings);
 echo "</pre>";
-*/
 
+echo "Count( " . $countFirstLoadedColumnGroupings . ")";
+*/
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 echo "<table class='reportTable'>";
 
 echo "<thead>";
+
 //Show one header row for each group
 for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
+    /*
+    echo "$countFirstLoadedColumnGroupings columnLabels<pre>";
+    print_r($columnLabels);
+    echo "</pre>";
+    */
+    //Load array that shows each column heading and the number of records it has.
 	$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
+	/*
+	echo "countOfEachColumnHeading<pre>";
+	print_r($countOfEachColumnHeading);
+	echo "</pre>";
+	*/
+	
+	//echo "countOfEachColumnHeading " . $countOfEachColumnHeading . "<BR/>";
 	?>
 	
 	<tr>
@@ -113,11 +132,11 @@ $set5 = 0;
 $tableRowOutput;
 
 
-foreach ($loadedRowGroupings as $reportRow): 
+foreach ($loadedResultArray as $resultRow): 
 	//$loopCounter++;
 /*
 	echo "reportRow:<BR /><pre>";
-	print_r($reportRow);
+	print_r($resultRow);
 	echo "</pre>";
 	
 	echo "columnLabels:<BR /><pre>";
@@ -125,43 +144,83 @@ foreach ($loadedRowGroupings as $reportRow):
 	echo "</pre>";
 	*/
 	
-	$tableRowOutput = "<tr><td class='cellNormal'>" . $reportRow[$rowLabels[0]] . "</td>";
+	$tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]] . "</td>";
 	
 	
 	//Check if result array matches
 	//$set1start = time();
 	
-	$currentReportRowLabel = $reportRow[$rowLabels[0]];
+	$currentReportRowLabel = $resultRow[$rowLabels[0]];
 	
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
 		//$loopCounter++;
-		$matchFound = false;
+		//$matchFound = false;
 		//$set2start = time();
 		//$this->benchmark->mark('point 02 start');
 		$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
 		$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
-		
-		//Loop through each row record from the database
 		/*
-		loadedResultArray is in this format:
-			[3559] => Array
-			(
-				[full_name] => Zarb, Jonathan
-				[club_name] => Torquay
-				[short_league_name] => None
-				[match_count] => 1
-			)
+		echo "*** START OUTPUT *** <BR/>";
+		echo "i = $i<BR/>";
+		
+		echo "labels ($currentColumnLabelFirst)($currentColumnLabelSecond) <BR/>";
+		
+		echo "resultRow<pre>";
+		print_r($resultRow);
+		echo "</pre>";
+		
+		echo "loadedColumnGroupings<pre>";
+		print_r($loadedColumnGroupings);
+		echo "</pre>";
+		
 		
 		*/
+		/*
+		loadedResultArray is in this format:
+			Array
+			(
+				[full_name] => Zarb, Jonathan
+				[<column_name>] => #
+				[<column_name>] => #
+				..
+				[<column_name>] => #
+			)
 		
 		
-		foreach ($loadedResultArray as $resultRow): 
+		
+		echo "*** END OUTPUT *** <BR/>";
+		*/
+        //Check each row from the result against the column heading.
+		//if ($resultRow[$columnLabels[0]] == $loadedColumnGroupings[$i]["column_name"]) {
+		if ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) {
+		        //Match found for columns. Write record
+		        $tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
+		        //$matchFound = true;
+		} else {
+		    $tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
+		}
+
+		
+		        
+		        
+	}    
+		        
+	$tableRowOutput .= "</tr>";
+	echo $tableRowOutput;
+		        
+		        
+//************* OLD CODE *******************
+		/*
+		//foreach ($loadedResultArray as $resultRow): 
 		
 			
 			//$set3start = time();
 			//$this->benchmark->mark('point 03 start');
 			
+		
+		
+		
 			//Check row labels match first, as there are more distinct values
 			if ($resultRow[$rowLabels[0]] == $currentReportRowLabel) {
 				//Row value matches. Check columns
@@ -190,7 +249,7 @@ foreach ($loadedRowGroupings as $reportRow):
 			//$set3 = $set3 + time() - $set3start;
 			//$this->benchmark->mark('point 03 end');
 			
-		endforeach;
+		//endforeach;
 		
 		
 		//$set2 = $set2 + time() - $set2start;
@@ -209,7 +268,10 @@ foreach ($loadedRowGroupings as $reportRow):
 	$tableRowOutput .= "</tr>";
 	echo $tableRowOutput;
 	
+	*/
+	
 endforeach;
+
 
 $this->benchmark->mark('point 05.2');
 
