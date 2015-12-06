@@ -38,7 +38,14 @@ class CreatePDF extends CI_Controller {
 		$html .= $this->load->view('report/single_report_view', $data, TRUE);
 		$html .= $this->load->view('templates/footer', $data, TRUE);
 		
-		pdf_create($html, 'single_report_view');
+		//Save To File, or Output to Window
+		$saveToFile = TRUE;
+		if ($saveToFile) {
+		  pdf_create($html, 'single_report_view', $saveToFile);
+		} else {
+		  pdf_create($html, 'single_report_view', $saveToFile);
+		}
+		 
 		//echo $html;
 		
 	}

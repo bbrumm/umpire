@@ -194,8 +194,7 @@ td, th {
   text-align: center;
 }
 
- .rotate_text
-      {
+ .rotated_text {
 	 -moz-transform:rotate(-90deg); 
 	 -moz-transform-origin: top left;
 	 -webkit-transform: rotate(-90deg);
@@ -207,23 +206,38 @@ td, th {
 	 width:250px;
 	 padding: 0px 0px 0px 0px;
 	 /*background-color:yellow;*/
-  }
+ }
 
- .rotated_cell
-      {
+ .rotated_cell {
 	 height:250px;
 	 vertical-align:bottom;
 	 padding: 0px 0px 10px 0px;
    /*background-color:red;*/
-      }
+}
   
 th, td 
   {
 	  border: 1px solid black;
 	  /*width: 20px;*/
   }
-	  
-	  
+
+ .rotated_text_pdf {
+ 	transform: 
+      translate(0px, 0px)
+      rotate(-90deg);
+ 	width:150px;
+ }
+
+ .rotated_cell_pdf {
+	 height:150px;
+	 vertical-align:bottom;
+	 padding: 0px 0px 10px 0px;
+   /*background-color:red;*/
+}  
+  
+  
+
+*/
 	  
 	  
 	  

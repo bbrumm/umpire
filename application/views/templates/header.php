@@ -9,27 +9,41 @@ echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . 
 ?>	
 	</head>
 <body>
-<div class="mainBanner">Umpire Reporting</div>
-<?php
-if($this->session->userdata('logged_in')) {
+<?php 
+if (isset($PDFLayout)) {
+    if ($PDFLayout == TRUE) {
+        $showHeader = FALSE;
+    } else {
+        $showHeader = TRUE;
+    }
+} else {
+    $showHeader = TRUE;
+}
+
+if ($showHeader) {
 ?>
-	<div class="menuBar">
-		<a href='home'><div class="menuBarLink">Home Page</div></a>
-		<?php
-		echo "<a href='ImportFileSelector'><div class='menuBarLink'>Import File</div></a>";
-		echo "<a href='home/logout'><div class='menuBarLink'>Logout</div></a>";
-		
+    <div class="mainBanner">Umpire Reporting</div>
+    <?php
+    if($this->session->userdata('logged_in')) {
+    ?>
+    	<div class="menuBar">
+    		<a href='home'><div class="menuBarLink">Home Page</div></a>
+    		<?php
+    		echo "<a href='ImportFileSelector'><div class='menuBarLink'>Import File</div></a>";
+    		echo "<a href='home/logout'><div class='menuBarLink'>Logout</div></a>";
+    		
+    }
+    
+    if ($this->uri->segment(1) == 'report') {
+    	//Show extra items if we are on the report page
+    
+    	//echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
+    	echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
+    	echo "<div class='menuBarLink'>Create PDF</div></a>";
+    	
+    }
+    ?>
+	</div>
+<?php 
 }
-
-if ($this->uri->segment(1) == 'report') {
-	//Show extra items if we are on the report page
-
-	//echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
-	echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
-	echo "<div class='menuBarLink'>Create PDF</div></a>";
-	
-}
-
-
-	?>
-</div>
+?>

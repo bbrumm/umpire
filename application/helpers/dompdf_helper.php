@@ -5,6 +5,7 @@ function pdf_create($html, $filename='', $stream=TRUE)
 
     $dompdf = new DOMPDF();
     $dompdf->load_html($html);
+    $dompdf->set_paper('a3', 'landscape');
     $dompdf->render();
     if ($stream) {
         $dompdf->stream($filename.".pdf");
