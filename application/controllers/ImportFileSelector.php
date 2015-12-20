@@ -6,15 +6,17 @@ class ImportFileSelector extends CI_Controller {
 		
 		$this->load->model('report_model');
 		$this->load->helper('url_helper');
-		$this->load->helper(array('form'));
+		$this->load->helper(array('form', 'url'));
 	}
 	
 	public function index() {
-		
-		$data['title'] = 'Test Report';
-		
+	    $data['test'] = "Test Report";
 		$this->load->view('templates/header', $data);
-		$this->load->view('importFile', $data);
+		
+		$this->load->view('upload_form', array('error' => ' ' , $data));
+		
+		//$this->load->view('importFile', array('error' => ' ' , $data));
+		
 		$this->load->view('templates/footer');
 		
 	}
