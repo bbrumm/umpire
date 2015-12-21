@@ -97,7 +97,7 @@ class report_model extends CI_Model {
 	}
 	
 	//Find the table to select the data for the report. This tablename is stored in the database
-	private function lookupReportTableName($reportID) {
+	public function lookupReportTableName($reportID) {
 	    $tableNameQuery = "SELECT table_name FROM report_table WHERE report_name = ". $reportID .";";
 	    $query = $this->db->query($tableNameQuery);
 	    $tableNameResultArray = $query->result_array();

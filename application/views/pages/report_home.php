@@ -19,7 +19,7 @@ echo form_open('report');
 	<span class="reportSelectorLabel">Report:</span>
 	<span class="reportSelectorControl">
 		<select name="reportName">
-		<option value="05" selected>05 - Umpires and Clubs</option>
+		<option value="01" selected>01 - Umpires and Clubs</option>
 		</select>
 	</span>
 </div>

@@ -74,6 +74,9 @@ class MatchImport extends MY_Model
       $this->deleteDuplicateMatches();
       $this->reloadMatchTable();
       $this->reloadUmpireNameTypeMatchTable();
+
+      //Reload tables for the reports
+      $this->reloadMVReport01Table();
       
   }
   
@@ -351,7 +354,154 @@ class MatchImport extends MY_Model
       echo "Query run: reloadUmpireNameTypeMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
   }
   
+  private function reloadMVReport01Table() {
+      //First, delete the data from the table
+      //$reportTableName = $this->lookupReportTableName('1');
+      $reportModel = new report_model();
+      $reportTableName = $reportModel->lookupReportTableName('1');
+      $this->deleteFromSingleTable($reportTableName);
+      
+      //Then, insert into table
+      $queryString = "INSERT INTO mv_report_01 (full_name, club_name, short_league_name, age_group, umpire_type_name, 
+        `GDFL|Anakie`, `GDFL|Bannockburn`, `None|Corio`, `GDFL|East_Geelong`, `GDFL|North_Geelong`, `None|Portarlington`, `GDFL|Werribee_Centrals`,
+        `GDFL|Winchelsea`, `GFL|Bell_Park`, `GDFL|Bell_Post_Hill`, `GDFL|Belmont_Lions`, `GFL|Colac`, `BFL|Geelong_Amateur`, `GDFL|Geelong_West`,
+        `GFL|Grovedale`, `GFL|Gwsp`, `GDFL|Inverleigh`, `GFL|Lara`, `GFL|Leopold`, `GFL|Newtown_&_Chilwell`, `GFL|North_Shore`,
+        `GFL|South_Barwon`, `GFL|St_Joseph's`, `GFL|St_Mary's`, `BFL|Torquay`, `None|Barwon_Heads`, `None|Drysdale`, `None|East_Geelong`,
+        `None|Geelong_West_St_Peters`, `None|Grovedale`, `None|Inverleigh`, `None|Leopold`, `None|Newcomb`, `None|Newtown_&_Chilwell`, `None|Ocean_Grove`,
+        `None|South_Barwon`, `None|St_Albans`, `None|St_Joseph's`, `None|St_Mary's`, `None|Torquay`, `BFL|Anglesea`, `BFL|Barwon_Heads`,
+        `GDFL|Corio`, `GDFL|Thomson`, `None|Anglesea`, `None|Bell_Park`, `None|North_Shore`, `None|Belmont_Lions`, `None|Colac`,
+        `None|North_Geelong`, `None|Ogcc`, `None|Torquay_Jones`, `None|Torquay_Papworth`, `None|Winchelsea_/_Grovedale`, `BFL|Modewarre`, `BFL|Newcomb_Power`,
+        `BFL|Queenscliff`, `GFL|St_Albans`, `None|Drysdale_Byrne`, `None|Drysdale_Hall`, `None|Drysdale_Hector`, `None|Lara`, `None|Queenscliff`,
+        `None|St_Albans_Reid`, `None|Torquay_Bumpstead`, `None|Torquay_Pyers`, `None|Modewarre`, `BFL|Ocean_Grove`, `BFL|Drysdale`, `BFL|Portarlington`,
+        `None|St_Joseph's_Podbury`, `None|Geelong_Amateur`, `None|Winchelsea`, `None|Anakie`, `None|Bannockburn`, `None|South_Barwon_/_Geelong_Amateur`,
+        `None|St_Joseph's_Hill`, `None|Torquay_Dunstan`, `None|Werribee_Centrals`, `None|Drysdale_Eddy`, `None|Belmont_Lions_/_Newcomb`, `None|Torquay_Coles`,
+        `None|Gwsp_/_Bannockburn`, `None|St_Albans_Allthorpe`, `None|Drysdale_Bennett`, `None|Torquay_Scott`, `None|Torquay_Nairn`, `None|Tigers_Gold`)";  
+        $queryString .= "SELECT CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
+        "(CASE WHEN club_name = 'Anakie' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Anakie', " .
+        "(CASE WHEN club_name = 'Bannockburn' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Bannockburn', " .
+        "(CASE WHEN club_name = 'Corio' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Corio', " .
+        "(CASE WHEN club_name = 'East Geelong' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|East_Geelong', " .
+        "(CASE WHEN club_name = 'North Geelong' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|North_Geelong', " .
+        "(CASE WHEN club_name = 'Portarlington' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Portarlington', " .
+        "(CASE WHEN club_name = 'Werribee Centrals' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Werribee_Centrals', " .
+        "(CASE WHEN club_name = 'Winchelsea' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Winchelsea', " .
+        "(CASE WHEN club_name = 'Bell Park' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Bell_Park', " .
+        "(CASE WHEN club_name = 'Bell Post Hill' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Bell_Post_Hill', " .
+        "(CASE WHEN club_name = 'Belmont Lions' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Belmont_Lions', " .
+        "(CASE WHEN club_name = 'Colac' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Colac', " .
+        "(CASE WHEN club_name = 'Geelong Amateur' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Geelong_Amateur', " .
+        "(CASE WHEN club_name = 'Geelong West' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Geelong_West', " .
+        "(CASE WHEN club_name = 'Grovedale' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Grovedale', " .
+        "(CASE WHEN club_name = 'Gwsp' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Gwsp', " .
+        "(CASE WHEN club_name = 'Inverleigh' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Inverleigh', " .
+        "(CASE WHEN club_name = 'Lara' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Lara', " .
+        "(CASE WHEN club_name = 'Leopold' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Leopold', " .
+        "(CASE WHEN club_name = 'Newtown & Chilwell' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Newtown_&_Chilwell', " .
+        "(CASE WHEN club_name = 'North Shore' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|North_Shore', " .
+        "(CASE WHEN club_name = 'South Barwon' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|South_Barwon', " .
+        "(CASE WHEN club_name = 'St Joseph''s' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|St_Joseph\'s', " .
+        "(CASE WHEN club_name = 'St Mary''s' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|St_Mary\'s', " .
+        "(CASE WHEN club_name = 'Torquay' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Torquay', ";
+      $queryString .= "(CASE WHEN club_name = 'Barwon Heads' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Barwon_Heads', " .
+        "(CASE WHEN club_name = 'Drysdale' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Drysdale', " .
+        "(CASE WHEN club_name = 'East Geelong' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|East_Geelong', " .
+        "(CASE WHEN club_name = 'Geelong West St Peters' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Geelong_West_St_Peters', " .
+        "(CASE WHEN club_name = 'Grovedale' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Grovedale', " .
+        "(CASE WHEN club_name = 'Inverleigh' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Inverleigh', " .
+        "(CASE WHEN club_name = 'Leopold' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Leopold', " .
+        "(CASE WHEN club_name = 'Newcomb' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Newcomb', " .
+        "(CASE WHEN club_name = 'Newtown & Chilwell' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Newtown_&_Chilwell', " .
+        "(CASE WHEN club_name = 'Ocean Grove' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Ocean_Grove', " .
+        "(CASE WHEN club_name = 'South Barwon' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|South_Barwon', " .
+        "(CASE WHEN club_name = 'St Albans' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|St_Albans', " .
+        "(CASE WHEN club_name = 'St Joseph''s' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|St_Joseph\'s', " .
+        "(CASE WHEN club_name = 'St Mary''s' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|St_Mary\'s', " .
+        "(CASE WHEN club_name = 'Torquay' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay', " .
+        "(CASE WHEN club_name = 'Anglesea' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Anglesea', " .
+        "(CASE WHEN club_name = 'Barwon Heads' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Barwon_Heads', " .
+        "(CASE WHEN club_name = 'Corio' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Corio', " .
+        "(CASE WHEN club_name = 'Thomson' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Thomson', " .
+        "(CASE WHEN club_name = 'Anglesea' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Anglesea', " .
+        "(CASE WHEN club_name = 'Bell Park' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Bell_Park', " .
+        "(CASE WHEN club_name = 'North Shore' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|North_Shore', " .
+        "(CASE WHEN club_name = 'Belmont Lions' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Belmont_Lions',";
+      $queryString .= "(CASE WHEN club_name = 'Colac' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Colac', " .
+        "(CASE WHEN club_name = 'North Geelong' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|North_Geelong', " .
+        "(CASE WHEN club_name = 'Ogcc' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Ogcc', " .
+        "(CASE WHEN club_name = 'Torquay Jones' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Jones', " .
+        "(CASE WHEN club_name = 'Torquay Papworth' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Papworth', " .
+        "(CASE WHEN club_name = 'Winchelsea / Grovedale' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Winchelsea_/_Grovedale', " .
+        "(CASE WHEN club_name = 'Modewarre' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Modewarre', " .
+        "(CASE WHEN club_name = 'Newcomb Power' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Newcomb_Power', " .
+        "(CASE WHEN club_name = 'Queenscliff' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Queenscliff', " .
+        "(CASE WHEN club_name = 'St Albans' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|St_Albans', " .
+        "(CASE WHEN club_name = 'Drysdale Byrne' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Drysdale_Byrne', " .
+        "(CASE WHEN club_name = 'Drysdale Hall' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Drysdale_Hall', " .
+        "(CASE WHEN club_name = 'Drysdale Hector' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Drysdale_Hector', " .
+        "(CASE WHEN club_name = 'Lara' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Lara', " .
+        "(CASE WHEN club_name = 'Queenscliff' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Queenscliff', " .
+        "(CASE WHEN club_name = 'St Albans Reid' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|St_Albans_Reid', " .
+        "(CASE WHEN club_name = 'Torquay Bumpstead' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Bumpstead', " .
+        "(CASE WHEN club_name = 'Torquay Pyers' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Pyers', " .
+        "(CASE WHEN club_name = 'Modewarre' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Modewarre', " .
+        "(CASE WHEN club_name = 'Ocean Grove' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Ocean_Grove', " .
+        "(CASE WHEN club_name = 'Drysdale' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Drysdale', " .
+        "(CASE WHEN club_name = 'Portarlington' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Portarlington', " .
+        "(CASE WHEN club_name = 'St Joseph''s Podbury' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|St_Joseph\'s_Podbury', " .
+        "(CASE WHEN club_name = 'Geelong Amateur' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Geelong_Amateur', ";
+      $queryString .= "(CASE WHEN club_name = 'Winchelsea' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Winchelsea', " .
+        "(CASE WHEN club_name = 'Anakie' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Anakie', " .
+        "(CASE WHEN club_name = 'Bannockburn' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Bannockburn', " .
+        "(CASE WHEN club_name = 'South Barwon / Geelong Amateur' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|South_Barwon_/_Geelong_Amateur', " .
+        "(CASE WHEN club_name = 'St Joseph''s Hill' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|St_Joseph\'s_Hill', " .
+        "(CASE WHEN club_name = 'Torquay Dunstan' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Dunstan', " .
+        "(CASE WHEN club_name = 'Werribee Centrals' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Werribee_Centrals', " .
+        "(CASE WHEN club_name = 'Drysdale Eddy' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Drysdale_Eddy', " .
+        "(CASE WHEN club_name = 'Belmont Lions / Newcomb' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Belmont_Lions_/_Newcomb', " .
+        "(CASE WHEN club_name = 'Torquay Coles' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Coles', " .
+        "(CASE WHEN club_name = 'Gwsp / Bannockburn' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Gwsp_/_Bannockburn', " .
+        "(CASE WHEN club_name = 'St Albans Allthorpe' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|St_Albans_Allthorpe', " .
+        "(CASE WHEN club_name = 'Drysdale Bennett' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Drysdale_Bennett', " .
+        "(CASE WHEN club_name = 'Torquay Scott' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Scott', " .
+        "(CASE WHEN club_name = 'Torquay Nairn' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Nairn', " .
+        "(CASE WHEN club_name = 'Tigers Gold' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Tigers_Gold' ";
+      $queryString .= "FROM (SELECT umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
+        "FROM match_played " .
+        "INNER JOIN round ON round.ID = match_played.round_id " .
+        "INNER JOIN league ON league.ID = round.league_id " .
+        "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " .
+        "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " .
+        "INNER JOIN team ON team.ID = match_played.home_team_id " .
+        "INNER JOIN club ON club.ID = team.club_id " .
+        "INNER JOIN umpire_name_type_match ON match_played.ID = umpire_name_type_match.match_id " .
+        "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id " .
+        "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
+        "INNER JOIN umpire ON umpire.ID = umpire_name_type.umpire_id " .
+        "UNION ALL " .
+        "SELECT umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
+        "FROM match_played " .
+        "INNER JOIN round ON round.ID = match_played.round_id " .
+        "INNER JOIN league ON league.ID = round.league_id " .
+        "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " .
+        "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " .
+        "INNER JOIN team ON team.ID = match_played.away_team_id " .
+        "INNER JOIN club ON club.ID = team.club_id " .
+        "INNER JOIN umpire_name_type_match ON match_played.ID = umpire_name_type_match.match_id " .
+        "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id " .
+        "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
+        "INNER JOIN umpire ON umpire.ID = umpire_name_type.umpire_id " .
+        ")  AS a " .
+        "GROUP BY first_name, last_name, club_name, short_league_name, age_group, umpire_type_name " .
+        "ORDER BY first_name, last_name, club_name, short_league_name, age_group, umpire_type_name";
+
+      $this->db->query($queryString);
+      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
+      echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
+  
+  }
+  
   
   
 }
 ?>
+

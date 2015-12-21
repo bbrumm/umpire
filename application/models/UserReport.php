@@ -2,15 +2,15 @@
 require_once('ReportDisplayOptions.php');
 class UserReport extends CI_Model {
 	
-	private $columnGroupForReport05 = array(
+	private $columnGroupForReport01 = array(
 				'short_league_name',
 				'club_name'
 			);
-	private $rowGroupForReport05 = array(
+	private $rowGroupForReport01 = array(
 				'full_name'
 			);
 			
-	private $fieldForReport05 = 'match_count';
+	private $fieldForReport01 = 'match_count';
 	
 	private $reportQuery;
 	private $resultArray;
@@ -34,13 +34,13 @@ class UserReport extends CI_Model {
 		/*echo "<pre>";
 		print_r($reportParameters);
 		echo "</pre>";*/
-		if ($reportParameters['reportName'] == 5) {
-			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport05);
-			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport05);
-			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport05);
+		if ($reportParameters['reportName'] == 1) {
+			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport01);
+			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport01);
+			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport01);
 			$this->reportDisplayOptions->setNoDataValue("");
 			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
-			$this->reportTitle = "05 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
+			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
 
 		}
 		
