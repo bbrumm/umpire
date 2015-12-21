@@ -27,11 +27,16 @@ if ($showHeader) {
     if($this->session->userdata('logged_in')) {
     ?>
     	<div class="menuBar">
-    		<a href='home'><div class="menuBarLink">Home Page</div></a>
-    		<?php
-    		echo "<a href='ImportFileSelector'><div class='menuBarLink'>Import File</div></a>";
-    		echo "<a href='home/logout'><div class='menuBarLink'>Logout</div></a>";
     		
+    		<?php
+    		$menuHome = "<div class='menuBarLink'>Home Page</div>";
+    		$menuImportFile = "<div class='menuBarLink'>Import File</div>";
+    		$menuLogout = "<div class='menuBarLink'>Logout</div>";
+    		
+    		echo anchor("home", $menuHome);
+    		echo anchor("ImportFileSelector", $menuImportFile);
+    		echo anchor("home/logout", $menuLogout);
+
     }
     
     if ($this->uri->segment(1) == 'report') {

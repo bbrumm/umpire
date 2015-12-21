@@ -14,7 +14,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema umpire
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `umpire` DEFAULT CHARACTER SET latin1 ;
+CREATE SCHEMA IF NOT EXISTS `umpire` DEFAULT CHARACTER SET utf8_general_ci;
 USE `umpire` ;
 
 -- -----------------------------------------------------
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`test_report` (
   `last_name` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`age_group` (
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 8
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`division` (
   `division_name` VARCHAR(20) NULL DEFAULT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`age_group_division` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 24
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_age_group_id_idx` ON `umpire`.`age_group_division` (`age_group_id` ASC);
 
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`club` (
   `abbreviation` VARCHAR(10) NULL DEFAULT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`league` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 30
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_leage_agd_idx` ON `umpire`.`league` (`age_group_division_id` ASC);
 
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`season` (
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`competition_lookup` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_comp_league_idx` ON `umpire`.`competition_lookup` (`league_id` ASC);
 
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`dates` (
   `saturday_date` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`ground` (
   `alternative_name` VARCHAR(100) NULL DEFAULT NULL COMMENT 'An alternative name for a ground, as there are multiple names for the same ground.',
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`round` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 2670
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_round_season_idx` ON `umpire`.`round` (`season_id` ASC);
 
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`team` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 94
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_team_club_idx` ON `umpire`.`team` (`club_id` ASC);
 
@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`match_played` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_match_round_idx` ON `umpire`.`match_played` (`round_id` ASC);
 
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`match_import` (
   `goal_umpire_2` VARCHAR(200) NULL DEFAULT NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`match_staging` (
   `away_team_id` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`appointments_id`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -380,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`news` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `slug` ON `umpire`.`news` (`slug` ASC);
 
@@ -397,7 +397,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`umpire` (
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 5025
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -411,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`umpire_type` (
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -436,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`umpire_name_type` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 2828
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_unt_umpire_idx` ON `umpire`.`umpire_name_type` (`umpire_id` ASC);
 
@@ -464,7 +464,7 @@ CREATE TABLE IF NOT EXISTS `umpire`.`umpire_name_type_match` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+DEFAULT CHARACTER SET = utf8_general_ci;
 
 CREATE INDEX `fk_untm_match_idx` ON `umpire`.`umpire_name_type_match` (`match_id` ASC);
 

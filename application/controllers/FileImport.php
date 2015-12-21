@@ -16,16 +16,14 @@ class FileImport extends CI_Controller {
 	public function index() {
 		
 	    //$this->do_upload();
-		$this->MatchImport->fileImport();
+		
 	}
 	
 	function do_upload()
 	{
 	    $config['upload_path'] = './application/import/';
-	    $config['allowed_types'] = 'gif|jpg|png';
-	    $config['max_size']	= '100';
-	    $config['max_width']  = '1024';
-	    $config['max_height']  = '768';
+	    $config['allowed_types'] = 'xlsx|xlsx';
+	    $config['max_size']	= '4096';
 	
 	    $this->load->library('upload', $config);
 	
@@ -41,17 +39,16 @@ class FileImport extends CI_Controller {
 	    }
 	    else
 	    {
+	        
+	        
 	        $data = array('upload_data' => $this->upload->data());
+	        $data['progress_pct'] = 10;
+	        
+	        $this->MatchImport->fileImport($data);
 	        $this->load->view('templates/header', $data);
 	        $this->load->view('upload_success', $data);
 	        $this->load->view('templates/footer');
 	        
 	    }
-	}
-		
-	private function insertIntoMatchImportTable($pDataArray) {
-		$insertQuery = '';
-		
-		
 	}
 }

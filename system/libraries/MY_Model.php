@@ -55,7 +55,6 @@ class MY_Model extends CI_Model {
  
         return $this->db->simple_query($sql);
 		
-		echo "File imported!";
 		
 		
     }
