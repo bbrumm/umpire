@@ -1,3 +1,9 @@
+<div class='maxDateOutput'>
+<?php
+echo $maxDateOutput;
+?>
+</div>
+
 <h2>Select a Report</h2>
 <?php
 $startDirName = "http://localhost/umpire/umpire";
@@ -6,6 +12,8 @@ $startDirName = "http://localhost/umpire/umpire";
 echo form_open('report');
 
 ?>
+
+
 <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Season:</span>
 	<span class="reportSelectorControl">
@@ -70,3 +78,4 @@ echo form_open('report');
 <input type="submit" value="View Report" class="btn">
 </div>
 </form>
+

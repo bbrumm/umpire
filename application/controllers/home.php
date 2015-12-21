@@ -13,10 +13,12 @@ class Home extends CI_Controller {
    {
      $session_data = $this->session->userdata('logged_in');
      $data['username'] = $session_data['username'];
+     $data['maxDateOutput'] = $this->getLatestImportDateOutput();
 	 
 	 $this->load->view('templates/header', $data);
 	 $this->load->helper('form');
 	 $this->load->view('pages/report_home', $data);
+	 
 	 $this->load->view('templates/footer');
 	 
    }
@@ -34,6 +36,25 @@ class Home extends CI_Controller {
    session_destroy();
    //Reloads itself, causing the index() method above to be called.
    redirect('home', 'refresh');
+ }
+ 
+ function getLatestImportDate() {
+     $queryString = "SELECT MAX(imported_datetime) as MAX_DATE FROM imported_files";
+     $query = $this->db->query($queryString);
+     foreach ($query->result() as $row) {
+        $maxDate = $row->MAX_DATE;         
+     
+     }
+     
+     return $maxDate;
+ 
+ }
+ 
+ public function getLatestImportDateOutput() {
+     $dateFormatString = "d M Y, h:i:s A";
+     $latestImportDate = $this->getLatestImportDate();
+     return "Data last imported on " . date($dateFormatString, strtotime($latestImportDate));
+      
  }
 
 }

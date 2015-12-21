@@ -18,9 +18,10 @@
 </script>
 <body>
 
-<?php echo $error;?>
+<?php
+echo $error;
 
-<?php echo form_open_multipart('FileImport/do_upload');?>
+echo form_open_multipart('FileImport/do_upload');?>
 	<div class="loginFieldRow">
 		<span class="loginLabel"><label for="filename">Filename:</label></span>
 		<span class="fileNameLabel"><label id="fileNameLabel">None selected.</label></span>

@@ -51,7 +51,7 @@ class MY_Model extends CI_Model {
  
         $sql = "INSERT INTO $table_name ( $columns ) VALUES $values";
  
-		echo $sql . "<BR />";
+		//echo $sql . "<BR />";
  
         return $this->db->simple_query($sql);
 		

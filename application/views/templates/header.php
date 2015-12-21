@@ -29,13 +29,17 @@ if ($showHeader) {
     	<div class="menuBar">
     		
     		<?php
+    		$session_data = $this->session->userdata('logged_in');
+    		$username = $session_data['username'];
     		$menuHome = "<div class='menuBarLink'>Home Page</div>";
     		$menuImportFile = "<div class='menuBarLink'>Import File</div>";
     		$menuLogout = "<div class='menuBarLink'>Logout</div>";
+    		$usernameLabel = "<div class='usernameLabel'>Welcome, ". $username ."</div>";
     		
     		echo anchor("home", $menuHome);
     		echo anchor("ImportFileSelector", $menuImportFile);
     		echo anchor("home/logout", $menuLogout);
+    		echo $usernameLabel;
 
     }
     

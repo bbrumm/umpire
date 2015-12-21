@@ -438,3 +438,35 @@ Login Page
 	text-align:center;
 }
 
+
+.maxDateOutput {
+	font-style: italic;
+	text-align: right;
+	padding-top: 5px;
+	
+}
+
+.usernameLabel {
+	text-align: right;
+	font-size: 16px;
+	color: #111F80;
+	/*display: inline-block;*/
+	display:inline;
+	padding: 5px 15px 5px 15px;
+	
+	float:right;
+	
+}
+
+.uploadSuccessMessage {
+	font-size: 20px;
+	text-align: center;
+	padding: 20px 0px 20px 0px;
+	
+}
+
+.centerText {
+	font-size: 16px;
+	text-align: center;
+}
+}

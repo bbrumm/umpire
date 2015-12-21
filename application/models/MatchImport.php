@@ -23,9 +23,9 @@ class MatchImport extends MY_Model
 	$objPHPExcel = PHPExcel_IOFactory::load($dataFile);
 	$sheet = $objPHPExcel->getActiveSheet();
 	$lastRow = $sheet->getHighestRow();
-	echo "Last row: $lastRow<BR/>";
+	//echo "Last row: $lastRow<BR/>";
 	$data = $sheet->rangeToArray('A2:Q'.$lastRow);
-	echo "Rows available: " . count($data) . "\n";
+	//echo "Rows available: " . count($data) . "\n";
 	/*foreach ($data as $row) {
 		print_r($row);
 	}*/
@@ -85,7 +85,7 @@ class MatchImport extends MY_Model
   private function deleteFromSingleTable($tableName) {
       $queryString = "DELETE FROM ". $tableName;
       $this->db->query($queryString);
-      echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
   }
   
   private function reloadRoundTable() {
@@ -97,7 +97,7 @@ class MatchImport extends MY_Model
         "INNER JOIN league ON league.ID = competition_lookup.league_id " .
         "ORDER BY match_import.Round, match_import.Date";
       $this->db->query($queryString);
-      echo "Query run: reloadRoundTable, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: reloadRoundTable, " . $this->db->affected_rows() . " rows.<BR />";
   }
   
   private function reloadUmpireTable() {
@@ -133,7 +133,7 @@ class MatchImport extends MY_Model
         ") AS com " . 
         "WHERE UMPIRE_FULLNAME IS NOT NULL";
       $this->db->query($queryString);
-      echo "Query run: reloadUmpireTable, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: reloadUmpireTable, " . $this->db->affected_rows() . " rows.<BR />";
   }
   
   private function reloadUmpireNameTypeTable() {
@@ -178,7 +178,7 @@ class MatchImport extends MY_Model
         "INNER JOIN umpire_type ON com2.umpire_type = umpire_type.umpire_type_name";
       //echo "reloadUmpireNameTypeTable SQL:<BR />" . $queryString . "<BR />";
       $this->db->query($queryString);
-      echo "Query run: reloadUmpireNameTypeTable, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: reloadUmpireNameTypeTable, " . $this->db->affected_rows() . " rows.<BR />";
   }
   
   private function reloadMatchStagingTable() {
@@ -243,7 +243,7 @@ class MatchImport extends MY_Model
         "INNER JOIN division ON division.ID = age_group_division.division_id";
       
       $this->db->query($queryString);
-      echo "Query run: reloadMatchStagingTable, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: reloadMatchStagingTable, " . $this->db->affected_rows() . " rows.<BR />";
       
   }
   
@@ -273,7 +273,7 @@ class MatchImport extends MY_Model
         "SELECT match_staging.round_ID, match_staging.ground_id, match_staging.home_team_id, match_staging.away_team_id, match_staging.appointments_time " .
         "FROM match_staging";
       $this->db->query($queryString);
-      echo "Query run: reloadMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: reloadMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
   }
   
   private function reloadUmpireNameTypeMatchTable() {
@@ -353,7 +353,7 @@ class MatchImport extends MY_Model
 	"WHERE umpire_type.umpire_type_name = 'Goal') AS ump";
       $this->db->query($queryString);
       //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      echo "Query run: reloadUmpireNameTypeMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: reloadUmpireNameTypeMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
   }
   
   private function reloadMVReport01Table() {
@@ -498,20 +498,22 @@ class MatchImport extends MY_Model
 
       $this->db->query($queryString);
       //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
   
   }
   
   private function logImportedFile($filename) {
-      //TODO: Fix the imported_datetime, it is currently importing as 0/0/0 0:0:0
+      $session_data = $this->session->userdata('logged_in');
+      $username = $session_data['username'];
+      
       $data = array(
           'filename' => $filename,
-          'imported_datetime' => date('d/m/Y h:i:s a', time()),
-          'imported_user_id' => 'TBC'
+          'imported_datetime' => date('Y-m-d H:i:s', time()),
+          'imported_user_id' => $username
       );
 
       $queryStatus = $this->db->insert('imported_files', $data);
-      echo "Query run: logImportedFile, " . $this->db->affected_rows() . " rows.<BR />";
+      //echo "Query run: logImportedFile, " . $this->db->affected_rows() . " rows.<BR />";
       
   }
   

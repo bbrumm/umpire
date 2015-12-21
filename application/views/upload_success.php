@@ -1,6 +1,6 @@
 
 
-<h3>Upload completed!</h3>
-
+<div class='uploadSuccessMessage'>Upload completed!</div>
+<div class='centerText'>Return to the Home page to generate reports.</div>
 
 
