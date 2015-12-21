@@ -12,13 +12,14 @@ class MatchImport extends MY_Model
     }
   
   public function fileImport($data) {
-
+    date_default_timezone_set("Australia/Melbourne");
 	//Remove data from previous load first
     $this->deleteFromSingleTable('match_import');
 	
 	//$dataFile = "application/import/2015-appointments-summary.xls";
 	//print_r($data);
-	$dataFile = "application/import/". $data['upload_data']['file_name'];
+	$importedFilename = $data['upload_data']['file_name'];
+	$dataFile = "application/import/". $importedFilename;
 	$objPHPExcel = PHPExcel_IOFactory::load($dataFile);
 	$sheet = $objPHPExcel->getActiveSheet();
 	$lastRow = $sheet->getHighestRow();
@@ -40,9 +41,10 @@ class MatchImport extends MY_Model
 	echo "</pre>";*/
 	$queryStatus = $this->insert_rows('match_import', $columns, $rows);
 	if ($queryStatus) {
-	   echo "File imported!";
+	   //echo "File imported!";
 	   //Now the data is imported, extract it into the normalised tables.
 	   $this->prepareNormalisedTables();
+	   $this->logImportedFile($importedFilename);
 	   
 	   
 	} else {
@@ -498,6 +500,19 @@ class MatchImport extends MY_Model
       //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
       echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
   
+  }
+  
+  private function logImportedFile($filename) {
+      //TODO: Fix the imported_datetime, it is currently importing as 0/0/0 0:0:0
+      $data = array(
+          'filename' => $filename,
+          'imported_datetime' => date('d/m/Y h:i:s a', time()),
+          'imported_user_id' => 'TBC'
+      );
+
+      $queryStatus = $this->db->insert('imported_files', $data);
+      echo "Query run: logImportedFile, " . $this->db->affected_rows() . " rows.<BR />";
+      
   }
   
   

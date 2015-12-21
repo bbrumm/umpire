@@ -6,6 +6,7 @@ echo "<h2>Import File</h2>";
 	
 	<?php 
 	echo "<div class='validationError'>". $error ."</div>";
+	
 	?>
 
 	<?php echo form_open_multipart('FileImport/do_upload');?>
@@ -24,9 +25,9 @@ echo "<h2>Import File</h2>";
     event.preventDefault();
   }
 </script>
-	
+
 	<div class="loginFieldRow">
-		<span class="loginLabel"><label for="filename">Filename:</label></span>
+		<span class="loginLabel"><label for="filename">A Filename:</label></span>
 		<span class="fileNameLabel"><label id="fileNameLabel">None selected.</label></span>
 		<!--<span class="loginControl"><input id = "fileNameLabel" type="label" size="20" name="filename" class="loginLabel"/><span>-->
 		<div style='height: 0px;width: 0px; overflow:hidden;'>
