@@ -9,8 +9,18 @@ class UserReport extends CI_Model {
 	private $rowGroupForReport01 = array(
 				'full_name'
 			);
-			
+	
+	private $columnGroupForReport02 = array(
+	    'age_group',
+	    'short_league_name'
+	);
+	private $rowGroupForReport02 = array(
+	    'full_name'
+	);
+    
+		
 	private $fieldForReport01 = 'match_count';
+	private $fieldForReport02 = 'match_count';
 	
 	private $reportQuery;
 	private $resultArray;
@@ -34,13 +44,26 @@ class UserReport extends CI_Model {
 		/*echo "<pre>";
 		print_r($reportParameters);
 		echo "</pre>";*/
-		if ($reportParameters['reportName'] == 1) {
-			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport01);
-			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport01);
-			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport01);
-			$this->reportDisplayOptions->setNoDataValue("");
-			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
-			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
+	    
+	    switch ($reportParameters['reportName']) {
+	        case 1:
+    			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport01);
+    			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport01);
+    			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport01);
+    			$this->reportDisplayOptions->setNoDataValue("");
+    			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
+    			$this->reportDisplayOptions->setColourCells(TRUE);
+    			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
+    			break;
+	        case 2:
+	            $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport02);
+	            $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport02);
+	            $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport02);
+	            $this->reportDisplayOptions->setNoDataValue("");
+	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
+	            $this->reportDisplayOptions->setColourCells(FALSE);
+	            $this->reportTitle = "02 - Umpire Names by League - ". $reportParameters['umpireType'];
+	            break;
 
 		}
 		

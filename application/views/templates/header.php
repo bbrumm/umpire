@@ -34,12 +34,12 @@ if ($showHeader) {
     		$menuHome = "<div class='menuBarLink'>Home Page</div>";
     		$menuImportFile = "<div class='menuBarLink'>Import File</div>";
     		$menuLogout = "<div class='menuBarLink'>Logout</div>";
-    		$usernameLabel = "<div class='usernameLabel'>Welcome, ". $username ."</div>";
+    		
     		
     		echo anchor("home", $menuHome);
     		echo anchor("ImportFileSelector", $menuImportFile);
     		echo anchor("home/logout", $menuLogout);
-    		echo $usernameLabel;
+    		
 
     }
     
@@ -49,8 +49,10 @@ if ($showHeader) {
     	//echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
     	echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
     	echo "<div class='menuBarLink'>Create PDF</div></a>";
-    	
     }
+    
+    $usernameLabel = "<div class='usernameLabel'>Welcome, ". $username ."</div>";
+    echo $usernameLabel;
     ?>
 	</div>
 <?php 

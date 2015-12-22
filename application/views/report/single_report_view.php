@@ -3,7 +3,8 @@ $loadedColumnGroupings = $loadedReportItem->getColumnLabelResultArray();
 $loadedResultArray = $loadedReportItem->getResultArray();
 $reportDisplayOptions = $loadedReportItem->getDisplayOptions();
 $columnLabels = $reportDisplayOptions->getColumnGroup();
-$mergeColumnGroup = $reportDisplayOptions->getMergeColumnGroup(); //Not yet implemented. It can be used if it is needed.
+$mergeColumnGroup = $reportDisplayOptions->getMergeColumnGroup();
+$colourCells = $reportDisplayOptions->getColourCells();
 $rowLabels = $reportDisplayOptions->getRowGroup();
 $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
@@ -14,11 +15,28 @@ echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 echo "<table class='reportTable'>";
 
 echo "<thead>";
+/*
+echo "<BR />columnLabels<pre>";
+print_r($columnLabels);
+echo "</pre><BR />";
 
+echo "<BR />mergeColumnGroup<pre>";
+print_r($mergeColumnGroup);
+echo "</pre><BR />";
+
+echo "<BR />loadedColumnGroupings<pre>";
+print_r($loadedColumnGroupings);
+echo "</pre><BR />";
+*/
 //Show one header row for each group
 for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
     //Load array that shows each column heading and the number of records it has.
 	$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
+	/*
+	echo "<BR />countOfEachColumnHeading<pre>";
+	print_r($countOfEachColumnHeading);
+	echo "</pre><BR />";
+	*/
 	?>
 	
 	<tr>
@@ -36,7 +54,7 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 		if ($j==0) {
 			$proceed = true;
 		} else {
-			if ($loadedColumnGroupings[$j][$columnLabels[$i]] != $loadedColumnGroupings[$j-1][$columnLabels[$i]]) {
+			if (($mergeColumnGroup[$i] != TRUE) || ($loadedColumnGroupings[$j][$columnLabels[$i]] != $loadedColumnGroupings[$j-1][$columnLabels[$i]])) {
 				//proceed
 				$proceed = true;
 			} else {
@@ -59,7 +77,14 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 					$divClass = "rotated_text";
 				}
 			} else {
-				$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
+			    //Increase the colspan if this column group is to be merged
+			    if ($mergeColumnGroup[$i] == TRUE) {
+				    $colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
+			    } else {
+			        $colspanForCell = 1;
+			    }
+				
+				
 				$cellClass = "columnHeadingNormal";
 				$divClass = "normalHeadingText";
 			}
@@ -103,7 +128,11 @@ foreach ($loadedResultArray as $resultRow):
 
 		if ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) {
 		        //Match found for columns. Write record
-		        $tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
+		        if ($colourCells) {
+    		        $tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
+		        } else {
+		            $tableRowOutput .=  "<td class='cellNumber cellNormal'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
+		        }
 		} else {
 		    $tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
 		}

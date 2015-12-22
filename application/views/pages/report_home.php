@@ -19,6 +19,7 @@ echo form_open('report');
 	<span class="reportSelectorControl">
 		<select name="season">
 		<option value="2015" selected>2015</option>
+		<option value="2016">2016</option>
 		</select>
 	</span>
 </div>
@@ -28,6 +29,12 @@ echo form_open('report');
 	<span class="reportSelectorControl">
 		<select name="reportName">
 		<option value="01" selected>01 - Umpires and Clubs</option>
+		<option value="02">02 - Umpire Names by League</option>
+		<option value="03" disabled>03 - Summary</option>
+		<option value="04" disabled>04 - Summary by Club</option>
+		<option value="05" disabled>05 - Summary by League</option>
+		<option value="06" disabled>06 - Pairings</option>
+		<option value="07" disabled>07 - Field Umpires with 2 Umpire Games</option>
 		</select>
 	</span>
 </div>

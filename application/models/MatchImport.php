@@ -69,6 +69,8 @@ class MatchImport extends MY_Model
       $this->deleteFromSingleTable('round');
       $this->deleteFromSingleTable('match_staging');
       
+      //$this->recreateMatchImportIndexes();
+      
       $this->reloadRoundTable();
       $this->reloadUmpireTable();
       $this->reloadUmpireNameTypeTable();
@@ -76,9 +78,13 @@ class MatchImport extends MY_Model
       $this->deleteDuplicateMatches();
       $this->reloadMatchTable();
       $this->reloadUmpireNameTypeMatchTable();
+      
+      //$this->recreateNormalisedTablendexes();
+      //$this->recreateMVIndexes();
 
       //Reload tables for the reports
       $this->reloadMVReport01Table();
+      $this->reloadMVReport02Table();
       
   }
   
@@ -248,24 +254,17 @@ class MatchImport extends MY_Model
   }
   
   private function deleteDuplicateMatches() {
-      /*
-        $queryString = "DELETE FROM match_staging WHERE appointments_id IN ( " .
-    	"SELECT * FROM ( " .
-    		"SELECT a.round_id, a.ground_id, a.appointments_time, a.home_team_id, a.away_team_id " .
-            "FROM match_staging a " .
-            "INNER JOIN match_staging b " .
-            "ON (a.round_id = b.round_id) " .
-            "AND (a.ground_id = b.ground_id) " .
-            "AND (a.appointments_time = b.appointments_time) " .
-            "AND (a.home_team_id = b.home_team_id) " .
-            "AND (a.away_team_id = b.away_team_id) " .
-            "GROUP BY a.round_id, a.ground_id, a.appointments_time, a.home_team_id, a.away_team_id " .
-            "HAVING (COUNT(*) > 1) " . 
-    	") AS p" .
-    ")";
+        $queryString = "DELETE m1 " .
+            "FROM match_staging m1, match_staging m2 " .
+            "WHERE m1.appointments_id > m2.appointments_id " .
+            "AND m1.ground_id = m2.ground_id " .
+            "AND m1.round_id = m2.round_id " .
+            "AND m1.appointments_time = m2.appointments_time " .
+            "AND m1.home_team_id = m2.home_team_id " .
+            "AND m1.away_team_id = m2.away_team_id";
       $this->db->query($queryString);
-      echo "Query run: deleteDuplicateMatches<BR />";
-      */
+      //echo "Query run: deleteDuplicateMatches<BR />";
+      
   }
   
   private function reloadMatchTable() {
@@ -502,6 +501,101 @@ class MatchImport extends MY_Model
   
   }
   
+  private function reloadMVReport02Table() {
+      //First, delete the data from the table
+      //$reportTableName = $this->lookupReportTableName('1');
+      $reportModel = new report_model();
+      $reportTableName = $reportModel->lookupReportTableName('2');
+      $this->deleteFromSingleTable($reportTableName);
+  
+      //Then, insert into table
+      $queryString = "INSERT INTO mv_report_02 (full_name, umpire_type_name, short_league_name, age_group, " . 
+            "`Seniors|BFL`, `Seniors|GDFL`, `Seniors|GFL`, `Reserves|BFL`, `Reserves|GDFL`, `Reserves|GFL`, `Colts|None`, " . 
+            "`Under 16|None`, `Under 14|None`, `Youth Girls|None`, `Junior Girls|None`, `Seniors|2 Umpires`) " . 
+            "SELECT  " . 
+            "full_name, " . 
+            "umpire_type_name, " .
+            "short_league_name, " .
+            "age_group, " .
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'BFL' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GFL' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Reserves' AND short_league_name = 'BFL' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Reserves' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Reserves' AND short_league_name = 'GFL' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Colts' AND short_league_name = 'None' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Under 16' AND short_league_name = 'None' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Under 14' AND short_league_name = 'None' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Youth Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Junior Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END), " . 
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = '2 Umpires' THEN match_count ELSE 0 END) " . 
+            "FROM ( " . 
+            "SELECT  " . 
+            "umpire_type.umpire_type_name, " . 
+            "age_group.ID, " . 
+            "age_group.age_group, " . 
+            "league.short_league_name, " . 
+            "CONCAT(last_name,', ',first_name) AS full_name, " . 
+            "COUNT(match_played.ID) AS match_count " . 
+            "FROM match_played ";
+      $queryString .= "INNER JOIN umpire_name_type_match ON match_played.ID = umpire_name_type_match.match_id " . 
+            "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id " . 
+            "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " . 
+            "INNER JOIN umpire ON umpire.ID = umpire_name_type.umpire_id " . 
+            "INNER JOIN round ON round.ID = match_played.round_id " . 
+            "INNER JOIN league ON league.ID = round.league_id " . 
+            "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " . 
+            "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " . 
+            "INNER JOIN division ON division.ID = age_group_division.division_id " . 
+            "GROUP BY umpire_type.umpire_type_name , age_group.ID , age_group.age_group , league.short_league_name , CONCAT(last_name,', ',first_name) " . 
+            "UNION ALL " . 
+            "SELECT  " . 
+            "umpire_type.umpire_type_name, " . 
+            "age_group.ID, " . 
+            "age_group.age_group, " . 
+            "'2 Umpires', " . 
+            "CONCAT(last_name,', ',first_name), " . 
+            "COUNT(match_played.ID) " . 
+            "FROM match_played " . 
+            "INNER JOIN umpire_name_type_match ON match_played.ID = umpire_name_type_match.match_id " . 
+            "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id " . 
+            "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " . 
+            "INNER JOIN umpire ON umpire.ID = umpire_name_type.umpire_id " . 
+            "INNER JOIN round ON round.ID = match_played.round_id " . 
+            "INNER JOIN league ON league.ID = round.league_id " . 
+            "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " . 
+            "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " . 
+            "INNER JOIN division ON division.ID = age_group_division.division_id " . 
+            "INNER JOIN ( ";
+      $queryString .= "SELECT  " . 
+            "match_played.ID AS match_id, " . 
+            "COUNT(umpire.ID) AS umpire_count " . 
+            "FROM match_played " . 
+            "INNER JOIN umpire_name_type_match ON match_played.ID = umpire_name_type_match.match_id " . 
+            "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id " . 
+            "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " . 
+            "INNER JOIN umpire ON umpire.ID = umpire_name_type.umpire_id " . 
+            "INNER JOIN round ON round.ID = match_played.round_id " . 
+            "INNER JOIN league ON league.ID = round.league_id " . 
+            "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " . 
+            "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " . 
+            "INNER JOIN division ON division.ID = age_group_division.division_id " . 
+            "WHERE umpire_type.umpire_type_name = 'Field' AND age_group.age_group = 'Seniors' " . 
+            "GROUP BY match_played.ID, umpire_type.umpire_type_name, age_group.age_group " . 
+            "HAVING COUNT(umpire.ID) = 2 " . 
+            ") AS qryMatchesWithTwoUmpires ON match_played.ID = qryMatchesWithTwoUmpires.match_id " . 
+            "WHERE umpire_type.umpire_type_name = 'Field' AND age_group.age_group = 'Seniors' " . 
+            "GROUP BY umpire_type.umpire_type_name , age_group.ID , age_group.age_group , '2 Umpires' , CONCAT(last_name,', ',first_name) " . 
+            ") AS mainquery " . 
+            "ORDER BY full_name";
+
+      
+      $this->db->query($queryString);
+      echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
+      echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
+      
+  }
+  
   private function logImportedFile($filename) {
       $session_data = $this->session->userdata('logged_in');
       $username = $session_data['username'];
@@ -516,6 +610,28 @@ class MatchImport extends MY_Model
       //echo "Query run: logImportedFile, " . $this->db->affected_rows() . " rows.<BR />";
       
   }
+  /*
+  private function recreateMatchImportIndexes() {
+      $this->db->query("CREATE INDEX idx_matchimport_date ON umpire.match_import(date);");
+      $this->db->query("CREATE INDEX idx_matchimport_round ON umpire.match_import(round);");
+      $this->db->query("CREATE INDEX idx_matchimport_competition_name ON umpire.match_import(competition_name);");
+      $this->db->query("CREATE INDEX idx_matchimport_season ON umpire.match_import(season);");
+      $this->db->query("CREATE INDEX idx_matchimport_ground ON umpire.match_import(ground);");
+      $this->db->query("CREATE INDEX idx_matchimport_home_team ON umpire.match_import(home_team);");
+      $this->db->query("CREATE INDEX idx_matchimport_away_team ON umpire.match_import(away_team);");
+      
+  }
+  
+  private function recreateNormalisedTablendexes() {
+      $this->db->query("CREATE INDEX idx_team_team_name ON umpire.team(team_name);");
+      $this->db->query("CREATE INDEX idx_ground_alternative_name ON umpire.ground(alternative_name);");
+  }
+  
+  private function recreateMVIndexes() {
+      $this->db->query("CREATE INDEX idx_mv01_short_league_name ON umpire.mv_report_01(short_league_name);");
+
+      
+  }*/
   
   
   

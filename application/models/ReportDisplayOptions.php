@@ -7,6 +7,7 @@ class ReportDisplayOptions {
 	private $fieldToDisplay;
 	private $noDataValue;
 	private $mergeColumnGroup;
+	private $colourCells;
 	
 	public function __construct() {
 		
@@ -33,6 +34,10 @@ class ReportDisplayOptions {
 		return $this->mergeColumnGroup;
 	}
 	
+	public function getColourCells() {
+	    return $this->colourCells;
+	}
+	
 	
 	
 	//SET functions
@@ -54,6 +59,10 @@ class ReportDisplayOptions {
 	
 	public function setMergeColumnGroup($pMergeColumnValue) {
 		$this->mergeColumnGroup = $pMergeColumnValue;
+	}
+	
+	public function setColourCells($pColourCellsValue) {
+	    $this->colourCells = $pColourCellsValue;
 	}
 	
 }
