@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS mv_report_02;
 CREATE TABLE mv_report_02 (
 full_name varchar(200) DEFAULT NULL,
 umpire_type_name varchar(200) DEFAULT NULL,
+short_league_name varchar(200) DEFAULT NULL,
+age_group varchar(200) DEFAULT NULL,
 `Seniors|BFL` int(11) DEFAULT NULL,
 `Seniors|GDFL` int(11) DEFAULT NULL,
 `Seniors|GFL` int(11) DEFAULT NULL,

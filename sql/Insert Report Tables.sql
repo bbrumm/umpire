@@ -8,10 +8,8 @@ CREATE TABLE report_table (
 );
 
 INSERT INTO report_table (report_table_id, report_name, table_name) VALUES (1, '1', 'mv_report_01');
+INSERT INTO report_table (report_table_id, report_name, table_name) VALUES (2, '2', 'mv_report_02');
 
-/*
-UPDATE report_table SET report_name = 5 WHERE report_table_id = 1;
-*/
 
 DROP TABLE if exists report_column;
 
@@ -109,6 +107,18 @@ INSERT INTO report_column (report_column_id, column_name) VALUES (85,'None|Torqu
 INSERT INTO report_column (report_column_id, column_name) VALUES (86,'None|Werribee_Centrals');
 INSERT INTO report_column (report_column_id, column_name) VALUES (87,'None|Winchelsea_/_Grovedale');
 INSERT INTO report_column (report_column_id, column_name) VALUES (88,'None|Winchelsea');
+INSERT INTO report_column (report_column_id, column_name) VALUES (89,'Seniors|BFL');
+INSERT INTO report_column (report_column_id, column_name) VALUES (90,'Seniors|GDFL');
+INSERT INTO report_column (report_column_id, column_name) VALUES (91,'Seniors|GFL');
+INSERT INTO report_column (report_column_id, column_name) VALUES (92,'Seniors|2 Umpires');
+INSERT INTO report_column (report_column_id, column_name) VALUES (93,'Reserves|BFL');
+INSERT INTO report_column (report_column_id, column_name) VALUES (94,'Reserves|GDFL');
+INSERT INTO report_column (report_column_id, column_name) VALUES (95,'Reserves|GFL');
+INSERT INTO report_column (report_column_id, column_name) VALUES (96,'Colts|None');
+INSERT INTO report_column (report_column_id, column_name) VALUES (97,'Under 16|None');
+INSERT INTO report_column (report_column_id, column_name) VALUES (98,'Under 14|None');
+INSERT INTO report_column (report_column_id, column_name) VALUES (99,'Youth Girls|None');
+INSERT INTO report_column (report_column_id, column_name) VALUES (100,'Junior Girls|None');
 
 
 
@@ -300,6 +310,30 @@ INSERT INTO report_column_lookup_display (report_column_lookup_display_id, repor
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (174, 86, 'club_name', 'Werribee Centrals');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (175, 87, 'club_name', 'Winchelsea / Grovedale');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (176, 88, 'club_name', 'Winchelsea');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (177, 89, 'short_league_name', 'BFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (178, 90, 'short_league_name', 'GDFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (179, 91, 'short_league_name', 'GFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (180, 92, 'short_league_name', '2 Umpires');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (181, 93, 'short_league_name', 'BFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (182, 94, 'short_league_name', 'GDFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (183, 95, 'short_league_name', 'GFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (184, 96, 'short_league_name', 'None');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (185, 97, 'short_league_name', 'None');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (186, 98, 'short_league_name', 'None');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (187, 99, 'short_league_name', 'None');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (188, 100, 'short_league_name', 'None');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (189, 89, 'age_group', 'Seniors');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (190, 90, 'age_group', 'Seniors');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (191, 91, 'age_group', 'Seniors');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (192, 92, 'age_group', 'Seniors');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (193, 93, 'age_group', 'Reserves');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (194, 94, 'age_group', 'Reserves');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (195, 95, 'age_group', 'Reserves');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (196, 96, 'age_group', 'Colts');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (197, 97, 'age_group', 'Under 16');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (198, 98, 'age_group', 'Under 14');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (199, 99, 'age_group', 'Youth Girls');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (200, 100, 'age_group', 'Junior Girls');
 
 
 DROP TABLE if exists report_column_lookup;
@@ -439,3 +473,45 @@ INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_v
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (120, 'short_league_name',  'GFL', 1, 33);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (121, 'short_league_name',  'GFL', 1, 34);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (122, 'short_league_name',  'GFL', 1, 32);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (123, 'short_league_name',  'All', 2, 89);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (124, 'short_league_name',  'All', 2, 90);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (125, 'short_league_name',  'All', 2, 91);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (126, 'short_league_name',  'All', 2, 92);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (127, 'short_league_name',  'All', 2, 93);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (128, 'short_league_name',  'All', 2, 94);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (129, 'short_league_name',  'All', 2, 95);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (130, 'short_league_name',  'All', 2, 96);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (131, 'short_league_name',  'All', 2, 97);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (132, 'short_league_name',  'All', 2, 98);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (133, 'short_league_name',  'All', 2, 99);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (134, 'short_league_name',  'All', 2, 100);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (135, 'short_league_name',  'BFL', 2, 89);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (136, 'short_league_name',  'BFL', 2, 93);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (137, 'short_league_name',  'GDFL', 2, 90);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (138, 'short_league_name',  'GDFL', 2, 94);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (139, 'short_league_name',  'GFL', 2, 91);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (140, 'short_league_name',  'GFL', 2, 95);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (141, 'age_group',  'Seniors', 2, 89);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (142, 'age_group',  'Seniors', 2, 90);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (143, 'age_group',  'Seniors', 2, 91);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (144, 'age_group',  'Seniors', 2, 92);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (145, 'age_group',  'Reserves', 2, 93);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (146, 'age_group',  'Reserves', 2, 94);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (147, 'age_group',  'Reserves', 2, 95);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (148, 'age_group',  'Colts', 2, 96);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (149, 'age_group',  'Under 16', 2, 97);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (150, 'age_group',  'Under 14', 2, 98);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (151, 'age_group',  'Youth Girls', 2, 99);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (152, 'age_group',  'Junior Girls', 2, 100);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (153, 'age_group',  'All', 2, 89);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (154, 'age_group',  'All', 2, 90);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (155, 'age_group',  'All', 2, 91);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (156, 'age_group',  'All', 2, 92);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (157, 'age_group',  'All', 2, 93);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (158, 'age_group',  'All', 2, 94);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (159, 'age_group',  'All', 2, 95);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (160, 'age_group',  'All', 2, 96);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (161, 'age_group',  'All', 2, 97);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (162, 'age_group',  'All', 2, 98);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (163, 'age_group',  'All', 2, 99);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (164, 'age_group',  'All', 2, 100);

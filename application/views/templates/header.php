@@ -67,8 +67,10 @@ if ($showHeader) {
     	echo "<div class='menuBarLink'>Create PDF</div></a>";
     }
     
-    $usernameLabel = "<div class='usernameLabel'>Welcome, ". $username ."</div>";
-    echo $usernameLabel;
+    if($this->session->userdata('logged_in')) {
+        $usernameLabel = "<div class='usernameLabel'>Welcome, ". $username ."</div>";
+        echo $usernameLabel;
+    }
     ?>
 	</div>
 <?php 
