@@ -4,9 +4,25 @@
 		<title>Umpire Report</title>
 <?php
 $this->load->helper('url');       
-$data['css'] = $this->config->item('css'); 
+$data['css'] = $this->config->item('css');
+$data['js_fixed'] = $this->config->item('js_fixed');
+echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
+echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
+
 echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />";
-?>	
+	
+
+
+?>
+
+<script type="text/javascript">
+
+        $(document).ready(function() {
+            ActivateFloatingHeaders("table.tableWithFloatingHeader");
+        });
+    </script>
+    
+    
 	</head>
 <body>
 <?php 

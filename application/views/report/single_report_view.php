@@ -12,9 +12,20 @@ $countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
-echo "<table class='reportTable'>";
+?>
+<!-- 
+<div style="width:3000px">
+        some really really wide content goes here
+    </div>
+     -->
 
-echo "<thead>";
+<!--<section class=''>
+<div class="container">-->
+<table class='reportTable tableWithFloatingHeader'>
+
+<thead>
+
+<?php 
 /*
 echo "<BR />columnLabels<pre>";
 print_r($columnLabels);
@@ -39,14 +50,14 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 	*/
 	?>
 	
-	<tr>
-	<td class='columnHeadingNormal cellNameSize'>
+	<tr class='header'>
+	<th class='columnHeadingNormal cellNameSize'>
 	<?php
 	if ($i == ($countFirstLoadedColumnGroupings-1)) {
 		echo "Name";
 	}
 	?>
-	</td>
+	</th>
 
 	<?php
 	for ($j=0; $j < $countLoadedColumnGroupings; $j++) {
@@ -88,7 +99,8 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 				$cellClass = "columnHeadingNormal";
 				$divClass = "normalHeadingText";
 			}
-			echo "<td class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></td>";
+			echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></th>";
+			//TODO: Does a DIV need to go here??
 		}
 		//else
 		//nothing - don't even write a td		
@@ -149,4 +161,7 @@ echo "</tbody>";
 ?>
 
 </table>
-
+<!--
+</div>
+</section>
+-->

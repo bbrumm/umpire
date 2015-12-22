@@ -153,7 +153,7 @@ class report_model extends CI_Model {
                 "ORDER BY rc.column_name ASC" .
                 ") gc;";
 	    
-	    echo "Column Query: $columnQuery <BR/>";
+	    //echo "Column Query: $columnQuery <BR/>";
 	     
 	    $query = $this->db->query($columnQuery);
 	    $queryResultArray = $query->result_array();
@@ -173,7 +173,7 @@ class report_model extends CI_Model {
 	        "FROM " . $pReportTableName . " " . $whereClause . " " .
 	        "GROUP BY full_name";
 	         
-	    echo "<BR/>Query For Report ($queryForReport)<BR/>";
+	    //echo "<BR/>Query For Report ($queryForReport)<BR/>";
 	    /*
 	    echo "<BR/>Query For Report Length (" .strlen($queryForReport) .")<BR/>";
 	      */  
@@ -301,7 +301,7 @@ class report_model extends CI_Model {
 	    
         $columnLabelQuery .= "ORDER BY rcld.report_column_id, rcld.column_display_filter_name;";
 	    
-        echo "columnLabelQuery " . $columnLabelQuery . "<BR />";
+        //echo "columnLabelQuery " . $columnLabelQuery . "<BR />";
 	    
 	    return $columnLabelQuery;
 	}
