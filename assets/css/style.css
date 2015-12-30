@@ -360,6 +360,11 @@ select {
   appearance: none;*/
 }
 
+select:disabled {
+	background: #dddddd;
+
+}
+
 
 
 /*

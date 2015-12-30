@@ -506,5 +506,6 @@ $config['proxy_ips'] = '';
 
 $config['css'] = 'css/style.css';
 $config['js_fixed'] = 'js/scrollheader.js';
+$config['reportSelection'] = 'js/reportSelection.js';
 
 $config['encryption_key'] = '654879493156487941564795';
