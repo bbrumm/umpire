@@ -1,5 +1,5 @@
 <?php
-	require_once('UserReport.php');
+	require_once('Userreport.php');
 	define('__ROOT__', dirname(dirname(__FILE__))); 
 	require_once(__ROOT__.'/libraries/array_library.php');
 	
@@ -23,7 +23,7 @@ class report_model extends CI_Model {
 			//echo "reportTableName (" . $reportTableName .")";
 				
 			//Build SELECT query for report
-			$queryForReport = $this->buildSelectQueryForReport($reportTableName, $reportParameters['reportName'],
+			$queryForReport = $this->buildSelectQueryForReport($reportToDisplay, $reportTableName, $reportParameters['reportName'],
 			    $reportParameters['season'], $reportParameters['age'],
 			    $reportParameters['umpireType'], $reportParameters['league']);
 				
@@ -109,16 +109,21 @@ class report_model extends CI_Model {
 	    return $tableNameResultArray[0]['table_name'];
 	}
 	
-	private function buildSelectQueryForReport($pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
+	private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
 	    //Increase maximum length for GROUP_CONCAT value
 	    $query = $this->db->query("SET group_concat_max_len = 8000;");
+	    
+	    $rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
 	     
 	    //TODO: Merge this query with the buildColumnLabels query, as it is quite similar.
 	    
 	    //Find columns to select from
 	    $columnQuery = "SELECT GROUP_CONCAT(gc.column_name SEPARATOR ', ') as COLS ".
 	        "FROM (" .
-	        "SELECT DISTINCT CONCAT('SUM(', '`',rc.column_name,'`', ') as `',rc.column_name,'`') as column_name " .
+	        "SELECT DISTINCT CASE " .
+                "WHEN rc.column_function IS NULL THEN CONCAT('`', rc.column_name, '` as `', rc.column_name, '`') " .
+                "ELSE CONCAT(rc.column_function, '(`', rc.column_name, '`', ') as `', rc.column_name, '`') " .
+            "END AS column_name " .
 	        "FROM report_column rc " .
 	        "JOIN report_column_lookup rcl ON rc.report_column_id = rcl.report_column_id " .
 	        "JOIN report_table rt ON rcl.report_table_id = rt.report_table_id " .
@@ -167,11 +172,23 @@ class report_model extends CI_Model {
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague);
 	  //  echo "whereClause(". $whereClause .")<BR/>";
 	     
+	    
+	    //Determine fields to select
+
+	    //TODO: Replace the [0] with a string that concatenates all values in the array with a comma, 
+	    //to handle cases where more than one field is shown in the row
 	    //Construct SQL query
-	    $queryForReport = "SELECT full_name, " .
-	        $columnsToSelect . " " .
-	        "FROM " . $pReportTableName . " " . $whereClause . " " .
-	        "GROUP BY full_name";
+	    if ($pReportName == '03') {
+	        //No GROUP BY for report 03
+	        $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
+	            $columnsToSelect . " " .
+	            "FROM " . $pReportTableName . " " . $whereClause;
+	    } else {
+    	    $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
+    	        $columnsToSelect . " " .
+    	        "FROM " . $pReportTableName . " " . $whereClause . " " .
+    	        "GROUP BY ". $rowsToSelect[0] ."";
+	    }
 	         
 	    //echo "<BR/>Query For Report ($queryForReport)<BR/>";
 	    /*

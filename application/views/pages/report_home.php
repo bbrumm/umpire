@@ -30,7 +30,7 @@ echo form_open('report');
 		<select name="reportName">
 		<option value="01" selected>01 - Umpires and Clubs</option>
 		<option value="02">02 - Umpire Names by League</option>
-		<option value="03" disabled>03 - Summary</option>
+		<option value="03">03 - Summary</option>
 		<option value="04" disabled>04 - Summary by Club</option>
 		<option value="05" disabled>05 - Summary by League</option>
 		<option value="06" disabled>06 - Pairings</option>

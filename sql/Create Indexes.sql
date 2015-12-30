@@ -10,3 +10,6 @@ CREATE INDEX idx_matchimport_away_team ON umpire.match_import(away_team);
 
 CREATE INDEX idx_team_team_name ON umpire.team(team_name);
 CREATE INDEX idx_ground_alternative_name ON umpire.ground(alternative_name);
+
+
+CREATE INDEX idx_mv01_short_league_name ON umpire.mv_report_01(short_league_name);

@@ -1,5 +1,5 @@
 <?php
-require_once('ReportDisplayOptions.php');
+require_once('Reportdisplayoptions.php');
 class UserReport extends CI_Model {
 	
 	private $columnGroupForReport01 = array(
@@ -17,10 +17,19 @@ class UserReport extends CI_Model {
 	private $rowGroupForReport02 = array(
 	    'full_name'
 	);
+	
+	private $columnGroupForReport03 = array(
+	    'umpire_type_age_group',
+	    'short_league_name'
+	);
+	private $rowGroupForReport03 = array(
+	    'weekdate'
+	);
     
 		
 	private $fieldForReport01 = 'match_count';
 	private $fieldForReport02 = 'match_count';
+	private $fieldForReport03 = 'match_count';
 	
 	private $reportQuery;
 	private $resultArray;
@@ -51,6 +60,8 @@ class UserReport extends CI_Model {
     			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport01);
     			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport01);
     			$this->reportDisplayOptions->setNoDataValue("");
+    			$this->reportDisplayOptions->setFirstColumnHeadingLabel("Name");
+    			$this->reportDisplayOptions->setFirstColumnFormat("text");
     			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
     			$this->reportDisplayOptions->setColourCells(TRUE);
     			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
@@ -60,10 +71,23 @@ class UserReport extends CI_Model {
 	            $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport02);
 	            $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport02);
 	            $this->reportDisplayOptions->setNoDataValue("");
+	            $this->reportDisplayOptions->setFirstColumnHeadingLabel("Name");
+	            $this->reportDisplayOptions->setFirstColumnFormat("text");
 	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
 	            $this->reportDisplayOptions->setColourCells(FALSE);
 	            $this->reportTitle = "02 - Umpire Names by League - ". $reportParameters['umpireType'];
 	            break;
+            case 3:
+                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport03);
+                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport03);
+                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport03);
+                $this->reportDisplayOptions->setNoDataValue("");
+                $this->reportDisplayOptions->setFirstColumnHeadingLabel("Week (Sat)");
+                $this->reportDisplayOptions->setFirstColumnFormat("date");
+                $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
+                $this->reportDisplayOptions->setColourCells(FALSE);
+                $this->reportTitle = "03 - Summary by Week";
+                break;
 
 		}
 		

@@ -8,6 +8,8 @@ class ReportDisplayOptions {
 	private $noDataValue;
 	private $mergeColumnGroup;
 	private $colourCells;
+	private $firstColumnHeadingLabel;
+	private $firstColumnFormat;
 	
 	public function __construct() {
 		
@@ -38,6 +40,14 @@ class ReportDisplayOptions {
 	    return $this->colourCells;
 	}
 	
+	public function getFirstColumnHeadingLabel() {
+	    return $this->firstColumnHeadingLabel;
+	}
+	
+	public function getFirstColumnFormat() {
+	    return $this->firstColumnFormat;
+	}
+	
 	
 	
 	//SET functions
@@ -63,6 +73,14 @@ class ReportDisplayOptions {
 	
 	public function setColourCells($pColourCellsValue) {
 	    $this->colourCells = $pColourCellsValue;
+	}
+	
+	public function setFirstColumnHeadingLabel($pValue) {
+	    $this->firstColumnHeadingLabel = $pValue;
+	}
+	
+	public function setFirstColumnFormat($pValue) {
+	    $this->firstColumnFormat = $pValue;
 	}
 	
 }

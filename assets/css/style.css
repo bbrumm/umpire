@@ -40,9 +40,6 @@ h2 {
 }
 
 
-
-
-
 .mainBanner {
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	font-size: 24px;
@@ -121,8 +118,11 @@ Table Formatting - Reports
 	
 	border-collapse: separate;
 	border-spacing: 0px;
+	
+	
 	/*border-collapse: collapse;*/
 	/*table-layout: fixed;*/
+
 	
 }
 
@@ -207,8 +207,10 @@ td, th {
 	 -o-transform: rotate(-90deg);
 	 -o-transform-origin:  top left;
 	  position:relative;
+ 	text-align: left;
 	 top:20px;
-	 width:250px;
+	 /*width:250px;*/
+ 	width:100px;
 	 padding: 0px 0px 0px 0px;
 	 /*background-color:yellow;*/
  }
@@ -260,9 +262,19 @@ th, td
 	width:230px;
 }
 
+.cellDateSize {
+	width:150px;
+}
+
 .cellNumber {
 	border: 1px solid #888888;
 	text-align:right;
+}
+
+.cellText {
+	border: 1px solid #888888;
+	text-align:left;
+	
 }
 
 
