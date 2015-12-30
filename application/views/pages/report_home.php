@@ -33,10 +33,10 @@ echo form_open('report');
     		<option value="01" selected>01 - Umpires and Clubs</option>
     		<option value="02">02 - Umpire Names by League</option>
     		<option value="03">03 - Summary</option>
-    		<option value="04" disabled>04 - Summary by Club</option>
-    		<option value="05" disabled>05 - Summary by League</option>
-    		<option value="06" disabled>06 - Pairings</option>
-    		<option value="07" disabled>07 - Field Umpires with 2 Umpire Games</option>
+    		<option value="04">04 - Summary by Club</option>
+    		<option value="05">05 - Summary by League</option>
+    		<option value="06">06 - Pairings</option>
+    		<option value="07">07 - Field Umpires with 2 Umpire Games</option>
 		</select>
 	</span>
 </div>
@@ -85,6 +85,10 @@ echo form_open('report');
 
 <div class="reportSelectorRow">
 <input type="submit" value="View Report" class="btn">
+<input type='hidden' id='umpireTypeHidden' name='umpireType' value='All' />
+<input type='hidden' id='ageHidden' name='age' value='All' />
+<input type='hidden' id='leagueHidden' name='league' value='All' />
+
 </div>
 </form>
 

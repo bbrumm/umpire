@@ -19,7 +19,11 @@ class Report extends CI_Controller {
 		$data['loadedReportItem'] = $this->report_model->get_report($reportParameters);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
-		
+		/*
+		echo "POST<pre>";
+		print_r($_POST);
+		echo "</pre><BR />";
+		*/
 		
 		echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
 		echo "<input type='hidden' name='reportName' value='". $_POST['reportName'] ."' />";

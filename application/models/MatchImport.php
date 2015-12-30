@@ -88,7 +88,9 @@ class MatchImport extends MY_Model
       //Reload tables for the reports
       $this->reloadMVReport01Table();
       $this->reloadMVReport02Table();
+      $this->reloadMVSummaryStaging();
       $this->reloadMVReport03Table();
+      $this->reloadMVReport04Table();
       
   }
   
@@ -600,51 +602,14 @@ class MatchImport extends MY_Model
       
   }
   
-  private function reloadMVReport03Table() {
+  private function reloadMVSummaryStaging() {
       //First, delete the data from the table
-      $reportModel = new report_model();
-      $reportTableName = $reportModel->lookupReportTableName('3');
-      $this->deleteFromSingleTable($reportTableName);
-  
+      $this->deleteFromSingleTable("mv_summary_staging");
+      
       //Then, insert into table
-      $queryString = "INSERT INTO `umpire`.`mv_report_03` (weekdate, " .
-            "`No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, " .
-            "`No Senior Goal|BFL`, `No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, " .
-            "`No Reserve Goal|BFL`, `No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, " .
-            "`No Colts Field|Clubs`, `No Colts Field|No.`, `No U16 Field|Clubs`, `No U16 Field|No.`, " .
-            "`No U14 Field|Clubs`, `No U14 Field|No.`) " .
-            "SELECT weekdate, " .
-            "MAX(`No Senior Boundary|BFL`), MAX(`No Senior Boundary|GDFL`), MAX(`No Senior Boundary|GFL`), SUM(`No Senior Boundary|No.`), MAX(`No Senior Goal|BFL`), " .
-            "MAX(`No Senior Goal|GDFL`), MAX(`No Senior Goal|GFL`), SUM(`No Senior Goal|No.`), MAX(`No Reserve Goal|BFL`), MAX(`No Reserve Goal|GDFL`), " .
-            "MAX(`No Reserve Goal|GFL`), SUM(`No Reserve Goal|No.`), MAX(`No Colts Field|Clubs`),SUM(`No Colts Field|No.`), MAX(`No U16 Field|Clubs`), " .
-            "SUM(`No U16 Field|No.`), MAX(`No U14 Field|Clubs`), SUM(`No U14 Field|No.`) " . 
-            "FROM (";
-      $queryString .= "SELECT weekdate, ".
-            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'BFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|BFL`, ".
-            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GDFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|GDFL`, ".
-            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|GFL`, ".
-            "(CASE WHEN age_group = 'Seniors' AND umpire_type = 'Boundary' THEN match_count ELSE 0 END) as `No Senior Boundary|No.`, ".
-            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'BFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Senior Goal|BFL`, ".
-            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GDFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Senior Goal|GDFL`, ".
-            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Senior Goal|GFL`, ".
-            "(CASE WHEN age_group = 'Seniors' AND umpire_type = 'Goal' THEN match_count ELSE 0 END) as `No Senior Goal|No.`, ".
-            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'BFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|BFL`, ".
-            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'GDFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|GDFL`, ".
-            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'GFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|GFL`, ".
-            "(CASE WHEN age_group = 'Reserve' AND umpire_type = 'Goal' THEN match_count ELSE 0 END) as `No Reserve Goal|No.`, ".
-            "(CASE WHEN age_group = 'Colts' AND umpire_type = 'Field' THEN team_list ELSE NULL END) as `No Colts Field|Clubs`, ".
-            "(CASE WHEN age_group = 'Colts' AND umpire_type = 'Field' THEN match_count ELSE 0 END) as `No Colts Field|No.`, ".
-            "(CASE WHEN age_group = 'Under 16' AND umpire_type = 'Field' THEN team_list ELSE NULL END) as `No U16 Field|Clubs`, ".
-            "(CASE WHEN age_group = 'Under 16' AND umpire_type = 'Field' THEN match_count ELSE 0 END) as `No U16 Field|No.`, ".
-            "(CASE WHEN age_group = 'Under 14' AND umpire_type = 'Field' THEN team_list ELSE NULL END) as `No U14 Field|Clubs`, ".
-            "(CASE WHEN age_group = 'Under 14' AND umpire_type = 'Field' THEN match_count ELSE 0 END)  as `No U14 Field|No.`".
-            "FROM (";
-            
-      $queryString .= "SELECT umpire_type, age_group, short_league_name, weekdate, ".
-            "GROUP_CONCAT(home, ' vs ', away) AS team_list, ".
-            "COUNT(home) AS match_count  ".
-            "FROM ( ".
-            "SELECT umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  ".
+      $queryString = "INSERT INTO mv_summary_staging (umpire_type_id, umpire_type, age_group, short_league_name, " .
+          "round_date, match_id, home, away, home_club, away_club, age_group_ID, weekdate) ";
+      $queryString .= "SELECT umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  ".
             "ADDDATE(round_date, (5-Weekday(round_date))) as WeekDate ".
             "FROM ( ";
       $queryString .= "SELECT 1 as umpire_type_id, 'Field' AS umpire_type, age_group.age_group, league.short_league_name,  ".
@@ -709,7 +674,62 @@ class MatchImport extends MY_Model
             "INNER JOIN umpire_type ut_sub ON ut_sub.ID = umpire_name_type.umpire_type_id ".
             "WHERE ut_sub.umpire_type_name='Boundary' ".
             ") ".
-            ") AS outer1 ".
+            ") AS outer1";
+      
+      
+      $this->db->query($queryString);
+      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
+      //echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+      
+  }
+  
+  private function reloadMVReport03Table() {
+      //First, delete the data from the table
+      $reportModel = new report_model();
+      $reportTableName = $reportModel->lookupReportTableName('3');
+      $this->deleteFromSingleTable($reportTableName);
+  
+      //Then, insert into table
+      $queryString = "INSERT INTO `umpire`.`mv_report_03` (weekdate, " .
+            "`No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, " .
+            "`No Senior Goal|BFL`, `No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, " .
+            "`No Reserve Goal|BFL`, `No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, " .
+            "`No Colts Field|Clubs`, `No Colts Field|No.`, `No U16 Field|Clubs`, `No U16 Field|No.`, " .
+            "`No U14 Field|Clubs`, `No U14 Field|No.`) " .
+            "SELECT weekdate, " .
+            "MAX(`No Senior Boundary|BFL`), MAX(`No Senior Boundary|GDFL`), MAX(`No Senior Boundary|GFL`), SUM(`No Senior Boundary|No.`), MAX(`No Senior Goal|BFL`), " .
+            "MAX(`No Senior Goal|GDFL`), MAX(`No Senior Goal|GFL`), SUM(`No Senior Goal|No.`), MAX(`No Reserve Goal|BFL`), MAX(`No Reserve Goal|GDFL`), " .
+            "MAX(`No Reserve Goal|GFL`), SUM(`No Reserve Goal|No.`), MAX(`No Colts Field|Clubs`),SUM(`No Colts Field|No.`), MAX(`No U16 Field|Clubs`), " .
+            "SUM(`No U16 Field|No.`), MAX(`No U14 Field|Clubs`), SUM(`No U14 Field|No.`) " . 
+            "FROM (";
+      $queryString .= "SELECT weekdate, ".
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'BFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|BFL`, ".
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GDFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|GDFL`, ".
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|GFL`, ".
+            "(CASE WHEN age_group = 'Seniors' AND umpire_type = 'Boundary' THEN match_count ELSE 0 END) as `No Senior Boundary|No.`, ".
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'BFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Senior Goal|BFL`, ".
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GDFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Senior Goal|GDFL`, ".
+            "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Senior Goal|GFL`, ".
+            "(CASE WHEN age_group = 'Seniors' AND umpire_type = 'Goal' THEN match_count ELSE 0 END) as `No Senior Goal|No.`, ".
+            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'BFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|BFL`, ".
+            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'GDFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|GDFL`, ".
+            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'GFL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|GFL`, ".
+            "(CASE WHEN age_group = 'Reserve' AND umpire_type = 'Goal' THEN match_count ELSE 0 END) as `No Reserve Goal|No.`, ".
+            "(CASE WHEN age_group = 'Colts' AND umpire_type = 'Field' THEN team_list ELSE NULL END) as `No Colts Field|Clubs`, ".
+            "(CASE WHEN age_group = 'Colts' AND umpire_type = 'Field' THEN match_count ELSE 0 END) as `No Colts Field|No.`, ".
+            "(CASE WHEN age_group = 'Under 16' AND umpire_type = 'Field' THEN team_list ELSE NULL END) as `No U16 Field|Clubs`, ".
+            "(CASE WHEN age_group = 'Under 16' AND umpire_type = 'Field' THEN match_count ELSE 0 END) as `No U16 Field|No.`, ".
+            "(CASE WHEN age_group = 'Under 14' AND umpire_type = 'Field' THEN team_list ELSE NULL END) as `No U14 Field|Clubs`, ".
+            "(CASE WHEN age_group = 'Under 14' AND umpire_type = 'Field' THEN match_count ELSE 0 END)  as `No U14 Field|No.`".
+            "FROM (";
+            
+      $queryString .= "SELECT umpire_type, age_group, short_league_name, weekdate, ".
+            "GROUP_CONCAT(home, ' vs ', away) AS team_list, ".
+            "COUNT(home) AS match_count  ".
+            "FROM ( ".
+            "SELECT umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  ".
+            "weekdate ".
+            "FROM mv_summary_staging " .
             ") AS outer2 ".
             "GROUP BY umpire_type, age_group, short_league_name, weekdate ";
       $queryString .= ") AS outer3 " .
@@ -722,6 +742,95 @@ class MatchImport extends MY_Model
         "`No Senior Goal|BFL`, `No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, `No Reserve Goal|BFL`,  " .
         "`No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, `No Colts Field|Clubs`,`No Colts Field|No.` " .
         "ORDER BY weekdate";
+  
+      $this->db->query($queryString);
+      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
+      //echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+  
+  }
+  
+  private function reloadMVReport04Table() {
+      //First, delete the data from the table
+      $reportModel = new report_model();
+      $reportTableName = $reportModel->lookupReportTableName('4');
+      $this->deleteFromSingleTable($reportTableName);
+  
+      //Then, insert into table
+      $queryString = "INSERT INTO mv_report_04 (club_name, `Boundary|Seniors|BFL`, ".
+        "`Boundary|Seniors|GDFL`, `Boundary|Seniors|GFL`, `Boundary|Reserves|BFL`, `Boundary|Reserves|GDFL`, ".
+        "`Boundary|Reserves|GFL`, `Boundary|Colts|None`, `Boundary|Under 16|None`, `Boundary|Under 14|None`, ".
+        "`Boundary|Youth Girls|None`, `Boundary|Junior Girls|None`, `Field|Seniors|BFL`, `Field|Seniors|GDFL`, ".
+        "`Field|Seniors|GFL`, `Field|Reserves|BFL`, `Field|Reserves|GDFL`, `Field|Reserves|GFL`, ".
+        "`Field|Colts|None`, `Field|Under 16|None`, `Field|Under 14|None`, `Field|Youth Girls|None`, ".
+        "`Field|Junior Girls|None`, `Goal|Seniors|BFL`, `Goal|Seniors|GDFL`, `Goal|Seniors|GFL`, ".
+        "`Goal|Reserves|BFL`, `Goal|Reserves|GDFL`, `Goal|Reserves|GFL`, `Goal|Colts|None`, ".
+        "`Goal|Under 16|None`, `Goal|Under 14|None`, `Goal|Youth Girls|None`, `Goal|Junior Girls|None`) ";
+      
+      $queryString .= "SELECT club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
+        "SUM(`Boundary|Reserves|BFL`), SUM(`Boundary|Reserves|GDFL`), SUM(`Boundary|Reserves|GFL`), SUM(`Boundary|Colts|None`), ".
+        "SUM(`Boundary|Under 16|None`), SUM(`Boundary|Under 14|None`), SUM(`Boundary|Youth Girls|None`), SUM(`Boundary|Junior Girls|None`), ".
+        "SUM(`Field|Seniors|BFL`), SUM(`Field|Seniors|GDFL`), SUM(`Field|Seniors|GFL`), SUM(`Field|Reserves|BFL`), ".
+        "SUM(`Field|Reserves|GDFL`), SUM(`Field|Reserves|GFL`), SUM(`Field|Colts|None`), SUM(`Field|Under 16|None`), ".
+        "SUM(`Field|Under 14|None`), SUM(`Field|Youth Girls|None`), SUM(`Field|Junior Girls|None`), SUM(`Goal|Seniors|BFL`), ".
+        "SUM(`Goal|Seniors|GDFL`), SUM(`Goal|Seniors|GFL`), SUM(`Goal|Reserves|BFL`), SUM(`Goal|Reserves|GDFL`), ".
+        "SUM(`Goal|Reserves|GFL`), SUM(`Goal|Colts|None`), SUM(`Goal|Under 16|None`), SUM(`Goal|Under 14|None`), ".
+        "SUM(`Goal|Youth Girls|None`), SUM(`Goal|Junior Girls|None`) ".
+        "FROM ( ";
+      
+      $queryString .= "SELECT club, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|BFL`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|GDFL`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|GFL`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Reserves' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Boundary|Reserves|BFL`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Reserves' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Boundary|Reserves|GDFL`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Reserves' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Boundary|Reserves|GFL`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Colts' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Boundary|Colts|None`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Under 16' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Boundary|Under 16|None`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Under 14' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Boundary|Under 14|None`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Youth Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Boundary|Youth Girls|None`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Junior Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Boundary|Junior Girls|None`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Seniors' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Field|Seniors|BFL`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Seniors' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Field|Seniors|GDFL`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Seniors' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Field|Seniors|GFL`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Reserves' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Field|Reserves|BFL`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Reserves' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Field|Reserves|GDFL`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Reserves' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Field|Reserves|GFL`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Colts' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Field|Colts|None`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Under 16' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Field|Under 16|None`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Under 14' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Field|Under 14|None`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Youth Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Field|Youth Girls|None`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Junior Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Field|Junior Girls|None`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Seniors' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Goal|Seniors|BFL`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Seniors' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Goal|Seniors|GDFL`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Seniors' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Goal|Seniors|GFL`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Reserves' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Goal|Reserves|BFL`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Reserves' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Goal|Reserves|GDFL`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Reserves' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Goal|Reserves|GFL`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Colts' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Goal|Colts|None`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 16' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Goal|Under 16|None`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 14' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Goal|Under 14|None`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Youth Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Goal|Youth Girls|None`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Junior Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Goal|Junior Girls|None` ".
+        "FROM ( ";
+      
+      $queryString .= "SELECT age_group, umpire_type, Club, short_league_name, SUM(Match_Count) AS match_count ".
+            "FROM ( ".
+            "SELECT 'Home' as Club_Type, s.age_group, s.umpire_type, s.home_club as Club, s.short_league_name,  ".
+            "COUNT(s.age_group_ID) AS Match_Count, age_group_ID ".
+            "FROM mv_summary_staging s ".
+            "GROUP BY s.age_group, s.umpire_type, s.home_club, s.age_group_ID ".
+            "UNION ALL ".
+            "SELECT 'Away' as Club_Type,  s.age_group, s.umpire_type, s.away_club,  s.short_league_name,  ".
+            "COUNT(s.age_group_ID), age_group_ID ".
+            "FROM mv_summary_staging s ".
+            "GROUP BY s.age_group, s.umpire_type, s.away_club, s.age_group_ID, s.short_league_name ".
+            ")  AS outer1 ".
+            "GROUP BY age_group, umpire_type, Club, short_league_name ".
+            ") AS outer2 ".
+            ") AS outer3 ".
+            "GROUP BY club ".
+            "ORDER BY club; ";
+      
   
       $this->db->query($queryString);
       //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";

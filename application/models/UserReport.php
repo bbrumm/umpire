@@ -25,11 +25,21 @@ class UserReport extends CI_Model {
 	private $rowGroupForReport03 = array(
 	    'weekdate'
 	);
+	
+	private $columnGroupForReport04 = array(
+	    'umpire_type',
+	    'age_group',
+	    'short_league_name'
+	);
+	private $rowGroupForReport04 = array(
+	    'club_name'
+	);
     
 		
 	private $fieldForReport01 = 'match_count';
 	private $fieldForReport02 = 'match_count';
 	private $fieldForReport03 = 'match_count';
+	private $fieldForReport04 = 'match_count';
 	
 	private $reportQuery;
 	private $resultArray;
@@ -87,6 +97,17 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportTitle = "03 - Summary by Week";
+                break;
+            case 4:
+                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport04);
+                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport04);
+                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport04);
+                $this->reportDisplayOptions->setNoDataValue("");
+                $this->reportDisplayOptions->setFirstColumnHeadingLabel("Club");
+                $this->reportDisplayOptions->setFirstColumnFormat("text");
+                $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
+                $this->reportDisplayOptions->setColourCells(FALSE);
+                $this->reportTitle = "04 - Summary by Club";
                 break;
 
 		}
@@ -154,6 +175,42 @@ class UserReport extends CI_Model {
 	
 	public function getRowLabelResultArray() {
 		return $this->rowLabelResultArray;
+	}
+	
+	public function getColumnCountForHeadingCells() {
+	    $columnLabelResults = $this->columnLabelResultArray;
+	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
+	    
+	    
+	    //Loop through the possible labels
+	    for ($i=0; $i < count($columnLabels); $i++) {
+	        /*Check the level of this iteration
+	        For row 0, count just row 0 matches
+	        For row 1, count where row 0 and row 1 match
+	        For row 2, count where row 0, 1 and 2 match
+	        And so on... 
+	        
+	        */
+	        
+	        $matchFound = false;
+	        //Loop through columnLabelResults
+	        for ($j=0; $j < count($columnLabelResults); $j++) {
+	           if ($i >= 0) {
+	               
+	               
+	           
+	           }
+	            
+	        }
+	        
+	        $columnLabelCount[$columnLabels[$i]] = 
+	           
+
+	    
+	    
+	    
+	    }
+	    
 	}
 	
 	

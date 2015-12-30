@@ -10,6 +10,7 @@ $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 $countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
+$columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 ?>
@@ -27,7 +28,7 @@ echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 
 <?php 
 
-/*
+
 echo "<BR />rowLabels<pre>";
 print_r($rowLabels);
 echo "</pre><BR />";
@@ -39,26 +40,30 @@ echo "</pre><BR />";
 echo "<BR />mergeColumnGroup<pre>";
 print_r($mergeColumnGroup);
 echo "</pre><BR />";
-*/
-/*
+
 echo "<BR />loadedColumnGroupings<pre>";
 print_r($loadedColumnGroupings);
 echo "</pre><BR />";
-
+/*
 echo "<BR />loadedResultArray<pre>";
 print_r($loadedResultArray);
 echo "</pre><BR />";
 */
 
+
+
+
 //Show one header row for each group
 for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
     //Load array that shows each column heading and the number of records it has.
 	$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
-	/*
+	
+	
+	
 	echo "<BR />countOfEachColumnHeading<pre>";
 	print_r($countOfEachColumnHeading);
 	echo "</pre><BR />";
-	*/
+	
 	?>
 	
 	<tr class='header'>
