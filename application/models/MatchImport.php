@@ -256,7 +256,13 @@ class MatchImport extends MY_Model
         "INNER JOIN division ON division.ID = age_group_division.division_id";
       
       $this->db->query($queryString);
-      //echo "Query run: reloadMatchStagingTable, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMatchStagingTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMatchStagingTable, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+
       
   }
   
@@ -358,8 +364,12 @@ class MatchImport extends MY_Model
 	"INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
 	"WHERE umpire_type.umpire_type_name = 'Goal') AS ump";
       $this->db->query($queryString);
-      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      //echo "Query run: reloadUmpireNameTypeMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadUmpireNameTypeMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
+      }
   }
   
   private function reloadMVReport01Table() {
@@ -598,9 +608,11 @@ class MatchImport extends MY_Model
 
       
       $this->db->query($queryString);
-      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      //echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
-      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMVReport02Table SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport02Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
   }
   
   private function reloadMVSummaryStaging() {
@@ -622,7 +634,7 @@ class MatchImport extends MY_Model
             "INNER JOIN team ON team.ID = match_played.away_team_id ".
             "INNER JOIN club ON club.ID = team.club_id ".
             "INNER JOIN round ON round.ID = match_played.round_id ".
-            "INNER JOIN league ON league.ID = ROUND.league_id ".
+            "INNER JOIN league ON league.ID = round.league_id ".
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id ".
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id ".
             "INNER JOIN division ON division.ID = age_group_division.division_id ".
@@ -643,7 +655,7 @@ class MatchImport extends MY_Model
             "INNER JOIN team ON team.ID = match_played.away_team_id ".
             "INNER JOIN club ON club.ID = team.club_id ".
             "INNER JOIN round ON round.ID = match_played.round_id ".
-            "INNER JOIN league ON league.ID = ROUND.league_id ".
+            "INNER JOIN league ON league.ID = round.league_id ".
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id ".
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id ".
             "INNER JOIN division ON division.ID = age_group_division.division_id ".
@@ -691,7 +703,7 @@ class MatchImport extends MY_Model
       $this->deleteFromSingleTable($reportTableName);
   
       //Then, insert into table
-      $queryString = "INSERT INTO `umpire`.`mv_report_03` (weekdate, " .
+      $queryString = "INSERT INTO `mv_report_03` (weekdate, " .
             "`No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, " .
             "`No Senior Goal|BFL`, `No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, " .
             "`No Reserve Goal|BFL`, `No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, " .
