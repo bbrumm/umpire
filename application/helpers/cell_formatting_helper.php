@@ -1,6 +1,7 @@
 <?php
 
 function getCellClassNameFromOutputValue($valueToCheck) {
+    
 	switch ($valueToCheck) {
 		case null:
 			return "cellNumber cellNormal";

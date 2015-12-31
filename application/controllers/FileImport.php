@@ -34,7 +34,7 @@ class FileImport extends CI_Controller {
 	        $data['test'] = "Test Report";
 	        $this->load->helper(array('form', 'url'));
 	        $this->load->view('templates/header', $data);
-	        $this->load->view('importFile', $error);
+	        $this->load->view('upload_form', $error);
 	        $this->load->view('templates/footer');
 	    }
 	    else

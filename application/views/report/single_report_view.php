@@ -196,7 +196,7 @@ foreach ($loadedResultArray as $resultRow):
 		        /*echo "(Y)";*/
 		        //Match found for columns. Write record
 		        if ($colourCells) {
-		            $cellClassToUse = getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]);
+		            $cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]]);
 		            
     		        //$tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
 		        } elseif(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
