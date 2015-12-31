@@ -208,7 +208,7 @@ class MatchImport extends MY_Model
         "STR_TO_DATE(match_import.date, '%d/%m/%Y'), " .  
         "match_import.competition_name, " .  
         "match_import.ground, " .  
-        "STR_TO_DATE(match_import.time, '%h:%i %p'), " .  
+        "STR_TO_DATE(CONCAT(match_import.date, ' ', match_import.time), '%d/%m/%Y %h:%i %p'), " .  
         "match_import.home_team, " .  
         "match_import.away_team, ";
       $queryString .= "LEFT(match_import.field_umpire_1,InStr(match_import.field_umpire_1,' ')-1) AS match_import_field1_first, " .  

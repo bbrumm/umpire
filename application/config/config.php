@@ -508,6 +508,6 @@ $config['css'] = 'css/style.css';
 $config['js_fixed'] = 'js/scrollheader.js';
 $config['reportSelection'] = 'js/reportSelection.js';
 
-$config['debug_mode'] = TRUE;
+$config['debug_mode'] = FALSE;
 
 $config['encryption_key'] = '654879493156487941564795';
