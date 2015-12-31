@@ -111,6 +111,7 @@ class report_model extends CI_Model {
 	
 	private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
 	    //Increase maximum length for GROUP_CONCAT value
+	    $debugMode = $this->config->item('debug_mode');
 	    $query = $this->db->query("SET group_concat_max_len = 8000;");
 	    
 	    $rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
@@ -158,8 +159,9 @@ class report_model extends CI_Model {
                 "ORDER BY rc.column_name ASC" .
                 ") gc;";
 	    
-	    //echo "Column Query: $columnQuery <BR/>";
-	     
+        if ($debugMode) {
+	       echo "Column Query: $columnQuery <BR/>";
+        }
 	    $query = $this->db->query($columnQuery);
 	    $queryResultArray = $query->result_array();
 	    $columnsToSelect = $queryResultArray[0]["COLS"];
@@ -183,14 +185,23 @@ class report_model extends CI_Model {
 	        $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
 	            $columnsToSelect . " " .
 	            "FROM " . $pReportTableName . " " . $whereClause;
+	    
+	    } elseif ($pReportName == '05') {
+	        $queryForReport = "SELECT ". $rowsToSelect[0] .", " . $rowsToSelect[1] .", " .
+	            $columnsToSelect . " " .
+	            "FROM " . $pReportTableName . " " . $whereClause . " " .
+	            "GROUP BY ". $rowsToSelect[0] . ", " . $rowsToSelect[1];
+	            
 	    } else {
     	    $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
     	        $columnsToSelect . " " .
     	        "FROM " . $pReportTableName . " " . $whereClause . " " .
-    	        "GROUP BY ". $rowsToSelect[0] ."";
+    	        "GROUP BY ". $rowsToSelect[0];
 	    }
 	         
-	    //echo "<BR/>Query For Report ($queryForReport)<BR/>";
+	    if ($debugMode) {
+	       echo "<BR/>Query For Report ($queryForReport)<BR/>";
+	    }
 	    /*
 	    echo "<BR/>Query For Report Length (" .strlen($queryForReport) .")<BR/>";
 	      */  

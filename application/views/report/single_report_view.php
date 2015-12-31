@@ -8,6 +8,8 @@ $colourCells = $reportDisplayOptions->getColourCells();
 $rowLabels = $reportDisplayOptions->getRowGroup();
 $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
+//$debugLibrary = new DebugLibrary();
+$debugMode = $this->config->item('debug_mode');
 
 //$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
@@ -29,29 +31,29 @@ echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 <thead>
 
 <?php 
-
-/*
-echo "<BR />rowLabels<pre>";
-print_r($rowLabels);
-echo "</pre><BR />";
-
-echo "<BR />columnLabels<pre>";
-print_r($columnLabels);
-echo "</pre><BR />";
-
-echo "<BR />mergeColumnGroup<pre>";
-print_r($mergeColumnGroup);
-echo "</pre><BR />";
-
-echo "<BR />loadedColumnGroupings<pre>";
-print_r($loadedColumnGroupings);
-echo "</pre><BR />";
-
-echo "<BR />loadedResultArray<pre>";
-print_r($loadedResultArray);
-echo "</pre><BR />";
-*/
-
+//$debugLibrary->debugOutput("test");
+if ($debugMode) {
+    echo "<BR />rowLabels<pre>";
+    print_r($rowLabels);
+    echo "</pre><BR />";
+    
+    echo "<BR />columnLabels<pre>";
+    print_r($columnLabels);
+    echo "</pre><BR />";
+    
+    echo "<BR />mergeColumnGroup<pre>";
+    print_r($mergeColumnGroup);
+    echo "</pre><BR />";
+    
+    echo "<BR />loadedColumnGroupings<pre>";
+    print_r($loadedColumnGroupings);
+    echo "</pre><BR />";
+    
+    echo "<BR />loadedResultArray<pre>";
+    print_r($loadedResultArray);
+    echo "</pre><BR />";
+}
+$columnHeadingLabels = $reportDisplayOptions->getColumnHeadingLabel();
 
 //echo "countFirstLoadedColumnGroupings: ". $countFirstLoadedColumnGroupings;
 
@@ -82,13 +84,15 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 	    $thClassNameToUse = "columnHeadingNormal cellNameSize";
 	}
 	
-	$thOutput = "<th class='". $thClassNameToUse ."'>";
-	
-	if ($i == ($countFirstLoadedColumnGroupings-1)) {
-	    $thOutput .= $reportDisplayOptions->getFirstColumnHeadingLabel();
+	for ($r=0; $r < count($rowLabels); $r++) {
+    	$thOutput = "<th class='". $thClassNameToUse ."'>";
+    	if ($i == 0) {
+    	    
+    	    $thOutput .= $columnHeadingLabels[$r];
+    	}
+    	$thOutput .= "</th>";
+    	echo $thOutput;
 	}
-	$thOutput .= "</th>";
-	echo $thOutput;
 	
 	$countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
 	//echo "countLoadedColumnGroupings: ". $countLoadedColumnGroupings;
@@ -166,28 +170,40 @@ echo "<tbody>";
 //** Loop through rows and output them to the page **
 
 //$currentReportRowLabel;
-$currentColumnLabelFirst;
-$currentColumnLabelSecond;
+//$currentColumnLabelFirst;
+//$currentColumnLabelSecond;
 
-$tableRowOutput;
+$tableRowOutput = "";
 
 
 foreach ($loadedResultArray as $resultRow): 
 	if ($reportDisplayOptions->getFirstColumnFormat() == "text") {
 	   $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]] . "</td>";
+	   if (count($rowLabels) > 1) {
+	       //Output a second row label
+	       $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]] . "</td>";
+	   }
 	} elseif ($reportDisplayOptions->getFirstColumnFormat() == "date") {
 	    $weekDate = date_create($resultRow[$rowLabels[0]]);
 	    $tableRowOutput = "<tr><td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
+	    if (count($rowLabels) > 1) {
+	       //Output a second row label
+	       $tableRowOutput .= "<td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
+	   }
 	} else {
 	    $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]] . "</td>";
+	    if (count($rowLabels) > 1) {
+	        //Output a second row label
+	        $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]] . "</td>";
+	    }
 	}
 	
 	//$currentReportRowLabel = $resultRow[$rowLabels[0]];
 	
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
-		$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
-		$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
+		//$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
+		//$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
 /*echo "X=(". $resultRow[$loadedColumnGroupings[$i]['column_name']] ."),";*/
 		if (
 		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) ||

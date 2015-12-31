@@ -34,12 +34,21 @@ class UserReport extends CI_Model {
 	private $rowGroupForReport04 = array(
 	    'club_name'
 	);
+	
+	private $columnGroupForReport05 = array(
+	    'short_league_name'
+	);
+	private $rowGroupForReport05 = array(
+	    'umpire_type',
+	    'age_group'
+	);
     
 		
 	private $fieldForReport01 = 'match_count';
 	private $fieldForReport02 = 'match_count';
 	private $fieldForReport03 = 'match_count';
 	private $fieldForReport04 = 'match_count';
+	private $fieldForReport05 = 'match_count';
 	
 	private $reportQuery;
 	private $resultArray;
@@ -70,7 +79,7 @@ class UserReport extends CI_Model {
     			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport01);
     			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport01);
     			$this->reportDisplayOptions->setNoDataValue("");
-    			$this->reportDisplayOptions->setFirstColumnHeadingLabel("Name");
+    			$this->reportDisplayOptions->setColumnHeadingLabel(array("Name"));
     			$this->reportDisplayOptions->setFirstColumnFormat("text");
     			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
     			$this->reportDisplayOptions->setColourCells(TRUE);
@@ -81,7 +90,7 @@ class UserReport extends CI_Model {
 	            $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport02);
 	            $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport02);
 	            $this->reportDisplayOptions->setNoDataValue("");
-	            $this->reportDisplayOptions->setFirstColumnHeadingLabel("Name");
+	            $this->reportDisplayOptions->setColumnHeadingLabel(array("Name"));
 	            $this->reportDisplayOptions->setFirstColumnFormat("text");
 	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
 	            $this->reportDisplayOptions->setColourCells(FALSE);
@@ -92,7 +101,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport03);
                 $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport03);
                 $this->reportDisplayOptions->setNoDataValue("");
-                $this->reportDisplayOptions->setFirstColumnHeadingLabel("Week (Sat)");
+                $this->reportDisplayOptions->setColumnHeadingLabel(array("Week (Sat)"));
                 $this->reportDisplayOptions->setFirstColumnFormat("date");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
@@ -103,11 +112,22 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport04);
                 $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport04);
                 $this->reportDisplayOptions->setNoDataValue("");
-                $this->reportDisplayOptions->setFirstColumnHeadingLabel("Club");
+                $this->reportDisplayOptions->setColumnHeadingLabel(array("Club"));
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportTitle = "04 - Summary by Club";
+                break;
+            case 5:
+                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport05);
+                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport05);
+                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport05);
+                $this->reportDisplayOptions->setNoDataValue("0");
+                $this->reportDisplayOptions->setColumnHeadingLabel(array("Discipline", "Age Group"));
+                $this->reportDisplayOptions->setFirstColumnFormat("text");
+                $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
+                $this->reportDisplayOptions->setColourCells(FALSE);
+                $this->reportTitle = "05 - Games with Zero Umpires For Each League";
                 break;
 
 		}

@@ -12,6 +12,8 @@ echo "<script language='JavaScript' type='text/javascript' src='". asset_url() .
 echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
 
 echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />";
+
+
 	
 
 

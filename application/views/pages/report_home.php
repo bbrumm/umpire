@@ -36,7 +36,6 @@ echo form_open('report');
     		<option value="04">04 - Summary by Club</option>
     		<option value="05">05 - Summary by League</option>
     		<option value="06">06 - Pairings</option>
-    		<option value="07">07 - Field Umpires with 2 Umpire Games</option>
 		</select>
 	</span>
 </div>

@@ -91,6 +91,7 @@ class MatchImport extends MY_Model
       $this->reloadMVSummaryStaging();
       $this->reloadMVReport03Table();
       $this->reloadMVReport04Table();
+      $this->reloadMVReport05Table();
       
   }
   
@@ -836,6 +837,50 @@ class MatchImport extends MY_Model
       //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
       //echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
   
+  }
+  
+  private function reloadMVReport05Table() {
+      //First, delete the data from the table
+      $reportModel = new report_model();
+      $reportTableName = $reportModel->lookupReportTableName('5');
+      $this->deleteFromSingleTable($reportTableName);
+  
+      //Then, insert into table
+      $queryString = "INSERT INTO mv_report_05 (umpire_type, age_group, BFL, GDFL, GFL, `None`, `Total`) ";
+      $queryString .= "SELECT ua.umpire_type_name, ua.age_group, " .
+            "IFNULL(SUM(`BFL`),0), " .
+            "IFNULL(SUM(`GDFL`),0), " .
+            "IFNULL(SUM(`GFL`),0), " .
+            "IFNULL(SUM(`None`),0), " .
+            "IFNULL(SUM(`BFL`+`GDFL`+`GFL`+`None`),0) " .
+            "FROM ( " .
+            "SELECT ut.id AS umpire_type_id, ut.umpire_type_name, " .
+            "ag.id AS age_group_id, ag.age_group " .
+            "FROM umpire_type ut, age_group ag " .
+            ") AS ua LEFT JOIN (";
+  
+      $queryString .= "SELECT umpire_type, age_group, age_group_ID,  " .
+        	"(CASE WHEN short_league_name = 'BFL' THEN match_count ELSE 0 END) as `BFL`, " .
+        	"(CASE WHEN short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `GDFL`, " .
+        	"(CASE WHEN short_league_name = 'GFL' THEN match_count ELSE 0 END) as `GFL`, " .
+        	"(CASE WHEN short_league_name = 'None' THEN match_count ELSE 0 END) as `None` " .
+        	"FROM ( " .
+			"SELECT s.umpire_type, s.age_group, s.short_league_name, s.age_group_ID, " .
+			"COUNT(s.match_id) AS Match_Count " .
+			"FROM mv_summary_staging s " .
+			"GROUP BY s.age_group, s.umpire_type, s.short_league_name, s.age_group_ID " .
+    		") AS outer1 " .
+            ") AS outer2 ON ua.umpire_type_name = outer2.umpire_type " .
+            "AND ua.age_group = outer2.age_group " .
+            "GROUP BY ua.umpire_type_id, ua.age_group_id " .
+            "ORDER BY ua.umpire_type_id, ua.age_group_id";
+
+      $this->db->query($queryString);
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
   }
   
   private function logImportedFile($filename) {

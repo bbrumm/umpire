@@ -7,6 +7,7 @@ class Report extends CI_Controller {
 		$this->load->model('report_model');
 		$this->load->helper('url_helper');
 		$this->load->helper('cell_formatting_helper');
+		
 	}
 	
 	public function index() {
@@ -33,7 +34,7 @@ class Report extends CI_Controller {
 		echo "<input type='hidden' name='league' value='". $_POST['league'] ."' />";
 		echo "</form>";	
 		
-		
+		//$this->load->library('DebugLibrary');
 		$this->load->view('templates/header', $data);
 		$this->load->view('report/single_report_view', $data);
 		$this->load->view('templates/footer');
