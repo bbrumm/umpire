@@ -7,7 +7,7 @@ function disableSelectBoxes() {
 	
 	var reportSelectionValue = document.getElementById("reportName").value;
 	//window.alert(reportSelectionValue);
-	if (reportSelectionValue == '03') {
+	if (reportSelectionValue == '03' || reportSelectionValue == '04') {
 		//Disable selection and update the hidden element
 		document.getElementById('umpireType').disabled = true;
 		document.getElementById('age').disabled = true;

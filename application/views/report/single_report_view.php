@@ -8,8 +8,10 @@ $colourCells = $reportDisplayOptions->getColourCells();
 $rowLabels = $reportDisplayOptions->getRowGroup();
 $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
-$countLoadedColumnGroupings = count($loadedColumnGroupings);
+
+//$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
+
 $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
@@ -28,7 +30,7 @@ echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 
 <?php 
 
-
+/*
 echo "<BR />rowLabels<pre>";
 print_r($rowLabels);
 echo "</pre><BR />";
@@ -44,26 +46,26 @@ echo "</pre><BR />";
 echo "<BR />loadedColumnGroupings<pre>";
 print_r($loadedColumnGroupings);
 echo "</pre><BR />";
-/*
+
 echo "<BR />loadedResultArray<pre>";
 print_r($loadedResultArray);
 echo "</pre><BR />";
 */
 
 
-
+//echo "countFirstLoadedColumnGroupings: ". $countFirstLoadedColumnGroupings;
 
 //Show one header row for each group
 for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
     //Load array that shows each column heading and the number of records it has.
-	$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
+	//$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
 	
 	
-	
-	echo "<BR />countOfEachColumnHeading<pre>";
-	print_r($countOfEachColumnHeading);
+	/*
+	echo "<BR />columnCountForHeadingCells<pre>";
+	print_r($columnCountForHeadingCells);
 	echo "</pre><BR />";
-	
+	*/
 	?>
 	
 	<tr class='header'>
@@ -87,6 +89,9 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 	}
 	$thOutput .= "</th>";
 	echo $thOutput;
+	
+	$countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
+	//echo "countLoadedColumnGroupings: ". $countLoadedColumnGroupings;
 	?>
 	
 
@@ -95,14 +100,16 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 		//Check if cell should be merged
 		if ($j==0) {
 			$proceed = true;
-		} else {
-			if (($mergeColumnGroup[$i] != TRUE) || ($loadedColumnGroupings[$j][$columnLabels[$i]] != $loadedColumnGroupings[$j-1][$columnLabels[$i]])) {
+		} 
+		/*else {
+			//if (($mergeColumnGroup[$i] != TRUE) || ($loadedColumnGroupings[$j][$columnLabels[$i]] != $loadedColumnGroupings[$j-1][$columnLabels[$i]])) {
+		    if ($mergeColumnGroup[$i] != TRUE) {
 				//proceed
 				$proceed = true;
 			} else {
 				$proceed = false;
 			}
-		}
+		}*/
 		
 		if ($proceed) {
 			//print cell with colspan value
@@ -121,7 +128,11 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 			} else {
 			    //Increase the colspan if this column group is to be merged
 			    if ($mergeColumnGroup[$i] == TRUE) {
-				    $colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
+				    //$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
+				    //$arrayKeyNumber = $loadedReportItem->findKeyFromValue($columnCountForHeadingCells[$i], $columnLabels[$i], "label")
+			        $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
+			        
+			        
 			    } else {
 			        $colspanForCell = 1;
 			    }
@@ -130,7 +141,8 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 				$cellClass = "columnHeadingNormal";
 				$divClass = "normalHeadingText";
 			}
-			echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></th>";
+			//echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></th>";
+			echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$columnCountForHeadingCells[$i][$j]["label"]."</div></th>";
 			//TODO: Does a DIV need to go here??
 		}
 		//else
