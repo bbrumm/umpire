@@ -74,6 +74,8 @@ class MatchImport extends MY_Model
       
       //$this->recreateMatchImportIndexes();
       
+      
+      
       $this->reloadRoundTable();
       $this->reloadUmpireTable();
       $this->reloadUmpireNameTypeTable();
@@ -82,10 +84,13 @@ class MatchImport extends MY_Model
       $this->reloadMatchTable();
       $this->reloadUmpireNameTypeMatchTable();
       
+      
+      
       //$this->recreateNormalisedTablendexes();
       //$this->recreateMVIndexes();
 
       //Reload tables for the reports
+      
       $this->reloadMVReport01Table();
       $this->reloadMVReport02Table();
       $this->reloadMVSummaryStaging();
@@ -98,7 +103,14 @@ class MatchImport extends MY_Model
   private function deleteFromSingleTable($tableName) {
       $queryString = "DELETE FROM ". $tableName;
       $this->db->query($queryString);
-      //echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteFromSingleTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
+      }
+      
+      
   }
   
   private function reloadRoundTable() {
@@ -110,7 +122,14 @@ class MatchImport extends MY_Model
         "INNER JOIN league ON league.ID = competition_lookup.league_id " .
         "ORDER BY match_import.Round, match_import.Date";
       $this->db->query($queryString);
-      //echo "Query run: reloadRoundTable, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadRoundTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadRoundTable, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+      
+      
   }
   
   private function reloadUmpireTable() {
@@ -146,7 +165,14 @@ class MatchImport extends MY_Model
         ") AS com " . 
         "WHERE UMPIRE_FULLNAME IS NOT NULL";
       $this->db->query($queryString);
-      //echo "Query run: reloadUmpireTable, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadUmpireTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadUmpireTable, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+      
+      
   }
   
   private function reloadUmpireNameTypeTable() {
@@ -189,9 +215,16 @@ class MatchImport extends MY_Model
         ")  AS com2 " .
         "INNER JOIN umpire ON com2.first_name = umpire.first_name AND com2.last_name = umpire.last_name " .
         "INNER JOIN umpire_type ON com2.umpire_type = umpire_type.umpire_type_name";
-      //echo "reloadUmpireNameTypeTable SQL:<BR />" . $queryString . "<BR />";
+      
       $this->db->query($queryString);
-      //echo "Query run: reloadUmpireNameTypeTable, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadUmpireNameTypeTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadUmpireNameTypeTable, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+      
+      
   }
   
   private function reloadMatchStagingTable() {
@@ -276,7 +309,14 @@ class MatchImport extends MY_Model
             "AND m1.home_team_id = m2.home_team_id " .
             "AND m1.away_team_id = m2.away_team_id";
       $this->db->query($queryString);
-      //echo "Query run: deleteDuplicateMatches<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteDuplicateMatches SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: deleteDuplicateMatches<BR />";
+      }
+      
+      
       
   }
   
@@ -285,7 +325,13 @@ class MatchImport extends MY_Model
         "SELECT match_staging.round_ID, match_staging.ground_id, match_staging.home_team_id, match_staging.away_team_id, match_staging.appointments_time " .
         "FROM match_staging";
       $this->db->query($queryString);
-      //echo "Query run: reloadMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMatchTable SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+      
   }
   
   private function reloadUmpireNameTypeMatchTable() {
@@ -513,8 +559,12 @@ class MatchImport extends MY_Model
         "ORDER BY first_name, last_name, club_name, short_league_name, age_group, umpire_type_name";
 
       $this->db->query($queryString);
-      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      //echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMVReport01Table SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
   
   }
   
@@ -691,8 +741,12 @@ class MatchImport extends MY_Model
       
       
       $this->db->query($queryString);
-      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      //echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMVReport03Table SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
       
   }
   
@@ -757,8 +811,12 @@ class MatchImport extends MY_Model
         "ORDER BY weekdate";
   
       $this->db->query($queryString);
-      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      //echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMVReport03Table SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
   
   }
   
@@ -844,10 +902,13 @@ class MatchImport extends MY_Model
             "GROUP BY club ".
             "ORDER BY club; ";
       
-  
       $this->db->query($queryString);
-      //echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-      //echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMVReport04Table SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport04Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
   
   }
   
@@ -888,10 +949,11 @@ class MatchImport extends MY_Model
             "ORDER BY ua.umpire_type_id, ua.age_group_id";
 
       $this->db->query($queryString);
+      
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
-          echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
-          echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+          echo "--reloadMVReport05Table SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport05Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   }
   
@@ -906,6 +968,9 @@ class MatchImport extends MY_Model
       );
 
       $queryStatus = $this->db->insert('imported_files', $data);
+      
+      
+      
       //echo "Query run: logImportedFile, " . $this->db->affected_rows() . " rows.<BR />";
       
   }

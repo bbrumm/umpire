@@ -43,7 +43,7 @@ echo form_open('report');
 <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Umpire Discipline:</span>
 	<span class="reportSelectorControl">
-		<select name="umpireType" id="umpireType">
+		<select name="umpireType" id="umpireType" onchange="updateHiddenValues()">
     		<option value="All" selected>All</option>
     		<option value="Field">Field</option>
     		<option value="Boundary">Boundary</option>
@@ -55,7 +55,7 @@ echo form_open('report');
 <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Age Group:</span>
 	<span class="reportSelectorControl">
-		<select name="age" id="age">
+		<select name="age" id="age" onchange="updateHiddenValues()">
     		<option value="All" selected>All</option>
     		<option value="Seniors">Seniors</option>
     		<option value="Reserves">Reserves</option>
@@ -71,7 +71,7 @@ echo form_open('report');
 <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">League:</span>
 	<span class="reportSelectorControl">
-		<select name="league" id="league">
+		<select name="league" id="league" onchange="updateHiddenValues()">
     		<option value="All" selected>All</option>
     		<option value="BFL">BFL</option>
     		<option value="GFL">GFL</option>
@@ -84,10 +84,12 @@ echo form_open('report');
 
 <div class="reportSelectorRow">
 <input type="submit" value="View Report" class="btn">
+<!-- Why are these here?
+They are needed for reports where the drop-downs are disabled, as the next page needs values for these.
 <input type='hidden' id='umpireTypeHidden' name='umpireType' value='All' />
 <input type='hidden' id='ageHidden' name='age' value='All' />
 <input type='hidden' id='leagueHidden' name='league' value='All' />
-
+-->
 </div>
 </form>
 

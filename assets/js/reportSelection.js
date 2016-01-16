@@ -7,7 +7,7 @@ function disableSelectBoxes() {
 	
 	var reportSelectionValue = document.getElementById("reportName").value;
 	//window.alert(reportSelectionValue);
-	if (reportSelectionValue == '03' || reportSelectionValue == '04') {
+	if (reportSelectionValue == '03' || reportSelectionValue == '04' || reportSelectionValue == '05') {
 		//Disable selection and update the hidden element
 		document.getElementById('umpireType').disabled = true;
 		document.getElementById('age').disabled = true;
@@ -31,3 +31,13 @@ function disableSelectBoxes() {
 	
 	
 }
+
+function updateHiddenValues() {
+	
+	document.getElementById('umpireTypeHidden').value = document.getElementById('umpireType').value;
+	document.getElementById('ageHidden').value = document.getElementById('age').value;
+	document.getElementById('leagueHidden').value = document.getElementById('league').value;
+	
+	
+}
+
