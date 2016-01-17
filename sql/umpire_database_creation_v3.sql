@@ -1536,8 +1536,9 @@ INSERT INTO `report_column_lookup` (`report_column_lookup_id`, `filter_name`, `f
 (467, 'umpire_type', 'All', 5, 153),
 (468, 'umpire_type', 'All', 5, 154),
 (469, 'umpire_type', 'All', 5, 155),
-(470, 'umpire_type', 'All', 5, 156);
-
+(470, 'umpire_type', 'All', 5, 156),
+(471, 'umpire_type', 'All', 2, 92),
+(472, 'umpire_type', 'Field', 2, 92);
 -- --------------------------------------------------------
 
 --
