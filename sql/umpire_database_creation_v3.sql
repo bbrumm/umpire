@@ -878,7 +878,8 @@ DELETE FROM mv_summary_staging;
 CREATE TABLE IF NOT EXISTS `report_column` (
   `report_column_id` int(11) NOT NULL,
   `column_name` varchar(200) DEFAULT NULL,
-  `column_function` varchar(50) DEFAULT NULL
+  `column_function` varchar(50) DEFAULT NULL,
+  `overall_toal` INT(1) DEFAULT 1
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1043,6 +1044,10 @@ INSERT INTO `report_column` (`report_column_id`, `column_name`, `column_function
 (155, 'None', NULL),
 (156, 'Total', NULL);
 
+
+update umpire.report_column
+set overall_total = 0
+where report_column_id = 92;
 -- --------------------------------------------------------
 
 --

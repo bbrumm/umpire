@@ -83,6 +83,7 @@ class ReportDisplayOptions {
 	    $this->firstColumnFormat = $pValue;
 	}
 	
+	
 }
 
 ?>

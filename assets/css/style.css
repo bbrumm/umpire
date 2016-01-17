@@ -277,6 +277,11 @@ th, td
 	
 }
 
+.cellTextTotal {
+	font-weight: bold;
+	
+}
+
 
 tr:nth-child(even) {
 	background: #e5e5e5;

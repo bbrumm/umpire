@@ -40,7 +40,19 @@ class report_model extends CI_Model {
 			    $reportParameters['umpireType'], $reportParameters['league']);
 			
 			$query = $this->db->query($columnLabelQuery);
-			$reportToDisplay->setColumnLabelResultArray($query->result_array());
+			
+			$columnLabelResultArray = $query->result_array();
+			
+			//Add an extra entry if it is report 2, for the Total column
+			if ($reportParameters['reportName'] == '02') {
+    			$columnLabelResultArray[] = array(
+    			    'column_name' => 'Total',
+    			    'report_column_id' => '0',
+    			    'age_group' => 'Total',
+    			    'short_league_name' => ''
+    			);
+			}
+			$reportToDisplay->setColumnLabelResultArray($columnLabelResultArray);
 			
 			/*
 			echo "getColumnLabelResultArray<pre>";
@@ -162,14 +174,59 @@ class report_model extends CI_Model {
         if ($debugMode) {
 	       echo "Column Query: $columnQuery <BR/>";
         }
+        
+        //Run the query to find what columns to select from the report table
 	    $query = $this->db->query($columnQuery);
 	    $queryResultArray = $query->result_array();
 	    $columnsToSelect = $queryResultArray[0]["COLS"];
-	/*
-	    echo "columnsToSelect<pre>";
-	    print_r($columnsToSelect);
-	    echo "</pre>";
-	*/
+	    
+	    //Add a Totals column for report 2.
+	    //This is done as a separate query, then concatenated, to make it easier
+	    
+	    if ($pReportName == '02') {
+	        
+	        $columnQuery = "SELECT GROUP_CONCAT(gc.column_name SEPARATOR ' + ') as COLS ".
+	            "FROM (" .
+	            "SELECT DISTINCT CASE " .
+	            "WHEN rc.column_function IS NULL THEN CONCAT('`', rc.column_name, '`') " .
+	            "ELSE CONCAT(rc.column_function, '(`', rc.column_name, '`', ')') " .
+	            "END AS column_name " .
+	            "FROM report_column rc " .
+	            "JOIN report_column_lookup rcl ON rc.report_column_id = rcl.report_column_id " .
+	            "JOIN report_table rt ON rcl.report_table_id = rt.report_table_id " .
+	            "JOIN report_column_lookup_display rcld ON rcld.report_column_id = rc.report_column_id ";
+
+	        $columnQuery .= "WHERE rcl.filter_name = 'short_league_name' AND rcl.filter_value = '". $pLeague ."' " .
+	            "AND rt.report_name = ". $pReportName ." " .
+                "AND rc.report_column_id IN ( " .
+                "SELECT DISTINCT rcld2.report_column_id " .
+                "FROM report_column_lookup_display rcld2 " .
+                "INNER JOIN report_column rc2 ON rcld2.report_column_id = rc2.report_column_id " .
+                "INNER JOIN report_column_lookup rcl2 ON rc2.report_column_id = rcl2.report_column_id " .
+                "INNER JOIN report_table rt2 ON rcl2.report_table_id = rt2.report_table_id " .
+                "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value = '". $pAge ."' " .
+                "AND rt2.report_name = ". $pReportName .")";
+
+	        $columnQuery .= "AND rcld.column_display_filter_name = 'short_league_name' " .
+	   	        "AND rc.overall_total = 1 " .
+	            "ORDER BY rc.column_name ASC" .
+	            ") gc;";
+	        
+	        $query = $this->db->query($columnQuery);
+	        $queryResultArray = $query->result_array();
+	        
+	        //Concatenate the results of this query to the original query
+	        $columnsToSelect .= ", " . $queryResultArray[0]["COLS"] . " as Total";
+	    
+	    }
+	    
+	    
+	    if ($debugMode) {
+    	    /*echo "columnsToSelect<pre>";
+    	    print_r($columnsToSelect);
+    	    echo "</pre>";*/
+	        echo "<BR />columnsToSelect (". $columnsToSelect .") <BR />";
+	    }
 	    //Build WHERE clause
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague);
 	  //  echo "whereClause(". $whereClause .")<BR/>";
@@ -304,33 +361,17 @@ class report_model extends CI_Model {
                "AND rt2.report_name = ". $pReportName .")";
 	    }
 	    
-	    /*
-	    $columnLabelQuery = "SELECT DISTINCT rc.column_name, rcld.report_column_id, " .
-            	"(SELECT rcld3.column_display_name " .
-            	"FROM report_column_lookup_display rcld3 " .
-            	"WHERE rcld3.report_column_id = rcld.report_column_id " .
-            	"AND rcld3.column_display_filter_name = 'short_league_name') as short_league_name, " .
-            	"(SELECT rcld2.column_display_name " .
-            	"FROM report_column_lookup_display rcld2 " .
-            	"WHERE rcld2.report_column_id = rcld.report_column_id " .
-            	"AND rcld2.column_display_filter_name = 'club_name') as club_name " .
-            "FROM report_column_lookup_display rcld " .
-            "JOIN report_column rc ON rcld.report_column_id = rc.report_column_id " .
-            "JOIN report_column_lookup rcl ON rc.report_column_id = rcl.report_column_id " .
-            "JOIN report_table rt ON rcl.report_table_id = rt.report_table_id " .
-            "JOIN mv_report_05 mv ON rcld.column_display_name = mv.short_league_name " .
-            "WHERE rcl.filter_name = 'short_league_name' " .
-            "AND rcl.filter_value = '". $pLeague ."' " .
-            "AND rt.report_name = ". $pReportName ." ";*/
         
         if ($pReportName == '01' && $pAge != "All") {
             $columnLabelQuery .= "AND mv.age_group = '". $pAge ."' ";
 	    }
 	    
         $columnLabelQuery .= "ORDER BY rcld.report_column_id, rcld.column_display_filter_name;";
-	    
-        //echo "columnLabelQuery " . $columnLabelQuery . "<BR />";
-	    
+        
+        $debugMode = $this->config->item('debug_mode');
+        if ($debugMode) {
+            echo "<BR />columnLabelQuery " . $columnLabelQuery . "<BR />";
+        }
 	    return $columnLabelQuery;
 	}
 	

@@ -60,6 +60,8 @@ class UserReport extends CI_Model {
 	private $reportRowLabelQuery;
 	private $columnLabelResultArray;
 	private $rowLabelResultArray;
+	
+	private $reportID;
 
 	public $reportDisplayOptions;
 	
@@ -84,6 +86,7 @@ class UserReport extends CI_Model {
     			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
     			$this->reportDisplayOptions->setColourCells(TRUE);
     			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
+    			$this->reportID = 1;
     			break;
 	        case 2:
 	            $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport02);
@@ -95,6 +98,7 @@ class UserReport extends CI_Model {
 	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
 	            $this->reportDisplayOptions->setColourCells(FALSE);
 	            $this->reportTitle = "02 - Umpire Names by League - ". $reportParameters['umpireType'];
+	            $this->reportID = 2;
 	            break;
             case 3:
                 $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport03);
@@ -106,6 +110,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportTitle = "03 - Summary by Week";
+                $this->reportID = 3;
                 break;
             case 4:
                 $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport04);
@@ -117,6 +122,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportTitle = "04 - Summary by Club";
+                $this->reportID = 4;
                 break;
             case 5:
                 $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport05);
@@ -128,6 +134,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportTitle = "05 - Games with Zero Umpires For Each League";
+                $this->reportID = 5;
                 break;
 
 		}
@@ -195,6 +202,15 @@ class UserReport extends CI_Model {
 	
 	public function getRowLabelResultArray() {
 		return $this->rowLabelResultArray;
+	}
+	
+	public function setReportID($pValue) {
+	    $this->reportID = $pValue;
+	}
+	
+	public function getReportID() {
+	    return $this->reportID;
+	    
 	}
 	
 	public function getColumnCountForHeadingCells() {

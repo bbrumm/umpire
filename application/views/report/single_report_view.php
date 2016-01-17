@@ -32,6 +32,7 @@ echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 
 <?php 
 //$debugLibrary->debugOutput("test");
+/*
 if ($debugMode) {
     echo "<BR />rowLabels<pre>";
     print_r($rowLabels);
@@ -52,7 +53,10 @@ if ($debugMode) {
     echo "<BR />loadedResultArray<pre>";
     print_r($loadedResultArray);
     echo "</pre><BR />";
+    
+   
 }
+*/
 $columnHeadingLabels = $reportDisplayOptions->getColumnHeadingLabel();
 
 //echo "countFirstLoadedColumnGroupings: ". $countFirstLoadedColumnGroupings;
@@ -93,6 +97,8 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
     	$thOutput .= "</th>";
     	echo $thOutput;
 	}
+	
+	
 	
 	$countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
 	//echo "countLoadedColumnGroupings: ". $countLoadedColumnGroupings;
@@ -149,9 +155,22 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 			echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$columnCountForHeadingCells[$i][$j]["label"]."</div></th>";
 			//TODO: Does a DIV need to go here??
 		}
+		
+		
+		
+		
 		//else
 		//nothing - don't even write a td		
 	}
+	/*
+	if ($loadedReportItem->getReportID() == 2) {
+	    if ($i == 0) {
+	        //Display the Total column if we are looking at report 2
+	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'>Total</div></th>";
+	    } else {
+	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'> </div></th>";
+	    }
+	}*/
 	//echo "<td>".$a."</td>";
 	?>
 	</tr>
@@ -200,11 +219,13 @@ foreach ($loadedResultArray as $resultRow):
 	
 	//$currentReportRowLabel = $resultRow[$rowLabels[0]];
 	
+	
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
 		//$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
 		//$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
 /*echo "X=(". $resultRow[$loadedColumnGroupings[$i]['column_name']] ."),";*/
+	    
 		if (
 		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) ||
 		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0)
@@ -219,6 +240,11 @@ foreach ($loadedResultArray as $resultRow):
 		            $cellClassToUse = "cellNumber cellNormal";
 		        } else {
 		            $cellClassToUse = "cellText cellNormal";
+		        }
+		        
+		        if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
+		            $cellClassToUse .= " cellTextTotal";
+		        
 		        }
 		        $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
 		} else {
