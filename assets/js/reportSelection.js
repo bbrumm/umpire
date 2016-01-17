@@ -9,6 +9,8 @@ function disableSelectBoxes() {
 	//window.alert(reportSelectionValue);
 	if (reportSelectionValue == '03' || reportSelectionValue == '04' || reportSelectionValue == '05') {
 		//Disable selection and update the hidden element
+		
+		
 		document.getElementById('umpireType').disabled = true;
 		document.getElementById('age').disabled = true;
 		document.getElementById('league').disabled = true;
@@ -16,6 +18,10 @@ function disableSelectBoxes() {
 		document.getElementById('umpireTypeHidden').value = 'All';
 		document.getElementById('ageHidden').value = 'All';
 		document.getElementById('leagueHidden').value = 'All';
+		
+		
+
+		
 		
 	} else {
 		//Enable selection and update the hidden elements to match the selection element

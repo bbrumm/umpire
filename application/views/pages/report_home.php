@@ -84,12 +84,16 @@ echo form_open('report');
 
 <div class="reportSelectorRow">
 <input type="submit" value="View Report" class="btn">
-<!-- Why are these here?
+<!--
+Why are these here?
 They are needed for reports where the drop-downs are disabled, as the next page needs values for these.
+-->
 <input type='hidden' id='umpireTypeHidden' name='umpireType' value='All' />
 <input type='hidden' id='ageHidden' name='age' value='All' />
 <input type='hidden' id='leagueHidden' name='league' value='All' />
--->
+
 </div>
 </form>
-
+<script>
+disableSelectBoxes();
+</script>

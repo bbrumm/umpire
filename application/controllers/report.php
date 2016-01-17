@@ -11,7 +11,11 @@ class Report extends CI_Controller {
 	}
 	
 	public function index() {
-		$reportParameters = array(
+	    echo "POST<pre>";
+	    print_r($_POST);
+	    echo "</pre><BR />";
+	    
+	    $reportParameters = array(
 			'reportName' => $_POST['reportName'], 
 			'season' => $_POST['season'], 
 			'age' => $_POST['age'], 
@@ -21,9 +25,7 @@ class Report extends CI_Controller {
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
 		
-		echo "POST<pre>";
-		print_r($_POST);
-		echo "</pre><BR />";
+		
 		
 		
 		echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
