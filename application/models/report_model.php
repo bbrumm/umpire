@@ -1,5 +1,5 @@
 <?php
-	require_once('Userreport.php');
+	require_once('UserReport.php');
 	define('__ROOT__', dirname(dirname(__FILE__))); 
 	require_once(__ROOT__.'/libraries/array_library.php');
 	

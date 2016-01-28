@@ -879,7 +879,7 @@ CREATE TABLE IF NOT EXISTS `report_column` (
   `report_column_id` int(11) NOT NULL,
   `column_name` varchar(200) DEFAULT NULL,
   `column_function` varchar(50) DEFAULT NULL,
-  `overall_toal` INT(1) DEFAULT 1
+  `overall_total` INT(1) DEFAULT 1
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
