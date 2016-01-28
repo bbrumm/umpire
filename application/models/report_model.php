@@ -161,7 +161,15 @@ class report_model extends CI_Model {
 	            "INNER JOIN report_column_lookup rcl2 ON rc2.report_column_id = rcl2.report_column_id " .
 	            "INNER JOIN report_table rt2 ON rcl2.report_table_id = rt2.report_table_id " .
 	            "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value = '". $pAge ."' " .
-	            "AND rt2.report_name = ". $pReportName .")";
+	            "AND rt2.report_name = ". $pReportName ." ";
+	            $columnQuery .= "AND rcld2.report_column_id IN ( " .
+				"SELECT DISTINCT rcld3.report_column_id " .
+				"FROM report_column_lookup_display rcld3 " .
+				"INNER JOIN report_column rc3 ON rcld3.report_column_id = rc3.report_column_id " .
+				"INNER JOIN report_column_lookup rcl3 ON rc3.report_column_id = rcl3.report_column_id " .
+				"INNER JOIN report_table rt3 ON rcl3.report_table_id = rt3.report_table_id " .
+				"WHERE (rcl3.filter_name = 'umpire_type' AND rcl3.filter_value = '". $pUmpireType ."' " .
+				"AND rt3.report_name = ". $pReportName ."))) ";
 	        }
 	    
     	    if ($pReportName == '01' && $pAge != "All") {
@@ -228,7 +236,7 @@ class report_model extends CI_Model {
 	        echo "<BR />columnsToSelect (". $columnsToSelect .") <BR />";
 	    }
 	    //Build WHERE clause
-	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague);
+	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName);
 	  //  echo "whereClause(". $whereClause .")<BR/>";
 	     
 	    
@@ -266,7 +274,7 @@ class report_model extends CI_Model {
 	         
 	}
 	
-	private function buildWhereClause($pSeason, $pAgeGroup, $pUmpireType, $pLeague) {
+	private function buildWhereClause($pSeason, $pAgeGroup, $pUmpireType, $pLeague, $pReportName) {
 	    $whereClause = NULL;
 	    
 	    if ($pAgeGroup != 'All' || $pUmpireType != 'All' || $pLeague != 'All') {
@@ -293,7 +301,7 @@ class report_model extends CI_Model {
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;
             }
-            $whereClause .= "short_league_name = '$pLeague'";
+            $whereClause .= "short_league_name = '$pLeague' ";
         }
          
 	    return $whereClause;
@@ -358,7 +366,15 @@ class report_model extends CI_Model {
 			   "INNER JOIN report_column_lookup rcl2 ON rc2.report_column_id = rcl2.report_column_id " .
 			   "INNER JOIN report_table rt2 ON rcl2.report_table_id = rt2.report_table_id " .
                "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value = '". $pAge ."' " .
-               "AND rt2.report_name = ". $pReportName .")";
+               "AND rt2.report_name = ". $pReportName ." ";
+            $columnLabelQuery .= "AND rcld2.report_column_id IN ( " .
+                "SELECT DISTINCT rcld3.report_column_id " .
+                "FROM report_column_lookup_display rcld3 " .
+                "INNER JOIN report_column rc3 ON rcld3.report_column_id = rc3.report_column_id " .
+                "INNER JOIN report_column_lookup rcl3 ON rc3.report_column_id = rcl3.report_column_id " .
+                "INNER JOIN report_table rt3 ON rcl3.report_table_id = rt3.report_table_id " .
+                "WHERE (rcl3.filter_name = 'umpire_type' AND rcl3.filter_value = '". $pUmpireType ."' " .
+                "AND rt3.report_name = ". $pReportName ."))) ";
 	    }
 	    
         

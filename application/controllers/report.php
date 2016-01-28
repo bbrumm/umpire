@@ -11,10 +11,10 @@ class Report extends CI_Controller {
 	}
 	
 	public function index() {
-	    echo "POST<pre>";
+	    /*echo "POST<pre>";
 	    print_r($_POST);
 	    echo "</pre><BR />";
-	    
+	    */
 	    $reportParameters = array(
 			'reportName' => $_POST['reportName'], 
 			'season' => $_POST['season'], 
