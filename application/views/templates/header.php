@@ -3,6 +3,7 @@
 	<head>
 		<title>Umpire Report</title>
 <?php
+include_once("analyticstracking.php");
 $this->load->helper('url');       
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
