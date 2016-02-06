@@ -53,7 +53,7 @@ ORDER BY [last_name] & ", " & [first_name];
 
 
 --qryUmpireNamesOnly Improved for MySQL
-SELECT umpire_type.umpire_type_name, age_group.ID, age_group.age_group, league.short_league_name, last_name & ", " & first_name AS full_name, Count(match_played.ID) AS CountOfID
+SELECT umpire_type.umpire_type_name, age_group.ID, age_group.age_group, league.short_league_name, CONCAT(last_name, ", ", first_name) AS full_name, Count(match_played.ID) AS CountOfID
 FROM umpire
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id
@@ -63,5 +63,5 @@ INNER JOIN round ON round.ID = match_played.round_id
 INNER JOIN league ON league.ID = round.league_id
 INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id
 INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id
-GROUP BY umpire_type.umpire_type_name, age_group.ID, age_group.age_group, league.short_league_name, [last_name] & ", " & [first_name]
-ORDER BY last_name & ", " & first_name;
+GROUP BY umpire_type.umpire_type_name, age_group.ID, age_group.age_group, league.short_league_name, CONCAT(last_name, ", ", first_name)
+ORDER BY CONCAT(last_name, ", ", first_name);

@@ -38,9 +38,17 @@ class UserReport extends CI_Model {
 	private $columnGroupForReport05 = array(
 	    'short_league_name'
 	);
+	
 	private $rowGroupForReport05 = array(
 	    'umpire_type',
 	    'age_group'
+	);
+	
+	private $columnGroupForReport06 = array(
+	    'full_name'
+	);
+	private $rowGroupForReport06 = array(
+	    'full_name'
 	);
     
 		
@@ -49,6 +57,7 @@ class UserReport extends CI_Model {
 	private $fieldForReport03 = 'match_count';
 	private $fieldForReport04 = 'match_count';
 	private $fieldForReport05 = 'match_count';
+	private $fieldForReport06 = 'match_count';
 	
 	private $reportQuery;
 	private $resultArray;
@@ -74,7 +83,7 @@ class UserReport extends CI_Model {
 		/*echo "<pre>";
 		print_r($reportParameters);
 		echo "</pre>";*/
-	    
+	    //TODO: Clean up this switch statement to remove code repetition 
 	    switch ($reportParameters['reportName']) {
 	        case 1:
     			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport01);
@@ -135,6 +144,18 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportTitle = "05 - Games with Zero Umpires For Each League";
                 $this->reportID = 5;
+                break;
+            case 6:
+                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport06);
+                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport06);
+                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport06);
+                $this->reportDisplayOptions->setNoDataValue("");
+                $this->reportDisplayOptions->setColumnHeadingLabel(array("Name"));
+                $this->reportDisplayOptions->setFirstColumnFormat("text");
+                $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
+                $this->reportDisplayOptions->setColourCells(FALSE);
+                $this->reportTitle = "06 - Umpire Pairing";
+                $this->reportID = 6;
                 break;
 
 		}

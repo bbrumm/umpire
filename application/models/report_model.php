@@ -21,59 +21,263 @@ class report_model extends CI_Model {
 			//Find table name to select data from
 			$reportTableName = $this->lookupReportTableName($reportParameters['reportName']);
 			//echo "reportTableName (" . $reportTableName .")";
-				
-			//Build SELECT query for report
-			$queryForReport = $this->buildSelectQueryForReport($reportToDisplay, $reportTableName, $reportParameters['reportName'],
-			    $reportParameters['season'], $reportParameters['age'],
-			    $reportParameters['umpireType'], $reportParameters['league']);
-				
 			
-			//$this->reportQuery = $queryForReport;
-
-			$query = $this->db->query($queryForReport);
-				
-			$reportToDisplay->setResultArray($query->result_array());
+			if ($reportParameters['reportName'] == '06') {
+			    //Build SELECT query for report data
+			    $queryForReport = $this->buildSelectQueryForReport6($reportToDisplay, $reportTableName, $reportParameters['reportName'],
+			        $reportParameters['season'], $reportParameters['age'],
+			        $reportParameters['umpireType'], $reportParameters['league']);
+			    
+			    print "Report 6 Query: ". $queryForReport ."<BR />";
+			        
+			    
+			    //Run query and store result in array
+			    $query = $this->db->query($queryForReport);			    
+			    
+			    //Transform array to pivot
+			    $queryResultArray = $query->result_array();
+			    
+			    //Params: queryResultArray, fieldForColumnHeadings
+			    $pivotedResultArray = $this->pivotQueryArray($queryResultArray, 'first_umpire', 'second_umpire');
+			    
+			    //Find column labels using SELECT query
+			    
+			    //Set column label array
+			    
+			    //Return
+			    
+			    
+			} else {
+    			//Build SELECT query for report
+    			$queryForReport = $this->buildSelectQueryForReport($reportToDisplay, $reportTableName, $reportParameters['reportName'],
+    			    $reportParameters['season'], $reportParameters['age'],
+    			    $reportParameters['umpireType'], $reportParameters['league']);
+        		
+    			
+    			//$this->reportQuery = $queryForReport;
+    
+    			$query = $this->db->query($queryForReport);
+    				
+    			$reportToDisplay->setResultArray($query->result_array());
+    			
+    			//Look up the column labels for this report
+    			$columnLabelQuery = $this->buildColumnLabelQuery($reportTableName, $reportToDisplay, $reportParameters['reportName'], 
+    			    $reportParameters['season'], $reportParameters['age'],
+    			    $reportParameters['umpireType'], $reportParameters['league']);
+    			
+    			$query = $this->db->query($columnLabelQuery);
+    			
+    			$columnLabelResultArray = $query->result_array();
+    			
+    			//Add an extra entry if it is report 2, for the Total column
+    			if ($reportParameters['reportName'] == '02') {
+        			$columnLabelResultArray[] = array(
+        			    'column_name' => 'Total',
+        			    'report_column_id' => '0',
+        			    'age_group' => 'Total',
+        			    'short_league_name' => ''
+        			);
+    			}
+    			$reportToDisplay->setColumnLabelResultArray($columnLabelResultArray);
+    			
+    			/*
+    			echo "getColumnLabelResultArray<pre>";
+    			print_r($reportToDisplay->getColumnLabelResultArray());
+    			echo "</pre>";
+    			*/
+    			
+    			//Load the results from the queries for the column labels and row labels from the database and store them in an array
+    			//$columnLabelQuery = $this->db->query($reportToDisplay->getReportColumnLabelQuery());
+    			//$reportToDisplay->setColumnLabelResultArray($columnLabelQuery->result_array());
+    			
+    			//temp comment
+    			//$reportToDisplay->setColumnGroupingArray($columnLabelQuery->result_array());
+    			//$reportToDisplay->setColumnGroupingArray($reportToDisplay->getColumnLabelResultArray());
+    			//$reportToDisplay->setRowGroupingArray($rowLabelQuery->result_array());
+    
+    			return $reportToDisplay;
 			
-			//Look up the column labels for this report
-			$columnLabelQuery = $this->buildColumnLabelQuery($reportTableName, $reportToDisplay, $reportParameters['reportName'], 
-			    $reportParameters['season'], $reportParameters['age'],
-			    $reportParameters['umpireType'], $reportParameters['league']);
-			
-			$query = $this->db->query($columnLabelQuery);
-			
-			$columnLabelResultArray = $query->result_array();
-			
-			//Add an extra entry if it is report 2, for the Total column
-			if ($reportParameters['reportName'] == '02') {
-    			$columnLabelResultArray[] = array(
-    			    'column_name' => 'Total',
-    			    'report_column_id' => '0',
-    			    'age_group' => 'Total',
-    			    'short_league_name' => ''
-    			);
 			}
-			$reportToDisplay->setColumnLabelResultArray($columnLabelResultArray);
-			
-			/*
-			echo "getColumnLabelResultArray<pre>";
-			print_r($reportToDisplay->getColumnLabelResultArray());
-			echo "</pre>";
-			*/
-			
-			//Load the results from the queries for the column labels and row labels from the database and store them in an array
-			//$columnLabelQuery = $this->db->query($reportToDisplay->getReportColumnLabelQuery());
-			//$reportToDisplay->setColumnLabelResultArray($columnLabelQuery->result_array());
-			
-			//temp comment
-			//$reportToDisplay->setColumnGroupingArray($columnLabelQuery->result_array());
-			//$reportToDisplay->setColumnGroupingArray($reportToDisplay->getColumnLabelResultArray());
-			//$reportToDisplay->setRowGroupingArray($rowLabelQuery->result_array());
-
-			return $reportToDisplay;
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			
 		}
+	}
+	
+	//Turn a query result set into a pivot table result set
+	private function pivotQueryArray($pResultArray, $pFieldForRowLabel, $pFieldForColumnLabel) {
+	    /*
+	    echo "pivotQueryArray<pre>";
+	    print_r($pResultArray);
+	    echo "</pre>";
+	    */
+	    //Get distinct list of values in the field for column and row labels
+	    $rowLabelArray = $this->getDistinctListOfValues('first_umpire', $pResultArray);
+	    $columnLabelArray = $this->getDistinctListOfValues('second_umpire', $pResultArray);
+	    
+	    /*
+	     echo "rowLabelArray<pre>";
+	     print_r($rowLabelArray);
+	     echo "</pre>";
+	     
+	     echo "columnLabelArray<pre>";
+	     print_r($columnLabelArray);
+	     echo "</pre>";
+	     */
+	    
+	    //Create new array to hold values for output
+	    $pivotResultArray = array();
+	    
+	    $table = array();
+	    $first_umpire_names = array();
+	    
+	    /*
+	    echo "<table border=1>";
+	    //Headers
+	    echo "<tr>";
+	    for ($j=0; $j < count($columnLabelArray); $j++) {
+	        //print_r($item);
+	        echo "<td>". $columnLabelArray[$j] ."</td>";
+	    }
+	    echo "</tr>";
+	    */
+
+	    foreach ($pResultArray as $resultRow)
+	    {
+	        $second_umpire_names[] = $resultRow['second_umpire'];
+	        $table[$resultRow['first_umpire']][$resultRow['second_umpire']] = $resultRow['match_count'];
+	        //$total[$resultRow['first_umpire']] += $resultRow['match_count'];
+	    }
+	    /*
+	    echo "table<pre>";
+	    print_r($table);
+	    echo "</pre>";
+	    */
+	    $second_umpire_names = array_unique($second_umpire_names);
+	    
+	    echo "<table border=1>";
+	    echo "<tr><td>Name</td>";
+	    foreach ($second_umpire_names as $second_umpire) {
+	        echo "<td>". $second_umpire ."</td>";
+	        
+	    }
+	    echo "</tr>";
+	    
+	    foreach ($table as $firstUmpire => $secondUmpires)
+	    {
+	        
+	        //echo "$firstUmpire\t";
+	        echo "<tr>";
+	        echo "<td>". $firstUmpire ."</td>";
+	        foreach ($second_umpire_names as $second_umpire) {
+	            
+	            //echo "$secondUmpires[$second_umpire]\t";
+	            
+	            echo "<td>". $secondUmpires[$second_umpire] ."</td>";
+	            //echo "<td>-</td>";
+	            
+	        }
+	        echo "</tr>";
+	    }
+	    
+	    echo "</table>";
+	    
+	    
+	    //TEMP
+	    /*
+	    Replace round with second umpire
+	    Replace player with first umpire
+	    Replace score with match count
+	    
+	    
+	    foreach ($scores as $score)
+	    {
+	        $round_names[] = $score->Round_Name;
+	        $table[$score->Player_Name][$score->Round_Name] = $score->score;
+	        $total[$score->Player_Name] += $score->score;
+	    }
+	    
+	    $round_names = array_unique($round_names);
+	    
+	    foreach ($table as $player => $rounds)
+	    {
+	        echo "$player\t";
+	        foreach ($round_names as $round)
+	            echo "$rounds[$round]\t";
+	            echo "$total[$player]\n";
+	    }
+	    
+	    */
+	    
+	    
+	    /*
+	    //Create dashes array
+	    $dashes = array_fill(0, count($rowLabelArray), array_fill(0, count($columnLabelArray), '-'));
+	    
+	    //Populate array
+	    //Item is the array item that contains first_umpire, second_umpire, and match_count
+	    foreach ($pResultArray as $num => $item) {
+	        //$dashes[$num][$num] = $item['match_count'];
+	        $dashes[$num][$num] = $item;
+	        
+	    }
+	    
+	    echo "dashes<pre>";
+	    print_r($dashes);
+	    echo "</pre>";
+	    
+	    echo "Count J: " . count($columnLabelArray);
+	    echo "Count I: " . count($rowLabelArray);
+	    
+	    echo "<table border=1>";
+	    //Headers
+	    echo "<tr>";
+	    for ($j=0; $j < count($columnLabelArray); $j++) {
+	        //print_r($item);
+	        echo "<td>". $columnLabelArray[$j] ."</td>";
+	    }
+	    echo "</tr>";
+	    
+	    
+	    //Rows
+	    for ($i=0; $i < count($rowLabelArray); $i++) {
+	        echo "<tr>";
+	        echo "<td>". $rowLabelArray[$i] ."</td>";
+    	    
+    	    //foreach ($dashes as $num => $item) {
+    	    for ($j=0; $j < count($dashes[$i]); $j++) {
+    	        //print_r($item);
+    	       echo "<td>". $dashes[$i][$j] ."</td>";    
+    	    }
+    	    
+    	    echo "</tr>";
+	    }
+	    
+	    echo "</table>";
+	    */
+	}
+	
+	
+	
+	private function getDistinctListOfValues($pFieldNameToCheck, $pResultArray) {
+		$fieldList = array();
+		
+		for ($i=0, $numItems = count($pResultArray); $i < $numItems; $i++) {
+		    if (array_key_exists(0, $pResultArray)) {
+				$fieldList[$i] = $pResultArray[$i][$pFieldNameToCheck];
+			}
+			
+		}
+
+		$uniqueFieldList = array_unique($fieldList, SORT_REGULAR );
+		
+		usort($uniqueFieldList, 'compareStringValues');
+		/*
+		echo "<pre>";
+		print_r($uniqueFieldList);
+		echo "</pre>";
+		*/
+		return $uniqueFieldList;
 	}
 	
 	//Create distinct arrays for grouping purposes
@@ -101,13 +305,18 @@ class report_model extends CI_Model {
 		*/
 		$uniqueFieldList = array_unique($fieldList, SORT_REGULAR );
 
-		usort($uniqueFieldList, 'sortArray');
+		//usort($uniqueFieldList, 'compareValues');
 		
-		//echo "<pre>";
-		//print_r($uniqueFieldList);
-		//echo "</pre>";
+		/*
+		echo "<pre>";
+		print_r($uniqueFieldList);
+		echo "</pre>";
+		*/
 		return $uniqueFieldList;
 	}
+	
+   
+	
 	
 	//Find the table to select the data for the report. This tablename is stored in the database
 	public function lookupReportTableName($reportID) {
@@ -131,16 +340,19 @@ class report_model extends CI_Model {
 	    //TODO: Merge this query with the buildColumnLabels query, as it is quite similar.
 	    
 	    //Find columns to select from
-	    $columnQuery = "SELECT GROUP_CONCAT(gc.column_name SEPARATOR ', ') as COLS ".
-	        "FROM (" .
-	        "SELECT DISTINCT CASE " .
-                "WHEN rc.column_function IS NULL THEN CONCAT('`', rc.column_name, '` as `', rc.column_name, '`') " .
-                "ELSE CONCAT(rc.column_function, '(`', rc.column_name, '`', ') as `', rc.column_name, '`') " .
-            "END AS column_name " .
-	        "FROM report_column rc " .
-	        "JOIN report_column_lookup rcl ON rc.report_column_id = rcl.report_column_id " .
-	        "JOIN report_table rt ON rcl.report_table_id = rt.report_table_id " .
-	        "JOIN report_column_lookup_display rcld ON rcld.report_column_id = rc.report_column_id ";
+	    
+	    
+	    
+    	    $columnQuery = "SELECT GROUP_CONCAT(gc.column_name SEPARATOR ', ') as COLS ".
+    	        "FROM (" .
+    	        "SELECT DISTINCT CASE " .
+                    "WHEN rc.column_function IS NULL THEN CONCAT('`', rc.column_name, '` as `', rc.column_name, '`') " .
+                    "ELSE CONCAT(rc.column_function, '(`', rc.column_name, '`', ') as `', rc.column_name, '`') " .
+                "END AS column_name " .
+    	        "FROM report_column rc " .
+    	        "JOIN report_column_lookup rcl ON rc.report_column_id = rcl.report_column_id " .
+    	        "JOIN report_table rt ON rcl.report_table_id = rt.report_table_id " .
+    	        "JOIN report_column_lookup_display rcld ON rcld.report_column_id = rc.report_column_id ";
 	        
 	        //TODO: Remove this hard-coding
 	        if ($pReportName == '01') {
@@ -178,6 +390,7 @@ class report_model extends CI_Model {
             $columnQuery .= "AND rcld.column_display_filter_name = 'short_league_name' " .
                 "ORDER BY rc.column_name ASC" .
                 ") gc;";
+	    
 	    
         if ($debugMode) {
 	       echo "Column Query: $columnQuery <BR/>";
@@ -273,6 +486,65 @@ class report_model extends CI_Model {
 	    return $queryForReport;
 	         
 	}
+	
+	
+	
+	private function buildSelectQueryForReport6($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
+	    //Increase maximum length for GROUP_CONCAT value
+	    $debugMode = $this->config->item('debug_mode');
+	    //$query = $this->db->query("SET group_concat_max_len = 8000;");
+	     
+	    $rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
+	    
+	    //Build WHERE clause
+	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName);
+	
+
+	     
+	    /*
+	    $columnQuery = "SELECT GROUP_CONCAT(gc.column_name SEPARATOR ', ') as COLS ".
+	        "FROM (" .
+	        "SELECT DISTINCT second_umpire " .
+	        "FROM mv_report_06 ";
+	    
+	    $columnQuery .= $whereClause;
+	    $columnQuery .= "ORDER BY second_umpire ASC) gc;";
+
+	    if ($debugMode) {
+	        echo "Column Query: $columnQuery <BR/>";
+	    }
+	
+	    //Run the query to find what columns to select from the report table
+	    $query = $this->db->query($columnQuery);
+	    $queryResultArray = $query->result_array();
+	    $columnsToSelect = $queryResultArray[0]["COLS"];
+	     
+	    //Add a Totals column for report 2.
+	    //This is done as a separate query, then concatenated, to make it easier
+	     
+
+	    if ($debugMode) {
+
+	        echo "<BR />columnsToSelect (". $columnsToSelect .") <BR />";
+	    }
+	    */
+	    //Determine fields to select
+	
+	    //TODO: Replace the [0] with a string that concatenates all values in the array with a comma,
+	    //to handle cases where more than one field is shown in the row
+	    //Construct SQL query
+	    
+	    $queryForReport = "SELECT first_umpire, second_umpire, SUM(match_count) AS match_count " .
+	    "FROM " . $pReportTableName . " " . $whereClause . " " .
+	    "GROUP BY first_umpire, second_umpire;";
+	
+	    if ($debugMode) {
+	        echo "<BR/>Query For Report ($queryForReport)<BR/>";
+	    }
+	    return $queryForReport;
+	
+	}
+	
 	
 	private function buildWhereClause($pSeason, $pAgeGroup, $pUmpireType, $pLeague, $pReportName) {
 	    $whereClause = NULL;
