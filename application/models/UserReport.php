@@ -45,10 +45,10 @@ class UserReport extends CI_Model {
 	);
 	
 	private $columnGroupForReport06 = array(
-	    'full_name'
+	    'umpire_name'
 	);
 	private $rowGroupForReport06 = array(
-	    'full_name'
+	    'umpire_name'
 	);
     
 		
@@ -153,7 +153,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setColumnHeadingLabel(array("Name"));
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
-                $this->reportDisplayOptions->setColourCells(FALSE);
+                $this->reportDisplayOptions->setColourCells(TRUE);
                 $this->reportTitle = "06 - Umpire Pairing";
                 $this->reportID = 6;
                 break;
@@ -253,13 +253,17 @@ class UserReport extends CI_Model {
 	        
 	        $arrayKeyNumber = 0;
 	        
+	        
+	        
 	        //Loop through columnLabelResults
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
 	           if ($i == 0) {
-	               //echo "<BR />Find (" . $columnLabelResults[$j][$columnLabels[$i]] . ") in (";
-	               //echo $columnCountLabels[0] . ")<BR/>";
-	               //print_r($columnCountLabels[0]);
-	               //echo "<BR />";
+	               /*
+	               echo "<BR />Find (" . $columnLabelResults[$j][$columnLabels[$i]] . ") in (";
+	               echo $columnCountLabels[0] . ")<BR/>";
+	               print_r($columnCountLabels[0]);
+	               echo "<BR />";
+	               */
 	               //if (in_array($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[0]) == TRUE) {
 	               //if (array_key_exists($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[0]) == TRUE) {
 	               if (in_array_r($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[$i]) == TRUE) {

@@ -10,6 +10,7 @@ $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 //$debugLibrary = new DebugLibrary();
 $debugMode = $this->config->item('debug_mode');
+$reportID = $loadedReportItem->getReportID();
 
 //$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
@@ -32,7 +33,7 @@ echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 
 <?php 
 //$debugLibrary->debugOutput("test");
-/*
+
 if ($debugMode) {
     echo "<BR />rowLabels<pre>";
     print_r($rowLabels);
@@ -56,7 +57,7 @@ if ($debugMode) {
     
    
 }
-*/
+
 $columnHeadingLabels = $reportDisplayOptions->getColumnHeadingLabel();
 
 //echo "countFirstLoadedColumnGroupings: ". $countFirstLoadedColumnGroupings;
@@ -121,10 +122,12 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 			}
 		}*/
 		
+		
+		
 		if ($proceed) {
 			//print cell with colspan value
-			if ($columnLabels[$i] == 'club_name') {
-				//Club names are displayed differently
+			if ($columnLabels[$i] == 'club_name' || $reportID == 6) {
+				//Some reports have their headers displayed differently
 				$colspanForCell = 1;
 				if ($PDFLayout) {
 					//$cellClass = "rotatePDF";
@@ -228,7 +231,8 @@ foreach ($loadedResultArray as $resultRow):
 	    
 		if (
 		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) ||
-		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0)
+		    (($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0) &&
+		     ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== '0'))
 		    ) {
 		        /*echo "(Y)";*/
 		        //Match found for columns. Write record
@@ -244,15 +248,39 @@ foreach ($loadedResultArray as $resultRow):
 		        
 		        if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
 		            $cellClassToUse .= " cellTextTotal";
-		        
 		        }
-		        $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
+		        
+		        
+		        
+		        $cellValue = $resultRow[$loadedColumnGroupings[$i]["column_name"]];
+		        
+		        /*
+		        $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . 
+		        "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") " .
+		        "</td>";
+		        */
 		} else {
-		    $tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
+		    $cellClassToUse = "cellNormal";
+		    $cellValue = $noDataValueToDisplay;
+		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
+		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
 		}
+		
+		//Add on formatting for cells if matrix values are the same (e.g. row = column)
+		if ($reportID == 6) {
+		    //print "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") ";
+		    if ($resultRow[$rowLabels[0]] == $loadedColumnGroupings[$i]["column_name"]) {
+		        $cellClassToUse .= " cellRowMatchesColumn";
+		    }
+		}
+		
+		$tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $cellValue . "</td>";
      
 	}    
-		        
+	
+	
+	
+	
 	$tableRowOutput .= "</tr>";
 	echo $tableRowOutput;
 		        

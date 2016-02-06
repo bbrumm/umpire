@@ -28,7 +28,7 @@ class report_model extends CI_Model {
 			        $reportParameters['season'], $reportParameters['age'],
 			        $reportParameters['umpireType'], $reportParameters['league']);
 			    
-			    print "Report 6 Query: ". $queryForReport ."<BR />";
+			    //print "Report 6 Query: ". $queryForReport ."<BR />";
 			        
 			    
 			    //Run query and store result in array
@@ -37,15 +37,33 @@ class report_model extends CI_Model {
 			    //Transform array to pivot
 			    $queryResultArray = $query->result_array();
 			    
-			    //Params: queryResultArray, fieldForColumnHeadings
+			    $rowLabelArray = $this->getDistinctListOfValues('first_umpire', $queryResultArray);
+			    $columnLabelArray = $this->getDistinctListOfValues('second_umpire', $queryResultArray);
+			    
+			    //Params: queryResultArray, field for row, field for columns
 			    $pivotedResultArray = $this->pivotQueryArray($queryResultArray, 'first_umpire', 'second_umpire');
+                
+			    //Convert column labels into array for the output page
+			    $columnLabelArray = $this->convertSimpleArrayToColumnLabelArray($columnLabelArray);
 			    
-			    //Find column labels using SELECT query
 			    
-			    //Set column label array
+			    //Set values for result array and column label array
+			    $reportToDisplay->setResultArray($pivotedResultArray);
+			    $reportToDisplay->setColumnLabelResultArray($columnLabelArray);
+			    
+			    /*
+			     echo "getColumnLabelResultArray<pre>";
+			     print_r($reportToDisplay->getColumnLabelResultArray());
+			     echo "</pre>";
+			     
+			     echo "getResultArray<pre>";
+			     print_r($reportToDisplay->getResultArray());
+			     echo "</pre>";
+			     */
+			    
 			    
 			    //Return
-			    
+			    return $reportToDisplay;
 			    
 			} else {
     			//Build SELECT query for report
@@ -95,6 +113,16 @@ class report_model extends CI_Model {
     			//$reportToDisplay->setColumnGroupingArray($reportToDisplay->getColumnLabelResultArray());
     			//$reportToDisplay->setRowGroupingArray($rowLabelQuery->result_array());
     
+    			/*
+    			echo "getColumnLabelResultArray<pre>";
+    			print_r($reportToDisplay->getColumnLabelResultArray());
+    			echo "</pre>";
+    			
+    			echo "getResultArray<pre>";
+    			print_r($reportToDisplay->getResultArray());
+    			echo "</pre>";
+    			*/
+    			
     			return $reportToDisplay;
 			
 			}
@@ -102,6 +130,48 @@ class report_model extends CI_Model {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			
 		}
+	}
+	
+	private function convertSimpleArrayToColumnLabelArray($pArray) {
+	    /*
+	     *** Input format: ***
+Array
+(
+    [0] => Abbott, Trevor
+    [1] => Abrehart, Jack
+    [2] => Abrehart, Tom
+    [3] => Arnott, Tim
+
+	     *** Output format:**
+Array
+(
+    [0] => Array
+        (
+            [column_name] => BFL|Anglesea
+            [report_column_id] => 1
+            [short_league_name] => BFL
+            [club_name] => Anglesea
+        )
+
+    [1] => Array
+        (
+            [column_name] => BFL|Barwon_Heads
+            [report_column_id] => 2
+            [short_league_name] => BFL
+            [club_name] => Barwon Heads
+        )
+	     */
+	    
+	    $outputArray = array();
+	    
+	    foreach($pArray as $key => $value) {
+	        $outputArray[$key]['column_name'] = $value;
+	        $outputArray[$key]['umpire_name'] = $value;
+	        $outputArray[$key]['report_column_id'] = $key;
+	        
+	        
+	    }
+	    return $outputArray;
 	}
 	
 	//Turn a query result set into a pivot table result set
@@ -112,8 +182,7 @@ class report_model extends CI_Model {
 	    echo "</pre>";
 	    */
 	    //Get distinct list of values in the field for column and row labels
-	    $rowLabelArray = $this->getDistinctListOfValues('first_umpire', $pResultArray);
-	    $columnLabelArray = $this->getDistinctListOfValues('second_umpire', $pResultArray);
+
 	    
 	    /*
 	     echo "rowLabelArray<pre>";
@@ -128,7 +197,7 @@ class report_model extends CI_Model {
 	    //Create new array to hold values for output
 	    $pivotResultArray = array();
 	    
-	    $table = array();
+	    $pivotedArray = array();
 	    $first_umpire_names = array();
 	    
 	    /*
@@ -141,18 +210,30 @@ class report_model extends CI_Model {
 	    }
 	    echo "</tr>";
 	    */
+	    
+	    //$arrayCounter = 0;
 
 	    foreach ($pResultArray as $resultRow)
 	    {
+	        
 	        $second_umpire_names[] = $resultRow['second_umpire'];
-	        $table[$resultRow['first_umpire']][$resultRow['second_umpire']] = $resultRow['match_count'];
+	        $pivotedArray[$resultRow['first_umpire']]['umpire_name'] = $resultRow['first_umpire'];
+	        $pivotedArray[$resultRow['first_umpire']][$resultRow['second_umpire']] = $resultRow['match_count'];
+	        //$pivotedArray[$arrayCounter]['umpire_name'] = $resultRow['first_umpire'];
+	        //$pivotedArray[$arrayCounter][$resultRow['second_umpire']] = $resultRow['match_count'];
+	        //$arrayCounter++;
 	        //$total[$resultRow['first_umpire']] += $resultRow['match_count'];
 	    }
+	    
 	    /*
-	    echo "table<pre>";
-	    print_r($table);
+	    echo "pivotedArray<pre>";
+	    print_r($pivotedArray);
 	    echo "</pre>";
 	    */
+	    
+	    
+	    
+	    /*
 	    $second_umpire_names = array_unique($second_umpire_names);
 	    
 	    echo "<table border=1>";
@@ -181,80 +262,9 @@ class report_model extends CI_Model {
 	    }
 	    
 	    echo "</table>";
-	    
-	    
-	    //TEMP
-	    /*
-	    Replace round with second umpire
-	    Replace player with first umpire
-	    Replace score with match count
-	    
-	    
-	    foreach ($scores as $score)
-	    {
-	        $round_names[] = $score->Round_Name;
-	        $table[$score->Player_Name][$score->Round_Name] = $score->score;
-	        $total[$score->Player_Name] += $score->score;
-	    }
-	    
-	    $round_names = array_unique($round_names);
-	    
-	    foreach ($table as $player => $rounds)
-	    {
-	        echo "$player\t";
-	        foreach ($round_names as $round)
-	            echo "$rounds[$round]\t";
-	            echo "$total[$player]\n";
-	    }
-	    
 	    */
 	    
-	    
-	    /*
-	    //Create dashes array
-	    $dashes = array_fill(0, count($rowLabelArray), array_fill(0, count($columnLabelArray), '-'));
-	    
-	    //Populate array
-	    //Item is the array item that contains first_umpire, second_umpire, and match_count
-	    foreach ($pResultArray as $num => $item) {
-	        //$dashes[$num][$num] = $item['match_count'];
-	        $dashes[$num][$num] = $item;
-	        
-	    }
-	    
-	    echo "dashes<pre>";
-	    print_r($dashes);
-	    echo "</pre>";
-	    
-	    echo "Count J: " . count($columnLabelArray);
-	    echo "Count I: " . count($rowLabelArray);
-	    
-	    echo "<table border=1>";
-	    //Headers
-	    echo "<tr>";
-	    for ($j=0; $j < count($columnLabelArray); $j++) {
-	        //print_r($item);
-	        echo "<td>". $columnLabelArray[$j] ."</td>";
-	    }
-	    echo "</tr>";
-	    
-	    
-	    //Rows
-	    for ($i=0; $i < count($rowLabelArray); $i++) {
-	        echo "<tr>";
-	        echo "<td>". $rowLabelArray[$i] ."</td>";
-    	    
-    	    //foreach ($dashes as $num => $item) {
-    	    for ($j=0; $j < count($dashes[$i]); $j++) {
-    	        //print_r($item);
-    	       echo "<td>". $dashes[$i][$j] ."</td>";    
-    	    }
-    	    
-    	    echo "</tr>";
-	    }
-	    
-	    echo "</table>";
-	    */
+	    return $pivotedArray;
 	}
 	
 	

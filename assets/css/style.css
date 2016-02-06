@@ -291,6 +291,12 @@ tr:nth-child(odd) {
 	background: #ffffff;
 }
 
+
+.cellRowMatchesColumn {
+	background: #999999;
+	
+}
+
 /*
 Conditional Cell Formatting
 */
