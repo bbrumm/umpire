@@ -150,7 +150,8 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport06);
                 $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport06);
                 $this->reportDisplayOptions->setNoDataValue("");
-                $this->reportDisplayOptions->setColumnHeadingLabel(array("Name"));
+                $this->reportDisplayOptions->setColumnHeadingLabel(array("Umpire Name"));
+                $this->reportDisplayOptions->setColumnHeadingSizeText(array("Umpire_Name_First_Last"));
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(TRUE);

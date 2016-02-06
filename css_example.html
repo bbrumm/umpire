@@ -26,19 +26,24 @@
 	 -webkit-transform-origin: top left;
 	 -o-transform: rotate(-90deg);
 	 -o-transform-origin:  top left;
-	  position:relative;
+	  /*position:relative;*/
  	text-align: left;
-	 top:20px;
- 	width:100px;
+ 	width:200px;
 	 padding: 0px 0px 0px 0px;
 	 background-color:#A1D490;
+   position: absolute;
+     height: 7%;
+
  }
 
  .rotated_cell {
 	 height:250px;
 	 vertical-align:bottom;
-	 padding: 0px 0px 10px 0px;
-   background-color:#D4A190;
+	 padding: 0px 0px 0px 0px;
+     background-color:#D4A190;
+
+ 	
+ 	
 }
   
 th, td 
@@ -65,12 +70,27 @@ th, td
 
 
 .reportTable {
-	width: 100%;
+	
 	border-collapse: separate;
 	border-spacing: 0px;
 
-	
+
 }
+
+panelBelow {
+ 		width:100%;
+        background:#FFFFFF;
+        margin-top:15px;
+    
+}
+
+td {
+    border:1px solid #ccc;
+    padding:5px 10px;
+    vertical-align:top;
+    /*word-break:break-word;*/
+}
+
 
 </style>
 
@@ -78,177 +98,244 @@ th, td
 </head>
 <body>
 	<h1>Title</h1>
-	<table class='reportTable'>
-		<thead>
-			<tr class='header'>
-				<th class='columnHeadingNormal cellNameSize'>Name</th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Allcorn,
-						Mason</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Armstrong,
-						Bree</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Barmby,
-						Matthew</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Barnett,
-						Brydon</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bartlett,
-						Patrick</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bell,
-						Chris</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Benson,
-						Oliver</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bisinella,
-						Tiana</div></th>
-				
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bowen,
-						Joshua</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brayshaw,
-						James</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brew,
-						Alana</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brogden,
-						Bailey</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Buckley,
-						Matthew</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Burns,
-						Hayden</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Cain,
-						Jack</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Cannard,
-						Patrick</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Crapper,
-						Josh</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Davison,
-						Olivia</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Dean,
-						Darryl</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Debeljuh,
-						Natalie</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Dickson,
-						Eric</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Doolan,
-						Briane</div></th>
-				<th class='rotated_cell' colspan='1'><div class='rotated_text'>Draper,
-						Flynn</div></th>
-				
-			</tr>
-
-		</thead>
-		<tbody>
-			<tr>
-				<td class='cellNormal'>Johnstone, William</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-
-
-				
-				
-			</tr>
-			<tr>
-				<td class='cellNormal'>Johnstone, William</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-			</tr>
-			<tr>
-				<td class='cellNormal'>Johnstone, William</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-			</tr>
-			<tr>
-				<td class='cellNormal'>Johnstone, William</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-				<td class='cellNormal'>0</td>
-			</tr>
-			
-		</tbody>
-	</table>
-
-	<br />
-	<br />
-	<br />
-
+	<div id='panelBelow'>
+		<div id='moveLeftDown'>
+			<table class='reportTable'>
+				<thead>
+					<tr class='header'>
+						<th class='columnHeadingNormal cellNameSize'>Name</th>
+						<th class='rotated_cell'><div class='rotated_text'>Allcorn, Mason</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Armstrong, Bree</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Barmby,
+								Matthew</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Barnett,
+								Brydon</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bartlett,
+								Patrick</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bell,
+								Chris</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Benson,
+								Oliver</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bisinella,
+								Tiana</div></th>
+						
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bowen,
+								Joshua</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brayshaw,
+								James</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brew,
+								Alana</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brogden,
+								Bailey</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Buckley,
+								Matthew</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Burns,
+								Hayden</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Cain,
+								Jack</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Cannard,
+								Patrick</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Crapper,
+								Josh</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Davison,
+								Olivia</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Dean,
+								Darryl</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Debeljuh,
+								Natalie</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Dickson,
+								Eric</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Doolan,
+								Briane</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Draper,
+								Flynn</div></th>
+								
+							<th class='rotated_cell'><div class='rotated_text'>Allcorn, Mason</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Armstrong, Bree</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Barmby,
+								Matthew</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Barnett,
+								Brydon</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bartlett,
+								Patrick</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bell,
+								Chris</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Benson,
+								Oliver</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bisinella,
+								Tiana</div></th>
+						
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Bowen,
+								Joshua</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brayshaw,
+								James</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brew,
+								Alana</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Brogden,
+								Bailey</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Buckley,
+								Matthew</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Burns,
+								Hayden</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Cain,
+								Jack</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Cannard,
+								Patrick</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Crapper,
+								Josh</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Davison,
+								Olivia</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Dean,
+								Darryl</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Debeljuh,
+								Natalie</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Dickson,
+								Eric</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Doolan,
+								Briane</div></th>
+						<th class='rotated_cell' colspan='1'><div class='rotated_text'>Draper,
+								Flynn</div></th>
+						
+					</tr>
+		
+				</thead>
+				<tbody>
+					<tr>
+						<td class='cellNormal'>Johnstone, William</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+		
+		
+						
+						
+					</tr>
+					<tr>
+						<td class='cellNormal'>Johnstone, William</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+					</tr>
+					<tr>
+						<td class='cellNormal'>Johnstone, William</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+					</tr>
+					<tr>
+						<td class='cellNormal'>Johnstone, William</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+						<td class='cellNormal'>0</td>
+					</tr>
+					
+				</tbody>
+			</table>
+	</div>
+</div>
+	
 </body>
 </html>

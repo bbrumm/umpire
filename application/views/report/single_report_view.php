@@ -27,6 +27,8 @@ echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 
 <!--<section class=''>
 <div class="container">-->
+<div id='panelBelow'>
+<div id='moveLeftDown'>
 <table class='reportTable tableWithFloatingHeader'>
 
 <thead>
@@ -59,6 +61,7 @@ if ($debugMode) {
 }
 
 $columnHeadingLabels = $reportDisplayOptions->getColumnHeadingLabel();
+$columnHeadingSizeText = $reportDisplayOptions->getColumnHeadingSizeText();
 
 //echo "countFirstLoadedColumnGroupings: ". $countFirstLoadedColumnGroupings;
 
@@ -94,6 +97,7 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
     	if ($i == 0) {
     	    
     	    $thOutput .= $columnHeadingLabels[$r];
+    	    $thOutput .= "<BR /><span class='columnSizeText'>". $columnHeadingSizeText[$r] ."</span>";
     	}
     	$thOutput .= "</th>";
     	echo $thOutput;
@@ -291,6 +295,8 @@ echo "</tbody>";
 ?>
 
 </table>
+</div>
+</div>
 <!--
 </div>
 </section>

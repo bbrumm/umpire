@@ -113,17 +113,17 @@ Table Formatting - Reports
 /*Format for the entire table*/
 
 .reportTable {
+	/*border: 1px solid black;*/
+	width: 100%;
 	
 	border-collapse: separate;
 	border-spacing: 0px;
-	/*table-layout:fixed;*/
-}
+	
+	
+	/*border-collapse: collapse;*/
+	/*table-layout: fixed;*/
 
-panelBelow {
- 		width:100%;
-        background:#FFFFFF;
-        margin-top:15px;
-    
+	
 }
 
 .columnName {
@@ -136,6 +136,63 @@ panelBelow {
 
 
 
+/*
+th.rotate {
+ 
+  height: 170px;
+  white-space: nowrap;
+
+}
+
+th.rotate > div {
+  transform: 
+    
+    translate(25px, 51px)
+    rotate(315deg);
+  width: 30px;
+   
+}
+
+th.rotatePDF > div {
+  transform: 
+    translate(0px, 60px)
+    rotate(270deg);
+}
+
+
+th.rotate > div > span {
+  border-bottom: 1px solid #ccc;
+}
+*/
+
+
+/*
+thead th {
+   -moz-transform: rotate(-90deg); 
+   -o-transform: rotate(-90deg);  
+   -webkit-transform: rotate(-90deg); 
+   filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=3); 
+   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
+   vertical-align: top;
+   padding: 15px 0;
+   white-space: nowrap;
+	
+} 
+
+th {
+
+  font-weight: normal;
+  border: 1px solid black;
+  padding:0px;
+	
+}
+td, th {
+  padding: 10px;
+  text-align: center;
+  
+ 
+}
+*/
 
 .normalHeadingText {
   padding: 2px;
@@ -149,20 +206,20 @@ panelBelow {
 	 -webkit-transform-origin: top left;
 	 -o-transform: rotate(-90deg);
 	 -o-transform-origin:  top left;
-	 /*position:relative;*/
- 	 text-align: left;
- 	 width:250px;
+	  position:relative;
+ 	text-align: left;
+	 top:20px;
+	 /*width:250px;*/
+ 	width:100px;
 	 padding: 0px 0px 0px 0px;
-	 /*background-color:#A1D490;*/
- 	 position: absolute;
-     height: 0%;
+	 /*background-color:yellow;*/
  }
 
  .rotated_cell {
 	 height:250px;
 	 vertical-align:bottom;
 	 padding: 0px 0px 10px 0px;
-     /*background-color:#D4A190;*/
+   /*background-color:red;*/
 }
   
 th, td 
@@ -184,13 +241,6 @@ th, td
 	 padding: 0px 0px 10px 0px;
    /*background-color:red;*/
 }  
-
-td {
-    border:1px solid #ccc;
-    padding:5px 10px;
-    vertical-align:top;
-    /*word-break:break-word;*/
-}
   
   
 
@@ -210,13 +260,6 @@ td {
 
 .cellNameSize {
 	width:230px;
-	
-	
-}
-
-/* Shown as white text so you can't see it, but forces the width of a column */
-.columnSizeText {
-	color:#FFFFFF;
 }
 
 .cellDateSize {

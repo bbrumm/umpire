@@ -10,6 +10,7 @@ class ReportDisplayOptions {
 	private $colourCells;
 	private $columnHeadingLabel;
 	private $firstColumnFormat;
+	private $columnHeadingSizeText; //An attribute, invisible on the page, but used to force the width of some columns.
 	
 	public function __construct() {
 		
@@ -48,6 +49,10 @@ class ReportDisplayOptions {
 	    return $this->firstColumnFormat;
 	}
 	
+	public function getColumnHeadingSizeText() {
+	    return $this->columnHeadingSizeText;
+	}
+	
 	
 	
 	//SET functions
@@ -81,6 +86,10 @@ class ReportDisplayOptions {
 	
 	public function setFirstColumnFormat($pValue) {
 	    $this->firstColumnFormat = $pValue;
+	}
+	
+	public function setColumnHeadingSizeText($pValue) {
+	    $this->columnHeadingSizeText = $pValue;
 	}
 	
 	
