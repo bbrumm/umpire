@@ -118,7 +118,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setFirstColumnFormat("date");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportTitle = "03 - Summary by Week";
+                $this->reportTitle = "03 - Summary by Week (Matches Where No Umpires Are Recorded)";
                 $this->reportID = 3;
                 break;
             case 4:
@@ -130,7 +130,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportTitle = "04 - Summary by Club";
+                $this->reportTitle = "04 - Summary by Club (Matches Where No Umpires Are Recorded)";
                 $this->reportID = 4;
                 break;
             case 5:
