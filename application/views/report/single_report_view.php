@@ -264,7 +264,11 @@ foreach ($loadedResultArray as $resultRow):
 		        "</td>";
 		        */
 		} else {
-		    $cellClassToUse = "cellNormal";
+		    if(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
+		      $cellClassToUse = "cellNumber cellNormal";
+		    } else {
+		      $cellClassToUse = "cellNormal";
+		    }
 		    $cellValue = $noDataValueToDisplay;
 		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
 		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";

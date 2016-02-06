@@ -175,7 +175,11 @@ th, td
  	transform: 
       translate(0px, 0px)
       rotate(-90deg);
- 	width:150px;
+ 	width:250px;
+ 	padding: 0px 0px 0px 0px;
+	 /*background-color:#A1D490;*/
+ 	 position: absolute;
+     height: 0%;
  }
 
  .rotated_cell_pdf {
