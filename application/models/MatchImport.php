@@ -743,8 +743,8 @@ class MatchImport extends MY_Model
       
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
-          echo "--reloadMVReport03Table SQL:<BR />" . $queryString . "<BR />";
-          echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
+          echo "--reloadMVSummaryStaging SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVSummaryStaging, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
   }
@@ -958,6 +958,7 @@ class MatchImport extends MY_Model
   
   
   private function reloadMVReport06Table() {
+      $debugMode = $this->config->item('debug_mode');
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('6');
@@ -984,6 +985,11 @@ class MatchImport extends MY_Model
         "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id;";
 
       $this->db->query($queryString);
+      
+      if ($debugMode) {
+          echo "--reloadMVReport06Table UmpireList SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
       
       //Insert into MV 06 staging
       $queryString = "INSERT INTO mv_report_06_staging (umpire_type_name, age_group, first_umpire, second_umpire, match_ID)  " .
@@ -1013,6 +1019,11 @@ class MatchImport extends MY_Model
 
       
       $this->db->query($queryString);
+      
+      if ($debugMode) {
+          echo "--reloadMVReport06Table 06 Staging SQL:<BR />" . $queryString . "<BR />";
+          echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";
+      }
   
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_06 (umpire_type_name, age_group, first_umpire, second_umpire, match_count) " . 
@@ -1025,7 +1036,7 @@ class MatchImport extends MY_Model
   
       $this->db->query($queryString);
   
-      $debugMode = $this->config->item('debug_mode');
+      
       if ($debugMode) {
           echo "--reloadMVReport06Table SQL:<BR />" . $queryString . "<BR />";
           echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";

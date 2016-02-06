@@ -34,3 +34,10 @@ first_umpire VARCHAR(200) DEFAULT NULL,
 second_umpire VARCHAR(200) DEFAULT NULL,
 match_count  INT(11) DEFAULT NULL
 );
+
+
+CREATE INDEX idx_mv06_utn ON umpire.mv_report_06(umpire_type_name);
+CREATE INDEX idx_mv06_ag ON umpire.mv_report_06(age_group);
+CREATE INDEX idx_mv06_fu ON umpire.mv_report_06(first_umpire);
+CREATE INDEX idx_mv06_su ON umpire.mv_report_06(second_umpire);
+CREATE INDEX idx_mv06_mc ON umpire.mv_report_06(match_count);

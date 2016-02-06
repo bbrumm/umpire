@@ -154,7 +154,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(TRUE);
-                $this->reportTitle = "06 - Umpire Pairing";
+                $this->reportTitle = "06 - Umpire Pairing - ". $reportParameters['age']." - ".$reportParameters['umpireType'];;
                 $this->reportID = 6;
                 break;
 

@@ -107,3 +107,9 @@ AND u2.age_group = s.age_group
 /*WHERE u1.age_group = 'Seniors'*/
 GROUP BY u1.umpire_name, u2.umpire_name
 ORDER BY u1.umpire_name, u2.umpire_name;
+
+
+
+SELECT COUNT(*) FROM mv_umpire_list;
+SELECT COUNT(*) FROM mv_report_06_staging;
+SELECT COUNT(*) FROM mv_report_06;
