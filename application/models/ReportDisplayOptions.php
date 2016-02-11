@@ -11,6 +11,7 @@ class ReportDisplayOptions {
 	private $columnHeadingLabel;
 	private $firstColumnFormat;
 	private $columnHeadingSizeText; //An attribute, invisible on the page, but used to force the width of some columns.
+	private $pdfResolution;
 	
 	public function __construct() {
 		
@@ -90,6 +91,15 @@ class ReportDisplayOptions {
 	
 	public function setColumnHeadingSizeText($pValue) {
 	    $this->columnHeadingSizeText = $pValue;
+	}
+	
+	public function setPDFResolution($pValue) {
+	    $this->pdfResolution = $pValue;
+	}
+	
+	public function getPDFResolution() {
+	    return $this->pdfResolution;
+	
 	}
 	
 	
