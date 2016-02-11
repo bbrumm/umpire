@@ -35,7 +35,6 @@ echo "<link rel='stylesheet' type='text/css' href='". asset_url() . $data['css']
 <body>
 <div class="mainBanner">Umpire Reporting</div>
 		<?php
-
 		$this->load->view('report/single_report_view', $data);
 		
 ?>
@@ -44,17 +43,21 @@ echo "<link rel='stylesheet' type='text/css' href='". asset_url() . $data['css']
 	</body>
 </html>
 
-
+<!--
+<html>
+<body>
+<p>hello world</p>
+</body>
+</html>
+-->
 <?php
 //$html = file_get_contents($_SERVER['HTTP_REFERER']);
 
 
 $content = ob_get_contents();
 ob_end_clean();
+ob_clean();
 $obj_pdf->writeHTML($content, true, false, true, false, '');
-
-//ob_clean();
-
 $obj_pdf->Output('output.pdf', 'I');
 
 

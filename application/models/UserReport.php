@@ -70,7 +70,6 @@ class UserReport extends CI_Model {
 	private $columnLabelResultArray;
 	private $rowLabelResultArray;
 	
-	
 	private $reportID;
 
 	public $reportDisplayOptions;
@@ -96,7 +95,6 @@ class UserReport extends CI_Model {
     			$this->reportDisplayOptions->setFirstColumnFormat("text");
     			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
     			$this->reportDisplayOptions->setColourCells(TRUE);
-    			$this->reportDisplayOptions->setPDFResolution(200);
     			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
     			$this->reportID = 1;
     			break;
@@ -109,7 +107,6 @@ class UserReport extends CI_Model {
 	            $this->reportDisplayOptions->setFirstColumnFormat("text");
 	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
 	            $this->reportDisplayOptions->setColourCells(FALSE);
-	            $this->reportDisplayOptions->setPDFResolution(200);
 	            $this->reportTitle = "02 - Umpire Names by League - ". $reportParameters['umpireType'];
 	            $this->reportID = 2;
 	            break;
@@ -122,7 +119,6 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setFirstColumnFormat("date");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportDisplayOptions->setPDFResolution(200);
                 $this->reportTitle = "03 - Summary by Week (Matches Where No Umpires Are Recorded)";
                 $this->reportID = 3;
                 break;
@@ -135,7 +131,6 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportDisplayOptions->setPDFResolution(200);
                 $this->reportTitle = "04 - Summary by Club (Matches Where No Umpires Are Recorded)";
                 $this->reportID = 4;
                 break;
@@ -148,7 +143,6 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportDisplayOptions->setPDFResolution(100);
                 $this->reportTitle = "05 - Games with Zero Umpires For Each League";
                 $this->reportID = 5;
                 break;
@@ -162,7 +156,6 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setFirstColumnFormat("text");
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(TRUE);
-                $this->reportDisplayOptions->setPDFResolution(200);
                 $this->reportTitle = "06 - Umpire Pairing - ". $reportParameters['age']." - ".$reportParameters['umpireType'];;
                 $this->reportID = 6;
                 break;
@@ -242,10 +235,6 @@ class UserReport extends CI_Model {
 	    return $this->reportID;
 	    
 	}
-	
-	
-	
-	
 	
 	public function getColumnCountForHeadingCells() {
 	    $columnLabelResults = $this->columnLabelResultArray;

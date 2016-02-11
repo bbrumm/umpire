@@ -28,8 +28,7 @@ class Report extends CI_Controller {
 		
 		
 		
-    	echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
-		//echo "<form method='post' id='reportPostValues' action='createpdf/pdfUsingTCPDF' target='_blank'>";
+		echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
 		echo "<input type='hidden' name='reportName' value='". $_POST['reportName'] ."' />";
 		echo "<input type='hidden' name='season' value='". $_POST['season'] ."' />";
 		echo "<input type='hidden' name='age' value='". $_POST['age'] ."' />";

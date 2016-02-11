@@ -8,25 +8,15 @@ $this->load->helper('url');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
 $data['reportSelection'] = $this->config->item('reportSelection');
-
-if (isset($PDFLayout)) {
-    if ($PDFLayout == TRUE) {
-        $showHeader = FALSE;
-    } else {
-        $showHeader = TRUE;
-    }
-} else {
-    $showHeader = TRUE;
-}
-
 echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
-if ($showHeader) {
-    echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
-}
+echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
 echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
+
 echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />";
 
-if ($showHeader) {
+
+	
+
 
 ?>
 
@@ -36,13 +26,20 @@ if ($showHeader) {
             ActivateFloatingHeaders("table.tableWithFloatingHeader");
         });
     </script>
-<?php 
-}
-?>
+    
     
 	</head>
 <body>
 <?php 
+if (isset($PDFLayout)) {
+    if ($PDFLayout == TRUE) {
+        $showHeader = FALSE;
+    } else {
+        $showHeader = TRUE;
+    }
+} else {
+    $showHeader = TRUE;
+}
 
 if ($showHeader) {
 ?>
