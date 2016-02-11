@@ -28,9 +28,6 @@ class report_model extends CI_Model {
 			        $reportParameters['season'], $reportParameters['age'],
 			        $reportParameters['umpireType'], $reportParameters['league']);
 			    
-			    //print "Report 6 Query: ". $queryForReport ."<BR />";
-			        
-			    
 			    //Run query and store result in array
 			    $query = $this->db->query($queryForReport);			    
 			    
@@ -46,23 +43,10 @@ class report_model extends CI_Model {
 			    //Convert column labels into array for the output page
 			    $columnLabelArray = $this->convertSimpleArrayToColumnLabelArray($columnLabelArray);
 			    
-			    
 			    //Set values for result array and column label array
 			    $reportToDisplay->setResultArray($pivotedResultArray);
 			    $reportToDisplay->setColumnLabelResultArray($columnLabelArray);
 			    
-			    /*
-			     echo "getColumnLabelResultArray<pre>";
-			     print_r($reportToDisplay->getColumnLabelResultArray());
-			     echo "</pre>";
-			     
-			     echo "getResultArray<pre>";
-			     print_r($reportToDisplay->getResultArray());
-			     echo "</pre>";
-			     */
-			    
-			    
-			    //Return
 			    return $reportToDisplay;
 			    
 			} else {

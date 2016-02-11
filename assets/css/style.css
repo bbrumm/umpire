@@ -171,16 +171,38 @@ th, td
 	  /*width: 20px;*/
   }
 
+ /*
+ PDF CSS Classes
+ 
+ */
  .rotated_text_pdf {
+ 	/*
  	transform: 
       translate(0px, 0px)
       rotate(-90deg);
  	width:250px;
  	padding: 0px 0px 0px 0px;
-	 /*background-color:#A1D490;*/
+	 background-color:#A1D490;
  	 position: absolute;
      height: 0%;
+     */
+ 	
+ 	-moz-transform:rotate(-90deg); 
+	 -moz-transform-origin: top left;
+	 -webkit-transform: rotate(-90deg);
+	 -webkit-transform-origin: top left;
+	 -o-transform: rotate(-90deg);
+	 -o-transform-origin:  top left;
+	 position:relative;
+ 	 text-align: left;
+ 	 width:250px;
+	 padding: 0px 0px 0px 0px;
+	 background-color:#A1D490;
+ 	 /*position: absolute;*/
+     height: 0%;
+     
  }
+ 
 
  .rotated_cell_pdf {
 	 height:150px;
@@ -188,6 +210,56 @@ th, td
 	 padding: 0px 0px 10px 0px;
    /*background-color:red;*/
 }  
+
+
+/*
+
+.table_summary {
+    width:100% !important;
+}
+.table_summary td {
+    text-align:center;
+}
+.table_summary tbody td {
+    font-size: 10pt;
+    padding: 4px;
+}
+.rotated_vertical_td {
+    width: 20px !important;
+    height: 680px !important;
+	height: 680px !important;
+    font-size: 8pt;
+    margin:0;
+    padding:0;
+    text-align:left;
+}
+.table_summary_thead {
+    line-height: 220px;
+    text-align:left;
+}
+.rotated_vertical_outer {
+    position: relative;
+    overflow: visible;
+    text-align:left;
+}
+.rotated_vertical_inner:after {
+    height: 150px;
+    overflow: visible;
+    position: absolute;
+    text-align: left;
+    transform: rotate(270deg);
+    transform-origin: left bottom 0;
+    width: 20px;
+    top: 100px;
+    left: 110px;
+}
+ */
+ 
+ /*
+ End PDF Classes
+ */
+ 
+ 
 
 td {
     border:1px solid #ccc;

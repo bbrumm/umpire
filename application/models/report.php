@@ -36,9 +36,7 @@ class UserReport {
 				
 				//$reportQuery = $queryForReport05;
 				break;
-			
-			
-				break;
+
 		
 			}
 			
