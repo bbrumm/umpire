@@ -149,13 +149,16 @@ panelBelow {
 	 -webkit-transform-origin: top left;
 	 -o-transform: rotate(-90deg);
 	 -o-transform-origin:  top left;
-	 /*position:relative;*/
+ 	 -ms-transform: rotate(-90deg); /* IE9+ */
+     -ms-transform-origin: top left;
+	 position:relative;
  	 text-align: left;
  	 width:250px;
 	 padding: 0px 0px 0px 0px;
 	 /*background-color:#A1D490;*/
  	 position: absolute;
      height: 0%;
+ 	
  }
 
  .rotated_cell {
