@@ -59,23 +59,32 @@ class MatchImport extends MY_Model
   }
   
   private function prepareNormalisedTables() {
-      $this->deleteFromTables();
+      //TODO: Convert this process to use a season object instead of two variables
+      $seasonToUpdate = $this->findSeasonToUpdate();
+      $seasonYearToUpdate = $this->findSeasonYearFromID($seasonToUpdate);
+      
+      $this->deleteFromTables($seasonToUpdate);
+      $this->reloadTables($seasonYearToUpdate);
+  }
+  
+  private function deleteFromTables($seasonToUpdate) {
+      //Before deleting from tables, find out which season to delete data from
+      //This is because the file imported will relate to one season, and we don't want to delete data for all seasons.
+      
+      
+      //Delete from tables for the season that is being reloaded
+      $this->deleteFromUmpire($seasonToUpdate);
+      $this->deleteFromUmpireNameType($seasonToUpdate);
+      $this->deleteFromUmpireNameTypeMatch($seasonToUpdate);
+      $this->deleteFromMatchPlayed($seasonToUpdate);
+      $this->deleteFromRound($seasonToUpdate);
+      $this->deleteFromSingleTable('match_staging');
+      
       
   }
   
-  private function deleteFromTables() {
-      
-      $this->deleteFromSingleTable('umpire_name_type_match');
-      $this->deleteFromSingleTable('match_played');
-      $this->deleteFromSingleTable('umpire_name_type');
-      $this->deleteFromSingleTable('umpire');
-      $this->deleteFromSingleTable('round');
-      $this->deleteFromSingleTable('match_staging');
-      
-      //$this->recreateMatchImportIndexes();
-      
-      
-      
+  private function reloadTables($seasonYearToUpdate) {
+      //Reload tables from the imported data
       $this->reloadRoundTable();
       $this->reloadUmpireTable();
       $this->reloadUmpireNameTypeTable();
@@ -83,19 +92,38 @@ class MatchImport extends MY_Model
       $this->deleteDuplicateMatches();
       $this->reloadMatchTable();
       $this->reloadUmpireNameTypeMatchTable();
-
+      
       //$this->recreateNormalisedTablendexes();
       //$this->recreateMVIndexes();
-
-      //Reload tables for the reports
       
-      $this->reloadMVReport01Table();
-      $this->reloadMVReport02Table();
+      //Reload tables for the reports
+      $this->reloadMVReport01Table($seasonYearToUpdate);
+      $this->reloadMVReport02Table($seasonYearToUpdate);
       $this->reloadMVSummaryStaging();
-      $this->reloadMVReport03Table();
-      $this->reloadMVReport04Table();
-      $this->reloadMVReport05Table();
-      $this->reloadMVReport06Table();
+      $this->reloadMVReport03Table($seasonYearToUpdate);
+      $this->reloadMVReport04Table($seasonYearToUpdate);
+      $this->reloadMVReport05Table($seasonYearToUpdate);
+      $this->reloadMVReport06Table($seasonYearToUpdate);
+  }
+  
+  private function findSeasonToUpdate() {
+      $queryString = "SELECT MAX(season.ID) AS season_id " .
+        "FROM season " .
+        "INNER JOIN match_import ON season.season_year = match_import.season;";
+      $query = $this->db->query($queryString);
+      $resultArray = $query->result_array();
+      //echo "findSeasonToUpdate: ". $resultArray[0]['season_id'] . "<BR />";
+      return $resultArray[0]['season_id'];
+  }
+  
+  private function findSeasonYearFromID($seasonID) {
+      $queryString = "SELECT season_year " .
+          "FROM season " .
+          "WHERE id = $seasonID;";
+      $query = $this->db->query($queryString);
+      $resultArray = $query->result_array();
+      //echo "findSeasonYearFromID: ". $resultArray[0]['season_year'] . "<BR />";
+      return $resultArray[0]['season_year'];
       
   }
   
@@ -108,9 +136,97 @@ class MatchImport extends MY_Model
           echo "--deleteFromSingleTable SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
       }
-      
-      
   }
+  
+  private function deleteFromSingleTableForSeason($tableName, $seasonYearToDelete) {
+      $queryString = "DELETE FROM ". $tableName . " WHERE season_year = '$seasonYearToDelete';";
+      $this->db->query($queryString);
+  
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteFromSingleTableForSeason SQL:<BR />" . $queryString . "<BR />";
+          echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
+      }
+  }
+  
+  private function deleteFromUmpireNameTypeMatch($seasonID) {
+      $queryString = "DELETE umpire_name_type_match " .
+        "FROM umpire_name_type_match " . 
+        "INNER JOIN match_played ON umpire_name_type_match.match_ID = match_played.ID " . 
+        "INNER JOIN round ON match_played.round_id = round.ID " .
+        "WHERE round.season_id = " . $seasonID;
+      $this->db->query($queryString);
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteFromUmpireNameTypeMatch SQL:<BR />" . $queryString . "<BR />";
+          echo "Table deleted: umpire_name_type_match, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+  }
+  
+  private function deleteFromMatchPlayed($seasonID) {
+      $queryString = "DELETE match_played " .
+          "FROM match_played " .
+          "INNER JOIN round ON match_played.round_id = round.ID " .
+          "WHERE round.season_id = " . $seasonID;
+      $this->db->query($queryString);
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteFromMatchPlayed SQL:<BR />" . $queryString . "<BR />";
+          echo "Table deleted: deleteFromMatchPlayed, " . $this->db->affected_rows() . " rows.<BR />";
+      } 
+  }
+  
+  private function deleteFromUmpireNameType($seasonID) {
+      $queryString = "DELETE umpire_name_type " .
+          "FROM umpire_name_type " .
+          "INNER JOIN umpire_name_type_match ON umpire_name_type.id = umpire_name_type_match.umpire_name_type_id " .
+          "INNER JOIN match_played ON umpire_name_type_match.match_ID = match_played.ID " .
+          "INNER JOIN round ON match_played.round_id = round.ID " .
+          "WHERE round.season_id = " . $seasonID;
+      $this->db->query($queryString);
+  
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteFromUmpireNameType SQL:<BR />" . $queryString . "<BR />";
+          echo "Table deleted: deleteFromUmpireNameType, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+  }
+  
+  private function deleteFromUmpire($seasonID) {
+      $queryString = "DELETE umpire " .
+          "FROM umpire " .
+          "INNER JOIN umpire_name_type ON umpire_name_type.umpire_id = umpire.ID " .
+          "INNER JOIN umpire_name_type_match ON umpire_name_type.id = umpire_name_type_match.umpire_name_type_id " .
+          "INNER JOIN match_played ON umpire_name_type_match.match_ID = match_played.ID " .
+          "INNER JOIN round ON match_played.round_id = round.ID " .
+          "WHERE round.season_id = " . $seasonID;
+      $this->db->query($queryString);
+  
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteFromUmpire SQL:<BR />" . $queryString . "<BR />";
+          echo "Table deleted: deleteFromUmpire, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+  }
+  
+  private function deleteFromRound($seasonID) {
+      $queryString = "DELETE round " .
+          "FROM round " .
+          "WHERE round.season_id = " . $seasonID;
+      $this->db->query($queryString);
+  
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--deleteFromRound SQL:<BR />" . $queryString . "<BR />";
+          echo "Table deleted: deleteFromRound, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+  }
+  
+  
+  
+  
   
   private function reloadRoundTable() {
       $queryString = "INSERT INTO round ( round_number, round_date, season_id, league_id ) " .
@@ -417,15 +533,15 @@ class MatchImport extends MY_Model
       }
   }
   
-  private function reloadMVReport01Table() {
+  private function reloadMVReport01Table($seasonToUpdate) {
       //First, delete the data from the table
       //$reportTableName = $this->lookupReportTableName('1');
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('1');
-      $this->deleteFromSingleTable($reportTableName);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
       
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_01 (full_name, club_name, short_league_name, age_group, umpire_type_name, 
+      $queryString = "INSERT INTO mv_report_01 (season_year, full_name, club_name, short_league_name, age_group, umpire_type_name, 
         `GDFL|Anakie`, `GDFL|Bannockburn`, `None|Corio`, `GDFL|East_Geelong`, `GDFL|North_Geelong`, `None|Portarlington`, `GDFL|Werribee_Centrals`,
         `GDFL|Winchelsea`, `GFL|Bell_Park`, `GDFL|Bell_Post_Hill`, `GDFL|Belmont_Lions`, `GFL|Colac`, `BFL|Geelong_Amateur`, `GDFL|Geelong_West`,
         `GFL|Grovedale`, `GFL|Gwsp`, `GDFL|Inverleigh`, `GFL|Lara`, `GFL|Leopold`, `GFL|Newtown_&_Chilwell`, `GFL|North_Shore`,
@@ -439,7 +555,7 @@ class MatchImport extends MY_Model
         `None|St_Joseph's_Podbury`, `None|Geelong_Amateur`, `None|Winchelsea`, `None|Anakie`, `None|Bannockburn`, `None|South_Barwon_/_Geelong_Amateur`,
         `None|St_Joseph's_Hill`, `None|Torquay_Dunstan`, `None|Werribee_Centrals`, `None|Drysdale_Eddy`, `None|Belmont_Lions_/_Newcomb`, `None|Torquay_Coles`,
         `None|Gwsp_/_Bannockburn`, `None|St_Albans_Allthorpe`, `None|Drysdale_Bennett`, `None|Torquay_Scott`, `None|Torquay_Nairn`, `None|Tigers_Gold`)";  
-        $queryString .= "SELECT CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
+        $queryString .= "SELECT '$seasonToUpdate', CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
         "(CASE WHEN club_name = 'Anakie' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Anakie', " .
         "(CASE WHEN club_name = 'Bannockburn' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Bannockburn', " .
         "(CASE WHEN club_name = 'Corio' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Corio', " .
@@ -567,18 +683,18 @@ class MatchImport extends MY_Model
   
   }
   
-  private function reloadMVReport02Table() {
+  private function reloadMVReport02Table($seasonToUpdate) {
       //First, delete the data from the table
       //$reportTableName = $this->lookupReportTableName('1');
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('2');
-      $this->deleteFromSingleTable($reportTableName);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
   
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_02 (full_name, umpire_type_name, short_league_name, age_group, " . 
+      $queryString = "INSERT INTO mv_report_02 (season_year, full_name, umpire_type_name, short_league_name, age_group, " . 
             "`Seniors|BFL`, `Seniors|GDFL`, `Seniors|GFL`, `Reserves|BFL`, `Reserves|GDFL`, `Reserves|GFL`, `Colts|None`, " . 
             "`Under 16|None`, `Under 14|None`, `Youth Girls|None`, `Junior Girls|None`, `Seniors|2 Umpires`) ";
-      $queryString .= "SELECT " . 
+      $queryString .= "SELECT '$seasonToUpdate', " . 
             "full_name, " . 
             "umpire_type_name, " .
             "short_league_name, " .
@@ -749,20 +865,20 @@ class MatchImport extends MY_Model
       
   }
   
-  private function reloadMVReport03Table() {
+  private function reloadMVReport03Table($seasonToUpdate) {
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('3');
-      $this->deleteFromSingleTable($reportTableName);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
   
       //Then, insert into table
-      $queryString = "INSERT INTO `mv_report_03` (weekdate, " .
+      $queryString = "INSERT INTO `mv_report_03` (season_year, weekdate, " .
             "`No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, " .
             "`No Senior Goal|BFL`, `No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, " .
             "`No Reserve Goal|BFL`, `No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, " .
             "`No Colts Field|Clubs`, `No Colts Field|No.`, `No U16 Field|Clubs`, `No U16 Field|No.`, " .
             "`No U14 Field|Clubs`, `No U14 Field|No.`) " .
-            "SELECT weekdate, " .
+            "SELECT '$seasonToUpdate', weekdate, " .
             "MAX(`No Senior Boundary|BFL`), MAX(`No Senior Boundary|GDFL`), MAX(`No Senior Boundary|GFL`), SUM(`No Senior Boundary|No.`), MAX(`No Senior Goal|BFL`), " .
             "MAX(`No Senior Goal|GDFL`), MAX(`No Senior Goal|GFL`), SUM(`No Senior Goal|No.`), MAX(`No Reserve Goal|BFL`), MAX(`No Reserve Goal|GDFL`), " .
             "MAX(`No Reserve Goal|GFL`), SUM(`No Reserve Goal|No.`), MAX(`No Colts Field|Clubs`),SUM(`No Colts Field|No.`), MAX(`No U16 Field|Clubs`), " .
@@ -819,14 +935,14 @@ class MatchImport extends MY_Model
   
   }
   
-  private function reloadMVReport04Table() {
+  private function reloadMVReport04Table($seasonToUpdate) {
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('4');
-      $this->deleteFromSingleTable($reportTableName);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
   
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_04 (club_name, `Boundary|Seniors|BFL`, ".
+      $queryString = "INSERT INTO mv_report_04 (season_year, club_name, `Boundary|Seniors|BFL`, ".
         "`Boundary|Seniors|GDFL`, `Boundary|Seniors|GFL`, `Boundary|Reserves|BFL`, `Boundary|Reserves|GDFL`, ".
         "`Boundary|Reserves|GFL`, `Boundary|Colts|None`, `Boundary|Under 16|None`, `Boundary|Under 14|None`, ".
         "`Boundary|Youth Girls|None`, `Boundary|Junior Girls|None`, `Field|Seniors|BFL`, `Field|Seniors|GDFL`, ".
@@ -836,7 +952,7 @@ class MatchImport extends MY_Model
         "`Goal|Reserves|BFL`, `Goal|Reserves|GDFL`, `Goal|Reserves|GFL`, `Goal|Colts|None`, ".
         "`Goal|Under 16|None`, `Goal|Under 14|None`, `Goal|Youth Girls|None`, `Goal|Junior Girls|None`) ";
       
-      $queryString .= "SELECT club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
+      $queryString .= "SELECT '$seasonToUpdate', club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
         "SUM(`Boundary|Reserves|BFL`), SUM(`Boundary|Reserves|GDFL`), SUM(`Boundary|Reserves|GFL`), SUM(`Boundary|Colts|None`), ".
         "SUM(`Boundary|Under 16|None`), SUM(`Boundary|Under 14|None`), SUM(`Boundary|Youth Girls|None`), SUM(`Boundary|Junior Girls|None`), ".
         "SUM(`Field|Seniors|BFL`), SUM(`Field|Seniors|GDFL`), SUM(`Field|Seniors|GFL`), SUM(`Field|Reserves|BFL`), ".
@@ -911,15 +1027,15 @@ class MatchImport extends MY_Model
   
   }
   
-  private function reloadMVReport05Table() {
+  private function reloadMVReport05Table($seasonToUpdate) {
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('5');
-      $this->deleteFromSingleTable($reportTableName);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
   
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_05 (umpire_type, age_group, BFL, GDFL, GFL, `None`, `Total`) ";
-      $queryString .= "SELECT ua.umpire_type_name, ua.age_group, " .
+      $queryString = "INSERT INTO mv_report_05 (season_year, umpire_type, age_group, BFL, GDFL, GFL, `None`, `Total`) ";
+      $queryString .= "SELECT '$seasonToUpdate', ua.umpire_type_name, ua.age_group, " .
             "IFNULL(SUM(`BFL`),0), " .
             "IFNULL(SUM(`GDFL`),0), " .
             "IFNULL(SUM(`GFL`),0), " .
@@ -957,21 +1073,21 @@ class MatchImport extends MY_Model
   }
   
   
-  private function reloadMVReport06Table() {
+  private function reloadMVReport06Table($seasonToUpdate) {
       $debugMode = $this->config->item('debug_mode');
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('6');
-      $this->deleteFromSingleTable($reportTableName);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
       
       //Also delete from staging tables
-      $this->deleteFromSingleTable('mv_report_06_staging');
-      $this->deleteFromSingleTable('mv_umpire_list');
+      $this->deleteFromSingleTableForSeason('mv_report_06_staging', $seasonToUpdate);
+      $this->deleteFromSingleTableForSeason('mv_umpire_list', $seasonToUpdate);
       
       //Insert into umpire MV
-      $queryString = "INSERT INTO mv_umpire_list (umpire_type_name, age_group, umpire_name) " .
+      $queryString = "INSERT INTO mv_umpire_list (season_year, umpire_type_name, age_group, umpire_name) " .
         "SELECT DISTINCT " .
-        "umpire_type.umpire_type_name, " . 
+        "'$seasonToUpdate', umpire_type.umpire_type_name, " . 
         "age_group.age_group, " . 
         "CONCAT(umpire.last_name, ', ', umpire.first_name) AS umpire_name " .
         "FROM umpire " .
@@ -992,9 +1108,9 @@ class MatchImport extends MY_Model
       }
       
       //Insert into MV 06 staging
-      $queryString = "INSERT INTO mv_report_06_staging (umpire_type_name, age_group, first_umpire, second_umpire, match_ID)  " .
+      $queryString = "INSERT INTO mv_report_06_staging (season_year, umpire_type_name, age_group, first_umpire, second_umpire, match_ID)  " .
         "SELECT " . 
-        "umpire_type1.umpire_type_name, " . 
+        "'$seasonToUpdate', umpire_type1.umpire_type_name, " . 
         "age_group.age_group, " . 
         "CONCAT(umpire1.last_name, ', ', umpire1.first_name) AS first_umpire, " . 
         "CONCAT(umpire2.last_name, ', ', umpire2.first_name) AS second_umpire, " .
@@ -1026,8 +1142,8 @@ class MatchImport extends MY_Model
       }
   
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_06 (umpire_type_name, age_group, first_umpire, second_umpire, match_count) " . 
-        "SELECT u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name, COUNT(s.match_id) " .
+      $queryString = "INSERT INTO mv_report_06 (season_year, umpire_type_name, age_group, first_umpire, second_umpire, match_count) " . 
+        "SELECT '$seasonToUpdate', u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name, COUNT(s.match_id) " .
         "FROM mv_umpire_list u1 " .
         "INNER JOIN mv_umpire_list u2 ON u1.umpire_type_name = u2.umpire_type_name AND u1.age_group = u2.age_group " .
         "LEFT OUTER JOIN mv_report_06_staging s ON u1.umpire_name = s.first_umpire AND u2.umpire_name = s.second_umpire " .
@@ -1077,7 +1193,10 @@ class MatchImport extends MY_Model
       $this->db->query("CREATE INDEX idx_ground_alternative_name ON umpire.ground(alternative_name);");
   }
   
+  
   private function recreateMVIndexes() {
+      $this->db->query("CREATE INDEX idx_mv01_short_league_name ON umpire.mv_report_01(short_league_name);");
+      $this->db->query("CREATE INDEX idx_mv01_short_league_name ON umpire.mv_report_01(short_league_name);");
       $this->db->query("CREATE INDEX idx_mv01_short_league_name ON umpire.mv_report_01(short_league_name);");
 
       
@@ -1087,4 +1206,5 @@ class MatchImport extends MY_Model
   
 }
 ?>
+
 

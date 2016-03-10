@@ -2454,7 +2454,7 @@ ADD CONSTRAINT `fk_team_club` FOREIGN KEY (`club_id`) REFERENCES `club` (`ID`) O
 -- Constraints for table `umpire_name_type`
 --
 ALTER TABLE `umpire_name_type`
-ADD CONSTRAINT `fk_unt_umpire` FOREIGN KEY (`umpire_id`) REFERENCES `umpire` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_unt_umpire` FOREIGN KEY (`umpire_id`) REFERENCES `umpire` (`ID`) ON DELETE CASCADE ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_unt_ut` FOREIGN KEY (`umpire_type_id`) REFERENCES `umpire_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -2462,7 +2462,7 @@ ADD CONSTRAINT `fk_unt_ut` FOREIGN KEY (`umpire_type_id`) REFERENCES `umpire_typ
 --
 ALTER TABLE `umpire_name_type_match`
 ADD CONSTRAINT `fk_untm_match` FOREIGN KEY (`match_id`) REFERENCES `match_played` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_untm_unt` FOREIGN KEY (`umpire_name_type_id`) REFERENCES `umpire_name_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_untm_unt` FOREIGN KEY (`umpire_name_type_id`) REFERENCES `umpire_name_type` (`ID`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 
 ALTER DATABASE umpire CHARACTER SET utf8 COLLATE utf8_unicode_ci;
