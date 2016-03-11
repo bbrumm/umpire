@@ -452,7 +452,7 @@ Login Page
 }
 
 .loginLabel {
-	/*width:50%;*/
+	width:50%;
 	text-align:right;
 	/*background:#C0C0C0;*/
 	display: inline-block;
