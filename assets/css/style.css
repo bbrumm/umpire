@@ -538,113 +538,18 @@ Login Page
 	font-size: 16px;
 	text-align: center;
 }
-}
 
-/*
-CSS for Fixed Table Headers
-https://jsfiddle.net/dPixie/byB9d/3/light/
-*/
-/*
-html, body{
-  margin:0;
-  padding:0;
-  height:100%;
-}
 
-section {
-  position: relative;
-  border: 1px solid #000;
 
-}
-
-section.positioned {
-  position: absolute;
-  top:100px;
-  left:100px;
-  width:800px;
-  box-shadow: 0 0 15px #333;
-}
-
-.container {
-  overflow-y: auto;
-  height: 500px;
+.lastGameDate {
+	font-size: 16px;
+	text-align: center;
 	
 }
 
-th {
-  height: 0;
-  line-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  border: none;
-  white-space: nowrap;
-}
-th div{
-  position: absolute;
+.support {
+	font-size: 14px;
+	text-align: center;
 	
-  background: transparent;
-  padding: 9px 25px;
-  top: 0;
-  margin-left: -25px;
-  line-height: normal;
+	
 }
-th:first-child div{
-  border: none;
-}*/
-
-/*
-body
-{
-    margin: 0 auto;
-    padding: 0 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    color: #555;
-}
-
-table
-{
-    border: 0;
-    padding: 0;
-    margin: 0 0 20px 0;
-    /*border-collapse: collapse;
-}
-
-th
-{
-
-    /*padding: 5px; *//* NOTE: th padding must be set explicitly in order to support IE */
-    /*text-align: right;        
-    font-weight:bold;*/
-    /*line-height: 2em;*/
-    /*color: #FFF;
-    background-color: #555;*/
-/*    
-}
-
-td
-{
-    padding: 0px;
-    /*line-height: 18px;*/
-    /*border-top: 1px solid #E0E0E0;*/
-}
-/*
-tbody tr:nth-child(2n)
-{
-    background-color: #F7F7F7;
-}
-tbody tr:hover
-{
-    background-color: #EEEEEE;
-}
-td
-{
-    text-align: right;
-}
-td:first-child, th:first-child
-{
-    text-align: left;
-}
-*/
-
-

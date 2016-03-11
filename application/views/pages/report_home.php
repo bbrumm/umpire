@@ -94,6 +94,13 @@ They are needed for reports where the drop-downs are disabled, as the next page 
 
 </div>
 <?php echo form_close(); ?>
+<BR />
+<BR />
+<BR />
+<div class='support'>
+Need support? Contact us at <a href='mailto:support@umpirereporting.com'>support@umpirereporting.com</a>.
+</div>
+
 <script>
 disableSelectBoxes();
 </script>

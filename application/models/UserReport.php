@@ -170,8 +170,23 @@ class UserReport extends CI_Model {
 
 		}
 		
+		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason($reportParameters['season']));
+		//echo "LGD2: " . $this->reportDisplayOptions->getLastGameDate();
 	}
 	
+	
+	private function findLastGameDateForSelectedSeason($selectedSeason) {
+	    $queryString = "SELECT DATE_FORMAT(MAX(match_time), '%a %d %b %Y, %h:%i %p') AS last_date " .
+            "FROM match_played " .
+            "INNER JOIN round ON round.id = match_played.round_id " .
+            "INNER JOIN season ON season.id = round.season_id " .
+            "WHERE season.season_year = '$selectedSeason';";
+	     
+	    $query = $this->db->query($queryString);
+	    $resultArray = $query->result_array();
+	    //echo "LGD: " . $resultArray[0]['last_date'];
+	    return $resultArray[0]['last_date'];
+	}
 	
 	
 	public function getReportQuery() {

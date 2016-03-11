@@ -12,6 +12,7 @@ class ReportDisplayOptions {
 	private $firstColumnFormat;
 	private $columnHeadingSizeText; //An attribute, invisible on the page, but used to force the width of some columns.
 	private $pdfResolution;
+	private $lastGameDate; //The last date that a game has been played from the data in the system
 	
 	public function __construct() {
 		
@@ -52,6 +53,14 @@ class ReportDisplayOptions {
 	
 	public function getColumnHeadingSizeText() {
 	    return $this->columnHeadingSizeText;
+	}
+	
+    public function getPDFResolution() {
+	    return $this->pdfResolution;
+	
+	}
+	public function getLastGameDate() {
+	    return $this->lastGameDate;
 	}
 	
 	
@@ -97,10 +106,11 @@ class ReportDisplayOptions {
 	    $this->pdfResolution = $pValue;
 	}
 	
-	public function getPDFResolution() {
-	    return $this->pdfResolution;
-	
+	public function setLastGameDate($pValue) {
+	    $this->lastGameDate = $pValue;
 	}
+	
+	
 	
 	
 }

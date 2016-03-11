@@ -19,6 +19,7 @@ $countFirstLoadedColumnGroupings = count($columnLabels);
 $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
+echo "<div class='lastGameDate'>Last Game Date: ". $reportDisplayOptions->getLastGameDate() ."</div>";
 ?>
 <!-- 
 <div style="width:3000px">
