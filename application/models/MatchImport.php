@@ -1222,6 +1222,8 @@ class MatchImport extends MY_Model
         "INNER JOIN mv_umpire_list u2 ON u1.umpire_type_name = u2.umpire_type_name AND u1.age_group = u2.age_group " .
         "LEFT OUTER JOIN mv_report_06_staging s ON u1.umpire_name = s.first_umpire AND u2.umpire_name = s.second_umpire " .
         "WHERE u1.season_year = '$seasonToUpdate' " .
+        "AND u2.season_year = '$seasonToUpdate' " .
+        "AND s.season_year = '$seasonToUpdate' " .
         "GROUP BY u1.season_year, u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name " . 
         "ORDER BY u1.season_year, u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name;";
   

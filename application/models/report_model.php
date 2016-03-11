@@ -444,7 +444,7 @@ Array
 	    }
 	    //Build WHERE clause
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName);
-	    echo "whereClause(". $whereClause .")<BR/>";
+	    //echo "whereClause(". $whereClause .")<BR/>";
 	     
 	    
 	    //Determine fields to select
