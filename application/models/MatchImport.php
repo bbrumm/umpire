@@ -99,7 +99,7 @@ class MatchImport extends MY_Model
       //Reload tables for the reports
       $this->reloadMVReport01Table($seasonYearToUpdate);
       $this->reloadMVReport02Table($seasonYearToUpdate);
-      $this->reloadMVSummaryStaging();
+      $this->reloadMVSummaryStaging($seasonYearToUpdate);
       $this->reloadMVReport03Table($seasonYearToUpdate);
       $this->reloadMVReport04Table($seasonYearToUpdate);
       $this->reloadMVReport05Table($seasonYearToUpdate);
@@ -331,11 +331,17 @@ class MatchImport extends MY_Model
         "INNER JOIN umpire ON com2.first_name = umpire.first_name AND com2.last_name = umpire.last_name " .
         "INNER JOIN umpire_type ON com2.umpire_type = umpire_type.umpire_type_name";
       
-      $this->db->query($queryString);
-      
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--reloadUmpireNameTypeTable SQL:<BR />" . $queryString . "<BR />";
+      }
+      
+      
+      $this->db->query($queryString);
+      
+
+      if ($debugMode) {
+          
           echo "Query run: reloadUmpireNameTypeTable, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
@@ -403,12 +409,15 @@ class MatchImport extends MY_Model
         "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " .
         "INNER JOIN division ON division.ID = age_group_division.division_id";
       
-      $this->db->query($queryString);
-      
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--reloadMatchStagingTable SQL:<BR />" . $queryString . "<BR />";
-          echo "Query run: reloadMatchStagingTable, " . $this->db->affected_rows() . " rows.<BR />";
+      }
+      
+      $this->db->query($queryString);
+      
+      if ($debugMode) {
+          echo "--reloadMatchStagingTable SQL:<BR />" . $queryString . "<BR />";
       }
 
       
@@ -423,11 +432,16 @@ class MatchImport extends MY_Model
             "AND m1.appointments_time = m2.appointments_time " .
             "AND m1.home_team_id = m2.home_team_id " .
             "AND m1.away_team_id = m2.away_team_id";
-      $this->db->query($queryString);
+        
+        $debugMode = $this->config->item('debug_mode');
+        if ($debugMode) {
+            echo "--deleteDuplicateMatches SQL:<BR />" . $queryString . "<BR />";
+        }
+        
+        $this->db->query($queryString);
       
-      $debugMode = $this->config->item('debug_mode');
+      
       if ($debugMode) {
-          echo "--deleteDuplicateMatches SQL:<BR />" . $queryString . "<BR />";
           echo "Query run: deleteDuplicateMatches<BR />";
       }
       
@@ -555,7 +569,7 @@ class MatchImport extends MY_Model
         `None|St_Joseph's_Podbury`, `None|Geelong_Amateur`, `None|Winchelsea`, `None|Anakie`, `None|Bannockburn`, `None|South_Barwon_/_Geelong_Amateur`,
         `None|St_Joseph's_Hill`, `None|Torquay_Dunstan`, `None|Werribee_Centrals`, `None|Drysdale_Eddy`, `None|Belmont_Lions_/_Newcomb`, `None|Torquay_Coles`,
         `None|Gwsp_/_Bannockburn`, `None|St_Albans_Allthorpe`, `None|Drysdale_Bennett`, `None|Torquay_Scott`, `None|Torquay_Nairn`, `None|Tigers_Gold`)";  
-        $queryString .= "SELECT '$seasonToUpdate', CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
+        $queryString .= "SELECT season_year, CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
         "(CASE WHEN club_name = 'Anakie' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Anakie', " .
         "(CASE WHEN club_name = 'Bannockburn' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Bannockburn', " .
         "(CASE WHEN club_name = 'Corio' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Corio', " .
@@ -644,7 +658,7 @@ class MatchImport extends MY_Model
         "(CASE WHEN club_name = 'Torquay Scott' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Scott', " .
         "(CASE WHEN club_name = 'Torquay Nairn' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Torquay_Nairn', " .
         "(CASE WHEN club_name = 'Tigers Gold' AND short_league_name = 'None' THEN COUNT(*) ELSE 0 END) as 'None|Tigers_Gold' ";
-      $queryString .= "FROM (SELECT umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
+      $queryString .= "FROM (SELECT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
         "FROM match_played " .
         "INNER JOIN round ON round.ID = match_played.round_id " .
         "INNER JOIN league ON league.ID = round.league_id " .
@@ -656,8 +670,10 @@ class MatchImport extends MY_Model
         "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id " .
         "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
         "INNER JOIN umpire ON umpire.ID = umpire_name_type.umpire_id " .
+        "INNER JOIN season ON season.id = round.season_id " .
+        "WHERE season.season_year = '$seasonToUpdate' " .
         "UNION ALL " .
-        "SELECT umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
+        "SELECT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
         "FROM match_played " .
         "INNER JOIN round ON round.ID = match_played.round_id " .
         "INNER JOIN league ON league.ID = round.league_id " .
@@ -669,16 +685,22 @@ class MatchImport extends MY_Model
         "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id " .
         "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
         "INNER JOIN umpire ON umpire.ID = umpire_name_type.umpire_id " .
+        "INNER JOIN season ON season.id = round.season_id " .
+        "WHERE season.season_year = '$seasonToUpdate' " .
         ")  AS a " .
-        "GROUP BY first_name, last_name, club_name, short_league_name, age_group, umpire_type_name " .
-        "ORDER BY first_name, last_name, club_name, short_league_name, age_group, umpire_type_name";
+        "GROUP BY season_year, first_name, last_name, club_name, short_league_name, age_group, umpire_type_name " .
+        "ORDER BY season_year, first_name, last_name, club_name, short_league_name, age_group, umpire_type_name";
 
-      $this->db->query($queryString);
-      
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--reloadMVReport01Table SQL:<BR />" . $queryString . "<BR />";
-          echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
+      
+      }
+      
+      $this->db->query($queryString);
+
+      if ($debugMode) {
+         echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   
   }
@@ -694,7 +716,7 @@ class MatchImport extends MY_Model
       $queryString = "INSERT INTO mv_report_02 (season_year, full_name, umpire_type_name, short_league_name, age_group, " . 
             "`Seniors|BFL`, `Seniors|GDFL`, `Seniors|GFL`, `Reserves|BFL`, `Reserves|GDFL`, `Reserves|GFL`, `Colts|None`, " . 
             "`Under 16|None`, `Under 14|None`, `Youth Girls|None`, `Junior Girls|None`, `Seniors|2 Umpires`) ";
-      $queryString .= "SELECT '$seasonToUpdate', " . 
+      $queryString .= "SELECT season_year, " . 
             "full_name, " . 
             "umpire_type_name, " .
             "short_league_name, " .
@@ -713,6 +735,7 @@ class MatchImport extends MY_Model
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = '2 Umpires' THEN match_count ELSE 0 END) " . 
             "FROM ( " . 
             "SELECT  " . 
+            "season_year, " .
             "umpire_type.umpire_type_name, " . 
             "age_group.ID, " . 
             "age_group.age_group, " . 
@@ -729,9 +752,12 @@ class MatchImport extends MY_Model
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " . 
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " . 
             "INNER JOIN division ON division.ID = age_group_division.division_id " . 
-            "GROUP BY umpire_type.umpire_type_name , age_group.ID , age_group.age_group , league.short_league_name , CONCAT(last_name,', ',first_name) " . 
+            "INNER JOIN season ON season.id = round.season_id " .
+            "WHERE season.season_year = '$seasonToUpdate' " .
+            "GROUP BY season_year, umpire_type.umpire_type_name , age_group.ID , age_group.age_group , league.short_league_name , CONCAT(last_name,', ',first_name) " . 
             "UNION ALL " . 
             "SELECT  " . 
+            "season.season_year, " .
             "umpire_type.umpire_type_name, " . 
             "age_group.ID, " . 
             "age_group.age_group, " . 
@@ -748,8 +774,10 @@ class MatchImport extends MY_Model
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " . 
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " . 
             "INNER JOIN division ON division.ID = age_group_division.division_id " . 
+            "INNER JOIN season ON season.id = round.season_id " .
             "INNER JOIN ( ";
       $queryString .= "SELECT  " . 
+            "season.season_year, " .
             "match_played.ID AS match_id, " . 
             "COUNT(umpire.ID) AS umpire_count " . 
             "FROM match_played " . 
@@ -762,35 +790,42 @@ class MatchImport extends MY_Model
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " . 
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " . 
             "INNER JOIN division ON division.ID = age_group_division.division_id " . 
+            "INNER JOIN season ON season.id = round.season_id " .
             "WHERE umpire_type.umpire_type_name = 'Field' AND age_group.age_group = 'Seniors' " . 
-            "GROUP BY match_played.ID, umpire_type.umpire_type_name, age_group.age_group " . 
+            "AND season.season_year = '$seasonToUpdate' " .
+            "GROUP BY season.season_year, match_played.ID, umpire_type.umpire_type_name, age_group.age_group " . 
             "HAVING COUNT(umpire.ID) = 2 " . 
             ") AS qryMatchesWithTwoUmpires ON match_played.ID = qryMatchesWithTwoUmpires.match_id " . 
             "WHERE umpire_type.umpire_type_name = 'Field' AND age_group.age_group = 'Seniors' " . 
-            "GROUP BY umpire_type.umpire_type_name , age_group.ID , age_group.age_group , '2 Umpires' , CONCAT(last_name,', ',first_name) " . 
+            "AND season.season_year = '$seasonToUpdate' " .
+            "GROUP BY season.season_year, umpire_type.umpire_type_name , age_group.ID , age_group.age_group , '2 Umpires' , CONCAT(last_name,', ',first_name) " . 
             ") AS mainquery " . 
-            "ORDER BY full_name";
+            "ORDER BY season_year, full_name";
 
-      
-      $this->db->query($queryString);
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--reloadMVReport02Table SQL:<BR />" . $queryString . "<BR />";
+      
+      }
+      $this->db->query($queryString);
+      
+      if ($debugMode) {
+          
           echo "Query run: reloadMVReport02Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   }
   
-  private function reloadMVSummaryStaging() {
+  private function reloadMVSummaryStaging($seasonToUpdate) {
       //First, delete the data from the table
       $this->deleteFromSingleTable("mv_summary_staging");
       
       //Then, insert into table
-      $queryString = "INSERT INTO mv_summary_staging (umpire_type_id, umpire_type, age_group, short_league_name, " .
+      $queryString = "INSERT INTO mv_summary_staging (season_year, umpire_type_id, umpire_type, age_group, short_league_name, " .
           "round_date, match_id, home, away, home_club, away_club, age_group_ID, weekdate) ";
-      $queryString .= "SELECT umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  ".
+      $queryString .= "SELECT season_year, umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  ".
             "ADDDATE(round_date, (5-Weekday(round_date))) as WeekDate ".
             "FROM ( ";
-      $queryString .= "SELECT 1 as umpire_type_id, 'Field' AS umpire_type, age_group.age_group, league.short_league_name,  ".
+      $queryString .= "SELECT season_year, 1 as umpire_type_id, 'Field' AS umpire_type, age_group.age_group, league.short_league_name,  ".
             "round.round_date, match_played.id AS match_id, team_1.team_name AS home, team.team_name AS away, club_1.club_name AS home_club, club.club_name AS away_club,  ".
             "age_group_division.age_group_ID ".
             "FROM match_played ".
@@ -803,6 +838,7 @@ class MatchImport extends MY_Model
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id ".
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id ".
             "INNER JOIN division ON division.ID = age_group_division.division_id ".
+            "INNER JOIN season ON season.ID = round.season_id ".
             "WHERE match_played.id NOT IN ( ".
             "SELECT umpire_name_type_match.match_id ".
             "FROM umpire_name_type_match ".
@@ -810,8 +846,9 @@ class MatchImport extends MY_Model
             "INNER JOIN umpire_type ut_sub ON ut_sub.ID = umpire_name_type.umpire_type_id ".
             "WHERE ut_sub.umpire_type_name='Field' ".
             ") ".
+            "AND season.season_year = '$seasonToUpdate' " .
             "UNION ".
-            "SELECT 3 as umpire_type_id, 'Goal' AS umpire_type, age_group.age_group, league.short_league_name,  ".
+            "SELECT season_year, 3 as umpire_type_id, 'Goal' AS umpire_type, age_group.age_group, league.short_league_name,  ".
             "round.round_date, match_played.id AS match_id, team_1.team_name AS home, team.team_name AS away, club_1.club_name AS home_club, club.club_name AS away_club,  ".
             "age_group_division.age_group_ID ".
             "FROM match_played ".
@@ -824,15 +861,17 @@ class MatchImport extends MY_Model
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id ".
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id ".
             "INNER JOIN division ON division.ID = age_group_division.division_id ".
+            "INNER JOIN season ON season.ID = round.season_id ".
             "WHERE match_played.id NOT IN ( ".
             "SELECT umpire_name_type_match.match_id ".
             "FROM umpire_name_type_match ".
             "INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id ".
             "INNER JOIN umpire_type ut_sub ON ut_sub.ID = umpire_name_type.umpire_type_id ".
             "WHERE ut_sub.umpire_type_name='Goal' ".
-            ") ";
+            ") " .
+            "AND season.season_year = '$seasonToUpdate' ";
       $queryString .= "UNION ".
-            "SELECT 2 as umpire_type_id, 'Boundary' AS umpire_type, age_group.age_group, league.short_league_name,  ".
+            "SELECT season_year, 2 as umpire_type_id, 'Boundary' AS umpire_type, age_group.age_group, league.short_league_name,  ".
             "round.round_date, match_played.id AS match_id, team_1.team_name AS home, team.team_name AS away, club_1.club_name AS home_club, club.club_name AS away_club,  ".
             "age_group_division.age_group_ID ".
             "FROM match_played ".
@@ -845,6 +884,7 @@ class MatchImport extends MY_Model
             "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id ".
             "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id ".
             "INNER JOIN division ON division.ID = age_group_division.division_id ".
+            "INNER JOIN season ON season.ID = round.season_id ".
             "WHERE match_played.id NOT IN ( ".
             "SELECT umpire_name_type_match.match_id ".
             "FROM umpire_name_type_match ".
@@ -852,14 +892,19 @@ class MatchImport extends MY_Model
             "INNER JOIN umpire_type ut_sub ON ut_sub.ID = umpire_name_type.umpire_type_id ".
             "WHERE ut_sub.umpire_type_name='Boundary' ".
             ") ".
+            "AND season.season_year = '$seasonToUpdate' " .
             ") AS outer1";
-      
-      
-      $this->db->query($queryString);
-      
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--reloadMVSummaryStaging SQL:<BR />" . $queryString . "<BR />";
+      
+      }
+      
+      $this->db->query($queryString);
+      
+      
+      if ($debugMode) {
+          
           echo "Query run: reloadMVSummaryStaging, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
@@ -878,13 +923,13 @@ class MatchImport extends MY_Model
             "`No Reserve Goal|BFL`, `No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, " .
             "`No Colts Field|Clubs`, `No Colts Field|No.`, `No U16 Field|Clubs`, `No U16 Field|No.`, " .
             "`No U14 Field|Clubs`, `No U14 Field|No.`) " .
-            "SELECT '$seasonToUpdate', weekdate, " .
+            "SELECT season_year, weekdate, " .
             "MAX(`No Senior Boundary|BFL`), MAX(`No Senior Boundary|GDFL`), MAX(`No Senior Boundary|GFL`), SUM(`No Senior Boundary|No.`), MAX(`No Senior Goal|BFL`), " .
             "MAX(`No Senior Goal|GDFL`), MAX(`No Senior Goal|GFL`), SUM(`No Senior Goal|No.`), MAX(`No Reserve Goal|BFL`), MAX(`No Reserve Goal|GDFL`), " .
             "MAX(`No Reserve Goal|GFL`), SUM(`No Reserve Goal|No.`), MAX(`No Colts Field|Clubs`),SUM(`No Colts Field|No.`), MAX(`No U16 Field|Clubs`), " .
             "SUM(`No U16 Field|No.`), MAX(`No U14 Field|Clubs`), SUM(`No U14 Field|No.`) " . 
             "FROM (";
-      $queryString .= "SELECT weekdate, ".
+      $queryString .= "SELECT season_year, weekdate, ".
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'BFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|BFL`, ".
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GDFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|GDFL`, ".
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'GFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|GFL`, ".
@@ -905,31 +950,38 @@ class MatchImport extends MY_Model
             "(CASE WHEN age_group = 'Under 14' AND umpire_type = 'Field' THEN match_count ELSE 0 END)  as `No U14 Field|No.`".
             "FROM (";
             
-      $queryString .= "SELECT umpire_type, age_group, short_league_name, weekdate, ".
+      $queryString .= "SELECT season_year, umpire_type, age_group, short_league_name, weekdate, ".
             "GROUP_CONCAT(home, ' vs ', away) AS team_list, ".
             "COUNT(home) AS match_count  ".
             "FROM ( ".
-            "SELECT umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  ".
+            "SELECT season_year, umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  ".
             "weekdate ".
             "FROM mv_summary_staging " .
+            "WHERE season_year = '$seasonToUpdate' " .
             ") AS outer2 ".
-            "GROUP BY umpire_type, age_group, short_league_name, weekdate ";
+            "GROUP BY season_year, umpire_type, age_group, short_league_name, weekdate ";
       $queryString .= ") AS outer3 " .
-            "GROUP BY weekdate,  " .
+            "GROUP BY season_year, weekdate,  " .
         		"`No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, `No Senior Goal|BFL`, " .
         	 "`No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, `No Reserve Goal|BFL`, `No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, `No Colts Field|Clubs`, " .
         	 "`No Colts Field|No.`, `No U16 Field|Clubs`, `No U16 Field|No.`, `No U14 Field|Clubs`, `No U14 Field|No.` " .
         	") as maintable " .
-        "GROUP BY  weekdate, `No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, " . 
+        "GROUP BY  season_year, weekdate, `No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, " . 
         "`No Senior Goal|BFL`, `No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, `No Reserve Goal|BFL`,  " .
         "`No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, `No Colts Field|Clubs`,`No Colts Field|No.` " .
-        "ORDER BY weekdate";
+        "ORDER BY season_year, weekdate";
   
-      $this->db->query($queryString);
-      
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--reloadMVReport03Table SQL:<BR />" . $queryString . "<BR />";
+      }
+      
+      
+      $this->db->query($queryString);
+      
+
+      if ($debugMode) {
+          
           echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   
@@ -952,7 +1004,7 @@ class MatchImport extends MY_Model
         "`Goal|Reserves|BFL`, `Goal|Reserves|GDFL`, `Goal|Reserves|GFL`, `Goal|Colts|None`, ".
         "`Goal|Under 16|None`, `Goal|Under 14|None`, `Goal|Youth Girls|None`, `Goal|Junior Girls|None`) ";
       
-      $queryString .= "SELECT '$seasonToUpdate', club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
+      $queryString .= "SELECT season_year, club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
         "SUM(`Boundary|Reserves|BFL`), SUM(`Boundary|Reserves|GDFL`), SUM(`Boundary|Reserves|GFL`), SUM(`Boundary|Colts|None`), ".
         "SUM(`Boundary|Under 16|None`), SUM(`Boundary|Under 14|None`), SUM(`Boundary|Youth Girls|None`), SUM(`Boundary|Junior Girls|None`), ".
         "SUM(`Field|Seniors|BFL`), SUM(`Field|Seniors|GDFL`), SUM(`Field|Seniors|GFL`), SUM(`Field|Reserves|BFL`), ".
@@ -963,7 +1015,7 @@ class MatchImport extends MY_Model
         "SUM(`Goal|Youth Girls|None`), SUM(`Goal|Junior Girls|None`) ".
         "FROM ( ";
       
-      $queryString .= "SELECT club, ".
+      $queryString .= "SELECT season_year, club, ".
         "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|BFL`, ".
         "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|GDFL`, ".
         "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|GFL`, ".
@@ -999,29 +1051,36 @@ class MatchImport extends MY_Model
         "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Junior Girls' AND short_league_name = 'None' THEN match_count ELSE 0 END) as `Goal|Junior Girls|None` ".
         "FROM ( ";
       
-      $queryString .= "SELECT age_group, umpire_type, Club, short_league_name, SUM(Match_Count) AS match_count ".
+      $queryString .= "SELECT season_year, age_group, umpire_type, Club, short_league_name, SUM(Match_Count) AS match_count ".
             "FROM ( ".
-            "SELECT 'Home' as Club_Type, s.age_group, s.umpire_type, s.home_club as Club, s.short_league_name,  ".
+            "SELECT season_year, 'Home' as Club_Type, s.age_group, s.umpire_type, s.home_club as Club, s.short_league_name,  ".
             "COUNT(s.age_group_ID) AS Match_Count, age_group_ID ".
             "FROM mv_summary_staging s ".
+            "WHERE season_year = '$seasonToUpdate' " .
             "GROUP BY s.age_group, s.umpire_type, s.home_club, s.age_group_ID ".
             "UNION ALL ".
-            "SELECT 'Away' as Club_Type,  s.age_group, s.umpire_type, s.away_club,  s.short_league_name,  ".
+            "SELECT season_year, 'Away' as Club_Type,  s.age_group, s.umpire_type, s.away_club,  s.short_league_name,  ".
             "COUNT(s.age_group_ID), age_group_ID ".
             "FROM mv_summary_staging s ".
-            "GROUP BY s.age_group, s.umpire_type, s.away_club, s.age_group_ID, s.short_league_name ".
+            "WHERE season_year = '$seasonToUpdate' " .
+            "GROUP BY season_year, s.age_group, s.umpire_type, s.away_club, s.age_group_ID, s.short_league_name ".
             ")  AS outer1 ".
-            "GROUP BY age_group, umpire_type, Club, short_league_name ".
+            "GROUP BY season_year, age_group, umpire_type, Club, short_league_name ".
             ") AS outer2 ".
             ") AS outer3 ".
-            "GROUP BY club ".
-            "ORDER BY club; ";
+            "GROUP BY season_year, club ".
+            "ORDER BY season_year, club; ";
+      
+      $debugMode = $this->config->item('debug_mode');
+      if ($debugMode) {
+          echo "--reloadMVReport04Table SQL:<BR />" . $queryString . "<BR />";
+      }
       
       $this->db->query($queryString);
       
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
-          echo "--reloadMVReport04Table SQL:<BR />" . $queryString . "<BR />";
+          
           echo "Query run: reloadMVReport04Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   
@@ -1035,7 +1094,7 @@ class MatchImport extends MY_Model
   
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_05 (season_year, umpire_type, age_group, BFL, GDFL, GFL, `None`, `Total`) ";
-      $queryString .= "SELECT '$seasonToUpdate', ua.umpire_type_name, ua.age_group, " .
+      $queryString .= "SELECT season_year, ua.umpire_type_name, ua.age_group, " .
             "IFNULL(SUM(`BFL`),0), " .
             "IFNULL(SUM(`GDFL`),0), " .
             "IFNULL(SUM(`GFL`),0), " .
@@ -1047,27 +1106,31 @@ class MatchImport extends MY_Model
             "FROM umpire_type ut, age_group ag " .
             ") AS ua LEFT JOIN (";
   
-      $queryString .= "SELECT umpire_type, age_group, age_group_ID,  " .
+      $queryString .= "SELECT season_year, umpire_type, age_group, age_group_ID,  " .
         	"(CASE WHEN short_league_name = 'BFL' THEN match_count ELSE 0 END) as `BFL`, " .
         	"(CASE WHEN short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `GDFL`, " .
         	"(CASE WHEN short_league_name = 'GFL' THEN match_count ELSE 0 END) as `GFL`, " .
         	"(CASE WHEN short_league_name = 'None' THEN match_count ELSE 0 END) as `None` " .
         	"FROM ( " .
-			"SELECT s.umpire_type, s.age_group, s.short_league_name, s.age_group_ID, " .
+			"SELECT s.season_year, s.umpire_type, s.age_group, s.short_league_name, s.age_group_ID, " .
 			"COUNT(s.match_id) AS Match_Count " .
 			"FROM mv_summary_staging s " .
-			"GROUP BY s.age_group, s.umpire_type, s.short_league_name, s.age_group_ID " .
+			"WHERE s.season_year = '$seasonToUpdate' " .
+			"GROUP BY s.season_year, s.age_group, s.umpire_type, s.short_league_name, s.age_group_ID " .
     		") AS outer1 " .
             ") AS outer2 ON ua.umpire_type_name = outer2.umpire_type " .
             "AND ua.age_group = outer2.age_group " .
-            "GROUP BY ua.umpire_type_id, ua.age_group_id " .
-            "ORDER BY ua.umpire_type_id, ua.age_group_id";
+            "GROUP BY season_year, ua.umpire_type_id, ua.age_group_id " .
+            "ORDER BY season_year, ua.umpire_type_id, ua.age_group_id";
 
-      $this->db->query($queryString);
-      
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--reloadMVReport05Table SQL:<BR />" . $queryString . "<BR />";
+      }
+      $this->db->query($queryString);
+      
+      if ($debugMode) {
+          
           echo "Query run: reloadMVReport05Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   }
@@ -1087,7 +1150,7 @@ class MatchImport extends MY_Model
       //Insert into umpire MV
       $queryString = "INSERT INTO mv_umpire_list (season_year, umpire_type_name, age_group, umpire_name) " .
         "SELECT DISTINCT " .
-        "'$seasonToUpdate', umpire_type.umpire_type_name, " . 
+        "season_year, umpire_type.umpire_type_name, " . 
         "age_group.age_group, " . 
         "CONCAT(umpire.last_name, ', ', umpire.first_name) AS umpire_name " .
         "FROM umpire " .
@@ -1098,19 +1161,25 @@ class MatchImport extends MY_Model
         "INNER JOIN round ON round.ID = match_played.round_id " .
         "INNER JOIN league ON league.ID = round.league_id " .
         "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " .
-        "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id;";
+        "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " .
+        "INNER JOIN season ON season.id = round.season_id " .
+        "WHERE season.season_year = '$seasonToUpdate';";
 
+      if ($debugMode) {
+          echo "--reloadMVReport06Table UmpireList SQL:<BR />" . $queryString . "<BR />";
+      }
+      
       $this->db->query($queryString);
       
       if ($debugMode) {
-          echo "--reloadMVReport06Table UmpireList SQL:<BR />" . $queryString . "<BR />";
+          
           echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
       //Insert into MV 06 staging
       $queryString = "INSERT INTO mv_report_06_staging (season_year, umpire_type_name, age_group, first_umpire, second_umpire, match_ID)  " .
         "SELECT " . 
-        "'$seasonToUpdate', umpire_type1.umpire_type_name, " . 
+        "season.season_year, umpire_type1.umpire_type_name, " . 
         "age_group.age_group, " . 
         "CONCAT(umpire1.last_name, ', ', umpire1.first_name) AS first_umpire, " . 
         "CONCAT(umpire2.last_name, ', ', umpire2.first_name) AS second_umpire, " .
@@ -1129,32 +1198,43 @@ class MatchImport extends MY_Model
         "INNER JOIN league ON league.ID = round.league_id " .
         "INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id " .
         "INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id " .
+        "INNER JOIN season ON season.id = round.season_id " .
         "WHERE umpire1.first_name <> umpire2.first_name " .
         "AND umpire1.last_name <> umpire2.last_name " .
-        "AND umpire_type1.ID = umpire_name_type2.umpire_type_id;";
+        "AND umpire_type1.ID = umpire_name_type2.umpire_type_id " .
+        "AND season.season_year = '$seasonToUpdate';";
 
+      if ($debugMode) {
+          echo "--reloadMVReport06Table 06 Staging SQL:<BR />" . $queryString . "<BR />";
+      }
       
       $this->db->query($queryString);
       
       if ($debugMode) {
-          echo "--reloadMVReport06Table 06 Staging SQL:<BR />" . $queryString . "<BR />";
+          
           echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_06 (season_year, umpire_type_name, age_group, first_umpire, second_umpire, match_count) " . 
-        "SELECT '$seasonToUpdate', u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name, COUNT(s.match_id) " .
+        "SELECT u1.season_year, u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name, COUNT(s.match_id) " .
         "FROM mv_umpire_list u1 " .
         "INNER JOIN mv_umpire_list u2 ON u1.umpire_type_name = u2.umpire_type_name AND u1.age_group = u2.age_group " .
         "LEFT OUTER JOIN mv_report_06_staging s ON u1.umpire_name = s.first_umpire AND u2.umpire_name = s.second_umpire " .
-        "GROUP BY u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name " . 
-        "ORDER BY u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name;";
-  
-      $this->db->query($queryString);
+        "WHERE u1.season_year = '$seasonToUpdate' " .
+        "GROUP BY u1.season_year, u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name " . 
+        "ORDER BY u1.season_year, u1.umpire_type_name, u1.age_group, u1.umpire_name, u2.umpire_name;";
   
       
       if ($debugMode) {
           echo "--reloadMVReport06Table SQL:<BR />" . $queryString . "<BR />";
+      }
+      
+      $this->db->query($queryString);
+  
+      
+      if ($debugMode) {
+          
           echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
   }

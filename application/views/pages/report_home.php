@@ -20,8 +20,8 @@ echo form_open('report');
 	<span class="reportSelectorLabel">Season:</span>
 	<span class="reportSelectorControl">
 		<select name="season">
-		<option value="2015" selected>2015</option>
-		<option value="2016">2016</option>
+		<option value="2015">2015</option>
+		<option value="2016" selected>2016</option>
 		</select>
 	</span>
 </div>
@@ -93,7 +93,7 @@ They are needed for reports where the drop-downs are disabled, as the next page 
 <input type='hidden' id='leagueHidden' name='league' value='All' />
 
 </div>
-</form>
+<?php echo form_close(); ?>
 <script>
 disableSelectBoxes();
 </script>

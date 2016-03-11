@@ -11,19 +11,20 @@
 	<?php echo form_open('VerifyLogin'); ?>
 	
 	<div class="loginFieldRow">
-		<span class="loginLabel"><label for="username">Username:</label><span>
-		<span class="loginControl"><input type="text" size="20" id="username" name="username" class="customTextBox"/><span>
+		<span class="loginLabel"><label for="username">Username:</label></span>
+		<span class="loginControl"><input type="text" size="20" id="username" name="username" class="customTextBox"/></span>
 	</div>
     <br/>
 	<div class="loginFieldRow">
-		<span class="loginLabel"><label for="password">Password:</label><span>
-		<span class="loginControl"><input type="password" size="20" id="passowrd" name="password" class="customTextBox"/><span>
+		<span class="loginLabel"><label for="password">Password:</label></span>
+		<span class="loginControl"><input type="password" size="20" id="passowrd" name="password" class="customTextBox"/></span>
     </div>
 	<br/>
 	<div class="reportSelectorRow">
-		<input type="submit" value="Login" class="btn">
+		<input type="submit" value="Login" class="btn" />
 	</div>
 
-   </form>
+<?php echo form_close(); ?>
+
  </body>
 </html>

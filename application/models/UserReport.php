@@ -85,6 +85,7 @@ class UserReport extends CI_Model {
 		print_r($reportParameters);
 		echo "</pre>";*/
 	    //TODO: Clean up this switch statement to remove code repetition 
+	    //ReportParameters are set in controllers/report.php->index();
 	    switch ($reportParameters['reportName']) {
 	        case 1:
     			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport01);
@@ -97,7 +98,7 @@ class UserReport extends CI_Model {
     			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
     			$this->reportDisplayOptions->setColourCells(TRUE);
     			$this->reportDisplayOptions->setPDFResolution(200);
-    			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType'];
+    			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType']." (". $reportParameters['season'] .")";
     			$this->reportID = 1;
     			break;
 	        case 2:
@@ -110,7 +111,7 @@ class UserReport extends CI_Model {
 	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
 	            $this->reportDisplayOptions->setColourCells(FALSE);
 	            $this->reportDisplayOptions->setPDFResolution(200);
-	            $this->reportTitle = "02 - Umpire Names by League - ". $reportParameters['umpireType'];
+	            $this->reportTitle = "02 - Umpire Names by League - ". $reportParameters['umpireType']." (". $reportParameters['season'] .")";
 	            $this->reportID = 2;
 	            break;
             case 3:
@@ -123,7 +124,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "03 - Summary by Week (Matches Where No Umpires Are Recorded)";
+                $this->reportTitle = "03 - Summary by Week (Matches Where No Umpires Are Recorded) (". $reportParameters['season'] .")";
                 $this->reportID = 3;
                 break;
             case 4:
@@ -136,7 +137,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "04 - Summary by Club (Matches Where No Umpires Are Recorded)";
+                $this->reportTitle = "04 - Summary by Club (Matches Where No Umpires Are Recorded) (". $reportParameters['season'] .")";
                 $this->reportID = 4;
                 break;
             case 5:
@@ -149,7 +150,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportDisplayOptions->setPDFResolution(100);
-                $this->reportTitle = "05 - Games with Zero Umpires For Each League";
+                $this->reportTitle = "05 - Games with Zero Umpires For Each League (". $reportParameters['season'] .")";
                 $this->reportID = 5;
                 break;
             case 6:
@@ -163,7 +164,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(TRUE);
                 $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "06 - Umpire Pairing - ". $reportParameters['age']." - ".$reportParameters['umpireType'];;
+                $this->reportTitle = "06 - Umpire Pairing - ". $reportParameters['age']." - ".$reportParameters['umpireType']." (". $reportParameters['season'] .")";
                 $this->reportID = 6;
                 break;
 

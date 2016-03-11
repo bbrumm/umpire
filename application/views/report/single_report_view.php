@@ -1,4 +1,5 @@
 <?php
+//LoadedReportItem is an object of type UserReport
 $loadedColumnGroupings = $loadedReportItem->getColumnLabelResultArray();
 $loadedResultArray = $loadedReportItem->getResultArray();
 $reportDisplayOptions = $loadedReportItem->getDisplayOptions();

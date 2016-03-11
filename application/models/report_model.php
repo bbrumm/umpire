@@ -444,7 +444,7 @@ Array
 	    }
 	    //Build WHERE clause
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName);
-	  //  echo "whereClause(". $whereClause .")<BR/>";
+	    echo "whereClause(". $whereClause .")<BR/>";
 	     
 	    
 	    //Determine fields to select
@@ -543,12 +543,16 @@ Array
 	private function buildWhereClause($pSeason, $pAgeGroup, $pUmpireType, $pLeague, $pReportName) {
 	    $whereClause = NULL;
 	    
-	    if ($pAgeGroup != 'All' || $pUmpireType != 'All' || $pLeague != 'All') {
-	        $whereClause = "WHERE ";
-	    }
+	    //if ($pAgeGroup != 'All' || $pUmpireType != 'All' || $pLeague != 'All') {
+	        $whereClause = "WHERE season_year = '". $pSeason ."' ";
+	    //}
 	
-	    $addAndKeyword = FALSE;
+	    $addAndKeyword = TRUE;
 	    if ($pAgeGroup != 'All') {
+	        if ($addAndKeyword) {
+	            $whereClause .= "AND ";
+	            $addAndKeyword = FALSE;
+	        }
 	        $whereClause .= "age_group = '$pAgeGroup' ";
 	        $addAndKeyword = TRUE;
 	    }
