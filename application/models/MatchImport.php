@@ -1144,8 +1144,11 @@ class MatchImport extends MY_Model
       $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
       
       //Also delete from staging tables
-      $this->deleteFromSingleTableForSeason('mv_report_06_staging', $seasonToUpdate);
-      $this->deleteFromSingleTableForSeason('mv_umpire_list', $seasonToUpdate);
+      //$this->deleteFromSingleTableForSeason('mv_report_06_staging', $seasonToUpdate);
+      //$this->deleteFromSingleTableForSeason('mv_umpire_list', $seasonToUpdate);
+      
+      $this->deleteFromSingleTable("mv_report_06_staging");
+      $this->deleteFromSingleTable("mv_umpire_list");
       
       //Insert into umpire MV
       $queryString = "INSERT INTO mv_umpire_list (season_year, umpire_type_name, age_group, umpire_name) " .

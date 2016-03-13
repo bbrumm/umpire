@@ -464,7 +464,7 @@ Login Page
 }
 
 .fileNameLabel {
-	/*width:50%;*/
+	width:50%;
 	text-align:left;
 	/*background:#C0C0C0;*/
 	display: inline-block;

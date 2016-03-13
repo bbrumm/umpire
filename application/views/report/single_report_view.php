@@ -227,55 +227,65 @@ foreach ($loadedResultArray as $resultRow):
 	}
 	
 	//$currentReportRowLabel = $resultRow[$rowLabels[0]];
-	
-	
+	/*
+	echo "<pre>";
+	print_r($resultRow);
+	echo "</pre>";
+	*/
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
 		//$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
 		//$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
-/*echo "X=(". $resultRow[$loadedColumnGroupings[$i]['column_name']] ."),";*/
-	    
-		if (
-		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) ||
-		    (($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0) &&
-		     ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== '0'))
-		    ) {
-		        /*echo "(Y)";*/
-		        //Match found for columns. Write record
-		        if ($colourCells) {
-		            $cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]]);
-		            
-    		        //$tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
-		        } elseif(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
-		            $cellClassToUse = "cellNumber cellNormal";
-		        } else {
-		            $cellClassToUse = "cellText cellNormal";
-		        }
-		        
-		        if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
-		            $cellClassToUse .= " cellTextTotal";
-		        }
-		        
-		        
-		        
-		        $cellValue = $resultRow[$loadedColumnGroupings[$i]["column_name"]];
-		        
-		        /*
-		        $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . 
-		        "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") " .
-		        "</td>";
-		        */
-		} else {
-		    if(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
-		      $cellClassToUse = "cellNumber cellNormal";
-		    } else {
-		      $cellClassToUse = "cellNormal";
-		    }
-		    $cellValue = $noDataValueToDisplay;
-		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
-		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
-		}
 		
+	    
+//echo "X=(". $resultRow[$loadedColumnGroupings[$i]['column_name']] ."),";
+	    if(array_key_exists($loadedColumnGroupings[$i]["column_name"], $resultRow)) { 
+	    
+    		if (
+    		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) ||
+    		    (($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0) &&
+    		     ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== '0'))
+    		    ) {
+    		        /*echo "(Y)";*/
+    		        //Match found for columns. Write record
+    		        if ($colourCells) {
+    		            $cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]]);
+    		            
+        		        //$tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
+    		        } elseif(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
+    		            $cellClassToUse = "cellNumber cellNormal";
+    		        } else {
+    		            $cellClassToUse = "cellText cellNormal";
+    		        }
+    		        
+    		        if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
+    		            $cellClassToUse .= " cellTextTotal";
+    		        }
+    		        
+    		        
+    		        
+    		        $cellValue = $resultRow[$loadedColumnGroupings[$i]["column_name"]];
+    		        
+    		        /*
+    		        $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . 
+    		        "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") " .
+    		        "</td>";
+    		        */
+    		} else {
+    		    if(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
+    		      $cellClassToUse = "cellNumber cellNormal";
+    		    } else {
+    		      $cellClassToUse = "cellNormal";
+    		    }
+    		    $cellValue = $noDataValueToDisplay;
+    		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
+    		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
+    		}
+    	} else {
+    	    //Array key does not exist
+    	    $cellClassToUse = "cellNormal";
+    	    $cellValue = $noDataValueToDisplay;
+    	}
 		//Add on formatting for cells if matrix values are the same (e.g. row = column)
 		if ($reportID == 6) {
 		    //print "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") ";
