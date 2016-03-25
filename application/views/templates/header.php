@@ -8,6 +8,7 @@ $this->load->helper('url');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
 $data['reportSelection'] = $this->config->item('reportSelection');
+$data['useradmin'] = $this->config->item('useradmin');
 
 if (isset($PDFLayout)) {
     if ($PDFLayout == TRUE) {
@@ -24,6 +25,7 @@ if ($showHeader) {
     echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
 }
 echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
+echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['useradmin'] ."'></script>";
 echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />";
 
 if ($showHeader) {

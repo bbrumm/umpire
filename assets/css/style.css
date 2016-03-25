@@ -553,3 +553,85 @@ Login Page
 	
 	
 }
+
+/*
+ * User Admin Page
+ */
+ .userNameRow {
+	width:100%;
+	position:relative;
+    overflow:hidden;
+    white-space: nowrap;
+	text-align:center;
+ 	/*background:#0CF245;*/
+	
+	}
+ 
+ .userNameLabel{
+	width:50%;
+	text-align:right;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	font-size: 16px;
+	padding:5px;
+	/*font-weight: bold;*/
+ 	
+ }
+ 
+ .userAdminLevel {
+	width:50%;
+	text-align:left;
+	/*background:#C0C055;*/
+	display: inline-block;
+	font-size: 16px;
+	padding:5px;
+	/*font-weight: bold;*/
+
+ }
+ 
+ .submitButton {
+	text-align:center;	
+ 
+ }
+ 
+ .regularUserDetails {
+	align:center;	
+ }
+ 
+ .regularUserOptionsHeading {
+	text-align:center;
+ 	font-size: 16px;
+ 	font-weight: bold;
+ 	
+ }
+ 
+ .optionsSection {
+	display: inline-block;
+ 	width: 33%;
+ 	/*background:#A0A0C0;*/
+ 	vertical-align: top;
+
+ }
+ 
+ .allOptionsSections {
+ 	width:60%;
+	margin: auto;
+ 	border-style: solid;
+ 	border-width: 1px;
+ 	border-color: black;
+ }
+ 
+ .optionsSubHeading {
+	text-align:center;
+ 	
+ }
+ 
+ .boldedText {
+	font-weight:bold;
+ }
+ 
+ .roleDefinitions {
+	width:60%;
+	margin: auto;
+ 	
+ }
