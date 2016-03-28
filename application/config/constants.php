@@ -83,3 +83,20 @@ define('EXIT_USER_INPUT', 7); // invalid user input
 define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+/*
+ * Constants used for application logic
+ * 
+ */
+
+
+define('PARAM_REGION', 1);
+define('PARAM_LEAGUE', 2);
+define('PARAM_UMPIRE_DISCIPLINE', 3);
+define('PARAM_AGE_GROUP', 4);
+
+
+
+
+

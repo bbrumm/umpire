@@ -9,6 +9,9 @@ class Home extends CI_Controller {
 
  function index()
  {
+     
+   $this->load->model('ReportSelectionParameter');
+     
    if($this->session->userdata('logged_in'))
    {
      $session_data = $this->session->userdata('logged_in');
@@ -16,6 +19,9 @@ class Home extends CI_Controller {
      $data['maxDateOutput'] = $this->getLatestImportDateOutput();
 	 
 	 $this->load->view('templates/header', $data);
+	 
+	 $this->getAllReportSelectionParameters();
+	 
 	 $this->load->helper('form');
 	 $this->load->view('pages/report_home', $data);
 	 
@@ -56,6 +62,19 @@ class Home extends CI_Controller {
      return "Data last imported on " . date($dateFormatString, strtotime($latestImportDate));
       
  }
+ 
+ private function getAllReportSelectionParameters() {
+     $reportSelectionParameter = new ReportSelectionParameter();
+     
+     
+     $allReportSelectionParameters[] = $reportSelectionParameter->loadSelectableReportOptions(PARAM_REGION);
+     
+     echo "Parameters: <br /><pre>";
+     print_r($allReportSelectionParameters);
+     echo "</pre>";
+ }
+ 
+
 
 }
 
