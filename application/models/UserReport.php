@@ -70,10 +70,45 @@ class UserReport extends CI_Model {
 	private $columnLabelResultArray;
 	private $rowLabelResultArray;
 	
+	private $umpireTypeSQLValues;
+	private $leagueSQLValues;
+	private $ageGroupSQLValues;
+	
+	private $umpireTypeDisplayValues;
+	private $leagueDisplayValues;
+	private $ageGroupDisplayValues;
+	
 	
 	private $reportID;
 
 	public $reportDisplayOptions;
+	
+	public function getUmpireTypeSQLValues() {
+	    return $this->umpireTypeSQLValues;
+	}
+	
+	public function getLeagueSQLValues() {
+	    return $this->leagueSQLValues;
+	}
+	
+	public function getAgeGroupSQLValues() {
+	    return $this->ageGroupSQLValues;
+	}
+	
+	public function getUmpireTypeDisplayValues() {
+	    return $this->umpireTypeDisplayValues;
+	}
+	
+	public function getLeagueDisplayValues() {
+	    return $this->leagueDisplayValues;
+	}
+	
+	public function getAgeGroupDisplayValues() {
+	    return $this->ageGroupDisplayValues;
+	}
+	
+	
+	
 	
 	public function __construct() {
 		$this->reportDisplayOptions = new ReportDisplayOptions();
@@ -86,6 +121,13 @@ class UserReport extends CI_Model {
 		echo "</pre>";*/
 	    //TODO: Clean up this switch statement to remove code repetition 
 	    //ReportParameters are set in controllers/report.php->index();
+	    
+	    $ageGroupValue = implode(',', $reportParameters['age']);
+	    $leagueValue = "";
+	    $umpireDisciplineValue = implode(',', $reportParameters['umpireType']);
+	    $seasonValue = $reportParameters['season'];
+	        
+	    
 	    switch ($reportParameters['reportName']) {
 	        case 1:
     			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport01);
@@ -98,7 +140,7 @@ class UserReport extends CI_Model {
     			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
     			$this->reportDisplayOptions->setColourCells(TRUE);
     			$this->reportDisplayOptions->setPDFResolution(200);
-    			$this->reportTitle = "01 - Umpires and Clubs - ". $reportParameters['age']." - ".$reportParameters['umpireType']." (". $reportParameters['season'] .")";
+    			$this->reportTitle = "01 - Umpires and Clubs (". $seasonValue .")";
     			$this->reportID = 1;
     			break;
 	        case 2:
@@ -111,7 +153,7 @@ class UserReport extends CI_Model {
 	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
 	            $this->reportDisplayOptions->setColourCells(FALSE);
 	            $this->reportDisplayOptions->setPDFResolution(200);
-	            $this->reportTitle = "02 - Umpire Names by League - ". $reportParameters['umpireType']." (". $reportParameters['season'] .")";
+	            $this->reportTitle = "02 - Umpire Names by League (". $seasonValue .")";
 	            $this->reportID = 2;
 	            break;
             case 3:
@@ -124,7 +166,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "03 - Summary by Week (Matches Where No Umpires Are Recorded) (". $reportParameters['season'] .")";
+                $this->reportTitle = "03 - Summary by Week (Matches Where No Umpires Are Recorded) (". $seasonValue .")";
                 $this->reportID = 3;
                 break;
             case 4:
@@ -137,7 +179,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "04 - Summary by Club (Matches Where No Umpires Are Recorded) (". $reportParameters['season'] .")";
+                $this->reportTitle = "04 - Summary by Club (Matches Where No Umpires Are Recorded) (". $seasonValue .")";
                 $this->reportID = 4;
                 break;
             case 5:
@@ -150,7 +192,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(FALSE);
                 $this->reportDisplayOptions->setPDFResolution(100);
-                $this->reportTitle = "05 - Games with Zero Umpires For Each League (". $reportParameters['season'] .")";
+                $this->reportTitle = "05 - Games with Zero Umpires For Each League (". $seasonValue .")";
                 $this->reportID = 5;
                 break;
             case 6:
@@ -164,7 +206,7 @@ class UserReport extends CI_Model {
                 $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
                 $this->reportDisplayOptions->setColourCells(TRUE);
                 $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "06 - Umpire Pairing - ". $reportParameters['age']." - ".$reportParameters['umpireType']." (". $reportParameters['season'] .")";
+                $this->reportTitle = "06 - Umpire Pairing (". $seasonValue .")";
                 $this->reportID = 6;
                 break;
 
@@ -376,6 +418,24 @@ class UserReport extends CI_Model {
 	   }
 	   return $arrayKeyFound;
 	    
+	}
+	
+	public function convertParametersToSQLReadyValues($reportParameters) {
+	   //Converts several of the reportParameters arrays into comma separate values that are ready for SQL queries
+	    //Add a value of "All" and "None" to the League list, so that reports that users select for ages with no league (e.g. Colts) are still able to be loaded
+	    $reportParameters['league'][] = 'All';
+	    $reportParameters['league'][] = 'None';
+	    
+	    $this->umpireTypeSQLValues = "'".implode("','",$reportParameters['umpireType'])."'";
+	    $this->leagueSQLValues = "'".implode("','",$reportParameters['league'])."'";
+	    $this->ageGroupSQLValues = "'".implode("','",$reportParameters['age'])."'";
+	
+	}
+	
+	public function convertParametersToDisplayValues($reportParameters) {
+	    $this->umpireTypeDisplayValues = implode(", ", $reportParameters['umpireType']);
+	    $this->leagueDisplayValues = implode(", ", $reportParameters['league']);
+	    $this->ageGroupDisplayValues = implode(", ", $reportParameters['age']);
 	}
 	
 	

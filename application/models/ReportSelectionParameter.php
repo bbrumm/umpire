@@ -19,27 +19,67 @@ class ReportSelectionParameter extends CI_Model
         //$this->load->config('constants');
     }
     
+    private $parameterID;
     private $selectableReportOptions;
+    private $parameterName;
+    private $parameterDisplayOrder;
+    private $allowMultipleSelections;
+    
 
     //Get Functions
+    public function getParameterID() {
+        return $this->parameterID;
+    }
+    
     public function getSelectableReportOptions() {
         return $this->selectableReportOptions;
     }
     
+    public function getParameterName() {
+        return $this->parameterName;
+    }
+    
+    public function getParameterDisplayOrder() {
+        return $this->parameterDisplayOrder;
+    }
+    
+    public function getAllowMultipleSelections() {
+        return $this->allowMultipleSelections;
+    }
+    
 
     //Set Functions
-    public function setSelectableReportOptions($pValue) {
+    public function setParameterID($pValue) {
+        $this->parameterID = $pValue;
+    }
+    
+    private function setSelectableReportOptions($pValue) {
         $this->selectableReportOptions = $pValue;
     }
     
-    public function loadSelectableReportOptions($parameterID) {
+    public function setParameterName($pValue) {
+        $this->parameterName = $pValue;
+    }
+    
+    public function setParameterDisplayOrder($pValue) {
+        $this->parameterDisplayOrder = $pValue;
+    }
+    
+    public function setAllowMultipleSelections($pValue) {
+        $this->allowMultipleSelections = $pValue;
+    }
+    
+    
+    
+    public function loadSelectableReportOptions() {
         /*$queryString = "SELECT parameter_name, parameter_display_order, allow_multiple_selections " . 
             "FROM report_selection_parameters " .
             "WHERE parameter_id = $parameterID " .
             "ORDER BY parameter_display_order;";
                 */
         
-        $selectableReportOptionsForParameter[] = '';
+        //$selectableReportOptionsForParameter[] = '';
+        $parameterID = $this->getParameterID();
         
         $queryString = "SELECT parameter_value_name, parameter_display_order " .
             "FROM report_selection_parameter_values " .
@@ -54,9 +94,10 @@ class ReportSelectionParameter extends CI_Model
             $selectableReportOption->setOptionDisplayOrder($row->parameter_display_order);
             
             $selectableReportOptionsForParameter[] = $selectableReportOption;
+            //print_r($selectableReportOption);
         }
          
-        return $selectableReportOptionsForParameter;
+        $this->setSelectableReportOptions($selectableReportOptionsForParameter);
             
         
     

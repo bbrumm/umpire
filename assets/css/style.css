@@ -409,8 +409,29 @@ select {
 
 select:disabled {
 	background: #dddddd;
-
 }
+
+
+.reportControlLabel {
+	font-size: 16px;
+}
+
+input[type=checkbox] + label {
+    color: black;
+} 
+input[type=checkbox]:checked + label {
+    color: green;
+	font-weight:bold;
+} 
+
+input[type=radio] + label {
+    color: black;
+}
+input[type=radio]:checked + label {
+    color: green;
+	font-weight:bold;
+} 
+
 
 
 
@@ -541,7 +562,7 @@ Login Page
 
 
 
-.lastGameDate {
+.reportInformation {
 	font-size: 16px;
 	text-align: center;
 	
@@ -607,10 +628,18 @@ Login Page
  
  .optionsSection {
 	display: inline-block;
- 	width: 33%;
+ 	width: 24%;
  	/*background:#A0A0C0;*/
  	vertical-align: top;
 
+ }
+ 
+ .optionsLabelsSection {
+	
+ 	width: 60%;
+ 	margin: auto;
+ 	/*background:#666666;*/
+ 	
  }
  
  .allOptionsSections {
@@ -623,6 +652,7 @@ Login Page
  
  .optionsSubHeading {
 	text-align:center;
+ 	font-size: 16px;
  	
  }
  

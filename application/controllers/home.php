@@ -20,7 +20,7 @@ class Home extends CI_Controller {
 	 
 	 $this->load->view('templates/header', $data);
 	 
-	 $this->getAllReportSelectionParameters();
+	 $data['reportSelectionParameters'] = $this->getAllReportSelectionParameters();
 	 
 	 $this->load->helper('form');
 	 $this->load->view('pages/report_home', $data);
@@ -64,14 +64,34 @@ class Home extends CI_Controller {
  }
  
  private function getAllReportSelectionParameters() {
-     $reportSelectionParameter = new ReportSelectionParameter();
      
+     //$allReportSelectionParameters[] = '';
      
-     $allReportSelectionParameters[] = $reportSelectionParameter->loadSelectableReportOptions(PARAM_REGION);
+     $queryString = "SELECT parameter_id, parameter_name, parameter_display_order, allow_multiple_selections " .
+         "FROM report_selection_parameters " .
+         "ORDER BY parameter_display_order;";
      
+     $query = $this->db->query($queryString);
+     foreach ($query->result() as $row) {
+         $reportSelectionParameter = new ReportSelectionParameter();
+         $reportSelectionParameter->setParameterID($row->parameter_id);
+         $reportSelectionParameter->setParameterName($row->parameter_name);
+         $reportSelectionParameter->setParameterDisplayOrder($row->parameter_display_order);
+         $reportSelectionParameter->setAllowMultipleSelections($row->allow_multiple_selections);
+         $reportSelectionParameter->loadSelectableReportOptions();
+         
+         $allReportSelectionParameters[] = $reportSelectionParameter;
+         
+         
+     }
+     
+     /*
      echo "Parameters: <br /><pre>";
      print_r($allReportSelectionParameters);
      echo "</pre>";
+     */
+     
+     return $allReportSelectionParameters;
  }
  
 

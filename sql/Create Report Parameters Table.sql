@@ -12,9 +12,9 @@ allow_multiple_selections boolean
 );
 
 INSERT INTO report_selection_parameters (parameter_id, parameter_name, parameter_display_order, allow_multiple_selections) VALUES (1, 'Region', 1, FALSE);
-INSERT INTO report_selection_parameters (parameter_id, parameter_name, parameter_display_order, allow_multiple_selections) VALUES (2, 'League', 2, FALSE);
-INSERT INTO report_selection_parameters (parameter_id, parameter_name, parameter_display_order, allow_multiple_selections) VALUES (3, 'Umpire Discipline', 3, FALSE);
-INSERT INTO report_selection_parameters (parameter_id, parameter_name, parameter_display_order, allow_multiple_selections) VALUES (4, 'Age Group', 4, FALSE);
+INSERT INTO report_selection_parameters (parameter_id, parameter_name, parameter_display_order, allow_multiple_selections) VALUES (2, 'League', 2, TRUE);
+INSERT INTO report_selection_parameters (parameter_id, parameter_name, parameter_display_order, allow_multiple_selections) VALUES (3, 'Umpire Discipline', 3, TRUE);
+INSERT INTO report_selection_parameters (parameter_id, parameter_name, parameter_display_order, allow_multiple_selections) VALUES (4, 'Age Group', 4, TRUE);
 
 
 DROP TABLE report_selection_parameter_values;
@@ -46,12 +46,21 @@ INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_nam
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Under 17.5', 4);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Under 16', 5);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Under 14.5', 6);
-INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Under 14.5', 7);
+INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Under 14', 7);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Under 12', 8);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Youth Girls', 9);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (4, 'Junior Girls', 10);
 
 
+SELECT *
+FROM report_selection_parameters;
+
 
 SELECT *
-FROM report_selection_parameter_values
+FROM report_selection_parameter_values;
+
+/*
+UPDATE report_selection_parameters
+SET allow_multiple_selections = 1
+WHERE parameter_id <> 1;
+*/

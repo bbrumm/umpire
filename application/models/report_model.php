@@ -11,109 +11,116 @@ class report_model extends CI_Model {
 	}
 	
 	public function get_report($reportParameters) {
-		try {
-			//$startTime = time();
+		
+		//$startTime = time();
+		
+		$reportToDisplay = new UserReport();
+		$reportToDisplay->setReportType($reportParameters);
+		
+		
+		//Find table name to select data from
+		$reportTableName = $this->lookupReportTableName($reportParameters['reportName']);
+		//echo "reportTableName (" . $reportTableName .")";
+		
+		
+
+		//$reportParameters['league'][] = 'All';
+		//$reportParameters['league'][] = 'None';
+		
+		//Convert array of checkbox values into string ready for SQL
+		$reportToDisplay->convertParametersToSQLReadyValues($reportParameters);
+		
+		$reportToDisplay->convertParametersToDisplayValues($reportParameters);
+		
+		if ($reportParameters['reportName'] == '06') {
+		    //Build SELECT query for report data
+		    $queryForReport = $this->buildSelectQueryForReport6($reportToDisplay, $reportTableName, $reportParameters['reportName'],
+		        $reportParameters['season'], $reportParameters['age'],
+		        $reportParameters['umpireType'], $reportParameters['league']);
+		    
+		    //Run query and store result in array
+		    $query = $this->db->query($queryForReport);			    
+		    
+		    //Transform array to pivot
+		    $queryResultArray = $query->result_array();
+		    
+		    $rowLabelArray = $this->getDistinctListOfValues('first_umpire', $queryResultArray);
+		    $columnLabelArray = $this->getDistinctListOfValues('second_umpire', $queryResultArray);
+		    
+		    //Params: queryResultArray, field for row, field for columns
+		    $pivotedResultArray = $this->pivotQueryArray($queryResultArray, 'first_umpire', 'second_umpire');
+            
+		    //Convert column labels into array for the output page
+		    $columnLabelArray = $this->convertSimpleArrayToColumnLabelArray($columnLabelArray);
+		    
+		    //Set values for result array and column label array
+		    $reportToDisplay->setResultArray($pivotedResultArray);
+		    $reportToDisplay->setColumnLabelResultArray($columnLabelArray);
+		    
+		    return $reportToDisplay;
+		    
+		} else {
+			//Build SELECT query for report
+			$queryForReport = $this->buildSelectQueryForReport($reportToDisplay, $reportTableName, $reportParameters['reportName'],
+			    $reportParameters['season'], $reportParameters['age'],
+			    $reportParameters['umpireType'], $reportParameters['league']);
+    		
 			
-			$reportToDisplay = new UserReport();
-			$reportToDisplay->setReportType($reportParameters);
+			//$this->reportQuery = $queryForReport;
+
+			$query = $this->db->query($queryForReport);
+				
+			$reportToDisplay->setResultArray($query->result_array());
 			
+			//Look up the column labels for this report
+			$columnLabelQuery = $this->buildColumnLabelQuery($reportTableName, $reportToDisplay, $reportParameters['reportName'], 
+			    $reportParameters['season'], $reportParameters['age'],
+			    $reportParameters['umpireType'], $reportParameters['league']);
 			
-			//Find table name to select data from
-			$reportTableName = $this->lookupReportTableName($reportParameters['reportName']);
-			//echo "reportTableName (" . $reportTableName .")";
+			$query = $this->db->query($columnLabelQuery);
 			
-			if ($reportParameters['reportName'] == '06') {
-			    //Build SELECT query for report data
-			    $queryForReport = $this->buildSelectQueryForReport6($reportToDisplay, $reportTableName, $reportParameters['reportName'],
-			        $reportParameters['season'], $reportParameters['age'],
-			        $reportParameters['umpireType'], $reportParameters['league']);
-			    
-			    //Run query and store result in array
-			    $query = $this->db->query($queryForReport);			    
-			    
-			    //Transform array to pivot
-			    $queryResultArray = $query->result_array();
-			    
-			    $rowLabelArray = $this->getDistinctListOfValues('first_umpire', $queryResultArray);
-			    $columnLabelArray = $this->getDistinctListOfValues('second_umpire', $queryResultArray);
-			    
-			    //Params: queryResultArray, field for row, field for columns
-			    $pivotedResultArray = $this->pivotQueryArray($queryResultArray, 'first_umpire', 'second_umpire');
-                
-			    //Convert column labels into array for the output page
-			    $columnLabelArray = $this->convertSimpleArrayToColumnLabelArray($columnLabelArray);
-			    
-			    //Set values for result array and column label array
-			    $reportToDisplay->setResultArray($pivotedResultArray);
-			    $reportToDisplay->setColumnLabelResultArray($columnLabelArray);
-			    
-			    return $reportToDisplay;
-			    
-			} else {
-    			//Build SELECT query for report
-    			$queryForReport = $this->buildSelectQueryForReport($reportToDisplay, $reportTableName, $reportParameters['reportName'],
-    			    $reportParameters['season'], $reportParameters['age'],
-    			    $reportParameters['umpireType'], $reportParameters['league']);
-        		
-    			
-    			//$this->reportQuery = $queryForReport;
-    
-    			$query = $this->db->query($queryForReport);
-    				
-    			$reportToDisplay->setResultArray($query->result_array());
-    			
-    			//Look up the column labels for this report
-    			$columnLabelQuery = $this->buildColumnLabelQuery($reportTableName, $reportToDisplay, $reportParameters['reportName'], 
-    			    $reportParameters['season'], $reportParameters['age'],
-    			    $reportParameters['umpireType'], $reportParameters['league']);
-    			
-    			$query = $this->db->query($columnLabelQuery);
-    			
-    			$columnLabelResultArray = $query->result_array();
-    			
-    			//Add an extra entry if it is report 2, for the Total column
-    			if ($reportParameters['reportName'] == '02') {
-        			$columnLabelResultArray[] = array(
-        			    'column_name' => 'Total',
-        			    'report_column_id' => '0',
-        			    'age_group' => 'Total',
-        			    'short_league_name' => ''
-        			);
-    			}
-    			$reportToDisplay->setColumnLabelResultArray($columnLabelResultArray);
-    			
-    			/*
-    			echo "getColumnLabelResultArray<pre>";
-    			print_r($reportToDisplay->getColumnLabelResultArray());
-    			echo "</pre>";
-    			*/
-    			
-    			//Load the results from the queries for the column labels and row labels from the database and store them in an array
-    			//$columnLabelQuery = $this->db->query($reportToDisplay->getReportColumnLabelQuery());
-    			//$reportToDisplay->setColumnLabelResultArray($columnLabelQuery->result_array());
-    			
-    			//temp comment
-    			//$reportToDisplay->setColumnGroupingArray($columnLabelQuery->result_array());
-    			//$reportToDisplay->setColumnGroupingArray($reportToDisplay->getColumnLabelResultArray());
-    			//$reportToDisplay->setRowGroupingArray($rowLabelQuery->result_array());
-    
-    			/*
-    			echo "getColumnLabelResultArray<pre>";
-    			print_r($reportToDisplay->getColumnLabelResultArray());
-    			echo "</pre>";
-    			
-    			echo "getResultArray<pre>";
-    			print_r($reportToDisplay->getResultArray());
-    			echo "</pre>";
-    			*/
-    			
-    			return $reportToDisplay;
+			$columnLabelResultArray = $query->result_array();
 			
+			//Add an extra entry if it is report 2, for the Total column
+			if ($reportParameters['reportName'] == '02') {
+    			$columnLabelResultArray[] = array(
+    			    'column_name' => 'Total',
+    			    'report_column_id' => '0',
+    			    'age_group' => 'Total',
+    			    'short_league_name' => ''
+    			);
 			}
-		} catch (Exception $e) {
-			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			$reportToDisplay->setColumnLabelResultArray($columnLabelResultArray);
 			
+			/*
+			echo "getColumnLabelResultArray<pre>";
+			print_r($reportToDisplay->getColumnLabelResultArray());
+			echo "</pre>";
+			*/
+			
+			//Load the results from the queries for the column labels and row labels from the database and store them in an array
+			//$columnLabelQuery = $this->db->query($reportToDisplay->getReportColumnLabelQuery());
+			//$reportToDisplay->setColumnLabelResultArray($columnLabelQuery->result_array());
+			
+			//temp comment
+			//$reportToDisplay->setColumnGroupingArray($columnLabelQuery->result_array());
+			//$reportToDisplay->setColumnGroupingArray($reportToDisplay->getColumnLabelResultArray());
+			//$reportToDisplay->setRowGroupingArray($rowLabelQuery->result_array());
+
+			/*
+			echo "getColumnLabelResultArray<pre>";
+			print_r($reportToDisplay->getColumnLabelResultArray());
+			echo "</pre>";
+			
+			echo "getResultArray<pre>";
+			print_r($reportToDisplay->getResultArray());
+			echo "</pre>";
+			*/
+			
+			return $reportToDisplay;
+		
 		}
+		
 	}
 	
 	private function convertSimpleArrayToColumnLabelArray($pArray) {
@@ -324,12 +331,17 @@ Array
 	    return $tableNameResultArray[0]['table_name'];
 	}
 	
-	private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
+	//private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
+	private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason) {
 	    //Increase maximum length for GROUP_CONCAT value
 	    $debugMode = $this->config->item('debug_mode');
 	    $query = $this->db->query("SET group_concat_max_len = 8000;");
 	    
 	    $rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
+	    
+	    $pAge = $reportToDisplay->getAgeGroupSQLValues();
+	    $pUmpireType = $reportToDisplay->getUmpireTypeSQLValues();
+	    $pLeague = $reportToDisplay->getLeagueSQLValues();
 	     
 	    //TODO: Merge this query with the buildColumnLabels query, as it is quite similar.
 	    
@@ -357,7 +369,7 @@ Array
         	    "OR (rcl.filter_name = 'age_group' AND rcl.filter_value = '". $pAge ."')) " . 
         	    "AND rt.report_name = ". $pReportName ." ";*/
 	        
-	        $columnQuery .= "WHERE rcl.filter_name = 'short_league_name' AND rcl.filter_value = '". $pLeague ."' " .
+	        $columnQuery .= "WHERE rcl.filter_name = 'short_league_name' AND rcl.filter_value IN (". $pLeague .") " .
 	            "AND rt.report_name = ". $pReportName ." ";
 	        if ($pReportName == '02') {
 	            $columnQuery .= "AND rc.report_column_id IN ( " .
@@ -366,7 +378,7 @@ Array
 	            "INNER JOIN report_column rc2 ON rcld2.report_column_id = rc2.report_column_id " .
 	            "INNER JOIN report_column_lookup rcl2 ON rc2.report_column_id = rcl2.report_column_id " .
 	            "INNER JOIN report_table rt2 ON rcl2.report_table_id = rt2.report_table_id " .
-	            "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value = '". $pAge ."' " .
+	            "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value IN (". $pAge .") " .
 	            "AND rt2.report_name = ". $pReportName ." ";
 	            $columnQuery .= "AND rcld2.report_column_id IN ( " .
 				"SELECT DISTINCT rcld3.report_column_id " .
@@ -374,12 +386,12 @@ Array
 				"INNER JOIN report_column rc3 ON rcld3.report_column_id = rc3.report_column_id " .
 				"INNER JOIN report_column_lookup rcl3 ON rc3.report_column_id = rcl3.report_column_id " .
 				"INNER JOIN report_table rt3 ON rcl3.report_table_id = rt3.report_table_id " .
-				"WHERE (rcl3.filter_name = 'umpire_type' AND rcl3.filter_value = '". $pUmpireType ."' " .
+				"WHERE (rcl3.filter_name = 'umpire_type' AND rcl3.filter_value IN (". $pUmpireType .") " .
 				"AND rt3.report_name = ". $pReportName ."))) ";
 	        }
 	    
     	    if ($pReportName == '01' && $pAge != "All") {
-                $columnQuery .= "AND mv.age_group = '". $pAge ."' ";
+                $columnQuery .= "AND mv.age_group IN (". $pAge .") ";
     	    }
             $columnQuery .= "AND rcld.column_display_filter_name = 'short_league_name' " .
                 "ORDER BY rc.column_name ASC" .
@@ -411,7 +423,7 @@ Array
 	            "JOIN report_table rt ON rcl.report_table_id = rt.report_table_id " .
 	            "JOIN report_column_lookup_display rcld ON rcld.report_column_id = rc.report_column_id ";
 
-	        $columnQuery .= "WHERE rcl.filter_name = 'short_league_name' AND rcl.filter_value = '". $pLeague ."' " .
+	        $columnQuery .= "WHERE rcl.filter_name = 'short_league_name' AND rcl.filter_value IN (". $pLeague .") " .
 	            "AND rt.report_name = ". $pReportName ." " .
                 "AND rc.report_column_id IN ( " .
                 "SELECT DISTINCT rcld2.report_column_id " .
@@ -419,7 +431,7 @@ Array
                 "INNER JOIN report_column rc2 ON rcld2.report_column_id = rc2.report_column_id " .
                 "INNER JOIN report_column_lookup rcl2 ON rc2.report_column_id = rcl2.report_column_id " .
                 "INNER JOIN report_table rt2 ON rcl2.report_table_id = rt2.report_table_id " .
-                "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value = '". $pAge ."' " .
+                "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value IN (". $pAge .") " .
                 "AND rt2.report_name = ". $pReportName .")";
 
 	        $columnQuery .= "AND rcld.column_display_filter_name = 'short_league_name' " .
@@ -442,6 +454,12 @@ Array
     	    echo "</pre>";*/
 	        echo "<BR />columnsToSelect (". $columnsToSelect .") <BR />";
 	    }
+	    
+	    if ($columnsToSelect == '') {
+	        throw new Exception("No columns found to select from. Check the Report_model.buildSelectQueryForReport function (Query: ". $columnQuery .") <BR />");
+	        
+	    }
+	    
 	    //Build WHERE clause
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName);
 	    //echo "whereClause(". $whereClause .")<BR/>";
@@ -483,12 +501,16 @@ Array
 	
 	
 	
-	private function buildSelectQueryForReport6($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
+	private function buildSelectQueryForReport6($reportToDisplay, $pReportTableName, $pReportName, $pSeason) {
 	    //Increase maximum length for GROUP_CONCAT value
 	    $debugMode = $this->config->item('debug_mode');
 	    //$query = $this->db->query("SET group_concat_max_len = 8000;");
 	     
 	    $rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
+	    
+	    $pAge = $reportToDisplay->getAgeGroupSQLValues();
+	    $pUmpireType = $reportToDisplay->getUmpireTypeSQLValues();
+	    $pLeague = $reportToDisplay->getLeagueSQLValues();
 	    
 	    //Build WHERE clause
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName);
@@ -553,7 +575,7 @@ Array
 	            $whereClause .= "AND ";
 	            $addAndKeyword = FALSE;
 	        }
-	        $whereClause .= "age_group = '$pAgeGroup' ";
+	        $whereClause .= "age_group IN ($pAgeGroup) ";
 	        $addAndKeyword = TRUE;
 	    }
 	
@@ -562,7 +584,7 @@ Array
 	            $whereClause .= "AND ";
 	            $addAndKeyword = FALSE;
 	        }
-	        $whereClause .= "umpire_type_name = '$pUmpireType' ";
+	        $whereClause .= "umpire_type_name IN ($pUmpireType) ";
 	        $addAndKeyword = TRUE;
 	    }
 	    
@@ -571,13 +593,13 @@ Array
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;
             }
-            $whereClause .= "short_league_name = '$pLeague' ";
+            $whereClause .= "short_league_name IN ($pLeague) ";
         }
          
 	    return $whereClause;
 	}
 	
-	private function buildColumnLabelQuery($pReportTableName, $userReport, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
+	private function buildColumnLabelQuery($pReportTableName, $userReport, $pReportName, $pSeason) {
         /*
          * This query finds the column labels for the report
          * It joins to the MV table for the report, as some of the criteria that has been selected is not available in the report_column tables.
@@ -588,6 +610,10 @@ Array
          * For report 02, age group and league are in the report_column config. Umpire type is not, but it should be in the data query.
          * 
          */
+	    
+	    $pAge = $userReport->getAgeGroupSQLValues();
+	    $pUmpireType = $userReport->getUmpireTypeSQLValues();
+	    $pLeague = $userReport->getLeagueSQLValues();
 	        
 	        
 	        //Find the columns to show from the UserReport
@@ -625,7 +651,7 @@ Array
     	    "OR (rcl.filter_name = 'age_group' AND rcl.filter_value = '". $pAge ."')) " . 
     	    "AND rt.report_name = ". $pReportName ." ";*/
 	   	    
-	    $columnLabelQuery .= "WHERE rcl.filter_name = 'short_league_name' AND rcl.filter_value = '". $pLeague ."' " .
+	    $columnLabelQuery .= "WHERE rcl.filter_name = 'short_league_name' AND rcl.filter_value IN (". $pLeague .") " .
             "AND rt.report_name = ". $pReportName ." ";
 	    
 	    if ($pReportName == '02') {
@@ -635,7 +661,7 @@ Array
 			   "INNER JOIN report_column rc2 ON rcld2.report_column_id = rc2.report_column_id " .
 			   "INNER JOIN report_column_lookup rcl2 ON rc2.report_column_id = rcl2.report_column_id " .
 			   "INNER JOIN report_table rt2 ON rcl2.report_table_id = rt2.report_table_id " .
-               "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value = '". $pAge ."' " .
+               "WHERE rcl2.filter_name = 'age_group' AND rcl2.filter_value IN (". $pAge .") " .
                "AND rt2.report_name = ". $pReportName ." ";
             $columnLabelQuery .= "AND rcld2.report_column_id IN ( " .
                 "SELECT DISTINCT rcld3.report_column_id " .
@@ -643,13 +669,13 @@ Array
                 "INNER JOIN report_column rc3 ON rcld3.report_column_id = rc3.report_column_id " .
                 "INNER JOIN report_column_lookup rcl3 ON rc3.report_column_id = rcl3.report_column_id " .
                 "INNER JOIN report_table rt3 ON rcl3.report_table_id = rt3.report_table_id " .
-                "WHERE (rcl3.filter_name = 'umpire_type' AND rcl3.filter_value = '". $pUmpireType ."' " .
+                "WHERE (rcl3.filter_name = 'umpire_type' AND rcl3.filter_value IN (". $pUmpireType .") " .
                 "AND rt3.report_name = ". $pReportName ."))) ";
 	    }
 	    
         
         if ($pReportName == '01' && $pAge != "All") {
-            $columnLabelQuery .= "AND mv.age_group = '". $pAge ."' ";
+            $columnLabelQuery .= "AND mv.age_group IN (". $pAge .") ";
 	    }
 	    
         $columnLabelQuery .= "ORDER BY rcld.report_column_id, rcld.column_display_filter_name;";

@@ -1,4 +1,6 @@
 <?php
+
+
 //LoadedReportItem is an object of type UserReport
 $loadedColumnGroupings = $loadedReportItem->getColumnLabelResultArray();
 $loadedResultArray = $loadedReportItem->getResultArray();
@@ -15,11 +17,20 @@ $reportID = $loadedReportItem->getReportID();
 
 //$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
-
+/*if ($debugMode) {
+    echo "<BR />loadedReportItem<pre>";
+    print_r($loadedReportItem);
+    echo "</pre><BR />";
+}*/
 $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
-echo "<div class='lastGameDate'>Last Game Date: ". $reportDisplayOptions->getLastGameDate() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>Last Game Date</span>: ". $reportDisplayOptions->getLastGameDate() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>Umpire Discipline</span>: ". $loadedReportItem->getUmpireTypeDisplayValues() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>League</span>: ". $loadedReportItem->getLeagueDisplayValues() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>Age Group</span>: ". $loadedReportItem->getAgeGroupDisplayValues() ."</div>";
+echo "<br />";
+
 ?>
 <!-- 
 <div style="width:3000px">
@@ -50,7 +61,7 @@ if ($debugMode) {
     echo "<BR />mergeColumnGroup<pre>";
     print_r($mergeColumnGroup);
     echo "</pre><BR />";
-    
+    /*
     echo "<BR />loadedColumnGroupings<pre>";
     print_r($loadedColumnGroupings);
     echo "</pre><BR />";
@@ -58,7 +69,7 @@ if ($debugMode) {
     echo "<BR />loadedResultArray<pre>";
     print_r($loadedResultArray);
     echo "</pre><BR />";
-    
+    */
    
 }
 
@@ -317,3 +328,4 @@ echo "</tbody>";
 </div>
 </section>
 -->
+
