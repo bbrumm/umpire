@@ -78,3 +78,36 @@ function toggle(source, controlName) {
 	}
 }
 
+function validateReportSelections() {
+	
+	/*var inpObj = document.getElementById("id1");
+    if (inpObj.checkValidity() == false) {
+        document.getElementById("demo").innerHTML = inpObj.validationMessage;
+    } else {
+        document.getElementById("demo").innerHTML = "Input OK";
+    } 
+    */
+    /*****/
+    
+    checkboxesLeague = document.getElementsByName("chkLeague[]");
+    var leagueCheckboxesValid = false;
+    //alert(checkboxesLeague.checked);
+    for(var i=0, n=checkboxesLeague.length; i<n; i++) {
+		if (checkboxesLeague[i].checked) {
+			leagueCheckboxesValid = true;
+			break;
+			
+		}
+	}
+    if (leagueCheckboxesValid) {
+    	document.getElementById("submitForm").submit();
+    } else {
+    	document.getElementById("validationError").innerHTML = "Input Not OK";
+    }
+    
+    
+    
+	
+}
+
+

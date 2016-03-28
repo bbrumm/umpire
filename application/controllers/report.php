@@ -16,6 +16,7 @@ class Report extends CI_Controller {
 	    echo "</pre><BR />";
 	    */
 	    $debugMode = $this->config->item('debug_mode');
+	    $error = "";
 	    
 	    if ($debugMode) {
     	    echo "Post: <br /><pre>";
@@ -29,8 +30,7 @@ class Report extends CI_Controller {
 	        echo $ageGroup."<br />";
 	    
 	    }*/
-	    
-	    
+
 	    
 	    $reportParameters = array(
 			'reportName' => $_POST['reportName'], 
@@ -47,6 +47,10 @@ class Report extends CI_Controller {
     		print_r($reportParameters);
     		echo "</pre>";
 		}
+		
+		
+		
+		
     		
 		/*
     	echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
@@ -62,6 +66,7 @@ class Report extends CI_Controller {
 		$this->load->view('templates/header', $data);
 		$this->load->view('report/single_report_view', $data);
 		$this->load->view('templates/footer');
+		
 		
 	}
 }

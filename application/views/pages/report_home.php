@@ -1,6 +1,7 @@
 <div class='maxDateOutput'>
 <?php
 echo $maxDateOutput;
+$error = "";
 ?>
 </div>
 
@@ -11,7 +12,7 @@ $startDirName = "http://localhost/umpire/umpire";
 
 //echo APPPATH;
 //echo "<form action='".APPPATH."index.php\report' method='POST'>";
-echo form_open('report');
+echo form_open('report', array('id'=>'submitForm'));
 
 //$data['reportSelectionParameters']
 
@@ -47,7 +48,10 @@ $countReportParameters = count($reportSelectionParameters);
 <BR />
 
 
-<?php 
+<?php
+
+echo "<div class='validationError' id='validationError'>". $error ."</div>";
+
 /*
 for ($i=0; $i < $countReportParameters; $i++) {
     $currentReportSelectionParameter = $reportSelectionParameters[$i];
@@ -213,7 +217,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 <BR />
 
 <div class="reportSelectorRow">
-<input type="submit" value="View Report" class="btn">
+<input type="button" value="View Report" class="btn" onClick='validateReportSelections()'>
 <!--
 Why are these here?
 They are needed for reports where the drop-downs are disabled, as the next page needs values for these.
