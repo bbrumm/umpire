@@ -34,7 +34,7 @@ INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_nam
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'BFL', 1);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'GFL', 2);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'GDFL', 3);
-INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'CDFL', 4);
+INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'CDFNL', 4);
 
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (3, 'Field', 1);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (3, 'Boundary', 2);

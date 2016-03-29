@@ -22,7 +22,7 @@ class FileImport extends CI_Controller {
 	function do_upload()
 	{
 	    $config['upload_path'] = './application/import/';
-	    $config['allowed_types'] = 'xlsx|xlsx';
+	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
 	
 	    $this->load->library('upload', $config);

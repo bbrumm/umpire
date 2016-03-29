@@ -22,11 +22,6 @@ class report_model extends CI_Model {
 		$reportTableName = $this->lookupReportTableName($reportParameters['reportName']);
 		//echo "reportTableName (" . $reportTableName .")";
 		
-		
-
-		//$reportParameters['league'][] = 'All';
-		//$reportParameters['league'][] = 'None';
-		
 		//Convert array of checkbox values into string ready for SQL
 		$reportToDisplay->convertParametersToSQLReadyValues($reportParameters);
 		

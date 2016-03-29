@@ -423,8 +423,8 @@ class UserReport extends CI_Model {
 	public function convertParametersToSQLReadyValues($reportParameters) {
 	   //Converts several of the reportParameters arrays into comma separate values that are ready for SQL queries
 	    //Add a value of "All" and "None" to the League list, so that reports that users select for ages with no league (e.g. Colts) are still able to be loaded
-	    $reportParameters['league'][] = 'All';
-	    $reportParameters['league'][] = 'None';
+	    //$reportParameters['league'][] = 'All';
+	    //$reportParameters['league'][] = 'None';
 	    
 	    $this->umpireTypeSQLValues = "'".implode("','",$reportParameters['umpireType'])."'";
 	    $this->leagueSQLValues = "'".implode("','",$reportParameters['league'])."'";
