@@ -78,36 +78,60 @@ function toggle(source, controlName) {
 	}
 }
 
-function validateReportSelections() {
-	
-	/*var inpObj = document.getElementById("id1");
-    if (inpObj.checkValidity() == false) {
-        document.getElementById("demo").innerHTML = inpObj.validationMessage;
-    } else {
-        document.getElementById("demo").innerHTML = "Input OK";
-    } 
-    */
-    /*****/
-    
-    checkboxesLeague = document.getElementsByName("chkLeague[]");
-    var leagueCheckboxesValid = false;
-    //alert(checkboxesLeague.checked);
-    for(var i=0, n=checkboxesLeague.length; i<n; i++) {
-		if (checkboxesLeague[i].checked) {
-			leagueCheckboxesValid = true;
+function toggleSelectAll(selectAllCheckbox, individualCheckboxName) {
+	var checkboxes = document.getElementsByName(individualCheckboxName.name);
+	var selectAllCheckbox = document.getElementById(selectAllCheckbox.id);
+	for(var i=0, n=checkboxes.length;i<n;i++) {
+		if (!checkboxes[i].checked) {
+			//Found a checkbox that is not checked. Set the Select All to unchecked
+			document.getElementById(selectAllCheckbox.id).checked = false;
 			break;
-			
 		}
 	}
-    if (leagueCheckboxesValid) {
+	
+	
+	
+}
+
+function validateReportSelections() {
+    checkboxesLeague = document.getElementsByName("chkLeague[]");
+    checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
+    checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
+    
+    //Reset the validation error message
+    document.getElementById("validationError").innerHTML = "";
+    
+    var leagueCheckboxesValid = isCheckboxSelected(checkboxesLeague);
+    var umpireDisciplineCheckboxesValid = isCheckboxSelected(checkboxesUmpireDiscipline);
+    var ageGroupCheckboxesValid = isCheckboxSelected(checkboxesAgeGroup);
+    
+
+    if (leagueCheckboxesValid && umpireDisciplineCheckboxesValid && ageGroupCheckboxesValid) {
     	document.getElementById("submitForm").submit();
     } else {
-    	document.getElementById("validationError").innerHTML = "Input Not OK";
+    	if (!leagueCheckboxesValid) {
+    		document.getElementById("validationError").innerHTML += "Please select at least one League. <br />";
+    	} 
+    	if (!umpireDisciplineCheckboxesValid) {
+    		document.getElementById("validationError").innerHTML += "Please select at least one Umpire Discipline. <br />";
+    	} 
+    	if (!ageGroupCheckboxesValid) {
+    		document.getElementById("validationError").innerHTML += "Please select at least one Age Group. <br />";
+    	}
     }
-    
-    
-    
+   
 	
+}
+
+function isCheckboxSelected(checkboxElements) {
+	var isSelected = false;
+	for(var i=0, n=checkboxElements.length; i<n; i++) {
+		if (checkboxElements[i].checked) {
+			isSelected = true;
+			break;
+		}
+	}
+	return isSelected;
 }
 
 

@@ -10,9 +10,10 @@ VALUES (32, 'CDFNL Under 17.5', 'CDFNL Under 17.5', 'CDFNL', 24, 2);
 INSERT INTO league (id, league_name, sponsored_league_name, short_league_name, age_group_division_id, region_id)
 VALUES (33, 'CDFNL Under 14.5', 'CDFNL Under 14.5', 'CDFNL', 25, 2);
 
+/*
 INSERT INTO league (id, league_name, sponsored_league_name, short_league_name, age_group_division_id, region_id)
 VALUES (34, 'AFL Barwon - Buckley''s Bellarine FNL Reserves', 'AFL Barwon - Buckley''s Bellarine FNL Reserves', 'GFL', 2, 2);
-
+*/
 INSERT INTO league (id, league_name, sponsored_league_name, short_league_name, age_group_division_id, region_id)
 VALUES (35, 'AFL Barwon - Buckley''s Bellarine FNL Reserves', 'AFL Barwon - Buckley''s Bellarine FNL Reserves', 'BFL', 2, 2);
 
