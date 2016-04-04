@@ -153,7 +153,7 @@ panelBelow {
      -ms-transform-origin: top left;
 	 position:relative;
  	 text-align: left;
- 	 width:250px;
+ 	 width:270px;
 	 padding: 0px 0px 0px 0px;
 	 /*background-color:#A1D490;*/
  	 position: absolute;
@@ -162,7 +162,7 @@ panelBelow {
  }
 
  .rotated_cell {
-	 height:250px;
+	 height:270px;
 	 vertical-align:bottom;
 	 padding: 0px 0px 10px 0px;
      /*background-color:#D4A190;*/

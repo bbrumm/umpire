@@ -34,7 +34,9 @@ INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_nam
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'BFL', 1);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'GFL', 2);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'GDFL', 3);
-INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'CDFNL', 4);
+INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'GJFL', 4);
+INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (2, 'CDFNL', 5);
+
 
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (3, 'Field', 1);
 INSERT INTO report_selection_parameter_values (parameter_id, parameter_value_name, parameter_display_order) VALUES (3, 'Boundary', 2);
@@ -66,5 +68,5 @@ WHERE parameter_id <> 1;
 */
 
 UPDATE report_selection_parameter_values
-SET parameter_value_name = 'Under 14'
-WHERE parameter_value_id = 16;
+SET parameter_display_order = 5
+WHERE parameter_value_name = 'CDFNL';
