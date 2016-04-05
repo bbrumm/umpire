@@ -80,18 +80,21 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			    if ($currentReportSelectionParameter->getAllowMultipleSelections() == 0) {
 			         echo "<input type='radio' id='". $currentReportSelectableReportOption->getOptionValue() ."' " .
     		         "name='rd". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."' " .
-    		         "value='". $currentReportSelectableReportOption->getOptionValue() ."'";
-			         if ($j==0) {
+    		         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
+			         "onClick='updatePageFromCheckboxSelection(this, this)'";
+			         
+			         /*if ($j==0) {
 			             //Mark the first radio as selected
 			             echo " checked";
 			         }
+			         */
 			         echo ">";
 			         echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
 			    } else {
 			        echo "<input type='checkbox' id='". $currentReportSelectableReportOption->getOptionValue() .
 			         "' name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]' " .
 			         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
-			         "onClick='toggleSelectAll(". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll, this)'></input>";
+			         "onClick='updatePageFromCheckboxSelection(". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll, this)'></input>";
 			        
 			        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
 			    }
