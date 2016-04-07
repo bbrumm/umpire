@@ -110,8 +110,8 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("Under 12", false, true);
 			setCheckboxStatus("Junior Girls", false, true);
 			setCheckboxStatus("Youth Girls", false, true);
-			setCheckboxStatus("Under 17.5", false, true);
-			setCheckboxStatus("Under 14.5", false, true);
+			setCheckboxStatus("Under 17.5", false, false);
+			setCheckboxStatus("Under 14.5", false, false);
 			
 			setCheckboxStatus("Field", false, true);
 			setCheckboxStatus("Boundary", false, true);
