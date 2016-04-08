@@ -304,6 +304,15 @@ function updateCheckboxEnabledStatus() {
 			}
 			
 		}
+	
+	//Update the hidden values
+	convertedStringLeague = convertValueArrayToString(document.getElementsByName("chkLeague[]"));
+    convertedStringUmpireDiscipline = convertValueArrayToString(document.getElementsByName("chkUmpireDiscipline[]"));
+    convertedStringAgeGroup = convertValueArrayToString(document.getElementsByName("chkAgeGroup[]"));
+    document.getElementById("chkLeagueHidden").value = convertedStringLeague;
+    document.getElementById("chkUmpireDisciplineHidden").value = convertedStringUmpireDiscipline;
+    document.getElementById("chkAgeGroupHidden").value = convertedStringAgeGroup;
+    
 }
 
 function setCheckboxStatus(checkboxID, enabledStatus, checkedStatus) {
@@ -353,6 +362,12 @@ function validateReportSelections() {
     checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
     checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
     
+    convertedStringLeague = convertValueArrayToString(checkboxesLeague);
+    convertedStringUmpireDiscipline = convertValueArrayToString(checkboxesUmpireDiscipline);
+    convertedStringAgeGroup = convertValueArrayToString(checkboxesAgeGroup);
+    
+    console.log("convertedString " + convertValueArrayToString(checkboxesUmpireDiscipline));
+    
     //Reset the validation error message
     document.getElementById("validationError").innerHTML = "";
     
@@ -360,9 +375,24 @@ function validateReportSelections() {
     var umpireDisciplineCheckboxesValid = isCheckboxSelected(checkboxesUmpireDiscipline);
     var ageGroupCheckboxesValid = isCheckboxSelected(checkboxesAgeGroup);
     
+    //Set the hidden input values to the checkbox values
+    /*
+    document.getElementById("chkLeagueHidden").value = convertedStringLeague;
+    document.getElementById("chkUmpireDisciplineHidden").value = convertedStringUmpireDiscipline;
+    document.getElementById("chkAgeGroupHidden").value = convertedStringAgeGroup;
+    */
+    //document.getElementsByName("chkLeagueHidden").value = checkboxesLeague;
+    //document.getElementsByName("chkUmpireDisciplineHidden").value = checkboxesUmpireDiscipline;
+    //document.getElementsByName("chkAgeGroupHidden").value = checkboxesAgeGroup;
+    /*
+    console.log("chkLeagueHidden: " + document.getElementById("chkLeagueHidden").value);
+    console.log("chkUmpireDisciplineHidden: " + document.getElementById("chkUmpireDisciplineHidden").value);
+    console.log("chkAgeGroupHidden: " + document.getElementById("chkAgeGroupHidden").value);
+    */
 
     if (leagueCheckboxesValid && umpireDisciplineCheckboxesValid && ageGroupCheckboxesValid) {
     	document.getElementById("submitForm").submit();
+    	alert("league hidden: " + document.getElementById("chkLeagueHidden").value);
     } else {
     	if (!leagueCheckboxesValid) {
     		document.getElementById("validationError").innerHTML += "Please select at least one League. <br />";
@@ -387,6 +417,33 @@ function isCheckboxSelected(checkboxElements) {
 		}
 	}
 	return isSelected;
+}
+
+function isCheckboxGroupDisabled(checkboxElements) {
+	var isDisabled = false;
+	for(var i=0, n=checkboxElements.length; i<n; i++) {
+		if (checkboxElements[i].disabled) {
+			isDisabled = true;
+			break;
+		}
+	}
+	return isDisabled;
+}
+
+function convertValueArrayToString(nodeListToConvert) {
+	var nodeListLength = nodeListToConvert.length;
+	var convertedString = '';
+	for(var i=0; i<nodeListLength; i++) {
+		if (nodeListToConvert[i].checked) {
+			//if (i==nodeListLength) {
+			//	convertedString = convertedString + nodeListToConvert[i].value
+			//} else {
+				convertedString = convertedString + nodeListToConvert[i].value + ", "
+			//}
+		}
+	}
+	return convertedString;
+	
 }
 
 

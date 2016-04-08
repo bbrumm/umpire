@@ -90,6 +90,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			         */
 			         echo ">";
 			         echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
+			         
 			    } else {
 			        echo "<input type='checkbox' id='". $currentReportSelectableReportOption->getOptionValue() .
 			         "' name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]' " .
@@ -97,6 +98,10 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			         "onClick='updatePageFromCheckboxSelection(". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll, this)'></input>";
 			        
 			        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
+			        //Add hidden value
+			        echo "<input type='hidden' id='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
+			        "name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
+			        "value='a' />";
 			    }
 			}
 			echo "</div>";

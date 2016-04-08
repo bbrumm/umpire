@@ -31,22 +31,48 @@ class Report extends CI_Controller {
 	    
 	    }*/
 
+    	$reportParameters = array(
+    	    'reportName' => $_POST['reportName'],
+    	    'season' => $_POST['season']
+    	);
+    	
+    	if (array_key_exists('chkAgeGroup', $_POST)) {
+    	    $reportParameters['age'] = $_POST['chkAgeGroup'];
+    	} else {
+    	    $reportParameters['age'] = $_POST['chkAgeGroupHidden'];
+    	}
+    	
+    	if (array_key_exists('chkUmpireDiscipline', $_POST)) {
+    	    $reportParameters['umpireType'] = $_POST['chkUmpireDiscipline'];
+    	} else {
+    	    $reportParameters['umpireType'] = $_POST['chkUmpireDisciplineHidden'];
+    	}
+    	
+    	if (array_key_exists('chkLeague', $_POST)) {
+    	    $reportParameters['league'] = $_POST['chkLeague'];
+    	} else {
+    	    $reportParameters['league'] = $_POST['chkLeagueHidden'];
+    	}
+    	
+    	
+    	if ($debugMode) {
+    	    echo "reportParameters: <br /><pre>";
+    	    print_r($reportParameters);
+    	    echo "</pre>";
+    	}
 	    
-	    $reportParameters = array(
-			'reportName' => $_POST['reportName'], 
-			'season' => $_POST['season'], 
+	    
+	    /*
 			'age' => $_POST['chkAgeGroup'], 
 			'umpireType' => $_POST['chkUmpireDiscipline'], 
 			'league' => $_POST['chkLeague']);
+			
+			*/
 		$data['loadedReportItem'] = $this->report_model->get_report($reportParameters);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
 		
-		if ($debugMode) {
-    		echo "reportParameters: <br /><pre>";
-    		print_r($reportParameters);
-    		echo "</pre>";
-		}
+		
 		
 		
 		
