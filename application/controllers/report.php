@@ -39,19 +39,19 @@ class Report extends CI_Controller {
     	if (array_key_exists('chkAgeGroup', $_POST)) {
     	    $reportParameters['age'] = $_POST['chkAgeGroup'];
     	} else {
-    	    $reportParameters['age'] = $_POST['chkAgeGroupHidden'];
+    	    $reportParameters['age'] = explode(",", $_POST['chkAgeGroupHidden']);
     	}
     	
     	if (array_key_exists('chkUmpireDiscipline', $_POST)) {
     	    $reportParameters['umpireType'] = $_POST['chkUmpireDiscipline'];
     	} else {
-    	    $reportParameters['umpireType'] = $_POST['chkUmpireDisciplineHidden'];
+    	    $reportParameters['umpireType'] = explode(",", $_POST['chkUmpireDisciplineHidden']);
     	}
     	
     	if (array_key_exists('chkLeague', $_POST)) {
     	    $reportParameters['league'] = $_POST['chkLeague'];
     	} else {
-    	    $reportParameters['league'] = $_POST['chkLeagueHidden'];
+    	    $reportParameters['league'] = explode(",", $_POST['chkLeagueHidden']);
     	}
     	
     	

@@ -565,7 +565,8 @@ Array
 	    //}
 	
 	    $addAndKeyword = TRUE;
-	    if ($pAgeGroup != 'All') {
+	    //if ($pAgeGroup != 'All') {
+	    if ($pReportName != 03 && $pReportName != 04 && $pReportName != 05) {
 	        if ($addAndKeyword) {
 	            $whereClause .= "AND ";
 	            $addAndKeyword = FALSE;
@@ -574,7 +575,8 @@ Array
 	        $addAndKeyword = TRUE;
 	    }
 	
-	    if ($pUmpireType != 'All') {
+	    //if ($pUmpireType != 'All') {
+	    if ($pReportName != 03 && $pReportName != 04 && $pReportName != 05) {
 	        if ($addAndKeyword) {
 	            $whereClause .= "AND ";
 	            $addAndKeyword = FALSE;
@@ -583,7 +585,8 @@ Array
 	        $addAndKeyword = TRUE;
 	    }
 	    
-        if ($pLeague != 'All') {
+        //if ($pLeague != 'All') {
+        if ($pReportName != 03 && $pReportName != 04 && $pReportName != 05 && $pReportName != 06) {
             if ($addAndKeyword) {
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;

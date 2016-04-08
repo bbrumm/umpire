@@ -33,7 +33,7 @@ $countReportParameters = count($reportSelectionParameters);
 <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Report:</span>
 	<span class="reportSelectorControl">
-		<select name="reportName" id="reportName" onchange="disableSelectBoxes()">
+		<select name="reportName" id="reportName" onchange="updateCheckboxEnabledStatus()">
     		<option value="01" selected>01 - Umpires and Clubs</option>
     		<option value="02">02 - Umpire Names by League</option>
     		<option value="03">03 - Summary</option>
@@ -77,6 +77,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 				
 			for ($j=0; $j < $countReportParameterSelections; $j++) {
 			    $currentReportSelectableReportOption = $currentReportSelectionParameter->getSelectableReportOptions()[$j];
+			    echo "<div class='optionsSelectionRow'>";
 			    if ($currentReportSelectionParameter->getAllowMultipleSelections() == 0) {
 			         echo "<input type='radio' id='". $currentReportSelectableReportOption->getOptionValue() ."' " .
     		         "name='rd". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."' " .
@@ -98,12 +99,16 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			         "onClick='updatePageFromCheckboxSelection(". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll, this)'></input>";
 			        
 			        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
-			        //Add hidden value
-			        echo "<input type='hidden' id='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
-			        "name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
-			        "value='a' />";
+			        
 			    }
+			    echo "</div>";
 			}
+			
+			//Add hidden value
+			echo "<input type='hidden' id='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
+			    "name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
+			    "value='' />";
+			
 			echo "</div>";
 			?>
 			</div>
@@ -132,6 +137,16 @@ They are needed for reports where the drop-downs are disabled, as the next page 
 -->
 
 </div>
+<script type="text/javascript">
+    /*$(document).ready(function() {
+		alert("ready");
+    	updateCheckboxEnabledStatus();
+    });*/
+	window.onLoad = updateCheckboxEnabledStatus();
+
+</script>
+
+
 <?php echo form_close(); ?>
 <BR />
 <BR />
@@ -139,7 +154,3 @@ They are needed for reports where the drop-downs are disabled, as the next page 
 <div class='support'>
 Need support? Contact us at <a href='mailto:support@umpirereporting.com'>support@umpirereporting.com</a>.
 </div>
-
-<script>
-disableSelectBoxes();
-</script>

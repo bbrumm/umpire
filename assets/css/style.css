@@ -629,16 +629,24 @@ Login Page
  .optionsSection {
 	display: inline-block;
  	width: 24%;
- 	/*background:#A0A0C0;*/
+ 	background:#A0A0C0;
  	vertical-align: top;
 
  }
  
  .optionsLabelsSection {
 	
- 	width: 60%;
+ 	width: 80%;
  	margin: auto;
  	/*background:#666666;*/
+ 	
+ }
+ 
+ .optionsSelectionRow {
+	background:#00bfff;
+ 	padding-top:5px;
+ 	padding-bottom:5px;
+ 	width:100%;
  	
  }
  
