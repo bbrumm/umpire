@@ -658,7 +658,7 @@ class MatchImport extends MY_Model
         "(CASE WHEN club_name = 'Torquay Scott' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay_Scott', " .
         "(CASE WHEN club_name = 'Torquay Nairn' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay_Nairn', " .
         "(CASE WHEN club_name = 'Tigers Gold' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Tigers_Gold' ";
-      $queryString .= "FROM (SELECT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
+      $queryString .= "FROM (SELECT DISTINCT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
         "FROM match_played " .
         "INNER JOIN round ON round.ID = match_played.round_id " .
         "INNER JOIN league ON league.ID = round.league_id " .
@@ -673,7 +673,7 @@ class MatchImport extends MY_Model
         "INNER JOIN season ON season.id = round.season_id " .
         "WHERE season.season_year = '$seasonToUpdate' " .
         "UNION ALL " .
-        "SELECT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
+        "SELECT DISTINCT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
         "FROM match_played " .
         "INNER JOIN round ON round.ID = match_played.round_id " .
         "INNER JOIN league ON league.ID = round.league_id " .

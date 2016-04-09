@@ -1,5 +1,5 @@
 <?php
-require_once('ReportDisplayOptions.php');
+require_once('Reportdisplayoptions.php');
 class UserReport extends CI_Model {
 	
 	private $columnGroupForReport01 = array(

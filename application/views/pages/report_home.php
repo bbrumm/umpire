@@ -82,7 +82,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			         echo "<input type='radio' id='". $currentReportSelectableReportOption->getOptionValue() ."' " .
     		         "name='rd". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."' " .
     		         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
-			         "onClick='updatePageFromCheckboxSelection(this, this)'";
+			         "onClick='updatePageFromCheckboxSelection(this)'";
 			         
 			         /*if ($j==0) {
 			             //Mark the first radio as selected
@@ -96,7 +96,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			        echo "<input type='checkbox' id='". $currentReportSelectableReportOption->getOptionValue() .
 			         "' name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]' " .
 			         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
-			         "onClick='updatePageFromCheckboxSelection(". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll, this)'></input>";
+			         "onClick='updatePageFromCheckboxSelection(this, ". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll)'></input>";
 			        
 			        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
 			        

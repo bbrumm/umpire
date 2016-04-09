@@ -36,6 +36,7 @@ INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_v
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (529, 'short_league_name',  'All', 2, 160);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (530, 'short_league_name',  'All', 2, 161);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (531, 'short_league_name',  'All', 2, 162);
+
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (532, 'age_group',  'All', 2, 159);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (533, 'age_group',  'All', 2, 160);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (534, 'age_group',  'All', 2, 161);
@@ -52,6 +53,7 @@ INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_v
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (545, 'umpire_type',  'Field', 2, 160);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (546, 'umpire_type',  'Field', 2, 161);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (547, 'umpire_type',  'Field', 2, 162);
+
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (548, 'umpire_type',  'Boundary', 2, 159);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (549, 'umpire_type',  'Boundary', 2, 160);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (550, 'umpire_type',  'Boundary', 2, 161);
@@ -258,6 +260,18 @@ INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_v
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (687, 'umpire_type',  'Boundary', 5, 155);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (688, 'umpire_type',  'Boundary', 5, 178);
 
+
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (517, 'short_league_name',  'BFL', 2, 92);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (518, 'short_league_name',  'GDFL', 2, 92);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (519, 'short_league_name',  'GFL', 2, 92);
+
+
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (689, 'short_league_name',  'GJFL', 3, 113);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (690, 'short_league_name',  'GJFL', 3, 114);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (691, 'short_league_name',  'GJFL', 3, 115);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (692, 'short_league_name',  'GJFL', 3, 116);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (693, 'short_league_name',  'GJFL', 3, 117);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (694, 'short_league_name',  'GJFL', 3, 118);
 
 
 

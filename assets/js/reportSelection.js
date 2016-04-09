@@ -12,10 +12,13 @@ function updateHiddenValues() {
 	
 }
 
-function updatePageFromCheckboxSelection(selectAllCheckbox, individualCheckboxName) {
+function updatePageFromCheckboxSelection(individualCheckboxName, selectAllCheckbox) {
+	if (typeof selectAllCheckbox === 'undefined') { selectAllCheckbox = 'default'; }
 	
 	//Toggle the Select All checkbox
-	toggleSelectAll(selectAllCheckbox, individualCheckboxName.name);
+	if (selectAllCheckbox != 'default') {
+		toggleSelectAll(selectAllCheckbox, individualCheckboxName.name);
+	}
 	console.log("selectAllCheckbox " + selectAllCheckbox);
 	console.log("individualCheckboxName " + individualCheckboxName.name);
 	
@@ -141,10 +144,11 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Reserves", false, false);
 			}
 			
-			
+			/*
 			setCheckboxStatus("LeagueSelectAll", true, false);
 			setCheckboxStatus("AgeGroupSelectAll", true, false);
 			setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
+			*/
 		}
 
 		} else if (document.getElementById("Colac").checked) {
@@ -271,7 +275,7 @@ function setCheckboxStatus(checkboxID, enabledStatus, checkedStatus) {
 	
 	document.getElementById(checkboxID).disabled = !enabledStatus;
 	if (checkedStatus != 'default') {
-		console.log("Set checked status for ID " + checkboxID + " to " + checkedStatus);
+		//console.log("Set checked status for ID " + checkboxID + " to " + checkedStatus);
 		document.getElementById(checkboxID).checked = checkedStatus;
 	}
 	
@@ -294,19 +298,23 @@ function toggle(source, controlName) {
 }
 
 function toggleSelectAll(selectAllCheckbox, individualCheckboxName) {
-	var checkboxes = document.getElementsByName(individualCheckboxName.name);
+	var checkboxes = document.getElementsByName(individualCheckboxName);
 	var selectAllCheckbox = document.getElementById(selectAllCheckbox.id);
+	var newSelectAllCheckboxCheckedStatus = true;
+	console.log("Checkbox: " + individualCheckboxName + ", length("+ checkboxes.length +")");
 	for(var i=0, n=checkboxes.length;i<n;i++) {
-		if (!checkboxes[i].checked) {
+		if (!checkboxes[i].checked && !checkboxes[i].disabled) {
 			//Found a checkbox that is not checked. Set the Select All to unchecked
-			document.getElementById(selectAllCheckbox.id).checked = false;
+			//document.getElementById(selectAllCheckbox.id).checked = false;
+			newSelectAllCheckboxCheckedStatus = false;
+			console.log("Checkbox not checked: " + checkboxes[i].value)
 			break;
 		}
 	}
-	
-	
-	
+	console.log("Setting Select All checkbox to " + newSelectAllCheckboxCheckedStatus);
+	document.getElementById(selectAllCheckbox.id).checked = newSelectAllCheckboxCheckedStatus;
 }
+
 
 function validateReportSelections() {
     checkboxesLeague = document.getElementsByName("chkLeague[]");
@@ -325,21 +333,6 @@ function validateReportSelections() {
     var leagueCheckboxesValid = isCheckboxSelected(checkboxesLeague);
     var umpireDisciplineCheckboxesValid = isCheckboxSelected(checkboxesUmpireDiscipline);
     var ageGroupCheckboxesValid = isCheckboxSelected(checkboxesAgeGroup);
-    
-    //Set the hidden input values to the checkbox values
-    /*
-    document.getElementById("chkLeagueHidden").value = convertedStringLeague;
-    document.getElementById("chkUmpireDisciplineHidden").value = convertedStringUmpireDiscipline;
-    document.getElementById("chkAgeGroupHidden").value = convertedStringAgeGroup;
-    */
-    //document.getElementsByName("chkLeagueHidden").value = checkboxesLeague;
-    //document.getElementsByName("chkUmpireDisciplineHidden").value = checkboxesUmpireDiscipline;
-    //document.getElementsByName("chkAgeGroupHidden").value = checkboxesAgeGroup;
-    /*
-    console.log("chkLeagueHidden: " + document.getElementById("chkLeagueHidden").value);
-    console.log("chkUmpireDisciplineHidden: " + document.getElementById("chkUmpireDisciplineHidden").value);
-    console.log("chkAgeGroupHidden: " + document.getElementById("chkAgeGroupHidden").value);
-    */
 
     if (leagueCheckboxesValid && umpireDisciplineCheckboxesValid && ageGroupCheckboxesValid) {
     	document.getElementById("submitForm").submit();
@@ -395,5 +388,6 @@ function convertValueArrayToString(nodeListToConvert) {
 	return convertedString;
 	
 }
+
 
 

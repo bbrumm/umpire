@@ -42,7 +42,7 @@ h2 {
 
 .mainBanner {
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-	font-size: 24px;
+	font-size: 18px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
@@ -53,8 +53,8 @@ h2 {
 	width: 100%;
 	line-height: 26.4px;
 	text-align:center;
-	padding-top: 25px;
-    padding-bottom: 25px;
+	padding-top: 10px;
+    padding-bottom: 10px;
 	
 }
 
@@ -629,7 +629,7 @@ Login Page
  .optionsSection {
 	display: inline-block;
  	width: 24%;
- 	background:#A0A0C0;
+ 	/*background:#A0A0C0;*/
  	vertical-align: top;
 
  }
@@ -643,10 +643,11 @@ Login Page
  }
  
  .optionsSelectionRow {
-	background:#00bfff;
+	/*background:#00bfff;*/
  	padding-top:5px;
  	padding-bottom:5px;
  	width:100%;
+ 	margin-bottom: 5px;
  	
  }
  
@@ -662,6 +663,10 @@ Login Page
 	text-align:center;
  	font-size: 16px;
  	
+ }
+ 
+ .testDivBG {
+	background:#00bfff;
  }
  
  .boldedText {

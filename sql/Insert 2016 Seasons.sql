@@ -20,13 +20,13 @@ VALUES (35, 'AFL Barwon - Buckley''s Bellarine FNL Reserves', 'AFL Barwon - Buck
 /*
 Season
 */
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (55, 'AFL Barwon - 2016 Dow Bellarine FNL Seniors', 2, 5);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (56, '2016 CDFNL Seniors', 2, 30);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (57, 'AFL Barwon - 2016 Buckley''s Bellarine FNL Reserves', 2, 4);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (58, 'AFL Barwon - 2016 Buckley''s Bellarine FNL Reserves', 2, 6);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (59, '2016 CDFNL Reserves', 2, 31);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (60, '2016 CDFNL Under 17.5', 2, 32);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (61, '2016 CDFNL Under 14.5', 2, 33);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (56, 'AFL Barwon - 2016 Dow Bellarine FNL Seniors', 2, 5);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (57, '2016 CDFNL Seniors', 2, 30);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (58, 'AFL Barwon - 2016 Buckley''s Bellarine FNL Reserves', 2, 4);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (59, 'AFL Barwon - 2016 Buckley''s Bellarine FNL Reserves', 2, 6);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (60, '2016 CDFNL Reserves', 2, 31);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (61, '2016 CDFNL Under 17.5', 2, 32);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (62, '2016 CDFNL Under 14.5', 2, 33);
 
 
 /*
