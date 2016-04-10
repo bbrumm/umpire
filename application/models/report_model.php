@@ -510,35 +510,6 @@ Array
 	    //Build WHERE clause
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName);
 	
-
-	     
-	    /*
-	    $columnQuery = "SELECT GROUP_CONCAT(gc.column_name SEPARATOR ', ') as COLS ".
-	        "FROM (" .
-	        "SELECT DISTINCT second_umpire " .
-	        "FROM mv_report_06 ";
-	    
-	    $columnQuery .= $whereClause;
-	    $columnQuery .= "ORDER BY second_umpire ASC) gc;";
-
-	    if ($debugMode) {
-	        echo "Column Query: $columnQuery <BR/>";
-	    }
-	
-	    //Run the query to find what columns to select from the report table
-	    $query = $this->db->query($columnQuery);
-	    $queryResultArray = $query->result_array();
-	    $columnsToSelect = $queryResultArray[0]["COLS"];
-	     
-	    //Add a Totals column for report 2.
-	    //This is done as a separate query, then concatenated, to make it easier
-	     
-
-	    if ($debugMode) {
-
-	        echo "<BR />columnsToSelect (". $columnsToSelect .") <BR />";
-	    }
-	    */
 	    //Determine fields to select
 	
 	    //TODO: Replace the [0] with a string that concatenates all values in the array with a comma,
@@ -586,12 +557,18 @@ Array
 	    }
 	    
         //if ($pLeague != 'All') {
-        if ($pReportName != 03 && $pReportName != 04 && $pReportName != 05 && $pReportName != 06) {
+        if ($pReportName != 03 && $pReportName != 04 && $pReportName != 05) {
             if ($addAndKeyword) {
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;
             }
+            
+            if ($pReportName = 2) {
+                //Add the "2 Umpires" league to report 02.
+                $pLeague .= ", '2 Umpires'";
+            }
             $whereClause .= "short_league_name IN ($pLeague) ";
+            
         }
          
 	    return $whereClause;

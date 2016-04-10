@@ -177,11 +177,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Boundary", false, true);
 				setCheckboxStatus("Goal", false, true);
 				
-				/*
 				setCheckboxStatus("LeagueSelectAll", false, true);
 				setCheckboxStatus("AgeGroupSelectAll", false, true);
 				setCheckboxStatus("UmpireDisciplineSelectAll", false, true);
-				*/
 				
 				
 			} else if (reportSelectionValue == '06') {
@@ -212,16 +210,14 @@ function updateCheckboxEnabledStatus() {
 					setCheckboxStatus("Under 17.5", false, false);
 					setCheckboxStatus("Under 14.5", false, false);
 				}
-				
+				/*
 				setCheckboxStatus("Field", true, false);
 				setCheckboxStatus("Boundary", true, false);
 				setCheckboxStatus("Goal", true, false);
-				
-				/*
+				*/
 				setCheckboxStatus("LeagueSelectAll", false, false);
 				setCheckboxStatus("AgeGroupSelectAll", true, false);
 				setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
-				*/
 				
 			} else {
 				//Enable the Umpire Discipline, Age Group, and League selections
