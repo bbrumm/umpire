@@ -486,7 +486,7 @@ Array
 	    }
 	    
         //if ($pLeague != 'All') {
-        if ($pReportName != 03 && $pReportName != 04 && $pReportName != 05) {
+        if ($pReportName != 03 && $pReportName != 04 && $pReportName != 05 && $pReportName != 06) {
             if ($addAndKeyword) {
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;
@@ -497,10 +497,10 @@ Array
                 $pLeague .= ", '2 Umpires'";
             }
             $whereClause .= "short_league_name IN ($pLeague) ";
-            
+            $addAndKeyword = TRUE;
         }
         
-        if ($pReportName == 03 || $pReportName == 06) {
+        if ($pReportName == 03 || $pReportName == 05 || $pReportName == 06) {
             if ($addAndKeyword) {
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;

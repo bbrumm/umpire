@@ -88,3 +88,10 @@ WHERE report_column_id IN (
 117,
 118
 );
+
+
+UPDATE report_column
+SET display_order = 10
+WHERE report_column_id IN (
+156
+);
