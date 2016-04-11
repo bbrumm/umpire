@@ -33,7 +33,8 @@ class Report extends CI_Controller {
 
     	$reportParameters = array(
     	    'reportName' => $_POST['reportName'],
-    	    'season' => $_POST['season']
+    	    'season' => $_POST['season'],
+    	    'region' => $_POST['rdRegion'],
     	);
     	
     	if (array_key_exists('chkAgeGroup', $_POST)) {
