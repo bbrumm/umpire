@@ -95,3 +95,80 @@ SET display_order = 10
 WHERE report_column_id IN (
 156
 );
+
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (395, 178, 'short_league_name', 'CDFNL');
+
+
+DELETE FROM competition_lookup WHERE id = 57;
+
+
+UPDATE report_column
+SET display_order = 1
+WHERE report_column_id BETWEEN 23 and 34;
+
+UPDATE report_column
+SET display_order = 2
+WHERE report_column_id BETWEEN 1 and 10;
+
+UPDATE report_column
+SET display_order = 3
+WHERE report_column_id BETWEEN 11 and 22;
+
+UPDATE report_column
+SET display_order = 4
+WHERE report_column_id BETWEEN 35 and 88;
+
+UPDATE report_column
+SET display_order = 5
+WHERE report_column_id BETWEEN 157 and 158;
+
+
+UPDATE report_column
+SET display_order = 2
+WHERE report_column_id IN (89, 93);
+
+UPDATE report_column
+SET display_order = 3
+WHERE report_column_id IN (90, 94);
+
+UPDATE report_column
+SET display_order = 4
+WHERE report_column_id IN (96, 97, 98, 99, 100);
+
+UPDATE report_column
+SET display_order = 5
+WHERE report_column_id IN (159, 160, 161, 162);
+
+UPDATE report_column
+SET display_order = 6
+WHERE report_column_id IN (92);
+
+
+
+
+
+UPDATE report_column SET display_order = 2 WHERE report_column_id = 101;
+UPDATE report_column SET display_order = 3 WHERE report_column_id = 102;
+UPDATE report_column SET display_order = 1 WHERE report_column_id = 103;
+UPDATE report_column SET display_order = 9 WHERE report_column_id = 104;
+UPDATE report_column SET display_order = 12 WHERE report_column_id = 105;
+UPDATE report_column SET display_order = 13 WHERE report_column_id = 106;
+UPDATE report_column SET display_order = 11 WHERE report_column_id = 107;
+UPDATE report_column SET display_order = 19 WHERE report_column_id = 108;
+UPDATE report_column SET display_order = 22 WHERE report_column_id = 109;
+UPDATE report_column SET display_order = 23 WHERE report_column_id = 110;
+UPDATE report_column SET display_order = 21 WHERE report_column_id = 111;
+UPDATE report_column SET display_order = 29 WHERE report_column_id = 112;
+UPDATE report_column SET display_order = 31 WHERE report_column_id = 113;
+UPDATE report_column SET display_order = 39 WHERE report_column_id = 114;
+UPDATE report_column SET display_order = 41 WHERE report_column_id = 115;
+UPDATE report_column SET display_order = 49 WHERE report_column_id = 116;
+UPDATE report_column SET display_order = 51 WHERE report_column_id = 117;
+UPDATE report_column SET display_order = 49 WHERE report_column_id = 118;
+UPDATE report_column SET display_order = 5 WHERE report_column_id = 163;
+UPDATE report_column SET display_order = 15 WHERE report_column_id = 164;
+UPDATE report_column SET display_order = 25 WHERE report_column_id = 165;
+
+
+
+
