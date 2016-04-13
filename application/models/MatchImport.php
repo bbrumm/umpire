@@ -569,7 +569,7 @@ class MatchImport extends MY_Model
         "`GJFL|St_Joseph's_Podbury`, `GJFL|Geelong_Amateur`, `GJFL|Winchelsea`, `GJFL|Anakie`, `GJFL|Bannockburn`, `GJFL|South_Barwon_/_Geelong_Amateur`, " .
         "`GJFL|St_Joseph's_Hill`, `GJFL|Torquay_Dunstan`, `GJFL|Werribee_Centrals`, `GJFL|Drysdale_Eddy`, `GJFL|Belmont_Lions_/_Newcomb`, `GJFL|Torquay_Coles`, " .
         "`GJFL|Gwsp_/_Bannockburn`, `GJFL|St_Albans_Allthorpe`, `GJFL|Drysdale_Bennett`, `GJFL|Torquay_Scott`, `GJFL|Torquay_Nairn`, `GJFL|Tigers_Gold`, " .
-        "`CDFNL|Birregurra`, `CDFNL|Lorne`)";
+        "`CDFNL|Birregurra`, `CDFNL|Lorne`, `CDFNL|Colac Imperials`, `CDFNL|Irrewarra-beeac`, `CDFNL|Otway Districts`, `CDFNL|Simpson`, `CDFNL|South Colac`, `CDFNL|Western Eagles`) ";
         $queryString .= "SELECT season_year, CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
         "(CASE WHEN club_name = 'Anakie' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Anakie', " .
         "(CASE WHEN club_name = 'Bannockburn' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Bannockburn', " .
@@ -658,9 +658,16 @@ class MatchImport extends MY_Model
         "(CASE WHEN club_name = 'Drysdale Bennett' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale_Bennett', " .
         "(CASE WHEN club_name = 'Torquay Scott' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay_Scott', " .
         "(CASE WHEN club_name = 'Torquay Nairn' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay_Nairn', " .
-        "(CASE WHEN club_name = 'Tigers Gold' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Tigers_Gold',  " .
-        "(CASE WHEN club_name = 'Birregurra' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Birregurra',  " .
-        "(CASE WHEN club_name = 'Lorne' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Lorne'";
+        "(CASE WHEN club_name = 'Tigers Gold' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Tigers_Gold', " .
+        "(CASE WHEN club_name = 'Birregurra' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Birregurra', " .
+        "(CASE WHEN club_name = 'Lorne' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Lorne', " .
+        "(CASE WHEN club_name = 'Colac Imperials' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Colac Imperials', " .
+        "(CASE WHEN club_name = 'Irrewarra-beeac' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Irrewarra-beeac', " .
+        "(CASE WHEN club_name = 'Otway Districts' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Otway Districts', " .
+        "(CASE WHEN club_name = 'Simpson' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Simpson', " .
+        "(CASE WHEN club_name = 'South Colac' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|South Colac', " .
+        "(CASE WHEN club_name = 'Western Eagles' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Western Eagles' ";
+
       $queryString .= "FROM (SELECT DISTINCT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
         "FROM match_played " .
         "INNER JOIN round ON round.ID = match_played.round_id " .

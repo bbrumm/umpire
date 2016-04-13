@@ -20,6 +20,8 @@ SELECT MAX(report_column_lookup_id) FROM report_column_lookup;
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (705, 'short_league_name',  'CDFNL', 1, 186);
 
 SELECT MAX(report_column_lookup_display_id) FROM report_column_lookup_display;
+SELECT * FROM report_column_lookup_display;
+
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (410, 186, 'short_league_name', 'CDFNL');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (411, 186, 'club_name', 'Western Eagles');
 

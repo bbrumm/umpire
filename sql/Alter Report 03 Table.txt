@@ -218,3 +218,16 @@ UPDATE report_column SET display_order = 225 WHERE report_column_id = 176;
 UPDATE report_column SET display_order = 235 WHERE report_column_id = 177;
 
 
+
+
+UPDATE report_column SET display_order = 11 WHERE report_column_id = 95;
+UPDATE report_column SET display_order = 12 WHERE report_column_id = 93;
+UPDATE report_column SET display_order = 13 WHERE report_column_id = 94;
+UPDATE report_column SET display_order = 21 WHERE report_column_id = 96;
+UPDATE report_column SET display_order = 22 WHERE report_column_id = 97;
+UPDATE report_column SET display_order = 23 WHERE report_column_id = 98;
+UPDATE report_column SET display_order = 24 WHERE report_column_id = 99;
+UPDATE report_column SET display_order = 25 WHERE report_column_id = 100;
+
+
+
