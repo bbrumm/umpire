@@ -1,0 +1,1 @@
+ALTER TABLE mv_report_04 ADD COLUMN region VARCHAR(100);

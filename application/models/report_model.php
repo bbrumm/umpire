@@ -267,11 +267,11 @@ Array
 	    $pAge = $reportToDisplay->getAgeGroupSQLValues();
 	    $pUmpireType = $reportToDisplay->getUmpireTypeSQLValues();
 	    $pLeague = $reportToDisplay->getLeagueSQLValues();
-	    
+	    /*
 	    echo "pRegion: <pre>";
 	    print_r($pRegion);
 	    echo "</pre>";
-	     
+	     */
 	    //TODO: Merge this query with the buildColumnLabels query, as it is quite similar.
 	    
 	    //Find columns to select from
@@ -500,7 +500,7 @@ Array
             $addAndKeyword = TRUE;
         }
         
-        if ($pReportName == 03 || $pReportName == 05 || $pReportName == 06) {
+        if ($pReportName == 03 || $pReportName == 04 || $pReportName == 05 || $pReportName == 06) {
             if ($addAndKeyword) {
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;

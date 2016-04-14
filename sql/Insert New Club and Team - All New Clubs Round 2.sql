@@ -7,7 +7,7 @@ SELECT MAX(id) FROM club;
 
 INSERT INTO club (id, club_name) VALUES (126, 'Alvie');
 INSERT INTO club (id, club_name) VALUES (127, 'Apollo Bay');
-INSERT INTO club (id, club_name) VALUES (129, 'Colac Imperials');
+INSERT INTO club (id, club_name) VALUES (128, 'Colac Imperials');
 INSERT INTO club (id, club_name) VALUES (129, 'Irrewarra-beeac');
 INSERT INTO club (id, club_name) VALUES (130, 'Otway Districts');
 INSERT INTO club (id, club_name) VALUES (131, 'Simpson');

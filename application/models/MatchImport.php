@@ -1022,7 +1022,7 @@ class MatchImport extends MY_Model
       $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
   
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_04 (season_year, club_name, `Boundary|Seniors|BFL`, ".
+      $queryString = "INSERT INTO mv_report_04 (season_year, region, club_name, `Boundary|Seniors|BFL`, ".
         "`Boundary|Seniors|GDFL`, `Boundary|Seniors|GFL`, `Boundary|Reserves|BFL`, `Boundary|Reserves|GDFL`, ".
         "`Boundary|Reserves|GFL`, `Boundary|Colts|GJFL`, `Boundary|Under 16|GJFL`, `Boundary|Under 14|GJFL`, ".
         "`Boundary|Youth Girls|GJFL`, `Boundary|Junior Girls|GJFL`, `Field|Seniors|BFL`, `Field|Seniors|GDFL`, ".
@@ -1034,7 +1034,7 @@ class MatchImport extends MY_Model
         "`Boundary|Seniors|CDFNL`, `Boundary|Reserves|CDFNL`, `Boundary|Under 17.5|CDFNL`, `Boundary|Under 14.5|CDFNL`, " .
         "`Field|Seniors|CDFNL`, `Field|Reserves|CDFNL`, `Field|Under 17.5|CDFNL`, `Field|Under 14.5|CDFNL`, " .
         "`Goal|Seniors|CDFNL`, `Goal|Reserves|CDFNL`, `Goal|Under 17.5|CDFNL`, `Goal|Under 14.5|CDFNL`) ";
-      $queryString .= "SELECT season_year, club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
+      $queryString .= "SELECT season_year, region, club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
         "SUM(`Boundary|Reserves|BFL`), SUM(`Boundary|Reserves|GDFL`), SUM(`Boundary|Reserves|GFL`), SUM(`Boundary|Colts|GJFL`), ".
         "SUM(`Boundary|Under 16|GJFL`), SUM(`Boundary|Under 14|GJFL`), SUM(`Boundary|Youth Girls|GJFL`), SUM(`Boundary|Junior Girls|GJFL`), ".
         "SUM(`Field|Seniors|BFL`), SUM(`Field|Seniors|GDFL`), SUM(`Field|Seniors|GFL`), SUM(`Field|Reserves|BFL`), ".
@@ -1048,7 +1048,7 @@ class MatchImport extends MY_Model
         "SUM(`Goal|Seniors|CDFNL`), SUM(`Goal|Reserves|CDFNL`), SUM(`Goal|Under 17.5|CDFNL`), SUM(`Goal|Under 14.5|CDFNL`) ".
         "FROM ( ";
       
-      $queryString .= "SELECT season_year, club, ".
+      $queryString .= "SELECT season_year, region, club, ".
         "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'BFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|BFL`, ".
         "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|GDFL`, ".
         "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Seniors' AND short_league_name = 'GFL' THEN match_count ELSE 0 END) as `Boundary|Seniors|GFL`, ".
@@ -1095,25 +1095,25 @@ class MatchImport extends MY_Model
         "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 17.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `Goal|Under 17.5|CDFNL`, ".
         "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 14.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `Goal|Under 14.5|CDFNL` ".
         "FROM ( ";
-      $queryString .= "SELECT season_year, age_group, umpire_type, Club, short_league_name, SUM(Match_Count) AS match_count ".
+      $queryString .= "SELECT season_year, region, age_group, umpire_type, Club, short_league_name, SUM(Match_Count) AS match_count ".
             "FROM ( ".
-            "SELECT season_year, 'Home' as Club_Type, s.age_group, s.umpire_type, s.home_club as Club, s.short_league_name,  ".
+            "SELECT season_year, region, 'Home' as Club_Type, s.age_group, s.umpire_type, s.home_club as Club, s.short_league_name,  ".
             "COUNT(s.age_group_ID) AS Match_Count, age_group_ID ".
             "FROM mv_summary_staging s ".
             "WHERE season_year = '$seasonToUpdate' " .
-            "GROUP BY s.age_group, s.umpire_type, s.home_club, s.age_group_ID ".
+            "GROUP BY s.age_group, s.region, s.umpire_type, s.home_club, s.age_group_ID ".
             "UNION ALL ".
-            "SELECT season_year, 'Away' as Club_Type,  s.age_group, s.umpire_type, s.away_club,  s.short_league_name,  ".
+            "SELECT season_year, region, 'Away' as Club_Type,  s.age_group, s.umpire_type, s.away_club,  s.short_league_name,  ".
             "COUNT(s.age_group_ID), age_group_ID ".
             "FROM mv_summary_staging s ".
             "WHERE season_year = '$seasonToUpdate' " .
-            "GROUP BY season_year, s.age_group, s.umpire_type, s.away_club, s.age_group_ID, s.short_league_name ".
+            "GROUP BY season_year, s.region, s.age_group, s.umpire_type, s.away_club, s.age_group_ID, s.short_league_name ".
             ")  AS outer1 ".
-            "GROUP BY season_year, age_group, umpire_type, Club, short_league_name ".
+            "GROUP BY season_year, region, age_group, umpire_type, Club, short_league_name ".
             ") AS outer2 ".
             ") AS outer3 ".
-            "GROUP BY season_year, club ".
-            "ORDER BY season_year, club; ";
+            "GROUP BY season_year, region, club ".
+            "ORDER BY season_year, region, club; ";
       
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
