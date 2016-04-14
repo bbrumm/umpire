@@ -726,7 +726,7 @@ class MatchImport extends MY_Model
       $queryString = "INSERT INTO mv_report_02 (season_year, full_name, umpire_type_name, short_league_name, age_group, " . 
             "`Seniors|BFL`, `Seniors|GDFL`, `Seniors|GFL`, `Reserves|BFL`, `Reserves|GDFL`, `Reserves|GFL`, `Colts|GJFL`, " . 
             "`Under 16|GJFL`, `Under 14|GJFL`, `Youth Girls|GJFL`, `Junior Girls|GJFL`, `Seniors|2 Umpires`, " .
-            "`Seniors|CDFNL`, `Reserves|CDFNL`, `Under 17.5|CDFNL`, `Under 14.5|CDFNL`) ";
+            "`Seniors|CDFNL`, `Reserves|CDFNL`, `Under 17.5|CDFNL`, `Under 14.5|CDFNL`, `Under 12|GJFL`) ";
       $queryString .= "SELECT season_year, " . 
             "full_name, " . 
             "umpire_type_name, " .
@@ -747,7 +747,8 @@ class MatchImport extends MY_Model
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), " .
             "(CASE WHEN age_group = 'Reserves' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), " .
             "(CASE WHEN age_group = 'Under 17.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), " .
-            "(CASE WHEN age_group = 'Under 14.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) " .
+            "(CASE WHEN age_group = 'Under 14.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), " .
+            "(CASE WHEN age_group = 'Under 12' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END) " .
             "FROM ( " . 
             "SELECT  " . 
             "season_year, " .
@@ -943,13 +944,14 @@ class MatchImport extends MY_Model
             "`No U14 Field|Clubs`, `No U14 Field|No.`, " .
             "`No Senior Boundary|CDFNL`, " .
             "`No Senior Goal|CDFNL`, " .
-            "`No Reserve Goal|CDFNL`) " .
+            "`No Reserve Goal|CDFNL`, " .
+            "`No U12 Field|Clubs`, `No U12 Field|No.` ) " .
             "SELECT season_year, region, weekdate, " .
             "MAX(`No Senior Boundary|BFL`), MAX(`No Senior Boundary|GDFL`), MAX(`No Senior Boundary|GFL`), SUM(`No Senior Boundary|No.`), MAX(`No Senior Goal|BFL`), " .
             "MAX(`No Senior Goal|GDFL`), MAX(`No Senior Goal|GFL`), SUM(`No Senior Goal|No.`), MAX(`No Reserve Goal|BFL`), MAX(`No Reserve Goal|GDFL`), " .
             "MAX(`No Reserve Goal|GFL`), SUM(`No Reserve Goal|No.`), MAX(`No Colts Field|Clubs`),SUM(`No Colts Field|No.`), MAX(`No U16 Field|Clubs`), " .
             "SUM(`No U16 Field|No.`), MAX(`No U14 Field|Clubs`), SUM(`No U14 Field|No.`), " .
-            "MAX(`No Senior Boundary|CDFNL`), MAX(`No Senior Goal|CDFNL`), MAX(`No Reserve Goal|CDFNL`) " . 
+            "MAX(`No Senior Boundary|CDFNL`), MAX(`No Senior Goal|CDFNL`), MAX(`No Reserve Goal|CDFNL`), MAX(`No U12 Field|Clubs`), SUM(`No U12 Field|No.`) " . 
             "FROM (";
       $queryString .= "SELECT season_year, region, weekdate, ".
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'BFL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|BFL`, ".
@@ -972,7 +974,9 @@ class MatchImport extends MY_Model
             "(CASE WHEN age_group = 'Under 14' AND umpire_type = 'Field' THEN match_count ELSE 0 END)  as `No U14 Field|No.`, ".
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'CDFNL' AND umpire_type = 'Boundary' THEN team_list ELSE NULL END) as `No Senior Boundary|CDFNL`, ".
             "(CASE WHEN age_group = 'Seniors' AND short_league_name = 'CDFNL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Senior Goal|CDFNL`, ".
-            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'CDFNL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|CDFNL` ".
+            "(CASE WHEN age_group = 'Reserve' AND short_league_name = 'CDFNL' AND umpire_type = 'Goal' THEN team_list ELSE NULL END) as `No Reserve Goal|CDFNL`, ".
+            "(CASE WHEN age_group = 'Under 12' AND umpire_type = 'Field' THEN team_list ELSE NULL END) as `No U12 Field|Clubs`, ".
+            "(CASE WHEN age_group = 'Under 12' AND umpire_type = 'Field' THEN match_count ELSE 0 END)  as `No U12 Field|No.` ".
             "FROM (";
             
       $queryString .= "SELECT season_year, region, umpire_type, age_group, short_league_name, weekdate, ".
@@ -990,13 +994,13 @@ class MatchImport extends MY_Model
         		"`No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, `No Senior Goal|BFL`, " .
         	 "`No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, `No Reserve Goal|BFL`, `No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, `No Colts Field|Clubs`, " .
         	 "`No Colts Field|No.`, `No U16 Field|Clubs`, `No U16 Field|No.`, `No U14 Field|Clubs`, `No U14 Field|No.`, " .
-        	 "`No Senior Boundary|CDFNL`, `No Senior Goal|CDFNL`, `No Reserve Goal|CDFNL` " .
+        	 "`No Senior Boundary|CDFNL`, `No Senior Goal|CDFNL`, `No Reserve Goal|CDFNL`, `No U12 Field|Clubs`, `No U12 Field|No.` " .
         	") as maintable " .
         "GROUP BY  season_year, region, weekdate, `No Senior Boundary|BFL`, `No Senior Boundary|GDFL`, `No Senior Boundary|GFL`, `No Senior Boundary|No.`, " . 
         "`No Senior Goal|BFL`, `No Senior Goal|GDFL`, `No Senior Goal|GFL`, `No Senior Goal|No.`, `No Reserve Goal|BFL`,  " .
         "`No Reserve Goal|GDFL`, `No Reserve Goal|GFL`, `No Reserve Goal|No.`, `No Colts Field|Clubs`,`No Colts Field|No.`,  " .
         "`No U16 Field|Clubs`, `No U16 Field|No.`, `No U14 Field|Clubs`, `No U14 Field|No.`, " .
-        "`No Senior Boundary|CDFNL`, `No Senior Goal|CDFNL`, `No Reserve Goal|CDFNL` " .
+        "`No Senior Boundary|CDFNL`, `No Senior Goal|CDFNL`, `No Reserve Goal|CDFNL`, `No U12 Field|Clubs`, `No U12 Field|No.` " .
         "ORDER BY season_year, region, weekdate";
   
       $debugMode = $this->config->item('debug_mode');
@@ -1033,7 +1037,8 @@ class MatchImport extends MY_Model
         "`Goal|Under 16|GJFL`, `Goal|Under 14|GJFL`, `Goal|Youth Girls|GJFL`, `Goal|Junior Girls|GJFL`, " .
         "`Boundary|Seniors|CDFNL`, `Boundary|Reserves|CDFNL`, `Boundary|Under 17.5|CDFNL`, `Boundary|Under 14.5|CDFNL`, " .
         "`Field|Seniors|CDFNL`, `Field|Reserves|CDFNL`, `Field|Under 17.5|CDFNL`, `Field|Under 14.5|CDFNL`, " .
-        "`Goal|Seniors|CDFNL`, `Goal|Reserves|CDFNL`, `Goal|Under 17.5|CDFNL`, `Goal|Under 14.5|CDFNL`) ";
+        "`Goal|Seniors|CDFNL`, `Goal|Reserves|CDFNL`, `Goal|Under 17.5|CDFNL`, `Goal|Under 14.5|CDFNL`, " .
+        "`Boundary|Under 12|GJFL`, `Field|Under 12|GJFL`, `Goal|Under 12|GJFL`) ";
       $queryString .= "SELECT season_year, region, club, SUM(`Boundary|Seniors|BFL`), SUM(`Boundary|Seniors|GDFL`), SUM(`Boundary|Seniors|GFL`), ".
         "SUM(`Boundary|Reserves|BFL`), SUM(`Boundary|Reserves|GDFL`), SUM(`Boundary|Reserves|GFL`), SUM(`Boundary|Colts|GJFL`), ".
         "SUM(`Boundary|Under 16|GJFL`), SUM(`Boundary|Under 14|GJFL`), SUM(`Boundary|Youth Girls|GJFL`), SUM(`Boundary|Junior Girls|GJFL`), ".
@@ -1045,7 +1050,8 @@ class MatchImport extends MY_Model
         "SUM(`Goal|Youth Girls|GJFL`), SUM(`Goal|Junior Girls|GJFL`), ".
         "SUM(`Boundary|Seniors|CDFNL`), SUM(`Boundary|Reserves|CDFNL`), SUM(`Boundary|Under 17.5|CDFNL`), SUM(`Boundary|Under 14.5|CDFNL`), ".
         "SUM(`Field|Seniors|CDFNL`), SUM(`Field|Reserves|CDFNL`), SUM(`Field|Under 17.5|CDFNL`), SUM(`Field|Under 14.5|CDFNL`), ".
-        "SUM(`Goal|Seniors|CDFNL`), SUM(`Goal|Reserves|CDFNL`), SUM(`Goal|Under 17.5|CDFNL`), SUM(`Goal|Under 14.5|CDFNL`) ".
+        "SUM(`Goal|Seniors|CDFNL`), SUM(`Goal|Reserves|CDFNL`), SUM(`Goal|Under 17.5|CDFNL`), SUM(`Goal|Under 14.5|CDFNL`), " .
+        "SUM(`Boundary|Under 12|GJFL`), SUM(`Field|Under 12|GJFL`), SUM(`Goal|Under 12|GJFL`) " .
         "FROM ( ";
       
       $queryString .= "SELECT season_year, region, club, ".
@@ -1093,7 +1099,10 @@ class MatchImport extends MY_Model
         "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Seniors' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `Goal|Seniors|CDFNL`, ".
         "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Reserves' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `Goal|Reserves|CDFNL`, ".
         "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 17.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `Goal|Under 17.5|CDFNL`, ".
-        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 14.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `Goal|Under 14.5|CDFNL` ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 14.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `Goal|Under 14.5|CDFNL`, ".
+        "(CASE WHEN umpire_type = 'Boundary' AND age_group = 'Under 12' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END) as `Boundary|Under 12|GJFL`, ".
+        "(CASE WHEN umpire_type = 'Field' AND age_group = 'Under 12' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END) as `Field|Under 12|GJFL`, ".
+        "(CASE WHEN umpire_type = 'Goal' AND age_group = 'Under 12' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END) as `Goal|Under 12|GJFL` ".
         "FROM ( ";
       $queryString .= "SELECT season_year, region, age_group, umpire_type, Club, short_league_name, SUM(Match_Count) AS match_count ".
             "FROM ( ".
