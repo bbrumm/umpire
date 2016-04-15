@@ -591,7 +591,8 @@ Array
             $columnLabelQuery .= "AND mv.age_group IN (". $pAge .") ";
 	    }
 	    
-        $columnLabelQuery .= "ORDER BY rc.display_order, rcld.report_column_id, rcld.column_display_filter_name;";
+        //$columnLabelQuery .= "ORDER BY rc.display_order, rcld.report_column_id, rcld.column_display_filter_name;";
+	    $columnLabelQuery .= "ORDER BY rc.display_order, rc.column_name, rcld.column_display_filter_name;";
         
         $debugMode = $this->config->item('debug_mode');
         if ($debugMode) {

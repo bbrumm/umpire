@@ -249,6 +249,7 @@ class MatchImport extends MY_Model
   
   private function reloadUmpireTable() {
       $queryString = "INSERT INTO umpire (first_name, last_name) " .
+        "SELECT first_name, last_name FROM (" .
         "SELECT LEFT(UMPIRE_FULLNAME,InStr(UMPIRE_FULLNAME,' ')-1) AS FIRST_NAME, " .
         "RIGHT(UMPIRE_FULLNAME,Length(UMPIRE_FULLNAME)-InStr(UMPIRE_FULLNAME,' ')) AS LAST_NAME " .
         "FROM (SELECT match_import.field_umpire_1 AS UMPIRE_FULLNAME " .
@@ -278,7 +279,13 @@ class MatchImport extends MY_Model
         	"SELECT match_import.goal_umpire_2 " .
         	"FROM match_import " .
         ") AS com " . 
-        "WHERE UMPIRE_FULLNAME IS NOT NULL";
+        "WHERE UMPIRE_FULLNAME IS NOT NULL " .
+      ") AS sub " . 
+      "WHERE NOT EXISTS (" .
+        "SELECT 1 " .
+        "FROM umpire u " .
+        "WHERE u.first_name = sub.first_name " .
+        "AND u.last_name = sub.last_name);";
       $this->db->query($queryString);
       
       $debugMode = $this->config->item('debug_mode');
@@ -569,7 +576,17 @@ class MatchImport extends MY_Model
         "`GJFL|St_Joseph's_Podbury`, `GJFL|Geelong_Amateur`, `GJFL|Winchelsea`, `GJFL|Anakie`, `GJFL|Bannockburn`, `GJFL|South_Barwon_/_Geelong_Amateur`, " .
         "`GJFL|St_Joseph's_Hill`, `GJFL|Torquay_Dunstan`, `GJFL|Werribee_Centrals`, `GJFL|Drysdale_Eddy`, `GJFL|Belmont_Lions_/_Newcomb`, `GJFL|Torquay_Coles`, " .
         "`GJFL|Gwsp_/_Bannockburn`, `GJFL|St_Albans_Allthorpe`, `GJFL|Drysdale_Bennett`, `GJFL|Torquay_Scott`, `GJFL|Torquay_Nairn`, `GJFL|Tigers_Gold`, " .
-        "`CDFNL|Birregurra`, `CDFNL|Lorne`, `CDFNL|Colac Imperials`, `CDFNL|Irrewarra-beeac`, `CDFNL|Otway Districts`, `CDFNL|Simpson`, `CDFNL|South Colac`, `CDFNL|Western Eagles`) ";
+        "`CDFNL|Birregurra`, `CDFNL|Lorne`, `CDFNL|Colac Imperials`, `CDFNL|Irrewarra-beeac`, `CDFNL|Otway Districts`, `CDFNL|Simpson`, `CDFNL|South Colac`, `CDFNL|Western Eagles`, " .
+        "`GJFL|Aireys Inlet`, `GJFL|Ammos Blue`, `GJFL|Ammos Green`, `GJFL|Ammos White`, `GJFL|Bannockburn / South Barwon`, `GJFL|Barwon Heads Gulls`, `GJFL|Barwon Heads Heads`, " .
+        "`GJFL|Dragons`, `GJFL|Drysdale 1`, `GJFL|Drysdale 2`, `GJFL|Drysdale Humphrey`, `GJFL|Drysdale Mcintyre`, `GJFL|Drysdale Mckeon`, `GJFL|Drysdale Scott`, " .
+        "`GJFL|Drysdale Smith`, `GJFL|Drysdale Taylor`, `GJFL|Drysdale Wilson`, `GJFL|Eagles Black`, `GJFL|Eagles Red`, `GJFL|East Newcomb Lions`, `GJFL|East Tigers`, " .
+        "`GJFL|Flying Joeys`, `GJFL|Gdfl Raiders`, `GJFL|Grovedale Broad`, `GJFL|Grovedale Ford`, `GJFL|Grovedale Mcneel`, `GJFL|Grovedale Waldron`, `GJFL|Grovedale Williams`, " .
+        "`GJFL|Grovedale Young`, `GJFL|Lara Batman`, `GJFL|Lara Flinders`, `GJFL|Lara Hume`, `GJFL|Leopold Brown`, `GJFL|Leopold Dowsett`, `GJFL|Leopold Ruggles`, " .
+        "`GJFL|Lethbridge`, `GJFL|Newtown & Chilwell Eagles`, `GJFL|Ogcc Blue`, `GJFL|Ogcc Orange`, `GJFL|Ogcc Red`, `GJFL|Ogcc White`, `GJFL|Queenscliff Blue`, " .
+        "`GJFL|Queenscliff Red`, `GJFL|Roosters`, `GJFL|Saints White`, `GJFL|Seagulls`, `GJFL|South Barwon Blue`, `GJFL|South Barwon Red`, `GJFL|South Barwon White`, " .
+        "`GJFL|St Albans Butterworth`, `GJFL|St Albans Grinter`, `GJFL|St Albans Mcfarlane`, `GJFL|St Albans Osborne`, `GJFL|Surf Coast Suns`, `GJFL|Teesdale Roos`, " .
+        "`GJFL|Tigers`, `GJFL|Torquay Boyse`, `GJFL|Torquay Browning`, `GJFL|Torquay Bruce`, `GJFL|Torquay Coleman`, `GJFL|Torquay Davey`, `GJFL|Torquay Milliken`, " .
+        "`GJFL|Torquay Stone`, `GJFL|Torquay Watson`, `GJFL|Winchelsea / Inverleigh`) ";
         $queryString .= "SELECT season_year, CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
         "(CASE WHEN club_name = 'Anakie' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Anakie', " .
         "(CASE WHEN club_name = 'Bannockburn' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Bannockburn', " .
@@ -666,7 +683,72 @@ class MatchImport extends MY_Model
         "(CASE WHEN club_name = 'Otway Districts' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Otway Districts', " .
         "(CASE WHEN club_name = 'Simpson' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Simpson', " .
         "(CASE WHEN club_name = 'South Colac' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|South Colac', " .
-        "(CASE WHEN club_name = 'Western Eagles' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Western Eagles' ";
+        "(CASE WHEN club_name = 'Western Eagles' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Western Eagles', ";
+      $queryString .= "(CASE WHEN club_name = 'Aireys Inlet' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Aireys Inlet', ".
+          "(CASE WHEN club_name = 'Ammos Blue' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Ammos Blue', ".
+          "(CASE WHEN club_name = 'Ammos Green' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Ammos Green', ".
+          "(CASE WHEN club_name = 'Ammos White' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Ammos White', ".
+          "(CASE WHEN club_name = 'Bannockburn / South Barwon' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Bannockburn / South Barwon', ".
+          "(CASE WHEN club_name = 'Barwon Heads Gulls' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Barwon Heads Gulls', ".
+          "(CASE WHEN club_name = 'Barwon Heads Heads' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Barwon Heads Heads', ".
+          "(CASE WHEN club_name = 'Dragons' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Dragons', ".
+          "(CASE WHEN club_name = 'Drysdale 1' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale 1', ".
+          "(CASE WHEN club_name = 'Drysdale 2' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale 2', ".
+          "(CASE WHEN club_name = 'Drysdale Humphrey' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale Humphrey', ".
+          "(CASE WHEN club_name = 'Drysdale Mcintyre' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale Mcintyre', ".
+          "(CASE WHEN club_name = 'Drysdale Mckeon' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale Mckeon', ".
+          "(CASE WHEN club_name = 'Drysdale Scott' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale Scott', ".
+          "(CASE WHEN club_name = 'Drysdale Smith' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale Smith', ".
+          "(CASE WHEN club_name = 'Drysdale Taylor' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale Taylor', ".
+          "(CASE WHEN club_name = 'Drysdale Wilson' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Drysdale Wilson', ".
+          "(CASE WHEN club_name = 'Eagles Black' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Eagles Black', ".
+          "(CASE WHEN club_name = 'Eagles Red' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Eagles Red', ".
+          "(CASE WHEN club_name = 'East Newcomb Lions' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|East Newcomb Lions', ".
+          "(CASE WHEN club_name = 'East Tigers' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|East Tigers', ".
+          "(CASE WHEN club_name = 'Flying Joeys' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Flying Joeys', ".
+          "(CASE WHEN club_name = 'Gdfl Raiders' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Gdfl Raiders', ".
+          "(CASE WHEN club_name = 'Grovedale Broad' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Grovedale Broad', ".
+          "(CASE WHEN club_name = 'Grovedale Ford' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Grovedale Ford', ".
+          "(CASE WHEN club_name = 'Grovedale Mcneel' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Grovedale Mcneel', ".
+          "(CASE WHEN club_name = 'Grovedale Waldron' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Grovedale Waldron', ".
+          "(CASE WHEN club_name = 'Grovedale Williams' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Grovedale Williams', ".
+          "(CASE WHEN club_name = 'Grovedale Young' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Grovedale Young', ".
+          "(CASE WHEN club_name = 'Lara Batman' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Lara Batman', ".
+          "(CASE WHEN club_name = 'Lara Flinders' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Lara Flinders', ".
+          "(CASE WHEN club_name = 'Lara Hume' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Lara Hume', ".
+          "(CASE WHEN club_name = 'Leopold Brown' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Leopold Brown', ".
+          "(CASE WHEN club_name = 'Leopold Dowsett' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Leopold Dowsett', ".
+          "(CASE WHEN club_name = 'Leopold Ruggles' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Leopold Ruggles', ".
+          "(CASE WHEN club_name = 'Lethbridge' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Lethbridge', ".
+          "(CASE WHEN club_name = 'Newtown & Chilwell Eagles' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Newtown & Chilwell Eagles', ".
+          "(CASE WHEN club_name = 'Ogcc Blue' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Ogcc Blue', ".
+          "(CASE WHEN club_name = 'Ogcc Orange' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Ogcc Orange', ".
+          "(CASE WHEN club_name = 'Ogcc Red' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Ogcc Red', ".
+          "(CASE WHEN club_name = 'Ogcc White' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Ogcc White', ".
+          "(CASE WHEN club_name = 'Queenscliff Blue' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Queenscliff Blue', ".
+          "(CASE WHEN club_name = 'Queenscliff Red' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Queenscliff Red', ".
+          "(CASE WHEN club_name = 'Roosters' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Roosters', ".
+          "(CASE WHEN club_name = 'Saints White' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Saints White', ".
+          "(CASE WHEN club_name = 'Seagulls' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Seagulls', ".
+          "(CASE WHEN club_name = 'South Barwon Blue' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|South Barwon Blue', ".
+          "(CASE WHEN club_name = 'South Barwon Red' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|South Barwon Red', ".
+          "(CASE WHEN club_name = 'South Barwon White' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|South Barwon White', ".
+          "(CASE WHEN club_name = 'St Albans Butterworth' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|St Albans Butterworth', ".
+          "(CASE WHEN club_name = 'St Albans Grinter' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|St Albans Grinter', ".
+          "(CASE WHEN club_name = 'St Albans Mcfarlane' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|St Albans Mcfarlane', ".
+          "(CASE WHEN club_name = 'St Albans Osborne' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|St Albans Osborne', ".
+          "(CASE WHEN club_name = 'Surf Coast Suns' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Surf Coast Suns', ".
+          "(CASE WHEN club_name = 'Teesdale Roos' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Teesdale Roos', ".
+          "(CASE WHEN club_name = 'Tigers' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Tigers', ".
+          "(CASE WHEN club_name = 'Torquay Boyse' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Boyse', ".
+          "(CASE WHEN club_name = 'Torquay Browning' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Browning', ".
+          "(CASE WHEN club_name = 'Torquay Bruce' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Bruce', ".
+          "(CASE WHEN club_name = 'Torquay Coleman' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Coleman', ".
+          "(CASE WHEN club_name = 'Torquay Davey' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Davey', ".
+          "(CASE WHEN club_name = 'Torquay Milliken' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Milliken', ".
+          "(CASE WHEN club_name = 'Torquay Stone' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Stone', ".
+          "(CASE WHEN club_name = 'Torquay Watson' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Watson', ".
+          "(CASE WHEN club_name = 'Winchelsea / Inverleigh' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Winchelsea / Inverleigh' ";
 
       $queryString .= "FROM (SELECT DISTINCT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
         "FROM match_played " .
