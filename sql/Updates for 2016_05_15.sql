@@ -80,17 +80,17 @@ INSERT INTO league (ID, league_name, sponsored_league_name, short_league_name, a
 INSERT INTO league (ID, league_name, sponsored_league_name, short_league_name, age_group_division_id, region_id) VALUES(37, 'AFL Barwon Walpole Shield', 'AFL Barwon Walpole Shield', 'GJFL', 26, 1);
 
 
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(62, 'AFL Barwon - 2016 Blood Toyota Geelong FNL Seniors', 2, 3);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(63, 'AFL Barwon - 2016 Buckley''s Geelong FNL Reserves', 2, 4);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(64, 'AFL Barwon - 2016 Colts Grading', 2, 7);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(65, 'AFL Barwon - 2016 Corio Bay Health Group Junior Girls', 2, 24);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(66, 'AFL Barwon - 2016 Corio Bay Health Group Youth Girls', 2, 25);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(67, 'AFL Barwon - 2016 Geelong Advertiser Under 12''s', 2, 36);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(68, 'AFL Barwon - 2016 NLL Under 12''s Walpole Shield', 2, 37);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(69, 'AFL Barwon - 2016 Under 14 Grading', 2, 11);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(70, 'AFL Barwon - 2016 Under 16 Grading', 2, 12);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(71, 'GDFL - Buckleys Cup Reserves 2016', 2, 10);
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(72, 'GDFL - Smiths Holden Cup Seniors 2016', 2, 9);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(63, 'AFL Barwon - 2016 Blood Toyota Geelong FNL Seniors', 2, 3);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(64, 'AFL Barwon - 2016 Buckley''s Geelong FNL Reserves', 2, 4);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(65, 'AFL Barwon - 2016 Colts Grading', 2, 7);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(66, 'AFL Barwon - 2016 Corio Bay Health Group Junior Girls', 2, 24);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(67, 'AFL Barwon - 2016 Corio Bay Health Group Youth Girls', 2, 25);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(68, 'AFL Barwon - 2016 Geelong Advertiser Under 12''s', 2, 36);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(69, 'AFL Barwon - 2016 NLL Under 12''s Walpole Shield', 2, 37);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(70, 'AFL Barwon - 2016 Under 14 Grading', 2, 11);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(71, 'AFL Barwon - 2016 Under 16 Grading', 2, 12);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(72, 'GDFL - Buckleys Cup Reserves 2016', 2, 10);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES(73, 'GDFL - Smiths Holden Cup Seniors 2016', 2, 9);
 
 
 INSERT INTO ground (ID, main_name, alternative_name) VALUES(57, 'Anakie Reserve Anakie', 'Anakie Reserve Anakie');
@@ -405,7 +405,7 @@ INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_v
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (804, 'short_league_name',  'GJFL', 1, 257);
 
 
-INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (426, 193, 'short_league_name', 'GJFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (556, 193, 'short_league_name', 'GJFL');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (428, 194, 'short_league_name', 'GJFL');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (430, 195, 'short_league_name', 'GJFL');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (432, 196, 'short_league_name', 'GJFL');
@@ -472,7 +472,7 @@ INSERT INTO report_column_lookup_display (report_column_lookup_display_id, repor
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (554, 257, 'short_league_name', 'GJFL');
 
 
-INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (427, 193, 'club_name', 'Aireys Inlet');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (557, 193, 'club_name', 'Aireys Inlet');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (429, 194, 'club_name', 'Ammos Blue');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (431, 195, 'club_name', 'Ammos Green');
 INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (433, 196, 'club_name', 'Ammos White');
@@ -543,3 +543,12 @@ INSERT INTO report_column_lookup_display (report_column_lookup_display_id, repor
 UPDATE report_column SET display_order = 6 WHERE report_column_id = 160;
 UPDATE report_column SET display_order = 7 WHERE report_column_id = 161;
 UPDATE report_column SET display_order = 8 WHERE report_column_id = 162;
+
+
+UPDATE report_column_lookup_display SET report_column_id = 179 WHERE report_column_lookup_display_id = 404;
+UPDATE report_column_lookup_display SET report_column_id = 180 WHERE report_column_lookup_display_id = 405;
+UPDATE report_column_lookup_display SET report_column_id = 181 WHERE report_column_lookup_display_id = 406;
+UPDATE report_column_lookup_display SET report_column_id = 182 WHERE report_column_lookup_display_id = 407;
+UPDATE report_column_lookup_display SET report_column_id = 183 WHERE report_column_lookup_display_id = 408;
+UPDATE report_column_lookup_display SET report_column_id = 184 WHERE report_column_lookup_display_id = 409;
+UPDATE report_column_lookup_display SET report_column_id = 185 WHERE report_column_lookup_display_id = 410;
