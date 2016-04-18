@@ -18,7 +18,9 @@ echo form_open('report', array('id'=>'submitForm'));
 $countReportParameters = count($reportSelectionParameters);
 
 ?>
-
+<script type="text/javascript">
+	window.onload = updateCheckboxEnabledStatus;
+</script>
 
 <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Season:</span>
