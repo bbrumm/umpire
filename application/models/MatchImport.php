@@ -27,7 +27,7 @@ class MatchImport extends MY_Model
 	$sheet = $objPHPExcel->getActiveSheet();
 	$lastRow = $sheet->getHighestRow();
 	//echo "Last row: $lastRow<BR/>";
-	$data = $sheet->rangeToArray('A2:Q'.$lastRow);
+	$data = $sheet->rangeToArray('A2:S'.$lastRow);
 	//echo "Rows available: " . count($data) . "\n";
 	/*foreach ($data as $row) {
 		print_r($row);
@@ -37,7 +37,10 @@ class MatchImport extends MY_Model
 	print_r($data);
 	echo "</pre>";
 	*/
-	$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time', 'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3', 'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4', 'goal_umpire_1', 'goal_umpire_2');
+	$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time', 
+	    'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3', 
+	    'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4', 
+	    'boundary_umpire_5', 'boundary_umpire_6', 'goal_umpire_1', 'goal_umpire_2');
 	$rows = $data;
 	/*echo "<pre>";
 	print_r($data);
@@ -52,7 +55,7 @@ class MatchImport extends MY_Model
 	   
 	} else {
 	    $error = $this->db->error();
-	    print_r($error);
+	    //print_r($error);
 	    echo "File import error: " . $error['code'] . " - " . $error['message'];
 	}
 	
@@ -273,6 +276,12 @@ class MatchImport extends MY_Model
         	"SELECT match_import.boundary_umpire_4 " .
         	"FROM match_import " .
         	"UNION " .
+        	"SELECT match_import.boundary_umpire_5 " .
+        	"FROM match_import " .
+        	"UNION " .
+        	"SELECT match_import.boundary_umpire_6 " .
+        	"FROM match_import " .
+        	"UNION " .
         	"SELECT match_import.goal_umpire_1 " .
         	"FROM match_import " .
         	"UNION " .
@@ -327,6 +336,12 @@ class MatchImport extends MY_Model
         		"SELECT match_import.boundary_umpire_4, 'Boundary' as UMPIRE_TYPE " .
         		"FROM match_import " .
         		"UNION " .
+        		"SELECT match_import.boundary_umpire_5, 'Boundary' as UMPIRE_TYPE " .
+        		"FROM match_import " .
+        		"UNION " .
+        		"SELECT match_import.boundary_umpire_6, 'Boundary' as UMPIRE_TYPE " .
+        		"FROM match_import " .
+        		"UNION " .
         		"SELECT match_import.goal_umpire_1, 'Goal' as UMPIRE_TYPE " .
         		"FROM match_import " .
         		"UNION " .
@@ -360,7 +375,8 @@ class MatchImport extends MY_Model
         "(appointments_id, appointments_season, appointments_round, appointments_date, appointments_compname, appointments_ground, appointments_time, " .
         "appointments_hometeam, appointments_awayteam, appointments_field1_first, appointments_field1_last, appointments_field2_first, appointments_field2_last, " .
         "appointments_field3_first, appointments_field3_last, appointments_boundary1_first, appointments_boundary1_last, appointments_boundary2_first, appointments_boundary2_last, " .
-        "appointments_boundary3_first, appointments_boundary3_last, appointments_boundary4_first, appointments_boundary4_last, appointments_goal1_first, appointments_goal1_last, " .
+        "appointments_boundary3_first, appointments_boundary3_last, appointments_boundary4_first, appointments_boundary4_last, " . 
+        "appointments_boundary5_first, appointments_boundary5_last, appointments_boundary6_first, appointments_boundary6_last, appointments_goal1_first, appointments_goal1_last, " .
         "appointments_goal2_first, appointments_goal2_last, season_id, round_ID, round_date, round_leagueid, league_leaguename, league_sponsored_league_name, agd_agegroupid, " .
         "ag_agegroup, agd_divisionid, division_divisionname, ground_id, ground_mainname, home_team_id, away_team_id) ";
       $queryString .= "SELECT match_import.ID, " . 
@@ -385,7 +401,11 @@ class MatchImport extends MY_Model
         "LEFT(match_import.boundary_umpire_3,InStr(match_import.boundary_umpire_3,' ')-1) AS match_import_boundary3_first, " .
         "RIGHT(match_import.boundary_umpire_3,LENGTH(match_import.boundary_umpire_3)-InStr(match_import.boundary_umpire_3,' ')) AS match_import_boundary3_last, " .   
         "LEFT(match_import.boundary_umpire_4,InStr(match_import.boundary_umpire_4,' ')-1) AS match_import_boundary4_first, " .   
-        "RIGHT(match_import.boundary_umpire_4,LENGTH(match_import.boundary_umpire_4)-InStr(match_import.boundary_umpire_4,' ')) AS match_import_boundary4_last, " .   
+        "RIGHT(match_import.boundary_umpire_4,LENGTH(match_import.boundary_umpire_4)-InStr(match_import.boundary_umpire_4,' ')) AS match_import_boundary4_last, " .  
+        "LEFT(match_import.boundary_umpire_5,InStr(match_import.boundary_umpire_5,' ')-1) AS match_import_boundary5_first, " .
+        "RIGHT(match_import.boundary_umpire_5,LENGTH(match_import.boundary_umpire_5)-InStr(match_import.boundary_umpire_5,' ')) AS match_import_boundary5_last, " .
+        "LEFT(match_import.boundary_umpire_6,InStr(match_import.boundary_umpire_6,' ')-1) AS match_import_boundary6_first, " .
+        "RIGHT(match_import.boundary_umpire_6,LENGTH(match_import.boundary_umpire_6)-InStr(match_import.boundary_umpire_6,' ')) AS match_import_boundary6_last, " .
         "LEFT(match_import.goal_umpire_1,InStr(match_import.goal_umpire_1,' ')-1) AS match_import_goal1_first, " .   
         "RIGHT(match_import.goal_umpire_1,LENGTH(match_import.goal_umpire_1)-InStr(match_import.goal_umpire_1,' ')) AS match_import_goal1_last, " .   
         "LEFT(match_import.goal_umpire_2,InStr(match_import.goal_umpire_2,' ')-1) AS match_import_goal2_first, " .   
@@ -530,6 +550,22 @@ class MatchImport extends MY_Model
 	"INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
 	"WHERE umpire_type.umpire_type_name = 'Boundary' " .
 	"UNION ALL ";
+      $queryString .= "SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id " .
+      "FROM match_played " .
+      "INNER JOIN match_staging ON (match_played.match_time = match_staging.appointments_time) AND (match_played.away_team_id = match_staging.away_team_id) AND (match_played.home_team_id = match_staging.home_team_id) AND (match_played.ground_id = match_staging.ground_id) AND (match_played.round_id = match_staging.round_ID) " .
+      "INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary5_first) AND (umpire.last_name = match_staging.appointments_boundary5_last) " .
+      "INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id " .
+      "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
+      "WHERE umpire_type.umpire_type_name = 'Boundary' " .
+      "UNION ALL ";
+      $queryString .= "SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id " .
+      "FROM match_played " .
+      "INNER JOIN match_staging ON (match_played.match_time = match_staging.appointments_time) AND (match_played.away_team_id = match_staging.away_team_id) AND (match_played.home_team_id = match_staging.home_team_id) AND (match_played.ground_id = match_staging.ground_id) AND (match_played.round_id = match_staging.round_ID) " .
+      "INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary6_first) AND (umpire.last_name = match_staging.appointments_boundary6_last) " .
+      "INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id " .
+      "INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id " .
+      "WHERE umpire_type.umpire_type_name = 'Boundary' " .
+      "UNION ALL ";
       $queryString .= "SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id " .
 	"FROM match_played " .
 	"INNER JOIN match_staging ON (match_played.match_time = match_staging.appointments_time) AND (match_played.away_team_id = match_staging.away_team_id) AND (match_played.home_team_id = match_staging.home_team_id) AND (match_played.ground_id = match_staging.ground_id) AND (match_played.round_id = match_staging.round_ID) " .
