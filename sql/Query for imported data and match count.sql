@@ -1,7 +1,7 @@
 SELECT sub.umpire_type, sub.umpire_full_name, 
 CONCAT(RIGHT(sub.umpire_full_name,Length(sub.umpire_full_name)-InStr(sub.umpire_full_name,' ')),', ',
-LEFT(sub.umpire_full_name,InStr(sub.umpire_full_name,' ')-1)) AS umpire_full_name_lastfirst
-sub.competition_name, sub.team, l.short_league_name, ag.age_group, COUNT(sub.id) AS match_count, 
+LEFT(sub.umpire_full_name,InStr(sub.umpire_full_name,' ')-1)) AS umpire_full_name_lastfirst,
+sub.competition_name, sub.team, l.short_league_name, ag.age_group, COUNT(sub.id) AS match_count
 
 FROM (
 SELECT 'Field' AS umpire_type, field_umpire_1 AS umpire_full_name, ID, competition_name, home_team AS team FROM match_import

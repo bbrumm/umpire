@@ -66,6 +66,11 @@ if ($showHeader) {
     		echo anchor("ImportFileSelector", $menuImportFile);
     		echo anchor("home/logout", $menuLogout);
     		
+    		if ($username == "bbrumm") {
+    		    $menuDataTest = "<div class='menuBarLink'>Data Test</div>";
+    		    echo anchor("datatest", $menuDataTest);
+    		}
+    		
 
     }
     

@@ -622,7 +622,8 @@ class MatchImport extends MY_Model
         "`GJFL|Queenscliff Red`, `GJFL|Roosters`, `GJFL|Saints White`, `GJFL|Seagulls`, `GJFL|South Barwon Blue`, `GJFL|South Barwon Red`, `GJFL|South Barwon White`, " .
         "`GJFL|St Albans Butterworth`, `GJFL|St Albans Grinter`, `GJFL|St Albans Mcfarlane`, `GJFL|St Albans Osborne`, `GJFL|Surf Coast Suns`, `GJFL|Teesdale Roos`, " .
         "`GJFL|Tigers`, `GJFL|Torquay Boyse`, `GJFL|Torquay Browning`, `GJFL|Torquay Bruce`, `GJFL|Torquay Coleman`, `GJFL|Torquay Davey`, `GJFL|Torquay Milliken`, " .
-        "`GJFL|Torquay Stone`, `GJFL|Torquay Watson`, `GJFL|Winchelsea / Inverleigh`) ";
+        "`GJFL|Torquay Stone`, `GJFL|Torquay Watson`, `GJFL|Winchelsea / Inverleigh`, `GFL|Geelong_West_St_Peters`, `BFL|Newcomb`, `CDFNL|Alvie`, `CDFNL|Apollo Bay`, " .
+        "`GJFL|Surf Coast`, `GJFL|East Newcomb`, `GJFL|Bell Post Hill`) ";
         $queryString .= "SELECT season_year, CONCAT(last_name,', ',first_name) AS full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
         "(CASE WHEN club_name = 'Anakie' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Anakie', " .
         "(CASE WHEN club_name = 'Bannockburn' AND short_league_name = 'GDFL' THEN COUNT(*) ELSE 0 END) as 'GDFL|Bannockburn', " .
@@ -784,7 +785,16 @@ class MatchImport extends MY_Model
           "(CASE WHEN club_name = 'Torquay Milliken' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Milliken', ".
           "(CASE WHEN club_name = 'Torquay Stone' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Stone', ".
           "(CASE WHEN club_name = 'Torquay Watson' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Torquay Watson', ".
-          "(CASE WHEN club_name = 'Winchelsea / Inverleigh' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Winchelsea / Inverleigh' ";
+          "(CASE WHEN club_name = 'Winchelsea / Inverleigh' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Winchelsea / Inverleigh', ";
+      
+          $queryString .= "(CASE WHEN club_name = 'Geelong West St Peters' AND short_league_name = 'GFL' THEN COUNT(*) ELSE 0 END) as 'GFL|Geelong_West_St_Peters', " .
+          "(CASE WHEN club_name = 'Newcomb' AND short_league_name = 'BFL' THEN COUNT(*) ELSE 0 END) as 'BFL|Newcomb', " .
+          "(CASE WHEN club_name = 'Alvie' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Alvie', " .
+          "(CASE WHEN club_name = 'Apollo Bay' AND short_league_name = 'CDFNL' THEN COUNT(*) ELSE 0 END) as 'CDFNL|Apollo Bay', " .
+          "(CASE WHEN club_name = 'Surf Coast' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Surf Coast', " .
+          "(CASE WHEN club_name = 'East Newcomb' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|East Newcomb', " .
+          "(CASE WHEN club_name = 'Bell Post Hill' AND short_league_name = 'GJFL' THEN COUNT(*) ELSE 0 END) as 'GJFL|Bell Post Hill'  ";
+
 
       $queryString .= "FROM (SELECT DISTINCT season_year, umpire.first_name, umpire.last_name, match_played.ID, team.team_name, club.club_name, league.short_league_name, age_group.age_group, umpire_type.umpire_type_name " .
         "FROM match_played " .

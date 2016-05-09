@@ -39,12 +39,14 @@ class DataTestModel extends MY_Model
     }
     
     private function runTestsForReport01() {
-        $uniqueUmpireList = $this->getUniqueUmpiresFromImportedData();
-        $uniqueTeamList = $this->getUniqueTeamsFromImportedData();
-        $umpireMatchCountBefore = $this->getAllMatchCounts();
-        $umpireMatchCountAfter = $this->getUmpireDataFromReport01();
+        //$uniqueUmpireList = $this->getUniqueUmpiresFromImportedData();
+        //$uniqueTeamList = $this->getUniqueTeamsFromImportedData();
+        //$umpireMatchCountBefore = $this->getAllMatchCounts();
+        //$umpireMatchCountAfter = $this->getUmpireDataFromReport01();
+        $umpireMatchCountArray = $this->getUmpireMatchCountForReport01();
         
         
+        /*
         //Loop through array of the  data for comparison (data before transforming)
         foreach ($umpireMatchCountBefore as $key => $val) {
             $umpireMatchRecord = new UmpireMatchRecord();
@@ -64,6 +66,7 @@ class DataTestModel extends MY_Model
             }
             
         }
+        */
         /*
         if ($this->debugMode) {
             echo "umpireMatchCountBefore:<BR/>";
@@ -72,11 +75,11 @@ class DataTestModel extends MY_Model
             echo "</pre>";
         }
         */
-        return $umpireMatchCountBefore;
+        return $umpireMatchCountArray;
         
         
     }
-    
+    /*
     private function findUmpireMatchCountInArray($umpireMatchRecord, $array) {
         foreach ($array as $key => $val) {
             if ($val['umpire_full_name'] === $umpireMatchRecord->getUmpireName() && 
@@ -89,7 +92,9 @@ class DataTestModel extends MY_Model
         }
         return null;
     }
+    */
     
+    /*
     private function getUniqueUmpiresFromImportedData() {
         $queryString = "SELECT DISTINCT umpire_full_name FROM ( " .
             "SELECT field_umpire_1 AS umpire_full_name FROM match_import " .
@@ -118,6 +123,7 @@ class DataTestModel extends MY_Model
         //Run query and store result in array
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
+        */
         /* Array format is:
          * [0][umpire_full_name] => "First Last"
          */
@@ -128,11 +134,12 @@ class DataTestModel extends MY_Model
             print_r($queryResultArray);
             echo "</pre>";
         }
-        */
+        
         return $queryResultArray;
          
     }
-    
+    */
+    /*
     private function getUniqueTeamsFromImportedData() {
         $queryString = "SELECT DISTINCT team FROM ( " .
             "SELECT home_team AS team FROM match_import " .
@@ -144,6 +151,7 @@ class DataTestModel extends MY_Model
         //Run query and store result in array
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
+        */
         /* Array format is:
          * [0][team] => "TeamName"
          */
@@ -154,12 +162,13 @@ class DataTestModel extends MY_Model
             print_r($queryResultArray);
             echo "</pre>";
         }
-        */
+        
         return $queryResultArray;
         
     
     }
-    
+    */
+    /*
     private function getAllMatchCounts() {
         $queryString = "SELECT CONCAT(RIGHT(sub.umpire_full_name,Length(sub.umpire_full_name)-InStr(sub.umpire_full_name,' ')),', ', " .
             "LEFT(sub.umpire_full_name,InStr(sub.umpire_full_name,' ')-1)) AS umpire_full_name, " .
@@ -201,6 +210,7 @@ class DataTestModel extends MY_Model
         //Run query and store result in array
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
+        */
         /* Array format is:
          * [0][column_heading] => "Value"
          * e.g.:
@@ -213,10 +223,12 @@ class DataTestModel extends MY_Model
             print_r($queryResultArray);
             echo "</pre>";
         }
-        */
+        
         return $queryResultArray;
         
     }
+    */
+    /*
     
     private function getUmpireDataFromReport01() {
         $queryString = "SELECT full_name AS umpire_full_name, club_name, short_league_name, age_group, umpire_type_name AS umpire_type, " . 
@@ -393,6 +405,7 @@ class DataTestModel extends MY_Model
         //Run query and store result in array
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
+        */
         /* Array format is:
          * [0][column_heading] => "Value"
          * e.g.:
@@ -404,11 +417,41 @@ class DataTestModel extends MY_Model
             echo "<pre>";
             print_r($queryResultArray);
             echo "</pre>";
-        }*/
+        }
         
         return $queryResultArray;
         
     }
+    */
+    
+    private function getUmpireMatchCountForReport01() {
+        $queryString = "SELECT s.umpire_full_name, s.club_name, s.short_league_name, s.age_group, s.umpire_type, s.match_count AS match_count_staging, r.match_count AS match_count_report01 " .
+            "FROM test_matchcount_staging s " .
+            "LEFT OUTER JOIN test_matchcount_report_01 r " .
+            "ON s.umpire_full_name = r.umpire_full_name " .
+            "AND s.club_name = r.club_name " .
+            "AND s.short_league_name = r.short_league_name " .
+            "AND s.age_group = r.age_group " .
+            "AND s.umpire_type = r.umpire_type " .
+            "WHERE r.season_year = 2016 " .
+            "AND s.match_count <> r.match_count " .
+            "ORDER BY s.umpire_full_name, s.club_name, s.short_league_name, s.age_group, s.umpire_type;";
+        
+        //Run query and store result in array
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+        /*
+        if ($this->debugMode) {
+            echo "getUmpireMatchCountForReport01:<BR/>";
+            echo "<pre>";
+            print_r($queryResultArray);
+            echo "</pre>";
+        }
+        */
+        return $queryResultArray;
+        
+    }
+    
 
 }
 ?>

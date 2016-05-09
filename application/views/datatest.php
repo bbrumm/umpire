@@ -22,12 +22,12 @@ echo "<table>";
 foreach ($umpireTestResultsArray as $key => $val) {
     echo "<tr>";
     echo "<td>". $val['umpire_full_name'] ."</td>";
-    echo "<td>". $val['team'] ."</td>";
+    echo "<td>". $val['club_name'] ."</td>";
     echo "<td>". $val['short_league_name'] ."</td>";
     echo "<td>". $val['age_group'] ."</td>";
     echo "<td>". $val['umpire_type'] ."</td>";
-    echo "<td>". $val['match_count'] ."</td>";
-    echo "<td>". $val['match_count_after'] ."</td>";
+    echo "<td>". $val['match_count_staging'] ."</td>";
+    echo "<td>". $val['match_count_report01'] ."</td>";
     echo "</tr>";
 }
 ?>
