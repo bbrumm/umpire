@@ -27,16 +27,16 @@ INSERT INTO ground (id, main_name, alternative_name) VALUES (89, 'Zampatti Oval'
 
 ALTER TABLE mv_report_01 ADD COLUMN `GFL|Geelong_West_St_Peters` INT(11) DEFAULT NULL;
 
-SELECT MAX(report_column_id) FROM report_column;
+/*SELECT MAX(report_column_id) FROM report_column;*/
 INSERT INTO report_column (report_column_id, column_name, column_function, overall_total, display_order) VALUES (258, 'GFL|Geelong_West_St_Peters', 'SUM', 1, 1);
 
 
-SELECT MAX(report_column_lookup_id) FROM report_column_lookup;
+/*SELECT MAX(report_column_lookup_id) FROM report_column_lookup;*/
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id) VALUES (805, 'short_league_name',  'GFL', 1, 258);
 
-SELECT MAX(report_column_lookup_display_id) FROM report_column_lookup_display;
-INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (556, 258, 'short_league_name', 'GFL');
-INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (557, 258, 'club_name', 'Geelong_West_St_Peters');
+/*SELECT MAX(report_column_lookup_display_id) FROM report_column_lookup_display;*/
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (566, 258, 'short_league_name', 'GFL');
+INSERT INTO report_column_lookup_display (report_column_lookup_display_id, report_column_id, column_display_filter_name, column_display_name) VALUES (567, 258, 'club_name', 'Geelong_West_St_Peters');
 
 
 ALTER TABLE mv_report_01 ADD COLUMN `BFL|Newcomb` INT(11) DEFAULT NULL;
@@ -111,7 +111,7 @@ INSERT INTO league(id, league_name, sponsored_league_name, short_league_name, ag
 INSERT INTO league(id, league_name, sponsored_league_name, short_league_name, age_group_division_id, region_id) VALUES (50, 'AFL Barwon', 'AFL Barwon Corio Bay Health Group', 'GJFL', 18, 1);
 
 
-INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (73,'AFL Barwon - 2016 Colts Div 1 K Rock Cup', 2, 26);
+INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (92,'AFL Barwon - 2016 Colts Div 1 K Rock Cup', 2, 26);
 INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (74,'AFL Barwon - 2016 Colts Div 2 Bendigo Bank Cup', 2, 27);
 INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (75,'AFL Barwon - 2016 Colts Div 3 Corio Bay Health Group Cup', 2, 28);
 INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (76,'AFL Barwon - 2016 Colts Div 4 Corio Bay Health Group Cup', 2, 29);
@@ -132,3 +132,11 @@ INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALU
 INSERT INTO competition_lookup (id, competition_name, season_id, league_id) VALUES (91,'AFL Barwon - 2016 Youth Girls Corio Bay Health Group', 2, 50);
 
 
+
+UPDATE competition_lookup SET league_id = 7 WHERE id = 65;
+UPDATE competition_lookup SET league_id = 25 WHERE id = 66;
+UPDATE competition_lookup SET league_id = 24 WHERE id = 67;
+
+UPDATE competition_lookup SET league_id = 37 WHERE id = 69;
+UPDATE competition_lookup SET league_id = 12 WHERE id = 70;
+UPDATE competition_lookup SET league_id = 11 WHERE id = 71;

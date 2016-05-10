@@ -57,9 +57,6 @@ class report_model extends CI_Model {
 			//Build SELECT query for report
 			$queryForReport = $this->buildSelectQueryForReport($reportToDisplay, $reportTableName, $reportParameters['reportName'],
 			    $reportParameters['season'], $reportParameters['region']);
-    		
-			
-			//$this->reportQuery = $queryForReport;
 
 			$query = $this->db->query($queryForReport);
 				
@@ -135,42 +132,11 @@ Array
 	
 	//Turn a query result set into a pivot table result set
 	private function pivotQueryArray($pResultArray, $pFieldForRowLabel, $pFieldForColumnLabel) {
-	    /*
-	    echo "pivotQueryArray<pre>";
-	    print_r($pResultArray);
-	    echo "</pre>";
-	    */
-	    //Get distinct list of values in the field for column and row labels
-
-	    
-	    /*
-	     echo "rowLabelArray<pre>";
-	     print_r($rowLabelArray);
-	     echo "</pre>";
-	     
-	     echo "columnLabelArray<pre>";
-	     print_r($columnLabelArray);
-	     echo "</pre>";
-	     */
-	    
 	    //Create new array to hold values for output
 	    $pivotResultArray = array();
 	    
 	    $pivotedArray = array();
 	    $first_umpire_names = array();
-	    
-	    /*
-	    echo "<table border=1>";
-	    //Headers
-	    echo "<tr>";
-	    for ($j=0; $j < count($columnLabelArray); $j++) {
-	        //print_r($item);
-	        echo "<td>". $columnLabelArray[$j] ."</td>";
-	    }
-	    echo "</tr>";
-	    */
-	    
-	    //$arrayCounter = 0;
 
 	    foreach ($pResultArray as $resultRow)
 	    {
@@ -179,12 +145,6 @@ Array
 	        $pivotedArray[$resultRow['first_umpire']]['umpire_name'] = $resultRow['first_umpire'];
 	        $pivotedArray[$resultRow['first_umpire']][$resultRow['second_umpire']] = $resultRow['match_count'];
 	    }
-	    
-	    /*
-	    echo "pivotedArray<pre>";
-	    print_r($pivotedArray);
-	    echo "</pre>";
-	    */
 
 	    return $pivotedArray;
 	}
@@ -202,13 +162,7 @@ Array
 		}
 
 		$uniqueFieldList = array_unique($fieldList, SORT_REGULAR );
-		
 		usort($uniqueFieldList, 'compareStringValues');
-		/*
-		echo "<pre>";
-		print_r($uniqueFieldList);
-		echo "</pre>";
-		*/
 		return $uniqueFieldList;
 	}
 	
@@ -216,12 +170,7 @@ Array
 	
 	private function getDistinctListForGrouping($pArrayFieldName, $pResultArray) {
 		$fieldList = array();
-		
-		/*
-		echo "<pre>";
-		print_r($pResultArray);
-		echo "</pre>";
-		*/
+
 		for ($i=0, $numItems = count($pResultArray); $i < $numItems; $i++) {
 			if (array_key_exists(0, $pArrayFieldName)) {
 				$fieldList[$i][0] = $pResultArray[$i][$pArrayFieldName[0]];
@@ -230,20 +179,9 @@ Array
 				$fieldList[$i][1] = $pResultArray[$i][$pArrayFieldName[1]];
 			}
 		}
-		/*
-		echo "<pre>";
-		print_r($fieldList);
-		echo "</pre>";
-		*/
+
 		$uniqueFieldList = array_unique($fieldList, SORT_REGULAR );
 
-		//usort($uniqueFieldList, 'compareValues');
-		
-		/*
-		echo "<pre>";
-		print_r($uniqueFieldList);
-		echo "</pre>";
-		*/
 		return $uniqueFieldList;
 	}
 	
@@ -267,17 +205,14 @@ Array
 	    $pAge = $reportToDisplay->getAgeGroupSQLValues();
 	    $pUmpireType = $reportToDisplay->getUmpireTypeSQLValues();
 	    $pLeague = $reportToDisplay->getLeagueSQLValues();
-	    /*
-	    echo "pRegion: <pre>";
-	    print_r($pRegion);
-	    echo "</pre>";
-	     */
+
 	    //TODO: Merge this query with the buildColumnLabels query, as it is quite similar.
 	    
 	    //Find columns to select from
     	    $columnQuery = "SELECT GROUP_CONCAT(gc.column_name SEPARATOR ', ') as COLS ".
     	        "FROM (" .
     	        "SELECT DISTINCT CASE " .
+    	            "WHEN rc.column_name = 'Seniors|2 Umpires' THEN CONCAT('mv2u.`', rc.column_name, '` as `', rc.column_name, '`') " .
                     "WHEN rc.column_function IS NULL THEN CONCAT('`', rc.column_name, '` as `', rc.column_name, '`') " .
                     "ELSE CONCAT(rc.column_function, '(`', rc.column_name, '`', ') as `', rc.column_name, '`') " .
                 "END AS column_name " .
@@ -371,9 +306,6 @@ Array
 	    
 	    
 	    if ($debugMode) {
-    	    /*echo "columnsToSelect<pre>";
-    	    print_r($columnsToSelect);
-    	    echo "</pre>";*/
 	        echo "<BR />columnsToSelect (". $columnsToSelect .") <BR />";
 	    }
 	    
@@ -392,20 +324,31 @@ Array
 	    //TODO: Replace the [0] with a string that concatenates all values in the array with a comma, 
 	    //to handle cases where more than one field is shown in the row
 	    //Construct SQL query
-	    /*
-	    if ($pReportName == '03') {
-	        //No GROUP BY for report 03
-	        $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
-	            $columnsToSelect . " " .
-	            "FROM " . $pReportTableName . " " . $whereClause;
-	    
-	    } */
 	    if ($pReportName == '05') {
 	        $queryForReport = "SELECT ". $rowsToSelect[0] .", " . $rowsToSelect[1] .", " .
 	            $columnsToSelect . " " .
 	            "FROM " . $pReportTableName . " " . $whereClause . " " .
 	            "GROUP BY ". $rowsToSelect[0] . ", " . $rowsToSelect[1];
-	            
+	    } elseif ($pReportName == '02') {  
+	        $leftOuterJoin = "LEFT OUTER JOIN (
+		SELECT full_name AS sub_full_name, season_year AS sub_season_year, age_group AS sub_age_group, umpire_type_name AS sub_umpire_type,
+		SUM(`Seniors|2 Umpires`) AS `Seniors|2 Umpires`
+		FROM mv_report_02
+		WHERE short_league_name = '2 Umpires'
+		GROUP BY full_name, season_year, age_group, umpire_type_name
+    ) mv2u 
+    ON full_name = mv2u.sub_full_name
+    AND season_year = mv2u.sub_season_year
+    AND age_group = mv2u.sub_age_group
+    AND umpire_type_name = mv2u.sub_umpire_type";
+
+	        //$columnsToSelect . ", mv2u.`Seniors|2 Umpires` AS `Seniors|2 Umpires` " .
+	        
+	        $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
+	            $columnsToSelect . "  " .
+	            "FROM " . $pReportTableName . " " . $leftOuterJoin . " " . $whereClause . " " .
+	            "GROUP BY ". $rowsToSelect[0];
+	        
 	    } else {
     	    $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
     	        $columnsToSelect . " " .
@@ -492,10 +435,12 @@ Array
                 $addAndKeyword = FALSE;
             }
             
+            /*
             if ($pReportName == 2) {
                 //Add the "2 Umpires" league to report 02.
                 $pLeague .= ", '2 Umpires'";
             }
+            */
             $whereClause .= "short_league_name IN ($pLeague) ";
             $addAndKeyword = TRUE;
         }
