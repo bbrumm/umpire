@@ -8,16 +8,18 @@ require_once(__ROOT__.'/../system/libraries/MY_Model.php');
 class MatchImport extends MY_Model 
 {   
   /* Code .. */   
+    
   
   function __construct()
     {
           parent::__construct();
+          $this->load->model("Table_operation");
     }
   
   public function fileImport($data) {
     date_default_timezone_set("Australia/Melbourne");
 	//Remove data from previous load first
-    $this->deleteFromSingleTable('match_import');
+    $this->deleteFromSingleTable('match_import', NULL, FALSE);
 	
 	//$dataFile = "application/import/2015-appointments-summary.xls";
 	//print_r($data);
@@ -49,10 +51,10 @@ class MatchImport extends MY_Model
 	if ($queryStatus) {
 	   //echo "File imported!";
 	   //Now the data is imported, extract it into the normalised tables.
-	   $this->prepareNormalisedTables();
-	   $this->logImportedFile($importedFilename);
-	   
-	   
+	   $importedFileID = $this->logImportedFile($importedFilename);
+	    
+	   $this->prepareNormalisedTables($importedFileID);
+
 	} else {
 	    $error = $this->db->error();
 	    //print_r($error);
@@ -61,52 +63,52 @@ class MatchImport extends MY_Model
 	
   }
   
-  private function prepareNormalisedTables() {
+  private function prepareNormalisedTables($importedFileID) {
       //TODO: Convert this process to use a season object instead of two variables
       $seasonToUpdate = $this->findSeasonToUpdate();
       $seasonYearToUpdate = $this->findSeasonYearFromID($seasonToUpdate);
       
-      $this->deleteFromTables($seasonToUpdate);
-      $this->reloadTables($seasonYearToUpdate);
+      $this->deleteFromTables($seasonToUpdate, $importedFileID);
+      $this->reloadTables($seasonYearToUpdate, $importedFileID);
   }
   
-  private function deleteFromTables($seasonToUpdate) {
+  private function deleteFromTables($seasonToUpdate, $importedFileID) {
       //Before deleting from tables, find out which season to delete data from
       //This is because the file imported will relate to one season, and we don't want to delete data for all seasons.
       
       
       //Delete from tables for the season that is being reloaded
-      $this->deleteFromUmpire($seasonToUpdate);
-      $this->deleteFromUmpireNameType($seasonToUpdate);
-      $this->deleteFromUmpireNameTypeMatch($seasonToUpdate);
-      $this->deleteFromMatchPlayed($seasonToUpdate);
-      $this->deleteFromRound($seasonToUpdate);
-      $this->deleteFromSingleTable('match_staging');
+      $this->deleteFromUmpire($seasonToUpdate, $importedFileID);
+      $this->deleteFromUmpireNameType($seasonToUpdate, $importedFileID);
+      $this->deleteFromUmpireNameTypeMatch($seasonToUpdate, $importedFileID);
+      $this->deleteFromMatchPlayed($seasonToUpdate, $importedFileID);
+      $this->deleteFromRound($seasonToUpdate, $importedFileID);
+      $this->deleteFromSingleTable('match_staging', $importedFileID);
       
       
   }
   
-  private function reloadTables($seasonYearToUpdate) {
+  private function reloadTables($seasonYearToUpdate, $importedFileID) {
       //Reload tables from the imported data
-      $this->reloadRoundTable();
-      $this->reloadUmpireTable();
-      $this->reloadUmpireNameTypeTable();
-      $this->reloadMatchStagingTable();
-      $this->deleteDuplicateMatches();
-      $this->reloadMatchTable();
-      $this->reloadUmpireNameTypeMatchTable();
+      $this->reloadRoundTable($importedFileID);
+      $this->reloadUmpireTable($importedFileID);
+      $this->reloadUmpireNameTypeTable($importedFileID);
+      $this->reloadMatchStagingTable($importedFileID);
+      $this->deleteDuplicateMatches($importedFileID);
+      $this->reloadMatchTable($importedFileID);
+      $this->reloadUmpireNameTypeMatchTable($importedFileID);
       
       //$this->recreateNormalisedTablendexes();
       //$this->recreateMVIndexes();
       
       //Reload tables for the reports
-      $this->reloadMVReport01Table($seasonYearToUpdate);
-      $this->reloadMVReport02Table($seasonYearToUpdate);
-      $this->reloadMVSummaryStaging($seasonYearToUpdate);
-      $this->reloadMVReport03Table($seasonYearToUpdate);
-      $this->reloadMVReport04Table($seasonYearToUpdate);
-      $this->reloadMVReport05Table($seasonYearToUpdate);
-      $this->reloadMVReport06Table($seasonYearToUpdate);
+      $this->reloadMVReport01Table($seasonYearToUpdate, $importedFileID);
+      $this->reloadMVReport02Table($seasonYearToUpdate, $importedFileID);
+      $this->reloadMVSummaryStaging($seasonYearToUpdate, $importedFileID);
+      $this->reloadMVReport03Table($seasonYearToUpdate, $importedFileID);
+      $this->reloadMVReport04Table($seasonYearToUpdate, $importedFileID);
+      $this->reloadMVReport05Table($seasonYearToUpdate, $importedFileID);
+      $this->reloadMVReport06Table($seasonYearToUpdate, $importedFileID);
   }
   
   private function findSeasonToUpdate() {
@@ -130,7 +132,7 @@ class MatchImport extends MY_Model
       
   }
   
-  private function deleteFromSingleTable($tableName) {
+  private function deleteFromSingleTable($tableName, $importedFileID, $logDeletedRow = TRUE) {
       $queryString = "DELETE FROM ". $tableName;
       $this->db->query($queryString);
       
@@ -139,9 +141,13 @@ class MatchImport extends MY_Model
           echo "--deleteFromSingleTable SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      if ($logDeletedRow) {
+          $this->logTableOperation('DELETE', $tableName, $importedFileID, $this->db->affected_rows());
+      }
   }
   
-  private function deleteFromSingleTableForSeason($tableName, $seasonYearToDelete) {
+  private function deleteFromSingleTableForSeason($tableName, $seasonYearToDelete, $importedFileID) {
       $queryString = "DELETE FROM ". $tableName . " WHERE season_year = '$seasonYearToDelete';";
       $this->db->query($queryString);
   
@@ -150,9 +156,11 @@ class MatchImport extends MY_Model
           echo "--deleteFromSingleTableForSeason SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('DELETE', $tableName, $importedFileID, $this->db->affected_rows());
   }
   
-  private function deleteFromUmpireNameTypeMatch($seasonID) {
+  private function deleteFromUmpireNameTypeMatch($seasonID, $importedFileID) {
       $queryString = "DELETE umpire_name_type_match " .
         "FROM umpire_name_type_match " . 
         "INNER JOIN match_played ON umpire_name_type_match.match_ID = match_played.ID " . 
@@ -165,9 +173,11 @@ class MatchImport extends MY_Model
           echo "--deleteFromUmpireNameTypeMatch SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: umpire_name_type_match, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('DELETE', 'umpire_name_type_match', $importedFileID, $this->db->affected_rows());
   }
   
-  private function deleteFromMatchPlayed($seasonID) {
+  private function deleteFromMatchPlayed($seasonID, $importedFileID) {
       $queryString = "DELETE match_played " .
           "FROM match_played " .
           "INNER JOIN round ON match_played.round_id = round.ID " .
@@ -179,9 +189,11 @@ class MatchImport extends MY_Model
           echo "--deleteFromMatchPlayed SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: deleteFromMatchPlayed, " . $this->db->affected_rows() . " rows.<BR />";
       } 
+      
+      $this->logTableOperation('DELETE', 'match_played', $importedFileID, $this->db->affected_rows());
   }
   
-  private function deleteFromUmpireNameType($seasonID) {
+  private function deleteFromUmpireNameType($seasonID, $importedFileID) {
       $queryString = "DELETE umpire_name_type " .
           "FROM umpire_name_type " .
           "INNER JOIN umpire_name_type_match ON umpire_name_type.id = umpire_name_type_match.umpire_name_type_id " .
@@ -195,9 +207,11 @@ class MatchImport extends MY_Model
           echo "--deleteFromUmpireNameType SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: deleteFromUmpireNameType, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('DELETE', 'umpire_name_type', $importedFileID, $this->db->affected_rows());
   }
   
-  private function deleteFromUmpire($seasonID) {
+  private function deleteFromUmpire($seasonID, $importedFileID) {
       $queryString = "DELETE umpire " .
           "FROM umpire " .
           "INNER JOIN umpire_name_type ON umpire_name_type.umpire_id = umpire.ID " .
@@ -212,9 +226,11 @@ class MatchImport extends MY_Model
           echo "--deleteFromUmpire SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: deleteFromUmpire, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('DELETE', 'umpire', $importedFileID, $this->db->affected_rows());
   }
   
-  private function deleteFromRound($seasonID) {
+  private function deleteFromRound($seasonID, $importedFileID) {
       $queryString = "DELETE round " .
           "FROM round " .
           "WHERE round.season_id = " . $seasonID;
@@ -225,13 +241,15 @@ class MatchImport extends MY_Model
           echo "--deleteFromRound SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: deleteFromRound, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('DELETE', 'round', $importedFileID, $this->db->affected_rows());
   }
   
   
   
   
   
-  private function reloadRoundTable() {
+  private function reloadRoundTable($importedFileID) {
       $queryString = "INSERT INTO round ( round_number, round_date, season_id, league_id ) " .
         "SELECT DISTINCT match_import.round, STR_TO_DATE(match_import.date, '%d/%m/%Y'), season.ID AS season_id, league.ID AS league_id " .
         "FROM match_import  " .
@@ -247,10 +265,10 @@ class MatchImport extends MY_Model
           echo "Query run: reloadRoundTable, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
-      
+      $this->logTableOperation('INSERT', 'round', $importedFileID, $this->db->affected_rows());
   }
   
-  private function reloadUmpireTable() {
+  private function reloadUmpireTable($importedFileID) {
       $queryString = "INSERT INTO umpire (first_name, last_name) " .
         "SELECT first_name, last_name FROM (" .
         "SELECT LEFT(UMPIRE_FULLNAME,InStr(UMPIRE_FULLNAME,' ')-1) AS FIRST_NAME, " .
@@ -303,10 +321,12 @@ class MatchImport extends MY_Model
           echo "Query run: reloadUmpireTable, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
+      $this->logTableOperation('INSERT', 'umpire', $importedFileID, $this->db->affected_rows());
+      
       
   }
   
-  private function reloadUmpireNameTypeTable() {
+  private function reloadUmpireNameTypeTable($importedFileID) {
       $queryString = "INSERT INTO umpire_name_type ( umpire_id, umpire_type_id ) " .
           "SELECT umpire.ID, umpire_type.ID " .
           "FROM ( " .
@@ -358,19 +378,16 @@ class MatchImport extends MY_Model
           echo "--reloadUmpireNameTypeTable SQL:<BR />" . $queryString . "<BR />";
       }
       
-      
       $this->db->query($queryString);
       
-
-      if ($debugMode) {
-          
+      if ($debugMode) {  
           echo "Query run: reloadUmpireNameTypeTable, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
-      
+      $this->logTableOperation('INSERT', 'umpire_name_type', $importedFileID, $this->db->affected_rows());
   }
   
-  private function reloadMatchStagingTable() {
+  private function reloadMatchStagingTable($importedFileID) {
       $queryString = "INSERT INTO match_staging " .
         "(appointments_id, appointments_season, appointments_round, appointments_date, appointments_compname, appointments_ground, appointments_time, " .
         "appointments_hometeam, appointments_awayteam, appointments_field1_first, appointments_field1_last, appointments_field2_first, appointments_field2_last, " .
@@ -447,10 +464,11 @@ class MatchImport extends MY_Model
           echo "--reloadMatchStagingTable SQL:<BR />" . $queryString . "<BR />";
       }
 
+      $this->logTableOperation('INSERT', 'match_staging', $importedFileID, $this->db->affected_rows());
       
   }
   
-  private function deleteDuplicateMatches() {
+  private function deleteDuplicateMatches($importedFileID) {
         $queryString = "DELETE m1 " .
             "FROM match_staging m1, match_staging m2 " .
             "WHERE m1.appointments_id > m2.appointments_id " .
@@ -472,11 +490,12 @@ class MatchImport extends MY_Model
           echo "Query run: deleteDuplicateMatches<BR />";
       }
       
+      $this->logTableOperation('DELETE', 'match_staging', $importedFileID, $this->db->affected_rows());
       
       
   }
   
-  private function reloadMatchTable() {
+  private function reloadMatchTable($importedFileID) {
       $queryString = "INSERT INTO match_played (round_ID, ground_id, home_team_id, away_team_id, match_time) " .
         "SELECT match_staging.round_ID, match_staging.ground_id, match_staging.home_team_id, match_staging.away_team_id, match_staging.appointments_time " .
         "FROM match_staging";
@@ -488,9 +507,11 @@ class MatchImport extends MY_Model
           echo "Query run: reloadMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
+      $this->logTableOperation('INSERT', 'match_played', $importedFileID, $this->db->affected_rows());
+      
   }
   
-  private function reloadUmpireNameTypeMatchTable() {
+  private function reloadUmpireNameTypeMatchTable($importedFileID) {
       $queryString = "INSERT INTO umpire_name_type_match ( umpire_name_type_id, match_id ) " .
         "SELECT umpire_name_type_id, match_id " .
         "FROM (";
@@ -588,14 +609,16 @@ class MatchImport extends MY_Model
           echo "--reloadUmpireNameTypeMatchTable SQL:<BR />" . $queryString . "<BR />";
           echo "Query run: reloadUmpireNameTypeMatchTable, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'umpire_name_type_match', $importedFileID, $this->db->affected_rows());
   }
   
-  private function reloadMVReport01Table($seasonToUpdate) {
+  private function reloadMVReport01Table($seasonToUpdate, $importedFileID) {
       //First, delete the data from the table
       //$reportTableName = $this->lookupReportTableName('1');
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('1');
-      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
       
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_01 (season_year, full_name, club_name, short_league_name, age_group, umpire_type_name,  " .
@@ -840,15 +863,17 @@ class MatchImport extends MY_Model
       if ($debugMode) {
          echo "Query run: reloadMVReport01Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_report_01', $importedFileID, $this->db->affected_rows());
   
   }
   
-  private function reloadMVReport02Table($seasonToUpdate) {
+  private function reloadMVReport02Table($seasonToUpdate, $importedFileID) {
       //First, delete the data from the table
       //$reportTableName = $this->lookupReportTableName('1');
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('2');
-      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
   
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_02 (season_year, full_name, umpire_type_name, short_league_name, age_group, " . 
@@ -954,14 +979,15 @@ class MatchImport extends MY_Model
       $this->db->query($queryString);
       
       if ($debugMode) {
-          
           echo "Query run: reloadMVReport02Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_report_02', $importedFileID, $this->db->affected_rows());
   }
   
-  private function reloadMVSummaryStaging($seasonToUpdate) {
+  private function reloadMVSummaryStaging($seasonToUpdate, $importedFileID) {
       //First, delete the data from the table
-      $this->deleteFromSingleTable("mv_summary_staging");
+      $this->deleteFromSingleTable("mv_summary_staging", $importedFileID);
       
       //Then, insert into table
       $queryString = "INSERT INTO mv_summary_staging (season_year, region, umpire_type_id, umpire_type, age_group, short_league_name, " .
@@ -1049,19 +1075,19 @@ class MatchImport extends MY_Model
       
       $this->db->query($queryString);
       
-      
-      if ($debugMode) {
-          
+      if ($debugMode) {  
           echo "Query run: reloadMVSummaryStaging, " . $this->db->affected_rows() . " rows.<BR />";
       }
       
+      $this->logTableOperation('INSERT', 'mv_summary_staging', $importedFileID, $this->db->affected_rows());
+      
   }
   
-  private function reloadMVReport03Table($seasonToUpdate) {
+  private function reloadMVReport03Table($seasonToUpdate, $importedFileID) {
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('3');
-      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
   
       //Then, insert into table
       $queryString = "INSERT INTO `mv_report_03` (season_year, region, weekdate, " .
@@ -1136,22 +1162,21 @@ class MatchImport extends MY_Model
           echo "--reloadMVReport03Table SQL:<BR />" . $queryString . "<BR />";
       }
       
-      
       $this->db->query($queryString);
-      
 
       if ($debugMode) {
-          
           echo "Query run: reloadMVReport03Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_report_03', $importedFileID, $this->db->affected_rows());
   
   }
   
-  private function reloadMVReport04Table($seasonToUpdate) {
+  private function reloadMVReport04Table($seasonToUpdate, $importedFileID) {
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('4');
-      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
   
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_04 (season_year, region, club_name, `Boundary|Seniors|BFL`, ".
@@ -1264,14 +1289,16 @@ class MatchImport extends MY_Model
           
           echo "Query run: reloadMVReport04Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_report_04', $importedFileID, $this->db->affected_rows());
   
   }
   
-  private function reloadMVReport05Table($seasonToUpdate) {
+  private function reloadMVReport05Table($seasonToUpdate, $importedFileID) {
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('5');
-      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
   
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_05 (season_year, region, umpire_type, age_group, BFL, GDFL, GFL, GJFL, CDFNL, `Total`) ";
@@ -1316,25 +1343,26 @@ class MatchImport extends MY_Model
       $this->db->query($queryString);
       
       if ($debugMode) {
-          
           echo "Query run: reloadMVReport05Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_report_05', $importedFileID, $this->db->affected_rows());
   }
   
   
-  private function reloadMVReport06Table($seasonToUpdate) {
+  private function reloadMVReport06Table($seasonToUpdate, $importedFileID) {
       $debugMode = $this->config->item('debug_mode');
       //First, delete the data from the table
       $reportModel = new report_model();
       $reportTableName = $reportModel->lookupReportTableName('6');
-      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate);
+      $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
       
       //Also delete from staging tables
       //$this->deleteFromSingleTableForSeason('mv_report_06_staging', $seasonToUpdate);
       //$this->deleteFromSingleTableForSeason('mv_umpire_list', $seasonToUpdate);
       
-      $this->deleteFromSingleTable("mv_report_06_staging");
-      $this->deleteFromSingleTable("mv_umpire_list");
+      $this->deleteFromSingleTable("mv_report_06_staging", $importedFileID);
+      $this->deleteFromSingleTable("mv_umpire_list", $importedFileID);
       
       //Insert into umpire MV
       $queryString = "INSERT INTO mv_umpire_list (season_year, umpire_type_name, age_group, umpire_name) " .
@@ -1357,6 +1385,8 @@ class MatchImport extends MY_Model
       if ($debugMode) {
           echo "--reloadMVReport06Table UmpireList SQL:<BR />" . $queryString . "<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_umpire_list', $importedFileID, $this->db->affected_rows());
       
       $this->db->query($queryString);
       
@@ -1401,9 +1431,10 @@ class MatchImport extends MY_Model
       $this->db->query($queryString);
       
       if ($debugMode) {
-          
           echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_report_06_staging', $importedFileID, $this->db->affected_rows());
   
       //Then, insert into table
       $queryString = "INSERT INTO mv_report_06 (season_year, region, umpire_type_name, age_group, first_umpire, second_umpire, match_count) " . 
@@ -1423,12 +1454,12 @@ class MatchImport extends MY_Model
       }
       
       $this->db->query($queryString);
-  
       
       if ($debugMode) {
-          
           echo "Query run: reloadMVReport06Table, " . $this->db->affected_rows() . " rows.<BR />";
       }
+      
+      $this->logTableOperation('INSERT', 'mv_report_06', $importedFileID, $this->db->affected_rows());
   }
   
   private function logImportedFile($filename) {
@@ -1443,11 +1474,43 @@ class MatchImport extends MY_Model
 
       $queryStatus = $this->db->insert('imported_files', $data);
       
-      
-      
-      //echo "Query run: logImportedFile, " . $this->db->affected_rows() . " rows.<BR />";
+      return $this->db->insert_id();
       
   }
+  
+  private function logTableOperation($operationName, $tableName, $importedFileID, $rowCount) {
+      
+      $operationID =  $this->findTableIDFromName('operation_ref', 'operation_name', $operationName);
+      $processedTableID =  $this->findTableIDFromName('processed_table', 'table_name', $tableName);
+      
+      $data = array(
+          'imported_file_id' => $importedFileID,
+          'processed_table_id' => $processedTableID,
+          'operation_id' => $operationID,
+          'operation_datetime' => date('Y-m-d H:i:s', time()),
+          'rowcount' => $rowCount
+      );
+      
+      $queryStatus = $this->db->insert('table_operations', $data);
+      
+  }
+  
+  private function findTableIDFromName($tableName, $tableField, $operationName) {
+      $this->db->where($tableField, $operationName);
+      
+      $query = $this->db->get($tableName);
+      
+      if($query->num_rows() == 1)
+      {
+          // If there is a user, then create session data
+          $row = $query->row();
+          return $row->id;
+      }
+      // If the previous process did not validate
+      // then return false.
+      return null;
+  }
+  
   /*
   private function recreateMatchImportIndexes() {
       $this->db->query("CREATE INDEX idx_matchimport_date ON umpire.match_import(date);");
@@ -1473,6 +1536,8 @@ class MatchImport extends MY_Model
 
       
   }*/
+  
+
   
   
   

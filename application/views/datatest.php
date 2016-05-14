@@ -1,13 +1,32 @@
 <?php
 echo "<h2>Data Test</h2>";
-
-echo "<div>Umpire Match Count Check - Report 01</div>";
-/*echo "<pre>";
+/*
+echo "<pre>";
 print_r($umpireTestResultsArray);
 echo "</pre>";
 */
-echo "<table>";
 ?>
+<h3>Latest File Import Statistics</h3>
+<table>
+<thead>
+<th>Date and Time</th>
+<th>Operation Name</th>
+<th>Table Name</th>
+<th>Row Count</th>
+</thead>
+<?php 
+foreach ($umpireTestResultsArray['tableOperations'] as $key => $val) {
+    echo "<tr>";
+    echo "<td>". $val['operation_datetime'] ."</td>";
+    echo "<td>". $val['operation_name'] ."</td>";
+    echo "<td>". $val['table_name'] ."</td>";
+    echo "<td>". $val['rowcount'] ."</td>";
+    echo "</tr>";
+}
+?>
+</table>
+<BR />
+<h3>Umpire Match Count Check - Report 01</h3>
 <table>
 <thead>
 <th>Umpire Name</th>
@@ -19,7 +38,7 @@ echo "<table>";
 <th>Match Count - Destination</th>
 </thead>
 <?php 
-foreach ($umpireTestResultsArray as $key => $val) {
+foreach ($umpireTestResultsArray['report01'] as $key => $val) {
     echo "<tr>";
     echo "<td>". $val['umpire_full_name'] ."</td>";
     echo "<td>". $val['club_name'] ."</td>";

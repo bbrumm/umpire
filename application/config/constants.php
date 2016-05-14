@@ -96,7 +96,3 @@ define('PARAM_LEAGUE', 2);
 define('PARAM_UMPIRE_DISCIPLINE', 3);
 define('PARAM_AGE_GROUP', 4);
 
-
-
-
-
