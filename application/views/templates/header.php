@@ -80,7 +80,7 @@ if ($showHeader) {
     		}
     		
     		if($currentUser->userCanSeeUserAdminPage()) {
-    		    echo anchor("Useradmin", $menuUserAdmin);
+    		    echo anchor("UserAdmin", $menuUserAdmin);
     		}
     		
     		if ($currentUser->userCanSeeDataTestPage()) {

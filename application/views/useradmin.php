@@ -12,46 +12,78 @@
 <p><span class="boldedText">Super User</span>: Can view all reports in their competition for all umpire disciplines, age groups, and leagues, but cannot import files or set other user's privileges.</p>
 <p><span class="boldedText">Regular User</span>: Can only view certain reports for their specified umpire disciplines, age groups, and leagues.</p>
 
+
 </div>
 	<br />
-	<div class="userNameRow">
-		<span class="userNameLabel"><label for="username">Ben Brumm</label></span>
-		<span class="userAdminLevel">
-    		<select>
-        		<option value="Administrator" selected>Administrator</option>
-        		<option value="Super User">Super User</option>
-        		<option value="Regular User">Regular User</option>
-        	</select>
-		</span>
-	</div>
 	
-    <br/>
+	<?php 
+
+for($i=0; $i<count($userArray); $i++) {
+    $userIteration = $userArray[$i];
+    //echo "Username :" . $userIteration->getUsername() ."<BR />";
     
-    <div class="userNameRow">
-		<span class="userNameLabel"><label for="username">Brendan Beveridge</label></span>
-		<span class="userAdminLevel">
-    		<select>
-        		<option value="Administrator" selected>Administrator</option>
-        		<option value="Super User">Super User</option>
-        		<option value="Regular User">Regular User</option>
-        	</select>
-		</span>
-	</div>
-	
-	<br/>
+
+
+?>
 	
 	<div class="userNameRow">
-		<span class="userNameLabel"><label for="username">John Smith</label></span>
+		<span class="userNameLabel"><label for="username">
+		<?php 
+		echo $userIteration->getFirstName() . " " . $userIteration->getLastName() . " (". $userIteration->getUsername() .")";
+		?>
+		</label></span>
 		<span class="userAdminLevel">
     		<select>
-        		<option value="Administrator">Administrator</option>
-        		<option value="Super User" selected>Super User</option>
-        		<option value="Regular User">Regular User</option>
+    		<?php 
+    		//TODO: Replace this section with a query of all roles from the database
+    		echo "<option value='Administrator' ";
+    		if ($userIteration->getRoleName() == 'Administrator') {
+    		    echo "selected";
+    		}
+    		echo ">Administrator</option>";
+    		
+    		echo "<option value='Super User' ";
+    		if ($userIteration->getRoleName() == 'Super User') {
+    		    echo "selected";
+    		}
+    		echo ">Super User</option>";
+    		
+    		echo "<option value='Regular User' ";
+    		if ($userIteration->getRoleName() == 'Regular User') {
+    		    echo "selected";
+    		}
+    		echo ">Regular User</option>";
+    		?>
+        	</select>
+        	
+        	<select>
+    		<?php 
+    		//TODO: Replace this section with a query of all roles from the database
+    		echo "<option value='Geelong' ";
+    		if ($userIteration->getSubRoleName() == 'Geelong') {
+    		    echo "selected";
+    		}
+    		echo ">Geelong</option>";
+    		
+    		echo "<option value='Colac' ";
+    		if ($userIteration->getSubRoleName() == 'Colac') {
+    		    echo "selected";
+    		}
+    		echo ">Colac</option>";
+     		?>
         	</select>
 		</span>
 	</div>
 	
-	<br/>
+
+    
+    <?php 
+    
+}
+    ?>
+    <br/>
+	<h2>Test data:</h2>
+	
 	
 	<div class="userNameRow">
 		<span class="userNameLabel"><label for="username">Jane Doe</label></span>

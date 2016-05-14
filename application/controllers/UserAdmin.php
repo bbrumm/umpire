@@ -1,22 +1,39 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class UserAdmin extends CI_Controller {
+if (! defined('BASEPATH'))
+    exit('No direct script access allowed');
 
- function __construct()
- {
-   parent::__construct();
- }
+class UserAdmin extends CI_Controller
+{
 
- function index()
- {
-   $this->load->helper(array('form'));
-   
-   $this->load->view('templates/header');
-   $this->load->view('useradmin');
-   $this->load->view('templates/footer');
-	 
- }
+    function __construct()
+    {
+        parent::__construct();
+        
+        $this->load->model('report_model');
+        $this->load->helper('url_helper');
+        $this->load->helper(array('form', 'url'));
+        $this->load->model('Useradminmodel');
+    }
 
+    function index()
+    {
+        
+        $userAdmin = new Useradminmodel();
+        $userArray = $userAdmin->getAllUsers();
+        
+        $this->load->view('templates/header');
+        
+        $data['userArray'] = $userArray;
+        $this->load->view('useradmin', $data);
+        $this->load->view('templates/footer');
+        
+    }
+    
+    
+    
+    
+    
 }
 
 ?>
