@@ -11,11 +11,14 @@ class Home extends CI_Controller {
  {
      
    $this->load->model('ReportSelectionParameter');
+   $this->load->model('User');
      
    if($this->session->userdata('logged_in'))
    {
      $session_data = $this->session->userdata('logged_in');
-     $data['username'] = $session_data['username'];
+     
+     
+     //$data['currentUser'] = $currentUser;
      $data['maxDateOutput'] = $this->getLatestImportDateOutput();
 	 
 	 $this->load->view('templates/header', $data);

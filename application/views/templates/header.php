@@ -4,7 +4,8 @@
 		<title>Umpire Report</title>
 <?php
 include_once("analyticstracking.php");
-$this->load->helper('url');       
+$this->load->helper('url');   
+$this->load->model('User');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
 $data['reportSelection'] = $this->config->item('reportSelection');
@@ -51,26 +52,42 @@ if ($showHeader) {
     <div class="mainBanner">Umpire Reporting</div>
     <?php
     if($this->session->userdata('logged_in')) {
+        
     ?>
     	<div class="menuBar">
     		
     		<?php
     		$session_data = $this->session->userdata('logged_in');
     		$username = $session_data['username'];
+    		//Get user object, including their role and permissions
+    		$currentUser = new User();
+    		$currentUser->getUserFromUsername($session_data['username']);
+    		//$userFirstName = $currentUser->getUsername();
+    		//echo "First Name: " . $currentUser->getFirstName();
     		$menuHome = "<div class='menuBarLink'>Home Page</div>";
     		$menuImportFile = "<div class='menuBarLink'>Import File</div>";
+    		$menuUserAdmin = "<div class='menuBarLink'>User Admin</div>";
+    		$menuDataTest = "<div class='menuBarLink'>Data Test</div>";
     		$menuLogout = "<div class='menuBarLink'>Logout</div>";
-    		
-    		
+    		/*
+    		echo "<pre>";
+    		print_r($currentUser);
+    		echo "</pre>";
+    		*/
     		echo anchor("home", $menuHome);
-    		echo anchor("ImportFileSelector", $menuImportFile);
-    		echo anchor("home/logout", $menuLogout);
+    		if($currentUser->userHasImportFilePermission()) {
+    		  echo anchor("ImportFileSelector", $menuImportFile);
+    		}
     		
-    		if ($username == "bbrumm") {
-    		    $menuDataTest = "<div class='menuBarLink'>Data Test</div>";
+    		if($currentUser->userCanSeeUserAdminPage()) {
+    		    echo anchor("Useradmin", $menuUserAdmin);
+    		}
+    		
+    		if ($currentUser->userCanSeeDataTestPage()) {
     		    echo anchor("datatest", $menuDataTest);
     		}
     		
+    		echo anchor("home/logout", $menuLogout);
 
     }
     
@@ -83,7 +100,7 @@ if ($showHeader) {
     }
     
     if($this->session->userdata('logged_in')) {
-        $usernameLabel = "<div class='usernameLabel'>Welcome, ". $username ."</div>";
+        $usernameLabel = "<div class='usernameLabel'>Welcome, ". $currentUser->getFirstName() ."</div>";
         echo $usernameLabel;
     }
     ?>
