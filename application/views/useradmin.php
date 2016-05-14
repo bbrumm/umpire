@@ -17,7 +17,7 @@
 	<br />
 	
 	<?php 
-
+	
 for($i=0; $i<count($userArray); $i++) {
     $userIteration = $userArray[$i];
     //echo "Username :" . $userIteration->getUsername() ."<BR />";
@@ -36,40 +36,27 @@ for($i=0; $i<count($userArray); $i++) {
     		<select>
     		<?php 
     		//TODO: Replace this section with a query of all roles from the database
-    		echo "<option value='Administrator' ";
-    		if ($userIteration->getRoleName() == 'Administrator') {
-    		    echo "selected";
+    		for($j=0; $j<count($roleArray); $j++) {
+    		    echo "<option value='". $roleArray[$j]['role_name'] ."' ";
+    		    if ($userIteration->getRoleName() == $roleArray[$j]['role_name']) {
+    		        echo "selected";
+    		    }
+    		    echo ">". $roleArray[$j]['role_name'] ."</option>";
     		}
-    		echo ">Administrator</option>";
-    		
-    		echo "<option value='Super User' ";
-    		if ($userIteration->getRoleName() == 'Super User') {
-    		    echo "selected";
-    		}
-    		echo ">Super User</option>";
-    		
-    		echo "<option value='Regular User' ";
-    		if ($userIteration->getRoleName() == 'Regular User') {
-    		    echo "selected";
-    		}
-    		echo ">Regular User</option>";
-    		?>
-        	</select>
+?>
+</select>
         	
         	<select>
     		<?php 
     		//TODO: Replace this section with a query of all roles from the database
-    		echo "<option value='Geelong' ";
-    		if ($userIteration->getSubRoleName() == 'Geelong') {
-    		    echo "selected";
-    		}
-    		echo ">Geelong</option>";
     		
-    		echo "<option value='Colac' ";
-    		if ($userIteration->getSubRoleName() == 'Colac') {
-    		    echo "selected";
+    		for($k=0; $k<count($subRoleArray); $k++) {
+    		    echo "<option value='". $subRoleArray[$k]['sub_role_name'] ."' ";
+    		    if ($userIteration->getSubRoleName() == $subRoleArray[$k]['sub_role_name']) {
+    		        echo "selected";
+    		    }
+    		    echo ">". $subRoleArray[$k]['sub_role_name'] ."</option>";
     		}
-    		echo ">Colac</option>";
      		?>
         	</select>
 		</span>

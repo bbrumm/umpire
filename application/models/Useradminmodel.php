@@ -52,6 +52,37 @@ class Useradminmodel extends MY_Model {
         return $userArray;
     }
     
+    public function getRoleArray() {
+        $queryString = "SELECT id, role_name, display_order FROM role WHERE role_name != 'Owner' ORDER BY display_order;";
+        
+        //Run query and store result in array
+        //echo "Query:<BR />";
+        //echo $queryString . "<BR />";
+        
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+        
+        return $queryResultArray;
+    }
+    
+    public function getSubRoleArray() {
+        $queryString = "SELECT id, sub_role_name FROM sub_role WHERE sub_role_name != 'All';";
+    
+        //Run query and store result in array
+        //echo "Query:<BR />";
+        //echo $queryString . "<BR />";
+    
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+    
+        return $queryResultArray;
+    }
+    
+    
+    
+    
+    
+    
 
 }
 ?>

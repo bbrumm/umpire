@@ -21,10 +21,14 @@ class UserAdmin extends CI_Controller
         
         $userAdmin = new Useradminmodel();
         $userArray = $userAdmin->getAllUsers();
+        $roleArray = $userAdmin->getRoleArray();
+        $subRoleArray = $userAdmin->getSubRoleArray();
         
         $this->load->view('templates/header');
         
         $data['userArray'] = $userArray;
+        $data['roleArray'] = $roleArray;
+        $data['subRoleArray'] = $subRoleArray;
         $this->load->view('useradmin', $data);
         $this->load->view('templates/footer');
         
