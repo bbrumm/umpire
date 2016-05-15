@@ -151,7 +151,7 @@ class User extends CI_Model
         
     }
     
-    private function setPermissionArrayForUser() {
+    public function setPermissionArrayForUser() {
         $queryString = "SELECT ps.id, ps.permission_id, p.permission_name, ps.selection_name " .
             "FROM permission_selection ps " .
             "INNER JOIN permission p ON ps.permission_id = p.id " .
@@ -211,6 +211,11 @@ class User extends CI_Model
     
     public function userCanSeeDataTestPage() {
         return $this->findPermissionInArray('VIEW_DATA_TEST', 'All');
+    }
+    
+    public function userHasSpecificPermission($permissionName, $selectionName) {
+       return $this->findPermissionInArray($permissionName, $selectionName);
+    
     }
     
 }

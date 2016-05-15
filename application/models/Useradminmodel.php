@@ -35,6 +35,7 @@ class Useradminmodel extends MY_Model {
             $newUser->setLastName($queryResultArray[$i]['last_name']);
             $newUser->setRoleName($queryResultArray[$i]['role_name']);
             $newUser->setSubRoleName($queryResultArray[$i]['sub_role_name']);
+            $newUser->setPermissionArrayForUser();
             $userArray[] = $newUser;
         }
         
@@ -52,30 +53,45 @@ class Useradminmodel extends MY_Model {
         return $userArray;
     }
     
-    public function getRoleArray() {
-        $queryString = "SELECT id, role_name, display_order FROM role WHERE role_name != 'Owner' ORDER BY display_order;";
-        
-        //Run query and store result in array
-        //echo "Query:<BR />";
-        //echo $queryString . "<BR />";
-        
+    private function getArrayFromQuery($queryString) {
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
-        
         return $queryResultArray;
+    }
+    
+    public function getRoleArray() {
+        $queryString = "SELECT id, role_name, display_order FROM role WHERE role_name != 'Owner' ORDER BY display_order;";
+        return $this->getArrayFromQuery($queryString);
     }
     
     public function getSubRoleArray() {
         $queryString = "SELECT id, sub_role_name FROM sub_role WHERE sub_role_name != 'All';";
+        return $this->getArrayFromQuery($queryString);
+    }
     
-        //Run query and store result in array
-        //echo "Query:<BR />";
-        //echo $queryString . "<BR />";
+    public function getReportArray() {
+        $queryString = "SELECT report_table_id, report_title FROM report_table;";
+        return $this->getArrayFromQuery($queryString);
+    }
     
-        $query = $this->db->query($queryString);
-        $queryResultArray = $query->result_array();
+    public function getRegionArray() {
+        $queryString = "SELECT id, region_name FROM region;";
+        return $this->getArrayFromQuery($queryString);
+    }
     
-        return $queryResultArray;
+    public function getUmpireDisciplineArray() {
+        $queryString = "SELECT id, umpire_type_name FROM umpire_type;";
+        return $this->getArrayFromQuery($queryString);
+    }
+    
+    public function getAgeGroupArray() {
+        $queryString = "SELECT id, age_group FROM age_group ORDER BY display_order;";
+        return $this->getArrayFromQuery($queryString);
+    }
+    
+    public function getLeagueArray() {
+        $queryString = "SELECT id, short_league_name FROM short_league_name ORDER BY display_order;";
+        return $this->getArrayFromQuery($queryString);
     }
     
     

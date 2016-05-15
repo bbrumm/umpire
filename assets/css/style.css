@@ -628,7 +628,7 @@ Login Page
  
  .optionsSection {
 	display: inline-block;
- 	width: 24%;
+ 	width: 20%; /* (100%/number of elements)- 1% */
  	/*background:#A0A0C0;*/
  	vertical-align: top;
 
