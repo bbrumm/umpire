@@ -1,6 +1,6 @@
 <?php
 
-class UserRolePermission extends CI_Model
+class User_role_permission extends CI_Model
 {
     
     function __construct()

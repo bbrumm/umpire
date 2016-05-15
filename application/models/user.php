@@ -15,7 +15,7 @@ class User extends CI_Model
     function __construct()
     {
         parent::__construct();
-        $this->load->model('useradmin/Userrolepermission');
+        $this->load->model('useradmin/User_role_permission');
     }
     
 
@@ -171,7 +171,7 @@ class User extends CI_Model
         
         
         for($i=0; $i<count($resultArray); $i++) {
-            $userRolePermission = new UserRolePermission();
+            $userRolePermission = new User_role_permission();
             $userRolePermission->setId($resultArray[$i]['id']);
             $userRolePermission->setPermissionId($resultArray[$i]['permission_id']);
             $userRolePermission->setPermissionName($resultArray[$i]['permission_name']);
@@ -187,7 +187,7 @@ class User extends CI_Model
         $permissionArray = $this->getPermissionArray();
         $permissionFound = false;
         for($i=0; $i<count($permissionArray); $i++) {
-            $userRolePermission = new UserRolePermission();
+            $userRolePermission = new User_role_permission();
             $userRolePermission = $permissionArray[$i];
             if ($userRolePermission->getPermissionName() == $permissionName && 
                 $userRolePermission->getSelectionName() == $selectionName) {
