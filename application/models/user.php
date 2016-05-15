@@ -213,6 +213,10 @@ class User extends CI_Model
         return $this->findPermissionInArray('VIEW_DATA_TEST', 'All');
     }
     
+    public function userCanCreatePDF() {
+        return $this->findPermissionInArray('CREATE_PDF', 'All');
+    }
+    
     public function userHasSpecificPermission($permissionName, $selectionName) {
        return $this->findPermissionInArray($permissionName, $selectionName);
     

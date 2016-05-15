@@ -95,8 +95,10 @@ if ($showHeader) {
     	//Show extra items if we are on the report page
     
     	//echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
-    	echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
-    	echo "<div class='menuBarLink'>Create PDF</div></a>";
+        if ($currentUser->userCanCreatePDF()) {
+            echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
+        	echo "<div class='menuBarLink'>Create PDF</div></a>";
+        }
     }
     
     if($this->session->userdata('logged_in')) {
