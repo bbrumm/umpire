@@ -5,7 +5,7 @@ require_once(__ROOT__.'/../system/libraries/MY_Model.php');
 
 
 
-class MatchImport extends MY_Model 
+class Match_import extends MY_Model 
 {   
   /* Code .. */   
     

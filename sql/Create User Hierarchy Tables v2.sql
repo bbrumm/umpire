@@ -24,8 +24,8 @@ FOREIGN KEY (permission_selection_id) REFERENCES permission_selection(id)
 
 CREATE TABLE role (
 id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-role_name VARCHAR(100)
-
+role_name VARCHAR(100),
+display_order INT(11)
 );
 
 CREATE TABLE sub_role (
@@ -62,6 +62,8 @@ INSERT INTO permission (permission_name) VALUES ('ADD_NEW_USERS');
 INSERT INTO permission (permission_name) VALUES ('MODIFY_EXISTING_USERS');
 INSERT INTO permission (permission_name) VALUES ('VIEW_REPORT');
 INSERT INTO permission (permission_name) VALUES ('SELECT_REPORT_OPTION');
+INSERT INTO permission (permission_name) VALUES ('VIEW_USER_ADMIN');
+
 
 
 INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (1,'General', 'All');
@@ -94,18 +96,21 @@ INSERT INTO permission_selection(permission_id, category, selection_name) VALUES
 INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (7,'Umpire Type', 'Boundary');
 INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (7,'Umpire Type', 'Field');
 INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (7,'Umpire Type', 'Goal');
+INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (8,'General', 'All');
+INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (7,'Age Group', 'Under 14');
 
 
-INSERT INTO role (role_name) VALUES ('Owner');
-INSERT INTO role (role_name) VALUES ('Administrator');
-INSERT INTO role (role_name) VALUES ('Super User');
-INSERT INTO role (role_name) VALUES ('Regular User');
+INSERT INTO role (role_name, display_order) VALUES ('Owner', 1);
+INSERT INTO role (role_name, display_order) VALUES ('Administrator', 2);
+INSERT INTO role (role_name, display_order) VALUES ('Super User', 3);
+INSERT INTO role (role_name, display_order) VALUES ('Regular User', 4);
 
 INSERT INTO sub_role (sub_role_name) VALUES ('All');
 INSERT INTO sub_role (sub_role_name) VALUES ('Geelong');
 INSERT INTO sub_role (sub_role_name) VALUES ('Colac');
 
 INSERT INTO role_sub_role (role_id, sub_role_id) VALUES (1, 1);
+INSERT INTO role_sub_role (role_id, sub_role_id) VALUES (2, 1);
 INSERT INTO role_sub_role (role_id, sub_role_id) VALUES (2, 2);
 INSERT INTO role_sub_role (role_id, sub_role_id) VALUES (2, 3);
 INSERT INTO role_sub_role (role_id, sub_role_id) VALUES (3, 2);
@@ -159,9 +164,7 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 14);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 15);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 16);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 17);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 18);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 19);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 20);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 21);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 22);
@@ -169,10 +172,11 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 24);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 25);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 26);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 27);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 28);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 29);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 30);
+
+
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 1);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 2);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 4);
@@ -186,21 +190,13 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 13);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 14);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 15);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 16);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 17);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 18);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 19);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 20);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 21);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 22);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 23);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 24);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 25);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 26);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 27);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 28);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 29);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (3, 30);
+
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 2);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 6);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 8);
@@ -212,9 +208,7 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 14);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 15);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 16);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 17);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 18);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 19);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 20);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 21);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 22);
@@ -222,10 +216,10 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 24);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 25);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 26);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 27);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 28);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 29);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 30);
+
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 2);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 7);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 8);
@@ -236,21 +230,13 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 13);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 14);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 15);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 16);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 17);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 18);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 19);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 20);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 21);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 22);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 23);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 24);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 25);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 26);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 27);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 28);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 29);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (5, 30);
+
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 2);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 6);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 8);
@@ -262,9 +248,7 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 14);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 15);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 16);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 17);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 18);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 19);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 20);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 21);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 22);
@@ -272,10 +256,10 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 24);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 25);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 26);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 27);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 28);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 29);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 30);
+
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 2);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 7);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 8);
@@ -286,21 +270,28 @@ INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 13);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 14);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 15);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 16);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 17);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 18);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 19);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 20);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 21);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 22);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 23);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 24);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 25);
-INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 26);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 27);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 28);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 29);
 INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (7, 30);
+
+INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (1, 32);
+INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 32);
+INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (4, 32);
+INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (6, 32);
+
+/*
+INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (1, 31);
+INSERT INTO role_permission_selection (role_sub_role_id, permission_selection_id) VALUES (2, 31);
+DELETE FROM role_permission_selection WHERE permission_selection_id = 31;
+*/
+
+
+INSERT INTO user_permission_selection (user_id, permission_selection_id) VALUES (2, 31);
+INSERT INTO user_permission_selection (user_id, permission_selection_id) VALUES (3, 31);
+
 
 
 UPDATE umpire_users SET role_sub_role_id = 1, first_name = 'Ben', last_name='Brumm' WHERE id = 2;

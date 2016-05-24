@@ -6,7 +6,7 @@ class FileImport extends CI_Controller {
 		
 		$this->load->model('report_model');
 		$this->load->helper('url_helper');
-		$this->load->model('MatchImport');
+		$this->load->model('Match_import');
 		
 		//$this->load->helper('cell_formatting_helper');
 		//$this->load->helper('phpexcel/Classes/PHPExcel');
@@ -44,7 +44,7 @@ class FileImport extends CI_Controller {
 	        $data = array('upload_data' => $this->upload->data());
 	        $data['progress_pct'] = 10;
 	        
-	        $this->MatchImport->fileImport($data);
+	        $this->Match_import->fileImport($data);
 	        $this->load->view('templates/header', $data);
 	        $this->load->view('upload_success', $data);
 	        $this->load->view('templates/footer');

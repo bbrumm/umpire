@@ -144,6 +144,7 @@ Array
 	        
 	        $second_umpire_names[] = $resultRow['second_umpire'];
 	        $pivotedArray[$resultRow['first_umpire']]['umpire_name'] = $resultRow['first_umpire'];
+	        $pivotedArray[$resultRow['first_umpire']]['umpire_type_name'] = $resultRow['umpire_type_name'];
 	        $pivotedArray[$resultRow['first_umpire']][$resultRow['second_umpire']] = $resultRow['match_count'];
 	    }
 
@@ -389,9 +390,9 @@ Array
 	    //to handle cases where more than one field is shown in the row
 	    //Construct SQL query
 	    
-	    $queryForReport = "SELECT first_umpire, second_umpire, SUM(match_count) AS match_count " .
+	    $queryForReport = "SELECT first_umpire, second_umpire, umpire_type_name, SUM(match_count) AS match_count " .
 	    "FROM " . $pReportTableName . " " . $whereClause . " " .
-	    "GROUP BY first_umpire, second_umpire;";
+	    "GROUP BY first_umpire, second_umpire, umpire_type_name;";
 	
 	    if ($debugMode) {
 	        echo "<BR/>Query For Report ($queryForReport)<BR/>";
