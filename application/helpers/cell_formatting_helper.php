@@ -1,10 +1,10 @@
 <?php
 
-function getCellClassNameFromOutputValue($valueToCheck, $umpireTypeName) {
+function getCellClassNameFromOutputValue($valueToCheck) {
     $limitGenericLevel1 = 3;
     $limitGenericLevel2 = 4;
     $limitGenericLevel3 = 5;
-    
+    /*
     $limitGoalUmpireLevel1 = 2;
     $limitGoalUmpireLevel2 = 3;
     $limitGoalUmpireLevel3 = 3;
@@ -20,12 +20,13 @@ function getCellClassNameFromOutputValue($valueToCheck, $umpireTypeName) {
         $limitLevel3 = $limitGoalUmpireLevel3;
         
     } else {
+        */
         $limitLevel1 = $limitGenericLevel1;
         $limitLevel2 = $limitGenericLevel2;
         $limitLevel3 = $limitGenericLevel3;
-        
+     /*   
     }
-    
+    */
     
 	switch ($valueToCheck) {
 		case null:

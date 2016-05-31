@@ -265,7 +265,7 @@ foreach ($loadedResultArray as $resultRow):
     		            } else {
     		                $umpireTypeName = NULL;
     		            }
-    		            $cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]], $umpireTypeName);
+    		            $cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]]);
     		            
         		        //$tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
     		        } elseif(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
