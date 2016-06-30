@@ -160,6 +160,29 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 			    if ($mergeColumnGroup[$i] == TRUE) {
 				    //$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
 				    //$arrayKeyNumber = $loadedReportItem->findKeyFromValue($columnCountForHeadingCells[$i], $columnLabels[$i], "label")
+			        /*TODO: There is a bug here. When a report has two column headings with the same value,
+			        but they don't need to be grouped (i.e. Report 2, for Seniors and Reservers, should show
+			        Seniors, then Reserves, then Seniors 2 Umpires), this code is grouping it anyway.
+			        This is because it counts the number of values in the heading group, and in this case, 
+			        it finds 2.
+			        How do I fix it? 
+			        Is it better to redesign this "column label" logic to improve the query,
+			        and add this config data into the database?
+			        What config would I need to add? It would need to be specific for a report (i.e. report 2)
+			        Columns in the report could have "merge groups", which are independent of the column labels.
+			        This way, a column with the heading of "Seniors" could be separated from other columns with 
+			        headings of "Seniors".
+			        When I do this, I can also move other report config data to the database.
+			        This would make maintenance easier and clean up the code.
+			        A lot of this information currently sits in UserReport.php.
+			        
+			        Possible Solution:
+			        - Add report parameters to database
+			        - Move this colspan count to a function
+			        - The function would not include the 2 Umpires field in the count of cells
+			        
+			        */
+			        
 			        $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
 			        
 			        

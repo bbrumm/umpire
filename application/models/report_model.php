@@ -253,7 +253,7 @@ Array
                 $columnQuery .= "AND mv.age_group IN (". $pAge .") ";
     	    }
             $columnQuery .= "AND rcld.column_display_filter_name = 'short_league_name' " .
-                "ORDER BY rc.column_name ASC" .
+                "ORDER BY rc.display_order, rc.column_name ASC" .
                 ") gc;";
 	    
 	    
@@ -295,7 +295,7 @@ Array
 
 	        $columnQuery .= "AND rcld.column_display_filter_name = 'short_league_name' " .
 	   	        "AND rc.overall_total = 1 " .
-	            "ORDER BY rc.column_name ASC" .
+	            "ORDER BY rc.display_order, rc.column_name ASC" .
 	            ") gc;";
 	        
 	        $query = $this->db->query($columnQuery);
