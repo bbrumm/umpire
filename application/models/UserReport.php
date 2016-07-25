@@ -113,107 +113,84 @@ class UserReport extends CI_Model {
 	public function __construct() {
 		$this->reportDisplayOptions = new ReportDisplayOptions();
 		$this->load->database();
+		$this->load->model('report_param/ReportParamLoader');
+		$this->load->model('report_param/ReportParameter');
 	}
 	
 	public function setReportType($reportParameters) {
 		/*echo "<pre>";
 		print_r($reportParameters);
 		echo "</pre>";*/
-	    //TODO: Clean up this switch statement to remove code repetition 
 	    //ReportParameters are set in controllers/report.php->index();
 	    
 	    $ageGroupValue = implode(',', $reportParameters['age']);
 	    $leagueValue = "";
 	    $umpireDisciplineValue = implode(',', $reportParameters['umpireType']);
 	    $seasonValue = $reportParameters['season'];
-	        
 	    
-	    switch ($reportParameters['reportName']) {
-	        case 1:
-    			$this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport01);
-    			$this->reportDisplayOptions->setRowGroup($this->rowGroupForReport01);
-    			$this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport01);
-    			$this->reportDisplayOptions->setNoDataValue("");
-    			$this->reportDisplayOptions->setColumnHeadingLabel(array("Name"));
-    			$this->reportDisplayOptions->setColumnHeadingSizeText(array("Umpire_Name_First_Last"));
-    			$this->reportDisplayOptions->setFirstColumnFormat("text");
-    			$this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
-    			$this->reportDisplayOptions->setColourCells(TRUE);
-    			$this->reportDisplayOptions->setPDFResolution(200);
-    			$this->reportTitle = "01 - Umpires and Clubs (". $seasonValue .")";
-    			$this->reportID = 1;
-    			break;
-	        case 2:
-	            $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport02);
-	            $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport02);
-	            $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport02);
-	            $this->reportDisplayOptions->setNoDataValue("");
-	            $this->reportDisplayOptions->setColumnHeadingLabel(array("Name"));
-	            $this->reportDisplayOptions->setFirstColumnFormat("text");
-	            $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
-	            $this->reportDisplayOptions->setColourCells(FALSE);
-	            $this->reportDisplayOptions->setPDFResolution(200);
-	            $this->reportTitle = "02 - Umpire Names by League (". $seasonValue .")";
-	            $this->reportID = 2;
-	            break;
-            case 3:
-                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport03);
-                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport03);
-                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport03);
-                $this->reportDisplayOptions->setNoDataValue("");
-                $this->reportDisplayOptions->setColumnHeadingLabel(array("Week (Sat)"));
-                $this->reportDisplayOptions->setFirstColumnFormat("date");
-                $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, FALSE));
-                $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "03 - Summary by Week (Matches Where No Umpires Are Recorded) (". $seasonValue .")";
-                $this->reportID = 3;
-                break;
-            case 4:
-                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport04);
-                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport04);
-                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport04);
-                $this->reportDisplayOptions->setNoDataValue("");
-                $this->reportDisplayOptions->setColumnHeadingLabel(array("Club"));
-                $this->reportDisplayOptions->setFirstColumnFormat("text");
-                $this->reportDisplayOptions->setMergeColumnGroup(array(TRUE, TRUE, FALSE));
-                $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "04 - Summary by Club (Matches Where No Umpires Are Recorded) (". $seasonValue .")";
-                $this->reportID = 4;
-                break;
-            case 5:
-                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport05);
-                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport05);
-                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport05);
-                $this->reportDisplayOptions->setNoDataValue("0");
-                $this->reportDisplayOptions->setColumnHeadingLabel(array("Discipline", "Age Group"));
-                $this->reportDisplayOptions->setFirstColumnFormat("text");
-                $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
-                $this->reportDisplayOptions->setColourCells(FALSE);
-                $this->reportDisplayOptions->setPDFResolution(100);
-                $this->reportTitle = "05 - Games with Zero Umpires For Each League (". $seasonValue .")";
-                $this->reportID = 5;
-                break;
-            case 6:
-                $this->reportDisplayOptions->setColumnGroup($this->columnGroupForReport06);
-                $this->reportDisplayOptions->setRowGroup($this->rowGroupForReport06);
-                $this->reportDisplayOptions->setFieldToDisplay($this->fieldForReport06);
-                $this->reportDisplayOptions->setNoDataValue("");
-                $this->reportDisplayOptions->setColumnHeadingLabel(array("Umpire Name"));
-                $this->reportDisplayOptions->setColumnHeadingSizeText(array("Umpire_Name_First_Last"));
-                $this->reportDisplayOptions->setFirstColumnFormat("text");
-                $this->reportDisplayOptions->setMergeColumnGroup(array(FALSE));
-                $this->reportDisplayOptions->setColourCells(TRUE);
-                $this->reportDisplayOptions->setPDFResolution(200);
-                $this->reportTitle = "06 - Umpire Pairing (". $seasonValue .")";
-                $this->reportID = 6;
-                break;
+	    $reportParamLoader = new ReportParamLoader();
+	    $reportParamLoader->loadAllReportParametersForReport((int)$reportParameters['reportName']);
+	    $reportParameterArray = $reportParamLoader->getReportParameterArray();
+	    
+	    $reportParamLoader->loadAllGroupingStructuresForReport((int)$reportParameters['reportName']);
+	    $reportGroupingStructureArray = $reportParamLoader->getReportGroupingStructureArray();
+	    
+	    //echo "ReportName(". (int)$reportParameters['reportName'] .")";
+	    
+	    //$this->reportDisplayOptions->setFieldToDisplay($this->lookupParameterValue($reportParameterArray, 'Value Field'));
+	    $this->reportDisplayOptions->setNoDataValue($this->lookupParameterValue($reportParameterArray, 'No Value To Display'));
+	    $this->reportDisplayOptions->setFirstColumnFormat($this->lookupParameterValue($reportParameterArray, 'First Column Format'));
+	    $this->reportDisplayOptions->setColourCells($this->lookupParameterValue($reportParameterArray, 'Colour Cells'));
+	    $this->reportDisplayOptions->setPDFResolution($this->lookupParameterValue($reportParameterArray, 'PDF Resolution'));
+	    $this->reportTitle = str_replace("%seasonYear", $seasonValue, $this->lookupParameterValue($reportParameterArray, 'Display Title'));
+	    $this->reportID = $reportParameters['reportName'];
+	    
+	    /*
+	    echo "<pre>reportParameterArray:";
+	    print_r($reportParameterArray);
+	    echo "</pre>";
+	    
+	    echo "<pre>reportDisplayOptions:";
+	    print_r($this->reportDisplayOptions);
+	    echo "</pre>";
+	    */
+	    
+	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
+	    $columnGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Column');
+	    $rowGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Row');	    
+	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
+	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
 
-		}
-		
 		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason($reportParameters['season']));
-		//echo "LGD2: " . $this->reportDisplayOptions->getLastGameDate();
+	}
+	
+	private function extractGroupFromGroupingStructure($pReportGroupingStructureArray, $pGroupingType) {
+	    $reportGroupingStructure = new ReportGroupingStructure();
+	    
+	    for($i=0; $i<count($pReportGroupingStructureArray); $i++) {
+	        if ($pReportGroupingStructureArray[$i]->getGroupingType() == $pGroupingType) {
+	           $outputReportGroupingStructure[] = $pReportGroupingStructureArray[$i];
+	        }
+	    }
+	    return $outputReportGroupingStructure;
+	}
+	
+	
+	private function lookupParameterValue($reportParameterArray, $parameterName) {
+	    $parameterValue = "";
+	    
+	    for($i=0; $i<count($reportParameterArray); $i++) {
+	        $reportParameter = new ReportParameter();
+	        $reportParameter = $reportParameterArray[$i];
+	        
+	        if($reportParameter->getParameterName() == $parameterName) {
+	            $parameterValue = $reportParameter->getParameterValue();
+	            break;
+	        }
+	    }
+	
+	    return $parameterValue;
+	
 	}
 	
 	
@@ -300,16 +277,29 @@ class UserReport extends CI_Model {
 	    return $this->reportID;
 	    
 	}
-	
-	
-	
-	
-	
+
 	public function getColumnCountForHeadingCells() {
+	    /* This function finds the number of columns for each column value, so that the report can merge the correct number of cells.
+	     * It uses the column labels to show (e.g. BFL, GFL), and loops through the records from the database. 
+	     * Inside the loop, it looks for records that match each of the column labels, and increments the counter if one is found.
+	     * E.g. if a report needs to show columns for BFL, GFL, and GDFL, and the full list of columns includes BFL, BFL, GDFL, GFL, BFL, GFL...
+	     * Then the result will be BFL=3, GFL=1, GDFL=1.
+	     */
+	    
 	    $columnLabelResults = $this->columnLabelResultArray;
-	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
+	    echo "<pre>CLR: ";
+	    print_r($columnLabelResults);
+	    echo "</pre>";
+	    
+	    
+	    $columnLabels = $this->getDisplayOptions()->getColumnGroup(); //Used to be array('field_name1', 'field_name2')
 	    $columnCountLabels = [];
 
+	    echo "<pre>CL: ";
+	    print_r($columnLabels);
+	    echo "</pre>";
+	     
+	    
 	    //Loop through the possible labels
 	    for ($i=0; $i < count($columnLabels); $i++) {
 	        if ($i == 0) {
@@ -324,68 +314,73 @@ class UserReport extends CI_Model {
 	        
 	        $arrayKeyNumber = 0;
 	        
-	        
-	        
 	        //Loop through columnLabelResults
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
 	           if ($i == 0) {
-	               /*
-	               echo "<BR />Find (" . $columnLabelResults[$j][$columnLabels[$i]] . ") in (";
-	               echo $columnCountLabels[0] . ")<BR/>";
-	               print_r($columnCountLabels[0]);
-	               echo "<BR />";
-	               */
-	               //if (in_array($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[0]) == TRUE) {
-	               //if (array_key_exists($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[0]) == TRUE) {
-	               if (in_array_r($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[$i]) == TRUE) {
+	               //if (in_array_r($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[$i]) == TRUE) {
+	               if (in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                   //Value found in array. Increment counter value
 	                   //echo "- Value found: " . $columnLabelResults[$j][$columnLabels[$i]] . "<BR />";
 	                   //Find the array that stores this value
-	                   $currentArrayKey = $this->findKeyFromValue($columnCountLabels[$i], $columnLabelResults[$j][$columnLabels[$i]], "unique label");
+	                   $currentArrayKey = $this->findKeyFromValue(
+	                           $columnCountLabels[$i], $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
 	                   $columnCountLabels[$i][$currentArrayKey]["count"]++;
 	                   
 	                   //$columnCountLabels[0][$columnLabelResults[$j][$columnLabels[$i]]] = $columnCountLabels[0][$columnLabelResults[$j][$columnLabels[$i]]] + 1;
 	               } else {
 	                   //Value not found. Add to array.
 	                   //$columnCountLabels[0][$columnLabelResults[$j][$columnLabels[$i]]] = 1;
-	                   $columnCountLabels[$i][$arrayKeyNumber]["label"] = $columnLabelResults[$j][$columnLabels[$i]];
-	                   $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = $columnLabelResults[$j][$columnLabels[$i]];
+	                   $columnCountLabels[$i][$arrayKeyNumber]["label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+	                   $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                   $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
 	                   $arrayKeyNumber++;
 	               }
 	           }
 	           if ($i == 1) {
 	               //echo "<BR />Find (" . $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]] . ")<BR/>";
-	               if (in_array_r($columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[$i]) == TRUE) {
+	               if (in_array_r($columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
+	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                   //Value found in array. Increment counter value
 	                   //echo "- Value found: " . $columnLabelResults[$j][$columnLabels[$i]] . ". Check if previous fields match.<BR />";
 	                   //Check if the value on the first row matches
 	                   //echo "- Look for match (". $columnLabelResults[$j-1][$columnLabels[$i-1]] .") and (". $columnLabelResults[$j][$columnLabels[$i-1]] .")<BR />";
-	                   if ($columnLabelResults[$j-1][$columnLabels[$i-1]] == $columnLabelResults[$j][$columnLabels[$i-1]]) {
+	                   if ($columnLabelResults[$j-1][$columnLabels[$i-1]->getFieldName()] == $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()]) {
 	                       //echo "-- Match";
 	                       
-                           $currentArrayKey = $this->findKeyFromValue($columnCountLabels[$i], $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]], "unique label");
+                           $currentArrayKey = $this->findKeyFromValue($columnCountLabels[$i], 
+                               $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
+                               $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
                            //echo "-- Increment array key [". $i ."][". $currentArrayKey ."]<BR/>";
                            $columnCountLabels[$i][$currentArrayKey]["count"]++;
 	                   } else {
-	                       $columnCountLabels[$i][$arrayKeyNumber]["label"] = $columnLabelResults[$j][$columnLabels[$i]];
-	                       $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]];
+	                       $columnCountLabels[$i][$arrayKeyNumber]["label"] = 
+	                           $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+	                       $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = 
+	                           $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
+	                           $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                       $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
 	                       $arrayKeyNumber++;
 	                   }
 	               } else {
 	                   //Value not found. Add to array.
 	                   //echo "- Value not found: " . $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]] . ". Added to array.<BR />";
-	                   $columnCountLabels[$i][$arrayKeyNumber]["label"] = $columnLabelResults[$j][$columnLabels[$i]];
-	                   $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]];
+	                   $columnCountLabels[$i][$arrayKeyNumber]["label"] = 
+	                       $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+	                   $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = 
+	                       $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
+	                       $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                   $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
 	                   $arrayKeyNumber++;
 	               }
 	           }
 	           if ($i == 2) {
 	               //Set all count values to 1 for this level, as it is not likely that the third row will need to be merged/have a higher than 1 colspan.
-	               $columnCountLabels[$i][$j]["label"] = $columnLabelResults[$j][$columnLabels[$i]];
-	               $columnCountLabels[$i][$j]["unique label"] = $columnLabelResults[$j][$columnLabels[$i-2]] . "|" . $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]];
+	               $columnCountLabels[$i][$j]["label"] = 
+	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+	               $columnCountLabels[$i][$j]["unique label"] = 
+	   	               $columnLabelResults[$j][$columnLabels[$i-2]->getFieldName()] . "|" . 
+	                   $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
+	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	               $columnCountLabels[$i][$j]["count"] = 1;
 	           }
 	        }
@@ -436,11 +431,6 @@ class UserReport extends CI_Model {
 	    $this->umpireTypeDisplayValues = implode(", ", $reportParameters['umpireType']);
 	    $this->leagueDisplayValues = implode(", ", $reportParameters['league']);
 	    $this->ageGroupDisplayValues = implode(", ", $reportParameters['age']);
-	}
-	
-	
+	}	
 }
-
-
-
 ?>

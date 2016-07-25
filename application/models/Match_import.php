@@ -1301,40 +1301,104 @@ class Match_import extends MY_Model
       $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
   
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_05 (season_year, region, umpire_type, age_group, BFL, GDFL, GFL, GJFL, CDFNL, `Total`) ";
-      $queryString .= "SELECT season_year, region, ua.umpire_type_name, ua.age_group, " .
-            "IFNULL(SUM(`BFL`),0), " .
-            "IFNULL(SUM(`GDFL`),0), " .
-            "IFNULL(SUM(`GFL`),0), " .
-            "IFNULL(SUM(`GJFL`),0), " .
-            "IFNULL(SUM(`CDFNL`),0), " .
-            "CASE " .
-            "WHEN region = 'Geelong' THEN IFNULL(SUM(`BFL`+`GDFL`+`GFL`+`GJFL`),0) " .
-            "WHEN region = 'Colac' THEN IFNULL(SUM(`CDFNL`),0) " .
-            "ELSE 0 END as Total " .
-            "FROM ( " .
-            "SELECT ut.id AS umpire_type_id, ut.umpire_type_name, " .
-            "ag.id AS age_group_id, ag.age_group " .
-            "FROM umpire_type ut, age_group ag " .
-            ") AS ua LEFT JOIN (";
-  
-      $queryString .= "SELECT season_year, region, umpire_type, age_group, age_group_ID,  " .
-        	"(CASE WHEN short_league_name = 'BFL' THEN match_count ELSE 0 END) as `BFL`, " .
-        	"(CASE WHEN short_league_name = 'GDFL' THEN match_count ELSE 0 END) as `GDFL`, " .
-        	"(CASE WHEN short_league_name = 'GFL' THEN match_count ELSE 0 END) as `GFL`, " .
-        	"(CASE WHEN short_league_name = 'GJFL' THEN match_count ELSE 0 END) as `GJFL`, " .
-        	"(CASE WHEN short_league_name = 'CDFNL' THEN match_count ELSE 0 END) as `CDFNL` " .
-        	"FROM ( " .
-			"SELECT s.season_year, region, s.umpire_type, s.age_group, s.short_league_name, s.age_group_ID, " .
-			"COUNT(s.match_id) AS Match_Count " .
-			"FROM mv_summary_staging s " .
-			"WHERE s.season_year = '$seasonToUpdate' " .
-			"GROUP BY s.season_year, region, s.age_group, s.umpire_type, s.short_league_name, s.age_group_ID " .
-    		") AS outer1 " .
-            ") AS outer2 ON ua.umpire_type_name = outer2.umpire_type " .
-            "AND ua.age_group = outer2.age_group " .
-            "GROUP BY season_year, region, ua.umpire_type_id, ua.age_group_id " .
-            "ORDER BY season_year, region, ua.umpire_type_id, ua.age_group_id";
+      $queryString = "INSERT INTO mv_report_05 (season_year, region, umpire_type, age_group, BFL, GDFL, GFL, GJFL, CDFNL, `Total`) 
+SELECT 
+    season_year,
+    outer2.region,
+    ua.umpire_type_name,
+    ua.age_group,
+    IFNULL(SUM(`BFL`), 0) AS sum_bfl,
+    SUM(outer3.match_count_bfl) as match_count_bfl,
+    IFNULL(SUM(`BFL`), 0)/SUM(outer3.match_count_bfl)*100 AS pct_bfl,
+    IFNULL(SUM(`GDFL`), 0) AS sum_gdfl,
+    SUM(outer3.match_count_gdfl) AS match_count_gdfl,
+    IFNULL(SUM(`GDFL`), 0)/SUM(outer3.match_count_gdfl)*100 AS pct_gdfl,
+    IFNULL(SUM(`GFL`), 0) AS sum_gfl,
+    SUM(outer3.match_count_gfl) AS match_count_gfl,
+    IFNULL(SUM(`GFL`), 0)/SUM(outer3.match_count_gfl)*100 AS pct_gfl,
+    IFNULL(SUM(`GJFL`), 0) AS sum_gjfl,
+    SUM(outer3.match_count_gjfl) AS match_count_gjfl,
+    IFNULL(SUM(`GJFL`), 0)/SUM(outer3.match_count_gjfl)*100 AS pct_gjfl,
+    IFNULL(SUM(`CDFNL`), 0) AS sum_cdfnl,
+    SUM(outer3.match_count_cdfnl) AS match_count_cdfnl,
+    IFNULL(SUM(`CDFNL`), 0)/SUM(outer3.match_count_cdfnl)*100 AS pct_cdfnl,
+    CASE
+        WHEN outer2.region = 'Geelong' THEN IFNULL(SUM(`BFL` + `GDFL` + `GFL` + `GJFL`), 0)
+        WHEN outer2.region = 'Colac' THEN IFNULL(SUM(`CDFNL`), 0)
+        ELSE 0
+    END AS Total
+FROM
+    (SELECT 
+        ut.id AS umpire_type_id,
+            ut.umpire_type_name,
+            ag.id AS age_group_id,
+            ag.age_group
+    FROM
+        umpire_type ut, age_group ag) AS ua
+        LEFT JOIN
+    (SELECT 
+        season_year,
+            region,
+            umpire_type,
+            age_group,
+            age_group_ID,
+            short_league_name,
+            (CASE
+                WHEN short_league_name = 'BFL' THEN match_count
+                ELSE 0
+            END) AS `BFL`,
+            (CASE
+                WHEN short_league_name = 'GDFL' THEN match_count
+                ELSE 0
+            END) AS `GDFL`,
+            (CASE
+                WHEN short_league_name = 'GFL' THEN match_count
+                ELSE 0
+            END) AS `GFL`,
+            (CASE
+                WHEN short_league_name = 'GJFL' THEN match_count
+                ELSE 0
+            END) AS `GJFL`,
+            (CASE
+                WHEN short_league_name = 'CDFNL' THEN match_count
+                ELSE 0
+            END) AS `CDFNL`
+	FROM
+        (SELECT 
+        s.season_year,
+            region,
+            s.umpire_type,
+            s.age_group,
+            s.short_league_name,
+            s.age_group_ID,
+            COUNT(s.match_id) AS Match_Count
+		FROM
+			mv_summary_staging s
+		WHERE
+			s.season_year = '$seasonToUpdate'
+		GROUP BY s.season_year , region , s.age_group , s.umpire_type , s.short_league_name , s.age_group_ID) 
+		AS outer1) 
+    AS outer2 ON ua.umpire_type_name = outer2.umpire_type
+	AND ua.age_group = outer2.age_group
+    LEFT JOIN
+    (
+		SELECT 
+		region,
+		age_group,
+		short_league_name,
+		COUNT(DISTINCT match_id) AS total_match_count,
+        CASE WHEN short_league_name = 'BFL' THEN COUNT(DISTINCT match_id) ELSE 0 END AS match_count_bfl,
+        CASE WHEN short_league_name = 'GFL' THEN COUNT(DISTINCT match_id) ELSE 0 END AS match_count_gfl,
+        CASE WHEN short_league_name = 'GDFL' THEN COUNT(DISTINCT match_id) ELSE 0 END AS match_count_gdfl,
+        CASE WHEN short_league_name = 'GJFL' THEN COUNT(DISTINCT match_id) ELSE 0 END AS match_count_gjfl,
+        CASE WHEN short_league_name = 'CDFNL' THEN COUNT(DISTINCT match_id) ELSE 0 END AS match_count_cdfnl
+		FROM mv_summary_staging
+		GROUP BY region, age_group,	short_league_name
+    ) AS outer3
+    ON outer2.age_group = outer3.age_group
+    AND outer2.short_league_name = outer3.short_league_name
+GROUP BY season_year , outer2.region , ua.umpire_type_id , ua.age_group_id
+ORDER BY season_year , outer2.region , ua.umpire_type_id , ua.age_group_id;";
 
       $debugMode = $this->config->item('debug_mode');
       if ($debugMode) {

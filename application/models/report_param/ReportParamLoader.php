@@ -16,9 +16,35 @@ class ReportParamLoader extends CI_Model {
         $this->load->model('report_param/ReportParameter');
     }
     
+    private $reportParameterArray;
+    private $reportGroupingStructureArray;
+    
+    public function getReportParameterArray() {
+        return $this->reportParameterArray;
+    }
+    
+    public function setReportParameterArray($pValue) {
+        $this->reportParameterArray = $pValue;
+    }
+    
+    public function getReportGroupingStructureArray() {
+        return $this->reportGroupingStructureArray;
+    }
+    
+    public function setReportGroupingStructureArray($pValue) {
+        $this->reportGroupingStructureArray = $pValue;
+    }
+    
+    
     public function loadAllReportParametersForReport($pReportID) {
         //Load all report parameters
         $queryDataReportParameters = $this->queryReportParameters($pReportID);
+        
+        /*
+        echo "<pre>queryDataReportParameters:";
+        print_r($queryDataReportParameters);
+        echo "</pre>";
+        */
         
         //Create report param and report grouping objects for this report
         foreach ($queryDataReportParameters->result() as $row) {
@@ -30,8 +56,13 @@ class ReportParamLoader extends CI_Model {
             $reportParameterArray[] = $reportParameter;
         }
          
-        return $reportParameterArray;
-           
+        //return $reportParameterArray;
+        $this->setReportParameterArray($reportParameterArray);
+        /*   
+        echo "<pre>reportParameterArray in load function:";
+        print_r($reportParameterArray);
+        echo "</pre>";
+        */
     }
     
     public function loadAllGroupingStructuresForReport($pReportID) {
@@ -52,17 +83,33 @@ class ReportParamLoader extends CI_Model {
             $reportGroupingStructureArray[] = $reportGroupingStructure;
         }
          
-        return $reportGroupingStructureArray;
+        $this->setReportGroupingStructureArray($reportGroupingStructureArray);
+        
+        echo "<pre>reportGroupingStructureArray in load function:";
+        print_r($reportGroupingStructureArray);
+        echo "</pre>";
+        
         
     }
     
     private function queryReportParameters($pReportID) {
-        $queryString = "SELECT rp.parameter_name, rp.parameter_type, rpm.parameter_value " .
+        $queryString = "SELECT rp.report_parameter_id,rp.parameter_name, " .
+            "rp.parameter_type, rpm.parameter_value " .
             "FROM report_table rt " .
             "INNER JOIN report_parameter_map rpm ON rpm.report_id = rt.report_name " .
             "INNER JOIN report_parameter rp ON rpm.report_parameter_id = rp.report_parameter_id " .
             "WHERE rt.report_name = '$pReportID' " .
-            "ORDER BY rp.report_parameter_id";
+            "AND rp.parameter_type = 'Text' " .
+            "UNION ALL " .
+            "SELECT rp.report_parameter_id,rp.parameter_name, " .
+            "rp.parameter_type, fl.field_name " .
+            "FROM report_table rt " .
+            "INNER JOIN report_parameter_map rpm ON rpm.report_id = rt.report_name " .
+            "INNER JOIN report_parameter rp ON rpm.report_parameter_id = rp.report_parameter_id " .
+            "INNER JOIN field_list fl ON rpm.parameter_value = fl.field_id " .
+            "WHERE rt.report_name = '$pReportID' " .
+            "AND rp.parameter_type = 'Field' " .
+            "ORDER BY report_parameter_id";
         
         $query = $this->db->query($queryString);
         
@@ -82,10 +129,6 @@ class ReportParamLoader extends CI_Model {
     
         return $query;
     }
-    
-    
+       
 }
-
-
-
 ?>

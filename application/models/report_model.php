@@ -202,7 +202,11 @@ Array
 	    $debugMode = $this->config->item('debug_mode');
 	    $query = $this->db->query("SET group_concat_max_len = 8000;");
 	    
-	    $rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
+	    //$rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
+	    $rowsToSelect = $this->convertReportGroupingStructureArrayToSelectClause(
+	           $reportToDisplay->getDisplayOptions()->getRowGroup());
+	    
+	    echo "Rows to select: " . $rowsToSelect[0] . "<BR/>";
 	    
 	    $pAge = $reportToDisplay->getAgeGroupSQLValues();
 	    $pUmpireType = $reportToDisplay->getUmpireTypeSQLValues();
@@ -352,6 +356,10 @@ Array
 	            "GROUP BY ". $rowsToSelect[0];
 	        
 	    } else {
+	       echo "<pre>";
+	       print_r($rowsToSelect[0]);
+	       echo "</pre>";
+	        
     	    $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
     	        $columnsToSelect . " " .
     	        "FROM " . $pReportTableName . " " . $whereClause . " " .
@@ -477,7 +485,12 @@ Array
 	        
 	        
 	        //Find the columns to show from the UserReport
-	    $columnsToDisplay = $userReport->reportDisplayOptions->getColumnGroup();
+	    //$columnsToDisplay = $userReport->reportDisplayOptions->getColumnGroup();
+	    
+	    $columnsToDisplay = $this->convertReportGroupingStructureArrayToSelectClause(
+	          $userReport->reportDisplayOptions->getColumnGroup());
+	    
+	    
 	    /*
 	    echo "<pre>Columns To Display";
 	    print_r($columnsToDisplay);
@@ -547,5 +560,20 @@ Array
         }
 	    return $columnLabelQuery;
 	}
+	
+	
+	private function convertReportGroupingStructureArrayToSelectClause($pReportGroupingStructureArray) {
+	    
+	    for ($i=0; $i < count($pReportGroupingStructureArray); $i++) {
+	       $selectClause[] = $pReportGroupingStructureArray[$i]->getFieldName();
+	       /*if ($i != count($pReportGroupingStructureArray)) {
+	           $selectClause . ", ";
+	       }*/
+	    }
+	    
+	    return $selectClause;
+	    
+	}
+	
 	
 }
