@@ -211,11 +211,11 @@ echo "<tbody>";
 //$currentColumnLabelSecond;
 
 $tableRowOutput = "";
-
-echo "<pre>rowLabels ";
-print_r($rowLabels);
-echo "</pre>";
-
+if ($debugMode) {
+    echo "<pre>rowLabels ";
+    print_r($rowLabels);
+    echo "</pre>";
+}
 
 foreach ($loadedResultArray as $resultRow): 
 	if ($reportDisplayOptions->getFirstColumnFormat() == "text") {

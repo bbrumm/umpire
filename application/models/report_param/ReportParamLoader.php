@@ -66,6 +66,8 @@ class ReportParamLoader extends CI_Model {
     }
     
     public function loadAllGroupingStructuresForReport($pReportID) {
+        $debugMode = $this->config->item('debug_mode');
+        
         //Load all report grouping structures
         $queryDataReportGroupingStructures = $this->queryReportGroupingStructures($pReportID);
         
@@ -84,11 +86,11 @@ class ReportParamLoader extends CI_Model {
         }
          
         $this->setReportGroupingStructureArray($reportGroupingStructureArray);
-        
-        echo "<pre>reportGroupingStructureArray in load function:";
-        print_r($reportGroupingStructureArray);
-        echo "</pre>";
-        
+        if ($debugMode) {
+            echo "<pre>reportGroupingStructureArray in load function:";
+            print_r($reportGroupingStructureArray);
+            echo "</pre>";
+        }
         
     }
     

@@ -23,16 +23,23 @@ class CreatePDF extends CI_Controller {
 	 }
 	
 	function pdf() {
-
-	    $startTime = time();
+	    $debugMode = $this->config->item('debug_mode');
 	    
+	    $startTime = time();
+	    if ($debugMode) {
+	        echo "POST in createpdf.pdf:<pre>";
+	        print_r($_POST);
+	        echo "</pre>";
+	        
+	    }
 		//$this->load->helper('pdf_helper');
 		$reportParameters = array(
 			'reportName' => $_POST['reportName'], 
 			'season' => $_POST['season'], 
 			'age' => $_POST['age'], 
 			'umpireType' => $_POST['umpireType'], 
-			'league' => $_POST['league']);
+			'league' => $_POST['league'], 
+			'region' => $_POST['region']);
 		
 		$this->writeToFile("time 01: " . time());
 		$startTime = time();
@@ -43,7 +50,7 @@ class CreatePDF extends CI_Controller {
 
 		$this->load->helper(array('dompdf', 'file'));
 		/*
-		echo "<pre>";
+		echo "loadedReportItem in createpdf:<pre>";
 		print_r($data['loadedReportItem']);
 		echo "</pre>";
         */
@@ -56,7 +63,7 @@ class CreatePDF extends CI_Controller {
 		
 		$html .= $this->load->view('templates/footer', $data, TRUE);
 
-		//Save To File, or Output to Window
+		//Save To File (TRUE), or Output to Window (FALSE).
 		$saveToFile = TRUE;
 		
 		//echo "RES (". $data['loadedReportItem']->reportDisplayOptions->getPDFResolution() .")";

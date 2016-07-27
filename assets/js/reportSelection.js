@@ -8,6 +8,7 @@ function updateHiddenValues() {
 	document.getElementById('umpireTypeHidden').value = document.getElementById('umpireType').value;
 	document.getElementById('ageHidden').value = document.getElementById('age').value;
 	document.getElementById('leagueHidden').value = document.getElementById('league').value;
+	document.getElementById('regionHidden').value = document.getElementById('region').value;
 	
 	
 }
@@ -260,9 +261,13 @@ function updateCheckboxEnabledStatus() {
 	convertedStringLeague = convertValueArrayToString(document.getElementsByName("chkLeague[]"));
     convertedStringUmpireDiscipline = convertValueArrayToString(document.getElementsByName("chkUmpireDiscipline[]"));
     convertedStringAgeGroup = convertValueArrayToString(document.getElementsByName("chkAgeGroup[]"));
+    convertedStringRegion = convertValueArrayToString(document.getElementsByName("rdRegion"));
+    //console.log('regionHidden' + document.getElementsByName("rdRegion").value);
+    //console.log('regionHidden' + convertedStringRegion);
     document.getElementById("chkLeagueHidden").value = convertedStringLeague;
     document.getElementById("chkUmpireDisciplineHidden").value = convertedStringUmpireDiscipline;
     document.getElementById("chkAgeGroupHidden").value = convertedStringAgeGroup;
+    document.getElementById("chkRegionHidden").value = convertedStringRegion;
     
 }
 
@@ -381,7 +386,9 @@ function convertValueArrayToString(nodeListToConvert) {
 			//}
 		}
 	}
+	//console.log("converted string: " + convertedString);
 	return convertedString;
+	
 	
 }
 

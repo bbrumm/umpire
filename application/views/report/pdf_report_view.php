@@ -112,7 +112,8 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 				$outerDivClass = "rotated_vertical_inner";
 			} else {
 			    //Increase the colspan if this column group is to be merged
-			    if ($mergeColumnGroup[$i] == TRUE) {
+			    //if ($mergeColumnGroup[$i] == TRUE) {
+			    if($columnLabels[$i]->getMergeField() == 1){
 				    //$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
 				    //$arrayKeyNumber = $loadedReportItem->findKeyFromValue($columnCountForHeadingCells[$i], $columnLabels[$i], "label")
 			        $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
@@ -184,10 +185,10 @@ $tableRowOutput = "";
 
 foreach ($loadedResultArray as $resultRow): 
 	if ($reportDisplayOptions->getFirstColumnFormat() == "text") {
-	   $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]] . "</td>";
-	   if (count($rowLabels) > 1) {
+	   $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</td>";
+	   if (count($rowLabels) > 1) {    
 	       //Output a second row label
-	       $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]] . "</td>";
+	       $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</td>";
 	   }
 	} elseif ($reportDisplayOptions->getFirstColumnFormat() == "date") {
 	    $weekDate = date_create($resultRow[$rowLabels[0]]);
@@ -197,10 +198,10 @@ foreach ($loadedResultArray as $resultRow):
 	       $tableRowOutput .= "<td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
 	   }
 	} else {
-	    $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]] . "</td>";
+	    $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</td>";
 	    if (count($rowLabels) > 1) {
 	        //Output a second row label
-	        $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]] . "</td>";
+	        $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</td>";
 	    }
 	}
 	

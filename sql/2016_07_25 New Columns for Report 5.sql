@@ -168,7 +168,7 @@ ALTER TABLE mv_report_05 ADD COLUMN `CDFNL|Pct` INT;
 
 UPDATE report_column_lookup
 SET report_table_id = 500
-WHERE report_column_id IN (152, 153, 154, 155);
+WHERE report_column_id IN (152, 153, 154, 155, 178);
 
 INSERT INTO field_list (field_id, field_name) VALUES (10, 'subtotal');
 

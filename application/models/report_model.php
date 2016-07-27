@@ -14,7 +14,13 @@ class report_model extends CI_Model {
 	public function get_report($reportParameters) {
 		
 		//$startTime = time();
-		
+	    if (isset($_POST['PDFSubmitted'])) {
+	        $reportParameters['PDFMode'] = true;
+	    } else {
+	        $reportParameters['PDFMode'] = false;
+	    }
+	    $debugMode = $this->config->item('debug_mode');
+	    
 		$reportToDisplay = new UserReport();
 		$reportToDisplay->setReportType($reportParameters);
 		
@@ -24,14 +30,31 @@ class report_model extends CI_Model {
 		//echo "reportTableName (" . $reportTableName .")";
 		
 		//Convert array of checkbox values into string ready for SQL
+		if ($debugMode) {
+		    echo "Report Parameters in getReport:<pre>";
+		    print_r($reportParameters);
+		    echo "</pre>";
+		}
+		
 		$reportToDisplay->convertParametersToSQLReadyValues($reportParameters);
+		
+		if ($debugMode) {
+		    echo "Report Parameters in getReport after update:<pre>";
+		    print_r($reportParameters);
+		    echo "</pre>";
+		    
+		    echo "Report to Display in getReport after update:<pre>";
+		    print_r($reportToDisplay);
+		    echo "</pre>";
+		}
+		
 		
 		$reportToDisplay->convertParametersToDisplayValues($reportParameters);
 		
 		if ($reportParameters['reportName'] == '06') {
 		    //Build SELECT query for report data
 		    $queryForReport = $this->buildSelectQueryForReport6($reportToDisplay, $reportTableName, $reportParameters['reportName'],
-		        $reportParameters['season'], $reportParameters['region']);
+		        $reportParameters['season']);
 		    
 		    //Run query and store result in array
 		    $query = $this->db->query($queryForReport);			    
@@ -57,16 +80,20 @@ class report_model extends CI_Model {
 		} else {
 			//Build SELECT query for report
 			$queryForReport = $this->buildSelectQueryForReport($reportToDisplay, $reportTableName, $reportParameters['reportName'],
-			    $reportParameters['season'], $reportParameters['region']);
+			    $reportParameters['season']);
 
 			$query = $this->db->query($queryForReport);
 				
 			$reportToDisplay->setResultArray($query->result_array());
 			
 			//Look up the column labels for this report
-			$columnLabelQuery = $this->buildColumnLabelQuery($reportTableName, $reportToDisplay, $reportParameters['reportName'], 
+			/*$columnLabelQuery = $this->buildColumnLabelQuery($reportTableName, $reportToDisplay, $reportParameters['reportName'], 
 			    $reportParameters['season'], $reportParameters['age'],
 			    $reportParameters['umpireType'], $reportParameters['league']);
+			*/
+			$columnLabelQuery = $this->buildColumnLabelQuery($reportTableName, $reportToDisplay, $reportParameters['reportName'],
+			    $reportParameters['season']);
+				
 			
 			$query = $this->db->query($columnLabelQuery);
 			
@@ -197,7 +224,7 @@ Array
 	}
 	
 	//private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pAge, $pUmpireType, $pLeague) {
-	private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pRegion) {
+	private function buildSelectQueryForReport($reportToDisplay, $pReportTableName, $pReportName, $pSeason) {
 	    //Increase maximum length for GROUP_CONCAT value
 	    $debugMode = $this->config->item('debug_mode');
 	    $query = $this->db->query("SET group_concat_max_len = 8000;");
@@ -205,12 +232,20 @@ Array
 	    //$rowsToSelect = $reportToDisplay->getDisplayOptions()->getRowGroup();
 	    $rowsToSelect = $this->convertReportGroupingStructureArrayToSelectClause(
 	           $reportToDisplay->getDisplayOptions()->getRowGroup());
-	    
-	    echo "Rows to select: " . $rowsToSelect[0] . "<BR/>";
-	    
+	    if ($debugMode) {
+	       echo "Rows to select: " . $rowsToSelect[0] . "<BR/>";
+	    }
 	    $pAge = $reportToDisplay->getAgeGroupSQLValues();
 	    $pUmpireType = $reportToDisplay->getUmpireTypeSQLValues();
 	    $pLeague = $reportToDisplay->getLeagueSQLValues();
+	    $pRegion = $reportToDisplay->getRegionSQLValues();
+	    
+	    if ($debugMode == true) {
+	        echo "Report to Display:<pre>";
+	        print_r($reportToDisplay);
+	        echo "</pre>";
+	        
+	    }
 
 	    //TODO: Merge this query with the buildColumnLabels query, as it is quite similar.
 	    
@@ -356,9 +391,11 @@ Array
 	            "GROUP BY ". $rowsToSelect[0];
 	        
 	    } else {
-	       echo "<pre>";
-	       print_r($rowsToSelect[0]);
-	       echo "</pre>";
+	       if ($debugMode) {
+    	       echo "ReportModel rows to select<pre>";
+    	       print_r($rowsToSelect[0]);
+    	       echo "</pre>";
+    	   }
 	        
     	    $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
     	        $columnsToSelect . " " .
@@ -378,7 +415,7 @@ Array
 	
 	
 	
-	private function buildSelectQueryForReport6($reportToDisplay, $pReportTableName, $pReportName, $pSeason, $pRegion) {
+	private function buildSelectQueryForReport6($reportToDisplay, $pReportTableName, $pReportName, $pSeason) {
 	    //Increase maximum length for GROUP_CONCAT value
 	    $debugMode = $this->config->item('debug_mode');
 	    //$query = $this->db->query("SET group_concat_max_len = 8000;");
@@ -388,6 +425,7 @@ Array
 	    $pAge = $reportToDisplay->getAgeGroupSQLValues();
 	    $pUmpireType = $reportToDisplay->getUmpireTypeSQLValues();
 	    $pLeague = $reportToDisplay->getLeagueSQLValues();
+	    $pRegion = $reportToDisplay->getRegionSQLValues();
 	    
 	    //Build WHERE clause
 	    $whereClause = $this->buildWhereClause($pSeason, $pAge, $pUmpireType, $pLeague, $pReportName, $pRegion);
@@ -460,7 +498,7 @@ Array
                 $whereClause .= "AND ";
                 $addAndKeyword = FALSE;
             }
-            $whereClause .= "region IN ('$pRegion') ";
+            $whereClause .= "region IN ($pRegion) ";
             $addAndKeyword = TRUE;
         }
          
@@ -482,7 +520,8 @@ Array
 	    $pAge = $userReport->getAgeGroupSQLValues();
 	    $pUmpireType = $userReport->getUmpireTypeSQLValues();
 	    $pLeague = $userReport->getLeagueSQLValues();
-	        
+	    //echo "bioldColumnLabelQuery League: " . $pLeague . "<BR />";
+	    
 	        
 	        //Find the columns to show from the UserReport
 	    //$columnsToDisplay = $userReport->reportDisplayOptions->getColumnGroup();
