@@ -1301,7 +1301,11 @@ class Match_import extends MY_Model
       $this->deleteFromSingleTableForSeason($reportTableName, $seasonToUpdate, $importedFileID);
   
       //Then, insert into table
-      $queryString = "INSERT INTO mv_report_05 (season_year, region, umpire_type, age_group, BFL, GDFL, GFL, GJFL, CDFNL, `Total`) 
+      $queryString = "INSERT INTO mv_report_05 (season_year, region, umpire_type, age_group, `BFL|Games`, `BFL|Total`, `BFL|Pct`, 
+      `GDFL|Games`, `GDFL|Total`, `GDFL|Pct`, 
+      `GFL|Games`, `GFL|Total`, `GFL|Pct`, 
+      `GJFL|Games`, `GJFL|Total`, `GJFL|Pct`, 
+      `CDFNL|Games`, `CDFNL|Total`, `CDFNL|Pct`,`Total`) 
 SELECT 
     season_year,
     outer2.region,
