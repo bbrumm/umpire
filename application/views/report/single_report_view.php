@@ -240,11 +240,11 @@ foreach ($loadedResultArray as $resultRow):
 	}
 	
 	//$currentReportRowLabel = $resultRow[$rowLabels[0]];
-	/*
-	echo "<pre>";
-	print_r($resultRow);
-	echo "</pre>";
-	*/
+	if ($debugMode) {
+    	echo "resultRow:<pre>";
+    	print_r($resultRow);
+    	echo "</pre><BR />";
+	}
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
 		//$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
@@ -314,7 +314,9 @@ foreach ($loadedResultArray as $resultRow):
 		//Add on formatting for cells if matrix values are the same (e.g. row = column)
 		if ($reportID == 6) {
 		    //print "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") ";
-		    if ($resultRow[$rowLabels[0]] == $loadedColumnGroupings[$i]["column_name"]) {
+		    //echo "line A ". $resultRow["umpire_name"];
+		    //echo " matches line B ". $loadedColumnGroupings[$i]["column_name"] . "<BR />";
+		    if ($resultRow["umpire_name"] == $loadedColumnGroupings[$i]["column_name"]) {
 		        $cellClassToUse .= " cellRowMatchesColumn";
 		    }
 		}
