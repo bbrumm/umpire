@@ -225,7 +225,8 @@ foreach ($loadedResultArray as $resultRow):
 	       $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</td>";
 	   }
 	} elseif ($reportDisplayOptions->getFirstColumnFormat() == "date") {
-	    $weekDate = date_create($resultRow[$rowLabels[0]]);
+	    //$weekDate = date_create($resultRow[$rowLabels[0]]);
+	    $weekDate = date_create($resultRow["weekdate"]);
 	    $tableRowOutput = "<tr><td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
 	    if (count($rowLabels) > 1) {
 	       //Output a second row label
