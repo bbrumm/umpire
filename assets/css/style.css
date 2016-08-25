@@ -678,3 +678,126 @@ Login Page
 	margin: auto;
  	
  }
+ 
+ 
+ /*
+  * Div and Span Tags for Imitating a Table 
+  *
+  */
+ /*
+.divTableOuter {
+	left:50%;
+}
+ 
+ */
+.divTable {
+	
+	display:table;
+	width:20%;
+
+}
+
+.divHeader{
+	.display:table-header-group;
+}
+
+.divRowGroup {
+	display:table-row-group;
+	
+}
+
+.divRow {
+	display:table-row;
+	
+	
+}
+
+.divCell {
+	display:table-cell;
+	/*width:25%;*/
+	width:25px;
+	border-style: solid;
+ 	border-width: 1px;
+ 	border-color: #888888;
+	
+	text-align: left;
+	
+}
+
+.divCellSmallText {
+	font-size:9px;
+}
+
+.divCellRowMatchesColumn {
+	background: #999999;	
+	
+}
+
+.divCellNumber {
+	text-align:right;	
+	
+}
+
+.divCellText {
+	text-align:left;	
+
+}
+
+.divRotatedHeaderPDF {
+	/*-moz-transform:rotate(-90deg); 
+	 -moz-transform-origin: top left;
+	 -webkit-transform: rotate(-90deg);
+	 -webkit-transform-origin: top left;
+	 -o-transform: rotate(-90deg);
+	 -o-transform-origin:  top left;
+	 position:relative;
+ 	 text-align: left;
+ 	 width:250px;
+	 padding: 0px 0px 0px 0px;
+	 background-color:#A1D490;	
+ 	 position: absolute;
+     height: 0%;
+     */
+	
+	-moz-transform:rotate(-90deg); 
+	 -moz-transform-origin: top left;
+	 -webkit-transform: rotate(-90deg);
+	 -webkit-transform-origin: top left;
+	 -o-transform: rotate(-90deg);
+	 -o-transform-origin:  top left;
+	 transform-origin:left bottom 0;
+	 position:relative;
+ 	 text-align: left;
+ 	 width:250px;
+	 padding: 0px 0px 0px 0px;
+	 background-color:#A1D490;
+ 	 /*position: absolute;*/
+     height: 0%;
+    
+     
+ 	
+ 
+	
+	
+}
+
+.divRotatedHeader {
+	position: relative; 	
+
+}
+
+.divRotatedHeaderOuterPDF {
+	display:table-cell;
+	 
+	height:200px;
+	vertical-align:bottom;
+	padding: 0px 20px 10px 0px;
+	
+	border-style: solid;
+ 	border-width: 1px;
+ 	border-color: #888888;
+	
+    background-color:yellow;
+	
+	
+} 

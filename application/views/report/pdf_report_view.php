@@ -18,15 +18,16 @@ $countFirstLoadedColumnGroupings = count($columnLabels);
 $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
+echo "<div class='reportInformation'><span class='boldedText'>Last Game Date</span>: ". $reportDisplayOptions->getLastGameDate() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>Umpire Discipline</span>: ". $loadedReportItem->getUmpireTypeDisplayValues() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>League</span>: ". $loadedReportItem->getLeagueDisplayValues() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>Age Group</span>: ". $loadedReportItem->getAgeGroupDisplayValues() ."</div>";
+echo "<br />";
+
+ini_set('memory_limit', '1024M'); // or you could use 1G
+
 ?>
-<div width='90%'>
-<table class='reportTable'>
-
-<thead>
-
 <?php 
-//$debugLibrary->debugOutput("test");
-
 if ($debugMode) {
     echo "<BR />rowLabels<pre>";
     print_r($rowLabels);
@@ -56,228 +57,263 @@ $columnHeadingSizeText = $reportDisplayOptions->getColumnHeadingSizeText();
 
 //echo "countFirstLoadedColumnGroupings: ". $countFirstLoadedColumnGroupings;
 
+echo "<div class='divTableOuter'>";
+echo "<div class='divTable'>";
+
 //Show one header row for each group
 for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
     //Load array that shows each column heading and the number of records it has.
 	//$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
-	?>
-	
-	<tr class='table_summary_thead'>
-	
-	<?php
+	//echo "<div class='divRotatedHeader'>";
+    echo "<div class='divRow'>";
+    /*
 	$thOutput;
 	$thClassNameToUse;
 	
 	if ($reportDisplayOptions->getFirstColumnFormat() == "text") {
-	    $thClassNameToUse = "columnHeadingNormal cellNameSize";
+	    $thClassNameToUse = "columnHeadingNormal cellNameSize divCell";
 	} elseif ($reportDisplayOptions->getFirstColumnFormat() == "date") {
-	    $thClassNameToUse = "columnHeadingNormal cellDateSize";
+	    $thClassNameToUse = "columnHeadingNormal cellDateSize divCell";
 	} else {
-	    $thClassNameToUse = "columnHeadingNormal cellNameSize";
+	    $thClassNameToUse = "columnHeadingNormal cellNameSize divCell";
 	}
-
-	//$thClassNameToUse = 'rotated_vertical_td';
+*/
+    $arrReportRowGroup = $reportDisplayOptions->getRowGroup(); //Array of ReportGroupingStructure objects
+	$arrReportColumnGroup = $reportDisplayOptions->getColumnGroup();
+	
+	if ($debugMode) {
+	    echo "<BR />arrReportRowGroup<pre>";
+	    print_r($arrReportRowGroup);
+	    echo "</pre><BR />";
+	    
+	    echo "<BR />arrReportColumnGroup<pre>";
+	    print_r($arrReportColumnGroup);
+	    echo "</pre><BR />";
+	    
+	}
 	
 	for ($r=0; $r < count($rowLabels); $r++) {
-    	$thOutput = "<td class='". $thClassNameToUse ."'>";
-    	if ($i == 0) {
-    	    
+    	$thOutput = "<div class='divCell'>";
+    	if ($i == 0) {    
     	    $thOutput .= $columnHeadingLabels[$r];
-    	    $thOutput .= "<BR /><span class='columnSizeText'>". $columnHeadingSizeText[$r] ."</span>";
+    	    $thOutput .= "<BR /><span class='columnSizeText'>". $arrReportRowGroup[$r]->getGroupSizeText() ."</span>";
     	}
-    	$thOutput .= "</th>";
+    	$thOutput .= "</div>";
     	echo $thOutput;
 	}
 	
+	//$countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
+	$countLoadedColumnGroupings = count($loadedColumnGroupings);
 	
-	$countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
-	//echo "countLoadedColumnGroupings: ". $countLoadedColumnGroupings;
-	?>
-	
+	$columnHeadingFieldToDisplay = $arrReportColumnGroup[$i]->getFieldName();
 
-	<?php
+	//echo "countLoadedColumnGroupings(". $countLoadedColumnGroupings .")<BR />";
+	
 	for ($j=0; $j < $countLoadedColumnGroupings; $j++) {
-		//Check if cell should be merged
-		if ($j==0) {
+	    if ($debugMode) {
+	        echo "<pre>LCG:";
+	        print_r( $loadedColumnGroupings[$j]);
+	        echo "</pre>";
+	        echo "Field: " . $columnHeadingFieldToDisplay . "<BR/>";
+	    }
+		    
+		    //Check if cell should be merged
+		//if ($j==0) {
 			$proceed = true;
-		} 
+		//} 
 		
 		if ($proceed) {
 			//print cell with colspan value
 			if ($columnLabels[$i] == 'club_name' || $reportID == 6) {
 				//Some reports have their headers displayed differently
 				$colspanForCell = 1;
-				$cellClass = "rotated_vertical_td";
-				$innerDivClass = "rotated_vertical_outer";
-				$outerDivClass = "rotated_vertical_inner";
+				$cellClass = "divCell";
+				/*
+				$innerDivClass = "divRotatedHeaderPDF";
+				$outerDivClass = "divRotatedHeaderOuterPDF";
+				*/
+				$innerDivClass = "divCell divCellSmallText";
+				/*$outerDivClass = "divCell";*/
+				
+				
+				
+				/*
+				$cellClass = "rotated_cell_pdf";
+				$divClass = "rotated_text_pdf";
+				*/
 			} else {
 			    //Increase the colspan if this column group is to be merged
-			    //if ($mergeColumnGroup[$i] == TRUE) {
-			    if($columnLabels[$i]->getMergeField() == 1){
-				    //$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
-				    //$arrayKeyNumber = $loadedReportItem->findKeyFromValue($columnCountForHeadingCells[$i], $columnLabels[$i], "label")
-			        $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
-			    } else {
+			    //if($columnLabels[$i]->getMergeField() == 1){
+				    //$colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
+			    //} else {
 			        $colspanForCell = 1;
-			    }
+			    //}
 			    
-			    $cellClass = "columnHeadingNormal";
-			    $innerDivClass = "normalHeadingText";
-			    $outerDivClass = "normalHeadingText";
+			    //$cellClass = "divCell";
+			    $innerDivClass = "divCell";
+			    
+			    
 			    
 			    
 				//$cellClass = "columnHeadingNormal";
 				//$divClass = "normalHeadingText";
 			}
-			//echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></th>";
-			//echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$columnCountForHeadingCells[$i][$j]["label"]."</div></th>";
+			/*
 			if ($colspanForCell == 1) {
-			    echo "<td class='$cellClass' style='width:3%;'>";
+			    echo "<div class='$cellClass' style='width:3%;'>";
 			} else {
-			    echo "<td class='$cellClass' colspan='$colspanForCell' style='width:3%;'>";
+			    echo "<div class='$cellClass' colspan='$colspanForCell' style='width:3%;'>";
 			}
-			echo "<div class='$innerDivClass'>";
-			$outputValue = $columnCountForHeadingCells[$i][$j]["label"];
-			$outputValueNoSpaces = str_replace(' ', '_', $columnCountForHeadingCells[$i][$j]["label"]);
+			*/
+			//echo "<div class='$innerDivClass'>";
+			//echo "<div class='$innerDivClass'>";
+			//$outputValue = $columnCountForHeadingCells[$i][$j]["label"];
+			$outputValue = $loadedColumnGroupings[$j][$columnHeadingFieldToDisplay];
+			
+			//$outputValueNoSpaces = str_replace(' ', '_', $columnCountForHeadingCells[$i][$j]["label"]);
 			//echo "<div class='$outerDivClass ". $columnCountForHeadingCells[$i][$j]["label"] ."'>" . $columnCountForHeadingCells[$i][$j]["label"]."</div></div></td>";
 			//echo "<div class='$outerDivClass ". $outputValueNoSpaces ."'></div></div></td>";
-			echo "<div class='$outerDivClass'>". $outputValue ."</div></div></td>";
+			//echo "<div class='$outerDivClass'>". $outputValue ."</div></div></span>";
+			//echo "<div class='$outerDivClass'>". $outputValue ."</div></div></div>";
+			//echo "<div class='$outerDivClass'>". $outputValue ."</div></div>";
 			
-			//echo "<style type='text/css'>.". $outputValueNoSpaces .":after {content:'". $outputValueNoSpaces ."'; }</style>";
 			
-			//TODO: Does a DIV need to go here??
+			//echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$columnCountForHeadingCells[$i][$j]["label"]."</div></th>";
+			//echo "<div class='$cellClass'><div class='$divClass'>".$outputValue."</div></div>";
+			
+			//echo "<div class='$outerDivClass'>";
+			
+			
+			echo "<div class='$innerDivClass'>".$outputValue."</div>";
+			//echo "</div>";
+			
+			
 		}
 		//else
 		//nothing - don't even write a td		
 	}
-	/*
-	if ($loadedReportItem->getReportID() == 2) {
-	    if ($i == 0) {
-	        //Display the Total column if we are looking at report 2
-	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'>Total</div></th>";
-	    } else {
-	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'> </div></th>";
-	    }
-	}*/
-	//echo "<td>".$a."</td>";
-	?>
-	</tr>
-	
-<?php	
+
+	echo "</div>"; //Close Div Header
 }
-echo "</thead>";
 
 $loopCounter = 0;
 
 $matchFound = false;
 
-echo "<tbody>";
-
-
 //** Loop through rows and output them to the page **
-
-//$currentReportRowLabel;
-//$currentColumnLabelFirst;
-//$currentColumnLabelSecond;
-
 $tableRowOutput = "";
+$maximumRowsToDisplay = 50;
+$countOfRowsDisplayed = 0;
+/*$rowsBeforeCreatingNewTable = 1;*/
 
+//echo "<div class='divRowGroup'>";
 
 foreach ($loadedResultArray as $resultRow): 
+    if ($debugMode) {
+        if ($countOfRowsDisplayed == $maximumRowsToDisplay) {
+            //Exit the foreach if we have reached the maximum.
+            break;
+        }
+    }
+    
+    
 	if ($reportDisplayOptions->getFirstColumnFormat() == "text") {
-	   $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</td>";
+	   //$tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</td>";
+	    if ($reportID == 6) {
+	        $cellClass = 'divCell divCellSmallText';
+	    } else {
+	        $cellClass = 'divCell';
+	    }
+	    $tableRowOutput = "<div class='divRow'><div class='$cellClass'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</div>";
 	   if (count($rowLabels) > 1) {    
 	       //Output a second row label
-	       $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</td>";
+	       //$tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</td>";
+	       $tableRowOutput .= "<div class='$cellClass'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</div>";
 	   }
 	} elseif ($reportDisplayOptions->getFirstColumnFormat() == "date") {
 	    $weekDate = date_create($resultRow[$rowLabels[0]]);
-	    $tableRowOutput = "<tr><td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
+	    //$tableRowOutput = "<tr><td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
+	    $tableRowOutput = "<div class='divRow'><div class='$cellClass'>" . date_format($weekDate, 'd/m/Y') . "</div>";
 	    if (count($rowLabels) > 1) {
 	       //Output a second row label
-	       $tableRowOutput .= "<td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
+	       //$tableRowOutput .= "<td class='cellNormal'>" . date_format($weekDate, 'd/m/Y') . "</td>";
+	        $tableRowOutput .= "<div class='$cellClass'>" . date_format($weekDate, 'd/m/Y') . "</div>";
 	   }
 	} else {
-	    $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</td>";
+	    //$tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</td>";
+	    $tableRowOutput = "<div class='divRow'><div class='$cellClass'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</div>";
 	    if (count($rowLabels) > 1) {
 	        //Output a second row label
-	        $tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</td>";
+	        //$tableRowOutput .= "<td class='cellNormal'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</td>";
+	        $tableRowOutput .= "<div class='$cellClass'>" . $resultRow[$rowLabels[1]->getFieldName()] . "</div>";
 	    }
 	}
 	
-	//$currentReportRowLabel = $resultRow[$rowLabels[0]];
-	
-	
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
-		//$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
-		//$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
-/*echo "X=(". $resultRow[$loadedColumnGroupings[$i]['column_name']] ."),";*/
-	    
-		if (
-		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) ||
-		    (($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0) &&
-		     ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== '0'))
-		    ) {
-		        /*echo "(Y)";*/
-		        //Match found for columns. Write record
-		        if ($colourCells) {
-		            $cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]]);
-		            
-    		        //$tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
-		        } elseif(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
-		            $cellClassToUse = "cellNumber cellNormal";
-		        } else {
-		            $cellClassToUse = "cellText cellNormal";
-		        }
-		        
-		        if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
-		            $cellClassToUse .= " cellTextTotal";
-		        }
-		        
-		        
-		        
-		        $cellValue = $resultRow[$loadedColumnGroupings[$i]["column_name"]];
-		        
-		        /*
-		        $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . 
-		        "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") " .
-		        "</td>";
-		        */
+        if(array_key_exists($loadedColumnGroupings[$i]["column_name"], $resultRow)) {
+    		if (
+    		    ($resultRow[$loadedColumnGroupings[$i]["column_name"]] > 0) ||
+    		    (($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0) &&
+    		     ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== '0'))
+    		    ) {
+    		        /*echo "(Y)";*/
+    		        //Match found for columns. Write record
+    		        if ($colourCells == 1) {
+    		            if ($reportID == 6) {
+    		                $umpireTypeName = $resultRow['umpire_type_name'];
+    		            } else {
+    		                $umpireTypeName = NULL;
+    		            }
+    		            //$cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]], FALSE);
+    		            $cellClassToUse = "divCell";
+    		        } elseif(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
+    		            $cellClassToUse = "divCell divCellNumber";
+    		        } else {
+    		            $cellClassToUse = "divCell divCellText";
+    		        }
+    		        
+    		        if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
+    		            $cellClassToUse .= " cellTextTotal";
+    		        }
+    		        $cellValue = $resultRow[$loadedColumnGroupings[$i]["column_name"]];
+    		        
+    		} else {
+    		    if(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
+    		      $cellClassToUse = "divCell divCellNumber";
+    		    } else {
+    		      $cellClassToUse = "divCell divCellText";
+    		    }
+    		    $cellValue = $noDataValueToDisplay;
+    		}
 		} else {
-		    if(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
-		      $cellClassToUse = "cellNumber cellNormal";
-		    } else {
-		      $cellClassToUse = "cellNormal";
-		    }
+		    //Array key does not exist
+		    $cellClassToUse = "divCell divCellText";
 		    $cellValue = $noDataValueToDisplay;
-		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
-		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
 		}
 		
 		//Add on formatting for cells if matrix values are the same (e.g. row = column)
 		if ($reportID == 6) {
-		    //print "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") ";
-		    if ($resultRow[$rowLabels[0]] == $loadedColumnGroupings[$i]["column_name"]) {
-		        $cellClassToUse .= " cellRowMatchesColumn";
+		    //echo "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") ";
+		    if ($resultRow["umpire_name"] == $loadedColumnGroupings[$i]["column_name"]) {
+		        $cellClassToUse .= " divCellRowMatchesColumn";
 		    }
 		}
-		
-		$tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $cellValue . "</td>";
-     
-	}    
+		//$tableRowOutput .=  "<div class='divCell'>" . $cellValue . "</div>";
+		$tableRowOutput .=  "<div class='". $cellClassToUse ."'>" . $cellValue . "</div>";
+	}   
 	
-	
-	
-	
-	$tableRowOutput .= "</tr>";
+	/*if (count($rowLabels) == 1) {
+	    
+	}*/
+
+	$tableRowOutput .= "</div>";
 	echo $tableRowOutput;
-		        
+		       
+	$countOfRowsDisplayed++;
 
 endforeach;
+echo "</div>";
+echo "</div>";
 
-echo "</tbody>";
 ?>
-
-</table>
-</div>

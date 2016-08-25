@@ -142,6 +142,10 @@ class UserReport extends CI_Model {
 	    if ($reportParameters['PDFMode'] == true) {
 	        $ageGroupValue = rtrim($reportParameters['age'], ',');
 	        $umpireDisciplineValue = rtrim($reportParameters['umpireType'], ',');
+	        if ($debugMode) {
+	           echo "Umpire Discipline in setReportType: " . $umpireDisciplineValue . "<BR/>";    
+	        
+	        }
 	        $seasonValue = $reportParameters['season'];
 	    } else {
 	    
@@ -467,7 +471,7 @@ class UserReport extends CI_Model {
 	public function convertParametersToDisplayValues($reportParameters) {
 	    
 	    if ($reportParameters['PDFMode']) {
-	        $this->umpireTypeDisplayValues = str_replace(",", ", ", rtrim($reportParameters['age'], ',')) . "'";
+	        $this->umpireTypeDisplayValues = str_replace(",", ", ", rtrim($reportParameters['umpireType'], ',')) . "'";
 	        $this->leagueDisplayValues = str_replace(",", ", ", rtrim($reportParameters['league'], ',')) . "'";
 	        $this->ageGroupDisplayValues = str_replace(",", ", ", rtrim($reportParameters['age'], ',')) . "'";
 	    } else {

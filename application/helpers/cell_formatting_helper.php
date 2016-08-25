@@ -1,33 +1,15 @@
 <?php
 
-function getCellClassNameFromOutputValue($valueToCheck) {
+function getCellClassNameFromOutputValue($valueToCheck, $isTable) {
     $limitGenericLevel1 = 3;
     $limitGenericLevel2 = 4;
     $limitGenericLevel3 = 5;
-    /*
-    $limitGoalUmpireLevel1 = 2;
-    $limitGoalUmpireLevel2 = 3;
-    $limitGoalUmpireLevel3 = 3;
-    
-    $limitLevel1 = 1;
-    $limitLevel2 = 1;
-    $limitLevel3 = 1;
-    
-    
-    if ($umpireTypeName == 'Goal') {
-        $limitLevel1 = $limitGoalUmpireLevel1;
-        $limitLevel2 = $limitGoalUmpireLevel2;
-        $limitLevel3 = $limitGoalUmpireLevel3;
-        
-    } else {
-        */
-        $limitLevel1 = $limitGenericLevel1;
-        $limitLevel2 = $limitGenericLevel2;
-        $limitLevel3 = $limitGenericLevel3;
-     /*   
-    }
-    */
-    
+
+    $limitLevel1 = $limitGenericLevel1;
+    $limitLevel2 = $limitGenericLevel2;
+    $limitLevel3 = $limitGenericLevel3;
+
+    if ($isTable) {
 	switch ($valueToCheck) {
 		case null:
 			return "cellNumber cellNormal";
@@ -50,6 +32,31 @@ function getCellClassNameFromOutputValue($valueToCheck) {
 		default:
 			return "cellNumber cellNormal";
 			break;
+	   }
+	} else {
+	    switch ($valueToCheck) {
+    	    case null:
+    	        return "divCell divCellNumber";
+    	        break;
+    	    case ($valueToCheck < $limitLevel1):
+    	        return "divCell divCellNumber";
+    	        break;
+    	    case $limitLevel1:
+    	        return "divCell divCellNumber cellLevel1";
+    	        break;
+    	    case $limitLevel2:
+    	        return "divCell divCellNumber cellLevel2";
+    	        break;
+    	    case $limitLevel3:
+    	        return "divCell divCellNumber cellLevel3";
+    	        break;
+    	    case ($valueToCheck > $limitLevel3):
+    	        return "divCell divCellNumber cellLevel4";
+    	        break;
+    	    default:
+    	        return "divCell divCellNumber";
+    	        break;
+    	}
 	}
     
 	
