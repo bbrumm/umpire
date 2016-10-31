@@ -26,7 +26,7 @@ class Home extends CI_Controller {
 	 $data['reportSelectionParameters'] = $this->getAllReportSelectionParameters();
 	 
 	 $this->load->helper('form');
-	 $this->load->view('pages/report_home', $data);
+	 $this->load->view('report_home', $data);
 	 
 	 $this->load->view('templates/footer');
 	 
@@ -96,9 +96,5 @@ class Home extends CI_Controller {
      
      return $allReportSelectionParameters;
  }
- 
-
-
 }
-
 ?>

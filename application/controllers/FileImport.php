@@ -7,10 +7,13 @@ class FileImport extends CI_Controller {
 		$this->load->model('report_model');
 		$this->load->helper('url_helper');
 		$this->load->model('Match_import');
+		$this->load->model('Run_etl_stored_proc');
 		
 		//$this->load->helper('cell_formatting_helper');
 		//$this->load->helper('phpexcel/Classes/PHPExcel');
 		include 'application/helpers/phpexcel/Classes/PHPExcel.php';
+		
+		
 	}
 	
 	public function index() {
@@ -19,14 +22,22 @@ class FileImport extends CI_Controller {
 		
 	}
 	
+	function testProc() {
+	    
+	    $this->Run_etl_stored_proc->runETLProcedure();
+	}
+	
 	function do_upload()
 	{
 	    $config['upload_path'] = './application/import/';
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
 	
+
+	    //var_dump(debug_backtrace());
+	    
 	    $this->load->library('upload', $config);
-	
+	    
 	    if ( ! $this->upload->do_upload())
 	    {
 	        $error = array('error' => $this->upload->display_errors());
@@ -40,9 +51,12 @@ class FileImport extends CI_Controller {
 	    else
 	    {
 	        
-	        
 	        $data = array('upload_data' => $this->upload->data());
 	        $data['progress_pct'] = 10;
+	        
+	        echo "<pre>";
+	        print_r($data);
+	        echo "</pre>";
 	        
 	        $this->Match_import->fileImport($data);
 	        $this->load->view('templates/header', $data);

@@ -5,15 +5,10 @@ $error = "";
 ?>
 </div>
 
-
 <h2>Select a Report</h2>
 <?php
 $startDirName = "http://localhost/umpire/umpire";
-
-//echo "<form action='".APPPATH."index.php\report' method='POST'>";
 echo form_open('report', array('id'=>'submitForm'));
-
-//$data['reportSelectionParameters']
 
 $countReportParameters = count($reportSelectionParameters);
 
@@ -21,8 +16,7 @@ $countReportParameters = count($reportSelectionParameters);
 <script type="text/javascript">
 	window.onload = updateCheckboxEnabledStatus;
 </script>
-
-<div class="reportSelectorRow">
+ <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Season:</span>
 	<span class="reportSelectorControl">
 		<select name="season">
@@ -30,9 +24,7 @@ $countReportParameters = count($reportSelectionParameters);
 		<option value="2016" selected>2016</option>
 		</select>
 	</span>
-</div>
-<BR />
-<div class="reportSelectorRow">
+	
 	<span class="reportSelectorLabel">Report:</span>
 	<span class="reportSelectorControl">
 		<select name="reportName" id="reportName" onchange="updateCheckboxEnabledStatus()">
@@ -47,12 +39,9 @@ $countReportParameters = count($reportSelectionParameters);
 </div>
 <BR />
 
-
 <?php
 echo "<div class='validationError' id='validationError'>". $error ."</div>";
 ?>
-
-
 	<div class="regularUserDetails">
 		<div class="allOptionsSections"  id='JaneDoeOptions'>
 			<p class="regularUserOptionsHeading">Report Options</p>
@@ -60,21 +49,19 @@ echo "<div class='validationError' id='validationError'>". $error ."</div>";
 <?php 
 for ($i=0; $i < $countReportParameters; $i++) {
     $currentReportSelectionParameter = $reportSelectionParameters[$i];
-    
-    
 ?>
 			<div class="optionsSection">
 			<?php 
-			
 			echo "<div class='optionsSubHeading'>". $currentReportSelectionParameter->getParameterName() ."</div> <br />";
-			
-			
 			$countReportParameterSelections = count($currentReportSelectionParameter->getSelectableReportOptions());
 			echo "<div class='optionsLabelsSection'>";
+
 			if ($currentReportSelectionParameter->getAllowMultipleSelections() == 1) {
+			    echo "<div class='optionsSelectAllRow'>";
 			    echo "<input type='checkbox' id='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll' " .
 			    "onClick='toggle(this, \"chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]\")'></input>";
-			    echo "<label class='reportControlLabel' for='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll'>Select All</label> <br /><br />";
+			    echo "<label class='reportControlLabel' for='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll'>Select All</label>";
+			    echo "</div>";
 			}
 				
 			for ($j=0; $j < $countReportParameterSelections; $j++) {
@@ -92,7 +79,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			         }
 			         */
 			         echo ">";
-			         echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
+			         echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label>";
 			         
 			    } else {
 			        echo "<input type='checkbox' id='". $currentReportSelectableReportOption->getOptionValue() .
@@ -100,7 +87,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 			         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
 			         "onClick='updatePageFromCheckboxSelection(this, ". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll)'></input>";
 			        
-			        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label> <br />";
+			        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label>";
 			        
 			    }
 			    echo "</div>";
@@ -120,12 +107,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 ?>
 		</div>
 	</div>
-
-	<br/>
-
-
-
-<BR />
+<br />
 
 <div class="reportSelectorRow">
 <input type="button" value="View Report" class="btn" onClick='validateReportSelections()'>
@@ -137,7 +119,6 @@ They are needed for reports where the drop-downs are disabled, as the next page 
 <input type='hidden' id='ageHidden' name='age' value='All' />
 <input type='hidden' id='leagueHidden' name='league' value='All' />
 -->
-
 </div>
 <script type="text/javascript">
     /*$(document).ready(function() {
@@ -145,14 +126,5 @@ They are needed for reports where the drop-downs are disabled, as the next page 
     	updateCheckboxEnabledStatus();
     });*/
 	window.onLoad = updateCheckboxEnabledStatus();
-
 </script>
-
-
 <?php echo form_close(); ?>
-<BR />
-<BR />
-<BR />
-<div class='support'>
-Need support? Contact us at <a href='mailto:support@umpirereporting.com'>support@umpirereporting.com</a>.
-</div>

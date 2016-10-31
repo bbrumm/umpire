@@ -69,7 +69,7 @@ class CreatePDF extends CI_Controller {
 		//echo "RES (". $data['loadedReportItem']->reportDisplayOptions->getPDFResolution() .")";
 		
 		if ($saveToFile) {
-    		pdf_create($html, 'pdf_report_view', $saveToFile, $data['loadedReportItem']->reportDisplayOptions->getPDFResolution());
+    		pdf_create($html, 'pdf_report_view', $saveToFile, $data['loadedReportItem']->reportDisplayOptions);
 		} else {
 		    echo $html;
 		}

@@ -172,6 +172,8 @@ class UserReport extends CI_Model {
 	    $this->reportDisplayOptions->setFirstColumnFormat($this->lookupParameterValue($reportParameterArray, 'First Column Format'));
 	    $this->reportDisplayOptions->setColourCells($this->lookupParameterValue($reportParameterArray, 'Colour Cells'));
 	    $this->reportDisplayOptions->setPDFResolution($this->lookupParameterValue($reportParameterArray, 'PDF Resolution'));
+	    $this->reportDisplayOptions->setPDFPaperSize($this->lookupParameterValue($reportParameterArray, 'PDF Paper Size'));
+	    $this->reportDisplayOptions->setPDFOrientation($this->lookupParameterValue($reportParameterArray, 'PDF Orientation'));
 	    $this->reportTitle = str_replace("%seasonYear", $seasonValue, $this->lookupParameterValue($reportParameterArray, 'Display Title'));
 	    $this->reportID = $reportParameters['reportName'];
 	    

@@ -15,6 +15,7 @@ class ImportFileSelector extends CI_Controller {
 		
 		$this->load->view('upload_form', array('error' => ' ' , $data));
 		
+		
 		//$this->load->view('importFile', array('error' => ' ' , $data));
 		
 		$this->load->view('templates/footer');

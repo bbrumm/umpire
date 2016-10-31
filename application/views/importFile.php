@@ -1,4 +1,10 @@
 <?php
+/*
+ * 
+ * Is this file no longer used????
+ * 
+ */
+
 echo "<h2>Import File</h2>";
 
 	//echo "<div class='validationError'>". validation_errors() ."</div>"; 
@@ -24,6 +30,8 @@ echo "<h2>Import File</h2>";
     document.myForm.submit();
     event.preventDefault();
   }
+
+ 
 </script>
 
 	<div class="loginFieldRow">
@@ -38,6 +46,10 @@ echo "<h2>Import File</h2>";
 	<div class="reportSelectorRow">
 		<input type="button" id="fileInput" onclick="getFile()" value="Browse" class="btn">
 		<input type="submit" id="submit" value="Import File" class="btn">
+		
 	</div>
 
    </form>
+   
+ 
+   

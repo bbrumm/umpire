@@ -15,36 +15,29 @@ class UserReport {
 		switch ($pReportTypeID) {
 			case 5:
 				//if ($pReportTypeID == 5) {
-				$reportDisplayOptions->setColumnGroup(array(
+			    $this->reportDisplayOptions->setColumnGroup(array(
 					'short_league_name',
 					'club_name'
 				));
-				$reportDisplayOptions->setRowGroup(array(
+				$this->reportDisplayOptions->setRowGroup(array(
 					'full_name'
 				));
 				
 				//$reportQuery = $queryForReport05;
 				break;
 			case 6:
-				$reportDisplayOptions->setColumnGroup(array(
+				$this->reportDisplayOptions->setColumnGroup(array(
 					'short_league_name',
 					'club_name'
 				));
-				$reportDisplayOptions->setRowGroup(array(
+				$this->reportDisplayOptions->setRowGroup(array(
 					'full_name'
 				));
 				
 				//$reportQuery = $queryForReport05;
 				break;
-
-		
 			}
-			
-		
 	}
-
 }
-
-
 
 ?>
