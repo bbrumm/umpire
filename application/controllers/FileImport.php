@@ -53,11 +53,11 @@ class FileImport extends CI_Controller {
 	        
 	        $data = array('upload_data' => $this->upload->data());
 	        $data['progress_pct'] = 10;
-	        
+	        /*
 	        echo "<pre>";
 	        print_r($data);
 	        echo "</pre>";
-	        
+	        */
 	        $this->Match_import->fileImport($data);
 	        $this->load->view('templates/header', $data);
 	        $this->load->view('upload_success', $data);
