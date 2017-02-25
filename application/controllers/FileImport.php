@@ -59,6 +59,7 @@ class FileImport extends CI_Controller {
 	        echo "</pre>";
 	        */
 	        $this->Match_import->fileImport($data);
+	        $data['missing_data'] = $this->Match_import->findMissingDataOnImport();
 	        $this->load->view('templates/header', $data);
 	        $this->load->view('upload_success', $data);
 	        $this->load->view('templates/footer');

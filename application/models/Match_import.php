@@ -140,6 +140,20 @@ class Match_import extends MY_Model
       // then return false.
       return null;
   }  
+  
+  public function findMissingDataOnImport() {
+      $queryString = "CALL `bbrumm_umpire_data`.`FindMissingData`()";
+      $query = $this->db->query($queryString);
+      mysqli_next_result($this->db->conn_id);
+      
+      $resultArray = $query->result_array();
+      $query->free_result();
+      
+      return $resultArray;
+
+  }
+  
+  
  
 }
 ?>
