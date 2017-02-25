@@ -174,7 +174,7 @@ CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE ta
 ALTER TABLE umpire_name_type DISABLE KEYS;
 
 INSERT INTO umpire_name_type ( umpire_id, umpire_type_id ) 
-          SELECT umpire.ID, umpire_type.ID 
+          SELECT DISTINCT umpire.ID, umpire_type.ID 
           FROM ( 
         	SELECT 
         	LEFT(UMPIRE_FULLNAME,INSTR(UMPIRE_FULLNAME,' ')-1) AS FIRST_NAME, 

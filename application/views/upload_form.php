@@ -39,12 +39,13 @@ echo form_open_multipart('FileImport/do_upload');?>
 </form>
 
   
-   <?php echo form_open_multipart('FileImport/testProc');?>
-   
+   <?php 
+   /*echo form_open_multipart('FileImport/testProc'); */?>
+   <!-- 
    <input type="submit" id="submit" value="Test Proc" class="btn">
    
    </form>
-   
+    -->
 
 </body>
 </html>

@@ -1,8 +1,6 @@
 DELIMITER $$
-CREATE PROCEDURE `FindMissingData` ()
+CREATE PROCEDURE FindMissingData ()
 BEGIN
-
-DECLARE vSeasonYear INT(4);
 
 SELECT DISTINCT competition_name
 FROM competition_lookup
