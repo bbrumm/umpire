@@ -72,7 +72,7 @@ INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_v
 VALUES (825, 'short_league_name', 'CDFNL', 5, 277);
 
 
-/*TODO: Adjudt these records so that there are 2 records for each field, one for short_;eague_name and another for subtotal*/
+/*TODO: Adjudt these records so that there are 2 records for each field, one for short_league_name and another for subtotal*/
 INSERT INTO report_column_lookup_display(report_column_lookup_display_ID, report_column_id, column_display_filter_name, column_display_name)
 VALUES (568, 263, 'subtotal', 'Games');
 INSERT INTO report_column_lookup_display(report_column_lookup_display_ID, report_column_id, column_display_filter_name, column_display_name)

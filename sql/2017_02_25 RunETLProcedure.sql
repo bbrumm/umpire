@@ -1,3 +1,5 @@
+DROP PROCEDURE RunETLProcess;
+
 DELIMITER $$
 CREATE PROCEDURE `RunETLProcess`(IN `pSeasonID` INT, IN `pImportedFileID` INT)
 BEGIN
@@ -721,7 +723,7 @@ ALTER TABLE mv_report_02 DISABLE KEYS;
         
 INSERT INTO mv_report_02 (season_year, full_name, umpire_type_name, short_league_name, age_group,  
             `Seniors|BFL`, `Seniors|GDFL`, `Seniors|GFL`, `Reserves|BFL`, `Reserves|GDFL`, `Reserves|GFL`, `Colts|GJFL`,  
-            `Under 16|GJFL`, `Under 14|GJFL`, `Youth Girls|GJFL`, `Junior Girls|GJFL`, `Seniors|2 Umpires`, 
+            `Under 16|GJFL`, `Under 14|GJFL`, `Youth Girls|GJFL`, `Junior Girls|GJFL`, `Seniors|2 Umpires Colac`, `Seniors|2 Umpires Geelong`,
             `Seniors|CDFNL`, `Reserves|CDFNL`, `Under 17.5|CDFNL`, `Under 14.5|CDFNL`, `Under 12|GJFL`) 
       SELECT season_year,  
             umpire_full_name,  
@@ -739,48 +741,53 @@ INSERT INTO mv_report_02 (season_year, full_name, umpire_type_name, short_league
             (CASE WHEN age_group = 'Under 14' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END),  
             (CASE WHEN age_group = 'Youth Girls' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END),  
             (CASE WHEN age_group = 'Junior Girls' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END),  
-            (CASE WHEN age_group = 'Seniors' AND short_league_name = '2 Umpires' THEN match_count ELSE 0 END), 
+            (CASE WHEN age_group = 'Seniors' AND short_league_name = 'CDFNL' AND two_ump_flag = 1 THEN match_count ELSE 0 END), 
+			(CASE WHEN age_group = 'Seniors' AND short_league_name IN ('BFL', 'GFL', 'GDFL') AND two_ump_flag = 1 THEN match_count ELSE 0 END), 
             (CASE WHEN age_group = 'Seniors' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), 
             (CASE WHEN age_group = 'Reserves' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), 
             (CASE WHEN age_group = 'Under 17.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), 
             (CASE WHEN age_group = 'Under 14.5' AND short_league_name = 'CDFNL' THEN match_count ELSE 0 END), 
             (CASE WHEN age_group = 'Under 12' AND short_league_name = 'GJFL' THEN match_count ELSE 0 END) 
             FROM (  
-            SELECT   
-            d1.season_year, 
-            d1.umpire_type_name,  
-            d1.age_group_ID,  
-            d1.age_group,  
-            d1.short_league_name,  
-            d1.umpire_full_name,  
-            COUNT(DISTINCT d1.match_played_ID) AS match_count  
-            FROM mv_denormalised d1
-            GROUP BY d1.season_year, d1.umpire_type_name , d1.age_group_ID , d1.age_group, d1.short_league_name , d1.umpire_full_name
-            UNION ALL  
-            SELECT   
-            d1.season_year, 
-            d1.umpire_type_name,  
-            d1.age_group_ID,  
-            d1.age_group,  
-            '2 Umpires',  
-            d1.umpire_full_name,  
-            COUNT(DISTINCT d1.match_played_ID)  
-            FROM mv_denormalised d1
-            INNER JOIN ( 
 				SELECT   
-				d2.season_year, 
-				d2.match_played_ID,  
-				COUNT(DISTINCT d2.umpire_ID) AS umpire_count  
-				FROM mv_denormalised d2
-				WHERE d2.umpire_type_name = 'Field'
-                AND d2.age_group = 'Seniors'  
-				GROUP BY d2.season_year, d2.match_played_ID, d2.umpire_type_name, d2.age_group
-				HAVING COUNT(d2.umpire_ID) = 2  
-            ) AS qryMatchesWithTwoUmpires ON d1.match_played_ID = qryMatchesWithTwoUmpires.match_played_ID  
-            WHERE d1.umpire_type_name = 'Field'
-            AND d1.age_group = 'Seniors'  
-            GROUP BY d1.season_year, d1.umpire_type_name , d1.age_group_ID , d1.age_group , '2 Umpires' , d1.umpire_full_name  
-            ) AS mainquery  
+				d1.season_year, 
+				d1.umpire_type_name,  
+				d1.age_group_ID,  
+				d1.age_group,  
+				d1.short_league_name,  
+				0 AS two_ump_flag,
+				d1.umpire_full_name,  
+				COUNT(DISTINCT d1.match_played_ID) AS match_count  
+				FROM mv_denormalised d1
+				GROUP BY d1.season_year, d1.umpire_type_name , d1.age_group_ID , d1.age_group, d1.short_league_name , d1.umpire_full_name
+				
+				UNION ALL 
+				
+				SELECT   
+				d1.season_year, 
+				d1.umpire_type_name,  
+				d1.age_group_ID,  
+				d1.age_group,  
+				d1.short_league_name,
+				1 AS two_ump_flag,
+				d1.umpire_full_name,  
+				COUNT(DISTINCT d1.match_played_ID)  
+				FROM mv_denormalised d1
+				INNER JOIN ( 
+					SELECT   
+					d2.season_year, 
+					d2.match_played_ID,  
+					COUNT(DISTINCT d2.umpire_ID) AS umpire_count  
+					FROM mv_denormalised d2
+					WHERE d2.umpire_type_name = 'Field'
+					AND d2.age_group = 'Seniors'  
+					GROUP BY d2.season_year, d2.match_played_ID, d2.umpire_type_name, d2.age_group, d2.short_league_name
+					HAVING COUNT(d2.umpire_ID) = 2  
+				) AS qryMatchesWithTwoUmpires ON d1.match_played_ID = qryMatchesWithTwoUmpires.match_played_ID  
+				WHERE d1.umpire_type_name = 'Field'
+				AND d1.age_group = 'Seniors'  
+				GROUP BY d1.season_year, d1.umpire_type_name , d1.age_group_ID , d1.age_group , d1.short_league_name, d1.umpire_full_name 
+			) AS mainquery    
             ORDER BY season_year, umpire_full_name;
 
 

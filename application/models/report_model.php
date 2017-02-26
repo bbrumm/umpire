@@ -371,24 +371,31 @@ Array
 	            "FROM " . $pReportTableName . " " . $whereClause . " " .
 	            "GROUP BY ". $rowsToSelect[0] . ", " . $rowsToSelect[1];
 	    } elseif ($pReportName == '02') {  
+	        /*
 	        $leftOuterJoin = "LEFT OUTER JOIN (
-		SELECT full_name AS sub_full_name, season_year AS sub_season_year, age_group AS sub_age_group, umpire_type_name AS sub_umpire_type,
-		SUM(`Seniors|2 Umpires`) AS `Seniors|2 Umpires`
-		FROM mv_report_02
-		WHERE short_league_name = '2 Umpires'
-		GROUP BY full_name, season_year, age_group, umpire_type_name
-    ) mv2u 
-    ON full_name = mv2u.sub_full_name
-    AND season_year = mv2u.sub_season_year
-    AND age_group = mv2u.sub_age_group
-    AND umpire_type_name = mv2u.sub_umpire_type";
-
+        		SELECT full_name AS sub_full_name, season_year AS sub_season_year, age_group AS sub_age_group, umpire_type_name AS sub_umpire_type,
+        		SUM(`Seniors|2 Umpires Geelong`) AS `Seniors|2 Umpires Geelong`
+	            SUM(`Seniors|2 Umpires Colac`) AS `Seniors|2 Umpires Colac`
+        		FROM mv_report_02
+        		WHERE short_league_name = '2 Umpires'
+        		GROUP BY full_name, season_year, age_group, umpire_type_name
+            ) mv2u 
+            ON full_name = mv2u.sub_full_name
+            AND season_year = mv2u.sub_season_year
+            AND age_group = mv2u.sub_age_group
+            AND umpire_type_name = mv2u.sub_umpire_type";
+*/
 	        //$columnsToSelect . ", mv2u.`Seniors|2 Umpires` AS `Seniors|2 Umpires` " .
-	        
+	        /*
 	        $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
 	            $columnsToSelect . "  " .
 	            "FROM " . $pReportTableName . " " . $leftOuterJoin . " " . $whereClause . " " .
 	            "GROUP BY ". $rowsToSelect[0];
+	        */
+            $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
+                $columnsToSelect . "  " .
+                "FROM " . $pReportTableName . " " . $whereClause . " " .
+                "GROUP BY ". $rowsToSelect[0];
 	        
 	    } else {
 	       if ($debugMode) {

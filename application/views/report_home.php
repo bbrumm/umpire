@@ -21,7 +21,8 @@ $countReportParameters = count($reportSelectionParameters);
 	<span class="reportSelectorControl">
 		<select name="season">
 		<option value="2015">2015</option>
-		<option value="2016" selected>2016</option>
+		<option value="2016">2016</option>
+		<option value="2017" selected>2017</option>
 		</select>
 	</span>
 	
