@@ -1,5 +1,5 @@
 <?php
-	require_once('UserReport.php');
+	require_once('User_report.php');
 	define('__ROOT__', dirname(dirname(__FILE__))); 
 	require_once(__ROOT__.'/libraries/array_library.php');
 	
@@ -21,7 +21,7 @@ class report_model extends CI_Model {
 	    }
 	    $debugMode = $this->config->item('debug_mode');
 	    
-		$reportToDisplay = new UserReport();
+		$reportToDisplay = new User_report();
 		$reportToDisplay->setReportType($reportParameters);
 		
 		
