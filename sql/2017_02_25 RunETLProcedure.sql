@@ -782,7 +782,7 @@ INSERT INTO mv_report_02 (season_year, full_name, umpire_type_name, short_league
 					WHERE d2.umpire_type_name = 'Field'
 					AND d2.age_group = 'Seniors'  
 					GROUP BY d2.season_year, d2.match_played_ID, d2.umpire_type_name, d2.age_group, d2.short_league_name
-					HAVING COUNT(d2.umpire_ID) = 2  
+					HAVING COUNT(DISTINCT d2.umpire_ID) = 2  
 				) AS qryMatchesWithTwoUmpires ON d1.match_played_ID = qryMatchesWithTwoUmpires.match_played_ID  
 				WHERE d1.umpire_type_name = 'Field'
 				AND d1.age_group = 'Seniors'  

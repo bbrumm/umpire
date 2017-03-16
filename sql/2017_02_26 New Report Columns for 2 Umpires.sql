@@ -37,6 +37,8 @@ INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_v
 VALUES (828, 'age_group', 'Seniors', 2, 278);
 INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id)
 VALUES (829, 'umpire_type', 'All', 2, 278);
+INSERT INTO report_column_lookup (report_column_lookup_id, filter_name, filter_value, report_table_id, report_column_id)
+VALUES (830, 'umpire_type', 'Field', 2, 278);
 
 UPDATE report_column_lookup
 SET report_column_id = 278
