@@ -1,6 +1,6 @@
 <?php
 require_once('ReportDisplayOptions');
-class UserReport {
+class Report {
 	
 	private $reportQuery;
 	

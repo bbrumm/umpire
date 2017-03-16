@@ -19,24 +19,12 @@ class Login_model extends CI_Model{
         
         // Run the query
         $query = $this->db->get('umpire_users');
-		/*
-		echo "Query: ";
-		echo $this->db->last_query();
-		echo "<pre>";
-		print_r($query);
-		echo "</pre>";
-		echo "NUM ROWS(". $query->num_rows .")";
-		*/
 		
         // Let's check if there are any results
         if($query->num_rows() == 1)
         {
             // If there is a user, then create session data
             $row = $query->row();
-			/*echo "<pre>";
-			print_r($row);
-			echo "</pre>";*/
-			
             $data = array(
                     'userid' => $row->id,
                     'user_name' => $row->user_name,
