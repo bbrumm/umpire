@@ -1,5 +1,5 @@
 <?php
-require_once('ReportDisplayOptions');
+require_once('Reportdisplayoptions.php');
 class Report {
 	
 	private $reportQuery;

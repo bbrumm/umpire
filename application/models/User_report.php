@@ -1,65 +1,7 @@
 <?php
 require_once('Reportdisplayoptions.php');
+
 class User_report extends CI_Model {
-	
-    
-    //TODO: Remove these variables if they are not used
-	private $columnGroupForReport01 = array(
-				'short_league_name',
-				'club_name'
-			);
-	private $rowGroupForReport01 = array(
-				'full_name'
-			);
-	
-	private $columnGroupForReport02 = array(
-	    'age_group',
-	    'short_league_name'
-	);
-	private $rowGroupForReport02 = array(
-	    'full_name'
-	);
-	
-	private $columnGroupForReport03 = array(
-	    'umpire_type_age_group',
-	    'short_league_name'
-	);
-	private $rowGroupForReport03 = array(
-	    'weekdate'
-	);
-	
-	private $columnGroupForReport04 = array(
-	    'umpire_type',
-	    'age_group',
-	    'short_league_name'
-	);
-	private $rowGroupForReport04 = array(
-	    'club_name'
-	);
-	
-	private $columnGroupForReport05 = array(
-	    'short_league_name'
-	);
-	
-	private $rowGroupForReport05 = array(
-	    'umpire_type',
-	    'age_group'
-	);
-	
-	private $columnGroupForReport06 = array(
-	    'umpire_name'
-	);
-	private $rowGroupForReport06 = array(
-	    'umpire_name'
-	);
-    
-	//TODO: Move these into database
-	private $fieldForReport01 = 'match_count';
-	private $fieldForReport02 = 'match_count';
-	private $fieldForReport03 = 'match_count';
-	private $fieldForReport04 = 'match_count';
-	private $fieldForReport05 = 'match_count';
-	private $fieldForReport06 = 'match_count';
 	
 	private $reportQuery;
 	private $resultArray;
@@ -82,10 +24,10 @@ class User_report extends CI_Model {
 	private $ageGroupDisplayValues;
 	private $regionDisplayValues;
 	
-	
 	private $reportID;
 
 	public $reportDisplayOptions;
+	//private $Debug_library;
 	
 	public function getUmpireTypeSQLValues() {
 	    return $this->umpireTypeSQLValues;
@@ -121,29 +63,23 @@ class User_report extends CI_Model {
 	public function __construct() {
 		$this->reportDisplayOptions = new ReportDisplayOptions();
 		$this->load->database();
+		$this->load->library('Debug_library');
 		$this->load->model('report_param/ReportParamLoader');
 		$this->load->model('report_param/ReportParameter');
 	}
 	
 	public function setReportType($reportParameters) {
-	    $debugMode = $this->config->item('debug_mode');
-	     
-	    if ($debugMode) {
-    		echo "reportParameters in setReportType<pre>";
-    		print_r($reportParameters);
-    		echo "</pre><BR />";
-    		echo "POST in setReportType<pre>";
-    		print_r($_POST);
-    		echo "</pre>";
-	    }
+	    $this->debug_library->debugOutput("reportParameters in setReportType", $reportParameters);
+	    $this->debug_library->debugOutput("POST in setReportType", $_POST);
+	    
 	    //ReportParameters are set in controllers/report.php->index();
 	    
 	    if ($reportParameters['PDFMode'] == true) {
 	        $ageGroupValue = rtrim($reportParameters['age'], ',');
 	        $umpireDisciplineValue = rtrim($reportParameters['umpireType'], ',');
-	        if ($debugMode) {
-	           echo "Umpire Discipline in setReportType: " . $umpireDisciplineValue . "<BR/>";    
-	        }
+	        
+	        $this->debug_library->debugOutput("Umpire Discipline in setReportType:", $umpireDisciplineValue);
+	        
 	        $seasonValue = $reportParameters['season'];
 	    } else {
     	    $ageGroupValue = implode(',', $reportParameters['age']);
@@ -218,7 +154,6 @@ class User_report extends CI_Model {
 	     
 	    $query = $this->db->query($queryString);
 	    $resultArray = $query->result_array();
-	    //echo "LGD: " . $resultArray[0]['last_date'];
 	    return $resultArray[0]['last_date'];
 	}
 	
@@ -300,23 +235,15 @@ class User_report extends CI_Model {
 	     * E.g. if a report needs to show columns for BFL, GFL, and GDFL, and the full list of columns includes BFL, BFL, GDFL, GFL, BFL, GFL...
 	     * Then the result will be BFL=3, GFL=1, GDFL=1.
 	     */
-	    $debugMode = $this->config->item('debug_mode');
 	    
 	    $columnLabelResults = $this->columnLabelResultArray;
-	    //TODO: Replace all IF DEBUG statements with a separate utility function.
-	    if ($debugMode) {
-    	    echo "<pre>CLR: ";
-    	    print_r($columnLabelResults);
-    	    echo "</pre>";
-	    }
+	    
+	    $this->debug_library->debugOutput("CLR:", $columnLabelResults);
 	    
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup(); //Used to be array('field_name1', 'field_name2')
 	    $columnCountLabels = [];
-        if ($debugMode) {
-    	    echo "<pre>CL: ";
-    	    print_r($columnLabels);
-    	    echo "</pre>";
-        }
+	    
+	    $this->debug_library->debugOutput("CL:", $columnLabels);
 	    
 	    //Loop through the possible labels
 	    for ($i=0; $i < count($columnLabels); $i++) {
@@ -335,19 +262,15 @@ class User_report extends CI_Model {
 	        //Loop through columnLabelResults
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
 	           if ($i == 0) {
-	               //if (in_array_r($columnLabelResults[$j][$columnLabels[$i]], $columnCountLabels[$i]) == TRUE) {
-	               if (in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
+	               if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                   //Value found in array. Increment counter value
-	                   //echo "- Value found: " . $columnLabelResults[$j][$columnLabels[$i]] . "<BR />";
 	                   //Find the array that stores this value
 	                   $currentArrayKey = $this->findKeyFromValue(
 	                           $columnCountLabels[$i], $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
 	                   $columnCountLabels[$i][$currentArrayKey]["count"]++;
 	                   
-	                   //$columnCountLabels[0][$columnLabelResults[$j][$columnLabels[$i]]] = $columnCountLabels[0][$columnLabelResults[$j][$columnLabels[$i]]] + 1;
 	               } else {
 	                   //Value not found. Add to array.
-	                   //$columnCountLabels[0][$columnLabelResults[$j][$columnLabels[$i]]] = 1;
 	                   $columnCountLabels[$i][$arrayKeyNumber]["label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                   $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                   $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
@@ -355,13 +278,11 @@ class User_report extends CI_Model {
 	               }
 	           }
 	           if ($i == 1) {
-	               //echo "<BR />Find (" . $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]] . ")<BR/>";
-	               if (in_array_r($columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
+	               if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
 	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                   //Value found in array. Increment counter value
-	                   //echo "- Value found: " . $columnLabelResults[$j][$columnLabels[$i]] . ". Check if previous fields match.<BR />";
+	                       $this->debug_library->debugOutput("- Value found:", $columnLabelResults[$j][$columnLabels[$i]]);
 	                   //Check if the value on the first row matches
-	                   //echo "- Look for match (". $columnLabelResults[$j-1][$columnLabels[$i-1]] .") and (". $columnLabelResults[$j][$columnLabels[$i-1]] .")<BR />";
 	                   if ($columnLabelResults[$j-1][$columnLabels[$i-1]->getFieldName()] == $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()]) {
 	                       //echo "-- Match";
 	                       
@@ -381,7 +302,6 @@ class User_report extends CI_Model {
 	                   }
 	               } else {
 	                   //Value not found. Add to array.
-	                   //echo "- Value not found: " . $columnLabelResults[$j][$columnLabels[$i-1]] . "|" . $columnLabelResults[$j][$columnLabels[$i]] . ". Added to array.<BR />";
 	                   $columnCountLabels[$i][$arrayKeyNumber]["label"] = 
 	                       $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                   $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = 
@@ -403,18 +323,13 @@ class User_report extends CI_Model {
 	           }
 	        }
 	    }
-	    
-	    echo "<BR />getColumnCountForHeadingCells:<BR /><pre>";
-	    print_r($columnCountLabels);
-	    echo "</pre><BR />";
-	    
 	    return $columnCountLabels;
 	    
 	}
 	
-	function in_array_r($needle, $haystack, $strict = false) {
+	private function in_array_r($needle, $haystack, $strict = false) {
 	    foreach ($haystack as $item) {
-	        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+	        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
 	            return true;
 	        }
 	    }
@@ -422,7 +337,7 @@ class User_report extends CI_Model {
 	    return false;
 	}
 	
-	function findKeyFromValue($pArray, $pValueToFind, $pKeyToLookAt) {
+	private function findKeyFromValue($pArray, $pValueToFind, $pKeyToLookAt) {
 	   $arrayKeyFound = 0;
 	   for ($i=0; $i < count($pArray); $i++) {
 	       if ($pArray[$i][$pKeyToLookAt] == $pValueToFind) {
@@ -434,12 +349,11 @@ class User_report extends CI_Model {
 	}
 	
 	public function convertParametersToSQLReadyValues($reportParameters) {
-	   //Converts several of the reportParameters arrays into comma separate values that are ready for SQL queries
+	    //Converts several of the reportParameters arrays into comma separate values that are ready for SQL queries
 	    //Add a value of "All" and "None" to the League list, so that reports that users select for ages with no league (e.g. Colts) are still able to be loaded
 	    //$reportParameters['league'][] = 'All';
 	    //$reportParameters['league'][] = 'None';
 	    //echo "reportParameters UmpireType: " . $reportParameters['umpireType'] . "<BR/>";
-	    //
 	    if ($reportParameters['PDFMode']) {
 	        $this->umpireTypeSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['umpireType'], ',')) . "'";
 	        $this->leagueSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['league'], ',')) . "'";
@@ -449,7 +363,6 @@ class User_report extends CI_Model {
     	    $this->umpireTypeSQLValues = "'".implode("','",$reportParameters['umpireType'])."'";
     	    $this->leagueSQLValues = "'".implode("','",$reportParameters['league'])."'";
     	    $this->ageGroupSQLValues = "'".implode("','",$reportParameters['age'])."'";
-    	    //$this->regionSQLValues = "'".implode("','",$reportParameters['region'])."'";
     	    $this->regionSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['region'], ',')) . "'";
 	    }
 	}

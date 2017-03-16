@@ -6,6 +6,7 @@ class Report extends CI_Controller {
 		
 		$this->load->model('report_model');
 		$this->load->helper('url_helper');
+		$this->load->helper('url');
 		$this->load->helper('cell_formatting_helper');
 		
 	}
@@ -15,14 +16,15 @@ class Report extends CI_Controller {
 	    print_r($_POST);
 	    echo "</pre><BR />";
 	    */
-	    $debugMode = $this->config->item('debug_mode');
+	    //$debugMode = $this->config->item('debug_mode');
 	    $error = "";
 	    
+	    /*
 	    if ($debugMode) {
     	    echo "Post: <br /><pre>";
     	    print_r($_POST);
     	    echo "</pre>";
-    	}
+    	}*/
 	    /*
 	    $ageGroupSelections = $_POST['chkAgeGroup'];
 	    print_r($ageGroupSelections);
@@ -67,7 +69,7 @@ class Report extends CI_Controller {
     	}
     	 
     	
-    	
+    	/*
     	if ($debugMode) {
     	    echo "reportParameters in report.php: <br /><pre>";
     	    print_r($reportParameters);
@@ -76,7 +78,7 @@ class Report extends CI_Controller {
     	    print_r($_POST);
     	    echo "</pre>";
     	}
-	    
+	    */
 	    
 	    /*
 			'age' => $_POST['chkAgeGroup'], 

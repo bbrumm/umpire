@@ -26,6 +26,9 @@ if ($showHeader) {
     echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
 }
 echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
+echo "ASSET URL (". asset_url() .")<BR />";
+echo "BASE URL (". base_url() .")<BR />";
+echo "SITE URL (". site_url() .")<BR />";
 echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['useradmin'] ."'></script>";
 echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />";
 
