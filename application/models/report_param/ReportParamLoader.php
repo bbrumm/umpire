@@ -36,16 +36,11 @@ class ReportParamLoader extends CI_Model {
     }
     
     
-    public function loadAllReportParametersForReport($pReportID) {
+    public function loadAllReportParametersForReport(Requested_report_model $pRequestedReport) {
         //Load all report parameters
-        $queryDataReportParameters = $this->queryReportParameters($pReportID);
-        
-        /*
-        echo "<pre>queryDataReportParameters:";
-        print_r($queryDataReportParameters);
-        echo "</pre>";
-        */
-        
+        $queryDataReportParameters = 
+            $this->queryReportParameters($pRequestedReport);
+
         //Create report param and report grouping objects for this report
         foreach ($queryDataReportParameters->result() as $row) {
             $reportParameter = new ReportParameter();
@@ -55,21 +50,16 @@ class ReportParamLoader extends CI_Model {
             
             $reportParameterArray[] = $reportParameter;
         }
-         
-        //return $reportParameterArray;
+        
         $this->setReportParameterArray($reportParameterArray);
-        /*   
-        echo "<pre>reportParameterArray in load function:";
-        print_r($reportParameterArray);
-        echo "</pre>";
-        */
     }
     
-    public function loadAllGroupingStructuresForReport($pReportID) {
+    public function loadAllGroupingStructuresForReport(Requested_report_model $pRequestedReport) {
         $debugMode = $this->config->item('debug_mode');
         
         //Load all report grouping structures
-        $queryDataReportGroupingStructures = $this->queryReportGroupingStructures($pReportID);
+        $queryDataReportGroupingStructures = 
+            $this->queryReportGroupingStructures($pRequestedReport);
         
         //Create report param and report grouping objects for this report
         foreach ($queryDataReportGroupingStructures->result() as $row) {
@@ -94,13 +84,13 @@ class ReportParamLoader extends CI_Model {
         
     }
     
-    private function queryReportParameters($pReportID) {
+    private function queryReportParameters(Requested_report_model $pRequestedReport) {
         $queryString = "SELECT rp.report_parameter_id,rp.parameter_name, " .
             "rp.parameter_type, rpm.parameter_value " .
             "FROM report_table rt " .
             "INNER JOIN report_parameter_map rpm ON rpm.report_id = rt.report_name " .
             "INNER JOIN report_parameter rp ON rpm.report_parameter_id = rp.report_parameter_id " .
-            "WHERE rt.report_name = '$pReportID' " .
+            "WHERE rt.report_name = ". $pRequestedReport->getReportNumber() ." " .
             "AND rp.parameter_type = 'Text' " .
             "UNION ALL " .
             "SELECT rp.report_parameter_id,rp.parameter_name, " .
@@ -109,7 +99,7 @@ class ReportParamLoader extends CI_Model {
             "INNER JOIN report_parameter_map rpm ON rpm.report_id = rt.report_name " .
             "INNER JOIN report_parameter rp ON rpm.report_parameter_id = rp.report_parameter_id " .
             "INNER JOIN field_list fl ON rpm.parameter_value = fl.field_id " .
-            "WHERE rt.report_name = '$pReportID' " .
+            "WHERE rt.report_name = ". $pRequestedReport->getReportNumber() ." " .
             "AND rp.parameter_type = 'Field' " .
             "ORDER BY report_parameter_id";
         
@@ -118,13 +108,13 @@ class ReportParamLoader extends CI_Model {
         return $query;
     }
     
-    private function queryReportGroupingStructures($pReportID) {        
+    private function queryReportGroupingStructures(Requested_report_model $pRequestedReport) {        
         $queryString = "SELECT rgs.report_grouping_structure_id, rgs.grouping_type, " .
             "fl.field_name, rgs.field_group_order, rgs.merge_field, rgs.group_heading, rgs.group_size_text " .
             "FROM report_table rt " .
             "INNER JOIN report_grouping_structure rgs ON rt.report_name = rgs.report_id " .
             "INNER JOIN field_list fl ON rgs.field_id = fl.field_id " .
-            "WHERE rt.report_name = '$pReportID' " .
+            "WHERE rt.report_name = ". $pRequestedReport->getReportNumber() ." " .
             "ORDER BY rgs.grouping_type, rgs.field_group_order;";
     
         $query = $this->db->query($queryString);

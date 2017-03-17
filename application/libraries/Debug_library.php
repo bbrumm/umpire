@@ -16,6 +16,9 @@ class Debug_library {
                 echo "$beforeMessage<pre>";
                 print_r($pOutputValue);
                 echo "</pre><BR />";
+            } elseif (is_a($pOutputValue, 'Requested_report_model')) {
+                //TODO: Write output if it is an object
+                echo "This is an object. Output code to be written... <BR />";
             } else {
                 echo $beforeMessage . " " . $pOutputValue . "<BR />";
             }

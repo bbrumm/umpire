@@ -1,5 +1,5 @@
 <?php
-require_once 'application/tests/User_report_test.php';
+require_once 'application/tests/Report_instance_test.php';
 require_once 'application/tests/Report_controller_test.php';
 
 /**
@@ -14,7 +14,7 @@ class testSuite extends PHPUnit_Framework_TestSuite
     public function __construct()
     {
         $this->setName('testSuite');
-        $this->addTestSuite('User_report_test');
+        $this->addTestSuite('Report_instance_test');
         $this->addTestSuite('Report_controller_test');
     }
 

@@ -54,7 +54,6 @@ class Home extends CI_Controller {
         $maxDate = $row->MAX_DATE;         
      
      }
-     
      return $maxDate;
  
  }
@@ -87,13 +86,6 @@ class Home extends CI_Controller {
          
          
      }
-     
-     /*
-     echo "Parameters: <br /><pre>";
-     print_r($allReportSelectionParameters);
-     echo "</pre>";
-     */
-     
      return $allReportSelectionParameters;
  }
 }

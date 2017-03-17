@@ -1,7 +1,5 @@
 <?php
-require_once('Reportdisplayoptions.php');
-
-class User_report extends CI_Model {
+class Report_instance extends CI_Model {
 	
 	private $reportQuery;
 	private $resultArray;
@@ -25,9 +23,22 @@ class User_report extends CI_Model {
 	private $regionDisplayValues;
 	
 	private $reportID;
+	
+	public $requestedReport;
 
 	public $reportDisplayOptions;
-	//private $Debug_library;
+
+	public function __construct() {
+	    $this->load->model('ReportDisplayOptions');
+	    $this->reportDisplayOptions = new ReportDisplayOptions();
+	    $this->load->database();
+	    $this->load->library('Debug_library');
+	    $this->load->model('report_param/ReportParamLoader');
+	    $this->load->model('report_param/ReportParameter');
+	    $this->load->model('Requested_report_model');
+	    $this->requestedReport = new Requested_report_model();
+	}
+	
 	
 	public function getUmpireTypeSQLValues() {
 	    return $this->umpireTypeSQLValues;
@@ -58,42 +69,27 @@ class User_report extends CI_Model {
 	}
 	
 	
-	
-	
-	public function __construct() {
-		$this->reportDisplayOptions = new ReportDisplayOptions();
-		$this->load->database();
-		$this->load->library('Debug_library');
-		$this->load->model('report_param/ReportParamLoader');
-		$this->load->model('report_param/ReportParameter');
-	}
-	
-	public function setReportType($reportParameters) {
-	    $this->debug_library->debugOutput("reportParameters in setReportType", $reportParameters);
+
+	public function setReportType(Requested_report_model $pRequestedReport) {
+	    $this->debug_library->debugOutput("reportParameters in setReportType", $pRequestedReport);
 	    $this->debug_library->debugOutput("POST in setReportType", $_POST);
 	    
-	    //ReportParameters are set in controllers/report.php->index();
-	    
-	    if ($reportParameters['PDFMode'] == true) {
-	        $ageGroupValue = rtrim($reportParameters['age'], ',');
-	        $umpireDisciplineValue = rtrim($reportParameters['umpireType'], ',');
+	    //RequestedReport values are set in controllers/report.php->index();
+	    if ($pRequestedReport->getPDFMode() == true) {
+	        $ageGroupValue = rtrim($pRequestedReport->getAgeGroup(), ',');
+	        $umpireDisciplineValue = rtrim($pRequestedReport->getUmpireType(), ',');
 	        
 	        $this->debug_library->debugOutput("Umpire Discipline in setReportType:", $umpireDisciplineValue);
-	        
-	        $seasonValue = $reportParameters['season'];
 	    } else {
-    	    $ageGroupValue = implode(',', $reportParameters['age']);
+    	    $ageGroupValue = implode(',', $pRequestedReport->getAgeGroup());
     	    $leagueValue = "";
-    	    $umpireDisciplineValue = implode(',', $reportParameters['umpireType']);
-    	    $seasonValue = $reportParameters['season'];
-    	    
+    	    $umpireDisciplineValue = implode(',', $pRequestedReport->getUmpireType());
 	    }
 	    
 	    $reportParamLoader = new ReportParamLoader();
-	    $reportParamLoader->loadAllReportParametersForReport((int)$reportParameters['reportName']);
+	    $reportParamLoader->loadAllReportParametersForReport($pRequestedReport);
 	    $reportParameterArray = $reportParamLoader->getReportParameterArray();
-	    
-	    $reportParamLoader->loadAllGroupingStructuresForReport((int)$reportParameters['reportName']);
+	    $reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
 	    $reportGroupingStructureArray = $reportParamLoader->getReportGroupingStructureArray();
 	    
 	    $this->reportDisplayOptions->setNoDataValue($this->lookupParameterValue($reportParameterArray, 'No Value To Display'));
@@ -102,8 +98,9 @@ class User_report extends CI_Model {
 	    $this->reportDisplayOptions->setPDFResolution($this->lookupParameterValue($reportParameterArray, 'PDF Resolution'));
 	    $this->reportDisplayOptions->setPDFPaperSize($this->lookupParameterValue($reportParameterArray, 'PDF Paper Size'));
 	    $this->reportDisplayOptions->setPDFOrientation($this->lookupParameterValue($reportParameterArray, 'PDF Orientation'));
-	    $this->reportTitle = str_replace("%seasonYear", $seasonValue, $this->lookupParameterValue($reportParameterArray, 'Display Title'));
-	    $this->reportID = $reportParameters['reportName'];
+	    $this->reportTitle = str_replace("%seasonYear", $pRequestedReport->getSeason(), $this->lookupParameterValue($reportParameterArray, 'Display Title'));
+	    //TODO: Remove this variable and line as it is in the sub-object
+	    $this->reportID = $pRequestedReport->getReportNumber();
 	    
 	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
 	    $columnGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Column');
@@ -111,7 +108,11 @@ class User_report extends CI_Model {
 	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
 	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
 
-		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason($reportParameters['season']));
+		$this->reportDisplayOptions->setLastGameDate(
+		      $this->findLastGameDateForSelectedSeason($pRequestedReport));
+		
+		$this->requestedReport = $pRequestedReport;
+		
 	}
 	
 	
@@ -145,14 +146,13 @@ class User_report extends CI_Model {
 	}
 	
 	
-	private function findLastGameDateForSelectedSeason($selectedSeason) {
+	private function findLastGameDateForSelectedSeason(Requested_report_model $pRequestedReport) {
 	    $queryString = "SELECT DATE_FORMAT(MAX(match_time), '%a %d %b %Y, %h:%i %p') AS last_date " .
             "FROM match_played " .
             "INNER JOIN round ON round.id = match_played.round_id " .
             "INNER JOIN season ON season.id = round.season_id " .
-            "WHERE season.season_year = '$selectedSeason';";
+            "WHERE season.season_year = ". $pRequestedReport->getSeason() .";";
 	     
-	    $query = $this->db->query($queryString);
 	    $resultArray = $query->result_array();
 	    return $resultArray[0]['last_date'];
 	}
@@ -281,7 +281,7 @@ class User_report extends CI_Model {
 	               if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" . 
 	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                   //Value found in array. Increment counter value
-	                       $this->debug_library->debugOutput("- Value found:", $columnLabelResults[$j][$columnLabels[$i]]);
+	                   //$this->debug_library->debugOutput("- Value found:", $columnLabelResults[$j][$columnLabels[$i]]);
 	                   //Check if the value on the first row matches
 	                   if ($columnLabelResults[$j-1][$columnLabels[$i-1]->getFieldName()] == $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()]) {
 	                       //echo "-- Match";
@@ -348,35 +348,35 @@ class User_report extends CI_Model {
 	    
 	}
 	
-	public function convertParametersToSQLReadyValues($reportParameters) {
+	public function convertParametersToSQLReadyValues(Requested_report_model $requestedReport) {
 	    //Converts several of the reportParameters arrays into comma separate values that are ready for SQL queries
 	    //Add a value of "All" and "None" to the League list, so that reports that users select for ages with no league (e.g. Colts) are still able to be loaded
 	    //$reportParameters['league'][] = 'All';
 	    //$reportParameters['league'][] = 'None';
 	    //echo "reportParameters UmpireType: " . $reportParameters['umpireType'] . "<BR/>";
-	    if ($reportParameters['PDFMode']) {
-	        $this->umpireTypeSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['umpireType'], ',')) . "'";
-	        $this->leagueSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['league'], ',')) . "'";
-	        $this->ageGroupSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['age'], ',')) . "'";
-	        $this->regionSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['region'], ',')) . "'";
+	    if ($requestedReport->getPDFMode()) {
+	        $this->umpireTypeSQLValues = str_replace(",", "','", "'" . rtrim($requestedReport->getUmpireType(), ',')) . "'";
+	        $this->leagueSQLValues = str_replace(",", "','", "'" . rtrim($requestedReport->getLeague(), ',')) . "'";
+	        $this->ageGroupSQLValues = str_replace(",", "','", "'" . rtrim($requestedReport->getAgeGroup(), ',')) . "'";
+	        $this->regionSQLValues = str_replace(",", "','", "'" . rtrim($requestedReport->getRegion(), ',')) . "'";
 	    } else {
-    	    $this->umpireTypeSQLValues = "'".implode("','",$reportParameters['umpireType'])."'";
-    	    $this->leagueSQLValues = "'".implode("','",$reportParameters['league'])."'";
-    	    $this->ageGroupSQLValues = "'".implode("','",$reportParameters['age'])."'";
-    	    $this->regionSQLValues = str_replace(",", "','", "'" . rtrim($reportParameters['region'], ',')) . "'";
+    	    $this->umpireTypeSQLValues = "'".implode("','", $requestedReport->getUmpireType())."'";
+    	    $this->leagueSQLValues = "'".implode("','", $requestedReport->getLeague())."'";
+    	    $this->ageGroupSQLValues = "'".implode("','", $requestedReport->getAgeGroup())."'";
+    	    $this->regionSQLValues = str_replace(",", "','", "'" . rtrim($requestedReport->getRegion(), ',')) . "'";
 	    }
 	}
 	
-	public function convertParametersToDisplayValues($reportParameters) {
+	public function convertParametersToDisplayValues(Requested_report_model $requestedReport) {
 	    
-	    if ($reportParameters['PDFMode']) {
-	        $this->umpireTypeDisplayValues = str_replace(",", ", ", rtrim($reportParameters['umpireType'], ',')) . "'";
-	        $this->leagueDisplayValues = str_replace(",", ", ", rtrim($reportParameters['league'], ',')) . "'";
-	        $this->ageGroupDisplayValues = str_replace(",", ", ", rtrim($reportParameters['age'], ',')) . "'";
+	    if ($requestedReport->getPDFMode()) {
+	        $this->umpireTypeDisplayValues = str_replace(",", ", ", rtrim($requestedReport->getUmpireType(), ',')) . "'";
+	        $this->leagueDisplayValues = str_replace(",", ", ", rtrim($requestedReport->getLeague(), ',')) . "'";
+	        $this->ageGroupDisplayValues = str_replace(",", ", ", rtrim($requestedReport->getAgeGroup(), ',')) . "'";
 	    } else {
-    	    $this->umpireTypeDisplayValues = implode(", ", $reportParameters['umpireType']);
-    	    $this->leagueDisplayValues = implode(", ", $reportParameters['league']);
-    	    $this->ageGroupDisplayValues = implode(", ", $reportParameters['age']);
+    	    $this->umpireTypeDisplayValues = implode(", ", $requestedReport->getUmpireType());
+    	    $this->leagueDisplayValues = implode(", ", $requestedReport->getLeague());
+    	    $this->ageGroupDisplayValues = implode(", ", $requestedReport->getAgeGroup());
 	    }
 	}	
 }
