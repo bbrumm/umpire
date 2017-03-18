@@ -35,6 +35,7 @@ $countReportParameters = count($reportSelectionParameters);
     		<option value="04">04 - Summary by Club</option>
     		<option value="05">05 - Summary by League</option>
     		<option value="06">06 - Pairings</option>
+    		<option value="07">07 - 2 and 3 Field Umpires</option>
 		</select>
 	</span>
 </div>

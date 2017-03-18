@@ -109,6 +109,9 @@ CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE ta
 DELETE rec FROM mv_report_06 rec WHERE rec.season_year = @vSeasonYear;
 CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_report_06'), 3, ROW_COUNT());
 
+DELETE rec FROM mv_report_07 rec WHERE rec.season_year = @vSeasonYear;
+CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_report_07'), 3, ROW_COUNT());
+
 
 /*Reload tables*/
 
@@ -446,7 +449,7 @@ match_played_id INT(11)
 );*/
 
 INSERT INTO mv_denormalised (season_year, umpire_id, umpire_first_name, umpire_last_name, umpire_full_name, club_name, team_name,
-short_league_name, age_group_id, age_group, umpire_type_name, season_id, match_played_id, region_id, region_name)
+short_league_name, age_group_id, age_group, umpire_type_name, season_id, match_played_id, region_id, region_name, display_order)
 SELECT DISTINCT season.season_year, 
 umpire.id,
 umpire.first_name, 
@@ -461,7 +464,8 @@ umpire_type.umpire_type_name,
 season.id,
 match_played.ID,
 region.id,
-region.region_name
+region.region_name,
+age_group.display_order
 FROM match_played 
 INNER JOIN round ON round.ID = match_played.round_id 
 INNER JOIN league ON league.ID = round.league_id 
@@ -493,7 +497,8 @@ umpire_type.umpire_type_name,
 season.id,
 match_played.ID,
 region.id,
-region.region_name
+region.region_name,
+age_group.display_order
 FROM match_played 
 INNER JOIN round ON round.ID = match_played.round_id 
 INNER JOIN league ON league.ID = round.league_id 
@@ -1061,7 +1066,7 @@ INSERT INTO mv_report_05 (season_year, region, umpire_type, age_group, `BFL|Game
       `GDFL|Games`, `GDFL|Total`, `GDFL|Pct`, 
       `GFL|Games`, `GFL|Total`, `GFL|Pct`, 
       `GJFL|Games`, `GJFL|Total`, `GJFL|Pct`, 
-      `CDFNL|Games`, `CDFNL|Total`, `CDFNL|Pct`,`Total`) 
+      `CDFNL|Games`, `CDFNL|Total`, `CDFNL|Pct`,`Total`, display_order) 
 SELECT 
     season_year,
     outer2.region,
@@ -1091,13 +1096,15 @@ SELECT
         WHEN outer2.region = 'Geelong' THEN IFNULL(SUM(`BFL` + `GDFL` + `GFL` + `GJFL`), 0)
         WHEN outer2.region = 'Colac' THEN IFNULL(SUM(`CDFNL`), 0)
         ELSE 0
-    END AS Total
+    END AS Total,
+    ua.display_order
 FROM
     (SELECT 
         ut.id AS umpire_type_id,
             ut.umpire_type_name,
             ag.id AS age_group_id,
-            ag.age_group
+            ag.age_group,
+            ag.display_order
     FROM
         umpire_type ut, age_group ag) AS ua
         LEFT JOIN
@@ -1186,8 +1193,8 @@ FROM
     ) AS outer3
     ON outer2.age_group = outer3.age_group
     AND outer2.short_league_name = outer3.short_league_name
-GROUP BY season_year , outer2.region , ua.umpire_type_id , ua.age_group_id
-ORDER BY season_year , outer2.region , ua.umpire_type_id , ua.age_group_id;
+GROUP BY season_year , outer2.region , ua.umpire_type_id , ua.age_group_id, ua.display_order
+ORDER BY season_year , outer2.region , ua.umpire_type_id , ua.age_group_id, ua.display_order;
 
 
 CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_report_05'), 1, ROW_COUNT());
@@ -1269,6 +1276,51 @@ ORDER BY u1.season_year, s.region, u1.umpire_type_name, u1.age_group, u1.umpire_
 CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_report_06'), 1, ROW_COUNT());
 
 ALTER TABLE mv_report_06 ENABLE KEYS;
+
+
+ALTER TABLE mv_report_07 DISABLE KEYS;
+
+
+INSERT INTO mv_report_07 (season_year, umpire_type, age_group, region, short_league_name, display_order,
+`GFL|2 Umpires`, `GFL|3 Umpires`, 
+`BFL|2 Umpires`, `BFL|3 Umpires`, 
+`GDFL|2 Umpires`, `GDFL|3 Umpires`, 
+`GJFL|2 Umpires`, `GJFL|3 Umpires`, 
+`CDFNL|2 Umpires`, `CDFNL|3 Umpires`)
+SELECT   
+d1.season_year, 
+'Field' as umpire_type,
+d1.age_group,  
+d1.region_name,
+d1.short_league_name,
+d1.display_order,
+(CASE WHEN short_league_name = 'GFL' AND sub.umpire_count = 2 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'GFL|2 Umpires',
+(CASE WHEN short_league_name = 'GFL' AND sub.umpire_count = 3 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'GFL|3 Umpires',
+(CASE WHEN short_league_name = 'BFL' AND sub.umpire_count = 2 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'BFL|2 Umpires',
+(CASE WHEN short_league_name = 'BFL' AND sub.umpire_count = 3 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'BFL|3 Umpires',
+(CASE WHEN short_league_name = 'GDFL' AND sub.umpire_count = 2 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'GDFL|2 Umpires',
+(CASE WHEN short_league_name = 'GDFL' AND sub.umpire_count = 3 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'GDFL|3 Umpires',
+(CASE WHEN short_league_name = 'GJFL' AND sub.umpire_count = 2 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'GJFL|2 Umpires',
+(CASE WHEN short_league_name = 'GJFL' AND sub.umpire_count = 3 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'GJFL|3 Umpires',
+(CASE WHEN short_league_name = 'CDFNL' AND sub.umpire_count = 2 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'CDFNL|2 Umpires',
+(CASE WHEN short_league_name = 'CDFNL' AND sub.umpire_count = 3 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'CDFNL|3 Umpires'
+FROM mv_denormalised d1
+INNER JOIN ( 
+	SELECT  
+	d2.match_played_ID,  
+	COUNT(DISTINCT d2.umpire_ID) AS umpire_count  
+	FROM mv_denormalised d2
+	WHERE d2.umpire_type_name = 'Field'
+	GROUP BY d2.season_year, d2.match_played_ID, d2.umpire_type_name, d2.age_group, d2.short_league_name
+	HAVING COUNT(DISTINCT d2.umpire_ID) IN (2, 3)
+) AS sub ON d1.match_played_ID = sub.match_played_ID  
+WHERE d1.umpire_type_name = 'Field'
+GROUP BY d1.season_year, d1.age_group_ID , d1.age_group, d1.short_league_name, sub.umpire_count;
+
+
+CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_report_07'), 1, ROW_COUNT());        
+
+ALTER TABLE mv_report_07 ENABLE KEYS;
 
 /*
 Insert New Competitions

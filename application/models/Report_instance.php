@@ -260,27 +260,24 @@ class Report_instance extends CI_Model {
 	        //Construct SQL query
 	        if ($this->requestedReport->getReportNumber() == 5) {
 	            $queryForReport = "SELECT ". $rowsToSelect[0] .", " . $rowsToSelect[1] .", " .
-	                $columnsToSelect . " " .
-	                "FROM " . $this->getReportTableName() . " " . $whereClause . " " .
-	                "GROUP BY ". $rowsToSelect[0] . ", " . $rowsToSelect[1];
-	        /*} elseif ($this->requestedReport->getReportNumber() == 2) {
-	            $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
-	                $columnsToSelect . "  " .
-	                "FROM " . $this->getReportTableName() . " " . $whereClause . " " .
-	                "GROUP BY ". $rowsToSelect[0];
-	                */
+	                $columnsToSelect . "
+	                FROM " . $this->getReportTableName() . " " . $whereClause . "
+	                GROUP BY ". $rowsToSelect[0] . ", " . $rowsToSelect[1] . "
+	                ORDER BY ". $rowsToSelect[0] . ", display_order;";
 	        } elseif ($this->requestedReport->getReportNumber() == 6) {
-	            $queryForReport = "SELECT first_umpire, second_umpire, umpire_type_name, SUM(match_count) AS match_count " .
-	                "FROM " . $this->getReportTableName() . " " . $whereClause . " " .
-	                "GROUP BY first_umpire, second_umpire, umpire_type_name;";
-	                 
+	            $queryForReport = "SELECT first_umpire, second_umpire, umpire_type_name, SUM(match_count) AS match_count 
+	                FROM " . $this->getReportTableName() . " " . $whereClause . "
+	                GROUP BY first_umpire, second_umpire, umpire_type_name;";
+	        } elseif ($this->requestedReport->getReportNumber() == 7) {
+	            $queryForReport = "SELECT ". $rowsToSelect[0] .", " . $columnsToSelect . "
+	                FROM " . $this->getReportTableName() . " " . $whereClause . "
+	                GROUP BY ". $rowsToSelect[0] . "
+	                ORDER BY display_order;";
 	        } else {
 	            $this->debug_library->debugOutput("ReportModel rows to select", $rowsToSelect[0]);
-	             
-	            $queryForReport = "SELECT ". $rowsToSelect[0] .", " .
-	                $columnsToSelect . " " .
-	                "FROM " . $this->getReportTableName() . " " . $whereClause . " " .
-	                "GROUP BY ". $rowsToSelect[0];
+	            $queryForReport = "SELECT ". $rowsToSelect[0] .", " . $columnsToSelect . "
+	                 FROM " . $this->getReportTableName() . " " . $whereClause . "
+	                 GROUP BY ". $rowsToSelect[0];
 	        }
 	        
 	        $this->debug_library->debugOutput("Query For Report", $queryForReport);
@@ -432,6 +429,13 @@ class Report_instance extends CI_Model {
                 $whereClause .=
                 " AND age_group IN (".$this->getAgeGroupSQLValues().")
                 AND umpire_type_name IN (".$this->getUmpireTypeSQLValues().")
+                AND region IN (".$this->getRegionSQLValues().")";
+                break;
+                
+            case 7:
+                $whereClause .=
+                " AND age_group IN (".$this->getAgeGroupSQLValues().")
+                AND umpire_type IN (".$this->getUmpireTypeSQLValues().")
                 AND region IN (".$this->getRegionSQLValues().")";
                 break;
         }

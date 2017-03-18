@@ -104,7 +104,54 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("LeagueSelectAll", false, false);
 			setCheckboxStatus("AgeGroupSelectAll", true, false);
 			setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
+		
 			
+		} else if (reportSelectionValue == '07') {
+			console.log('geelong 7');
+			//Disable the Umpire Discipline selections
+			
+			setCheckboxStatus("BFL", true);
+			setCheckboxStatus("GFL", true);
+			setCheckboxStatus("GDFL", true);
+			setCheckboxStatus("GJFL", true);
+			setCheckboxStatus("CDFNL", false, false);
+			
+			setCheckboxStatus("Field", false, true);
+			setCheckboxStatus("Boundary", false, false);
+			setCheckboxStatus("Goal", false, false);
+
+			setCheckboxStatus("Under 17.5", false, false);
+			setCheckboxStatus("Under 14.5", false, false);
+			
+			if (document.getElementById("GJFL").checked == true) {
+				setCheckboxStatus("Colts", true);
+				setCheckboxStatus("Under 16", true);
+				setCheckboxStatus("Under 14", true);
+				setCheckboxStatus("Under 12", true);
+				setCheckboxStatus("Junior Girls", true);
+				setCheckboxStatus("Youth Girls", true);
+			} else {
+				setCheckboxStatus("Colts", false, false);
+				setCheckboxStatus("Under 16", false, false);
+				setCheckboxStatus("Under 14", false, false);
+				setCheckboxStatus("Under 12", false, false);
+				setCheckboxStatus("Junior Girls", false, false);
+				setCheckboxStatus("Youth Girls", false, false);
+			}
+			
+			if (document.getElementById("BFL").checked == true || 
+				document.getElementById("GFL").checked == true ||
+				document.getElementById("GDFL").checked == true) {
+				setCheckboxStatus("Seniors", true);
+				setCheckboxStatus("Reserves", true);
+			} else {
+				setCheckboxStatus("Seniors", false, false);
+				setCheckboxStatus("Reserves", false, false);
+			}
+			
+			setCheckboxStatus("LeagueSelectAll", true, false);
+			setCheckboxStatus("AgeGroupSelectAll", true, false);
+			setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
 			
 		} else {
 			console.log('geelong other');
@@ -219,6 +266,44 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("LeagueSelectAll", false, false);
 				setCheckboxStatus("AgeGroupSelectAll", true, false);
 				setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
+			
+			} else if (reportSelectionValue == '07') {
+				console.log('colac 7');
+				//Enable the Umpire Discipline and Age Group selections
+				setCheckboxStatus("BFL", false, false);
+				setCheckboxStatus("GFL", false, false);
+				setCheckboxStatus("GDFL", false, false);
+				setCheckboxStatus("GJFL", false, false);
+				setCheckboxStatus("CDFNL", false, true);
+				
+				
+				setCheckboxStatus("Colts", false, false);
+				setCheckboxStatus("Under 16", false, false);
+				setCheckboxStatus("Under 14", false, false);
+				setCheckboxStatus("Under 12", false, false);
+				setCheckboxStatus("Junior Girls", false, false);
+				setCheckboxStatus("Youth Girls", false, false);
+				
+				if (document.getElementById("CDFNL").checked == true) {
+					setCheckboxStatus("Seniors", true);
+					setCheckboxStatus("Reserves", true);
+					setCheckboxStatus("Under 17.5", true);
+					setCheckboxStatus("Under 14.5", true);
+				} else {
+					setCheckboxStatus("Seniors", false, false);
+					setCheckboxStatus("Reserves", false, false);
+					setCheckboxStatus("Under 17.5", false, false);
+					setCheckboxStatus("Under 14.5", false, false);
+				}
+				
+				setCheckboxStatus("Field", false, true);
+				setCheckboxStatus("Boundary", false, false);
+				setCheckboxStatus("Goal", false, false);
+				
+				setCheckboxStatus("LeagueSelectAll", false, false);
+				setCheckboxStatus("AgeGroupSelectAll", true, false);
+				setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
+				
 				
 			} else {
 				//Enable the Umpire Discipline, Age Group, and League selections
@@ -279,6 +364,15 @@ function setCheckboxStatus(checkboxID, enabledStatus, checkedStatus) {
 		//console.log("Set checked status for ID " + checkboxID + " to " + checkedStatus);
 		document.getElementById(checkboxID).checked = checkedStatus;
 	}
+	
+	if (enabledStatus) {
+		//Enabled, set colour to something else 
+		document.getElementById(checkboxID).parentNode.style.background='#FFFFFF';
+	} else {
+		//Disabled, set colour to grey
+		document.getElementById(checkboxID).parentNode.style.background='#d9d9d9';
+	}
+
 	
 }
 

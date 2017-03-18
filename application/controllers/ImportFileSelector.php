@@ -4,7 +4,7 @@ class ImportFileSelector extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		
-		$this->load->model('report_model');
+		$this->load->model('Report_instance');
 		$this->load->helper('url_helper');
 		$this->load->helper(array('form', 'url'));
 	}

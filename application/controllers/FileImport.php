@@ -4,7 +4,7 @@ class FileImport extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		
-		$this->load->model('report_model');
+		$this->load->model('Report_instance');
 		$this->load->helper('url_helper');
 		$this->load->model('Match_import');
 		$this->load->model('Run_etl_stored_proc');

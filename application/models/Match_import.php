@@ -1,5 +1,5 @@
 <?php
-//define('__ROOT__', dirname(dirname(__FILE__))); 
+define('__ROOT__', dirname(dirname(__FILE__))); 
 require_once(__ROOT__.'/../system/libraries/MY_Model.php');
 //require_once('/system/libraries/MY_Model.php');
 
