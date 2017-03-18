@@ -6,7 +6,6 @@ $loadedColumnGroupings = $loadedReportItem->getColumnLabelResultArray();
 $loadedResultArray = $loadedReportItem->getResultArray();
 $reportDisplayOptions = $loadedReportItem->getDisplayOptions();
 $columnLabels = $reportDisplayOptions->getColumnGroup();
-//$mergeColumnGroup = $reportDisplayOptions->getMergeColumnGroup();
 $colourCells = $reportDisplayOptions->getColourCells();
 $rowLabels = $reportDisplayOptions->getRowGroup();
 $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
@@ -14,14 +13,8 @@ $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 //$debugLibrary = new DebugLibrary();
 $debugMode = $this->config->item('debug_mode');
 $reportID = $loadedReportItem->getReportID();
-
-//$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
-/*if ($debugMode) {
-    echo "<BR />loadedReportItem<pre>";
-    print_r($loadedReportItem);
-    echo "</pre><BR />";
-}*/
+
 $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
@@ -62,8 +55,6 @@ if ($debugMode) {
 
 //Show one header row for each group
 for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
-    //Load array that shows each column heading and the number of records it has.
-	//$countOfEachColumnHeading = array_count_values(array_column($loadedColumnGroupings, $columnLabels[$i]));
 	?>
 	
 	<tr class='header'>
@@ -82,25 +73,19 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 	
 	$arrReportRowGroup = $reportDisplayOptions->getRowGroup(); //Array of ReportGroupingStructure objects
 	$arrReportColumnGroup = $reportDisplayOptions->getColumnGroup();
-	
-	//for ($r=0; $r < count($rowLabels); $r++) {
+
 	for ($r=0; $r < count($arrReportRowGroup); $r++) {
     	$thOutput = "<th class='". $thClassNameToUse ."'>";
     	if ($i == 0) {
     	    
     	    $thOutput .= $arrReportRowGroup[$r]->getGroupHeading();
     	    $thOutput .= "<BR /><span class='columnSizeText'>". $arrReportRowGroup[$r]->getGroupSizeText() ."</span>";
-    	    //$thOutput .= $columnHeadingLabels[$r];
-    	    //$thOutput .= "<BR /><span class='columnSizeText'>". $columnHeadingSizeText[$r] ."</span>";
     	}
     	$thOutput .= "</th>";
     	echo $thOutput;
 	}
-	
-	
-	
+
 	$countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
-	//echo "countLoadedColumnGroupings: ". $countLoadedColumnGroupings;
 	?>
 	
 
@@ -110,8 +95,6 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 		if ($j==0) {
 			$proceed = true;
 		} 
-
-		
 		if ($proceed) {
 			//print cell with colspan value
 			if ($columnLabels[$i] == 'club_name' || $reportID == 6) {
@@ -129,8 +112,6 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 			} else {
 			    //Increase the colspan if this column group is to be merged
 			    if ($arrReportColumnGroup[$i]->getMergeField() == 1) {
-				    //$colspanForCell = $countOfEachColumnHeading[$loadedColumnGroupings[$j][$columnLabels[$i]]];
-				    //$arrayKeyNumber = $loadedReportItem->findKeyFromValue($columnCountForHeadingCells[$i], $columnLabels[$i], "label")
 			        /*TODO: There is a bug here. When a report has two column headings with the same value,
 			        but they don't need to be grouped (i.e. Report 2, for Seniors and Reservers, should show
 			        Seniors, then Reserves, then Seniors 2 Umpires), this code is grouping it anyway.
@@ -157,58 +138,29 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 			        Instead of Seniors BFL, Reserves BFL, Seniors 2 Umpires.
 			        
 			        */
-			        
 			        $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
-			         
-			        
 			    } else {
 			        $colspanForCell = 1;
 			    }
-				
-				
 				$cellClass = "columnHeadingNormal";
 				$divClass = "normalHeadingText";
 			}
-			//echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></th>";
 			echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$columnCountForHeadingCells[$i][$j]["label"]."</div></th>";
 			//TODO: Does a DIV need to go here??
 		}
-		
-		
-		
-		
-		//else
-		//nothing - don't even write a td		
 	}
-	/*
-	if ($loadedReportItem->getReportID() == 2) {
-	    if ($i == 0) {
-	        //Display the Total column if we are looking at report 2
-	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'>Total</div></th>";
-	    } else {
-	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'> </div></th>";
-	    }
-	}*/
-	//echo "<td>".$a."</td>";
+
 	?>
 	</tr>
 	
 <?php	
 }
 echo "</thead>";
-
 $loopCounter = 0;
-
 $matchFound = false;
-
 echo "<tbody>";
 
-
 //** Loop through rows and output them to the page **
-
-//$currentReportRowLabel;
-//$currentColumnLabelFirst;
-//$currentColumnLabelSecond;
 
 $tableRowOutput = "";
 if ($debugMode) {
@@ -240,7 +192,6 @@ foreach ($loadedResultArray as $resultRow):
 	    }
 	}
 	
-	//$currentReportRowLabel = $resultRow[$rowLabels[0]];
 	if ($debugMode) {
     	echo "resultRow:<pre>";
     	print_r($resultRow);
@@ -248,11 +199,6 @@ foreach ($loadedResultArray as $resultRow):
 	}
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
-		//$currentColumnLabelFirst = $loadedColumnGroupings[$i][$columnLabels[0]];
-		//$currentColumnLabelSecond = $loadedColumnGroupings[$i][$columnLabels[1]];
-		
-	    
-//echo "X=(". $resultRow[$loadedColumnGroupings[$i]['column_name']] ."),";
 	    if(array_key_exists($loadedColumnGroupings[$i]["column_name"], $resultRow)) { 
 	    
     		if (
@@ -260,7 +206,6 @@ foreach ($loadedResultArray as $resultRow):
     		    (($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== 0) &&
     		     ($resultRow[$loadedColumnGroupings[$i]["column_name"]] !== '0'))
     		    ) {
-    		        /*echo "(Y)";*/
     		        //Match found for columns. Write record
     		        if ($colourCells == 1) {
     		            if ($reportID == 6) {
@@ -269,8 +214,6 @@ foreach ($loadedResultArray as $resultRow):
     		                $umpireTypeName = NULL;
     		            }
     		            $cellClassToUse = getCellClassNameFromOutputValue((int)$resultRow[$loadedColumnGroupings[$i]["column_name"]], TRUE);
-    		            
-        		        //$tableRowOutput .=  "<td class='". getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]]) ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . "</td>";
     		        } elseif(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
     		            $cellClassToUse = "cellNumber cellNormal";
     		        } else {
@@ -280,23 +223,10 @@ foreach ($loadedResultArray as $resultRow):
     		        if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
     		            $cellClassToUse .= " cellTextTotal";
     		        }
-    		        
-    		        
-    		        
     		        $cellValue = $resultRow[$loadedColumnGroupings[$i]["column_name"]];
-    		        
-    		        
-    		        
     		        if (strpos($loadedColumnGroupings[$i]["column_name"],"Pct") !== false) {
     		            $cellValue .= "%";
     		        }
-    		        
-    		        
-    		        /*
-    		        $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $resultRow[$loadedColumnGroupings[$i]["column_name"]] . 
-    		        "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") " .
-    		        "</td>";
-    		        */
     		} else {
     		    if(is_numeric($resultRow[$loadedColumnGroupings[$i]["column_name"]])) {
     		      $cellClassToUse = "cellNumber cellNormal";
@@ -304,8 +234,6 @@ foreach ($loadedResultArray as $resultRow):
     		      $cellClassToUse = "cellNormal";
     		    }
     		    $cellValue = $noDataValueToDisplay;
-    		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
-    		    //$tableRowOutput .= "<td class='cellNormal'>". $noDataValueToDisplay ."</td>";
     		}
     	} else {
     	    //Array key does not exist
@@ -314,9 +242,7 @@ foreach ($loadedResultArray as $resultRow):
     	}
 		//Add on formatting for cells if matrix values are the same (e.g. row = column)
 		if ($reportID == 6) {
-		    //print "A(". $resultRow[$rowLabels[0]] .") B(". $loadedColumnGroupings[$i]["column_name"] .") ";
-		    //echo "line A ". $resultRow["umpire_name"];
-		    //echo " matches line B ". $loadedColumnGroupings[$i]["column_name"] . "<BR />";
+
 		    if ($resultRow["umpire_name"] == $loadedColumnGroupings[$i]["column_name"]) {
 		        $cellClassToUse .= " cellRowMatchesColumn";
 		    }
@@ -325,9 +251,6 @@ foreach ($loadedResultArray as $resultRow):
 		$tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $cellValue . "</td>";
      
 	}    
-	
-	
-	
 	
 	$tableRowOutput .= "</tr>";
 	echo $tableRowOutput;

@@ -31,7 +31,7 @@ class Report extends CI_Controller {
 	    $requestedReport->setRegion(
 	        $requestedReport->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'));
 	    
-	    $data['loadedReportItem'] = $reportPopulator->get_report($requestedReport);
+	    $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
 		

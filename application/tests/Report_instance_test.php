@@ -191,7 +191,7 @@ class Report_instance_test extends TestCase {
         $inputRequestedReport->setAgeGroup(array('Seniors'));
         $inputRequestedReport->setUmpireType(array('Field'));
         $inputRequestedReport->setSeason(2016);
-        $inputRequestedReport->setLeague(array('GFL'));
+        $inputRequestedReport->setLeague(array('BFL'));
         $inputRequestedReport->setRegion('Geelong');
         $inputRequestedReport->setReportNumber(1);
         $inputRequestedReport->setPDFMode(FALSE);
@@ -238,7 +238,7 @@ class Report_instance_test extends TestCase {
                 0 => array (
                     'label' => 'BFL',
                     'unique label' => 'BFL',
-                    'count' => 5
+                    'count' => 10
                     )
             ),
             1 => array (
@@ -266,6 +266,31 @@ class Report_instance_test extends TestCase {
                     'label' => 'Modewarre',
                     'unique label' => 'BFL|Modewarre',
                     'count' => 1
+                ),
+                5 => array (
+                    'label' => 'Newcomb',
+                    'unique label' => 'BFL|Newcomb',
+                    'count' => 1
+                ),
+                6 => array (
+                    'label' => 'Ocean Grove',
+                    'unique label' => 'BFL|Ocean Grove',
+                    'count' => 1
+                ),
+                7 => array (
+                    'label' => 'Portarlington',
+                    'unique label' => 'BFL|Portarlington',
+                    'count' => 1
+                ),
+                8 => array (
+                    'label' => 'Queenscliff',
+                    'unique label' => 'BFL|Queenscliff',
+                    'count' => 1
+                ),
+                9 => array (
+                    'label' => 'Torquay',
+                    'unique label' => 'BFL|Torquay',
+                    'count' => 1
                 )
             )
             
@@ -274,174 +299,6 @@ class Report_instance_test extends TestCase {
         $this->assertEquals($expectedResult, $actualResult);
     }
     
-    /**
-     * @dataProvider inputReportParameterProvider
-     */
-    public function testConvertParametersToSQLReadyValues(Requested_report_model $pRequestedReport,
-        $expectedUmpireType, $expectedLeague, $expectedAgeGroup, $expectedRegion) {
-        
-        $this->userReport->convertParametersToSQLReadyValues($pRequestedReport);
     
-        //Umpire Type
-        $actualResult = $this->userReport->getUmpireTypeSQLValues();
-        $this->assertEquals($expectedUmpireType, $actualResult);
-    
-        //League
-        $actualResult = $this->userReport->getLeagueSQLValues();
-        $this->assertEquals($expectedLeague, $actualResult);
-    
-        //Age Group
-        $actualResult = $this->userReport->getAgeGroupSQLValues();
-        $this->assertEquals($expectedAgeGroup, $actualResult);
-    
-        //Region
-        $actualResult = $this->userReport->getRegionSQLValues();
-        $this->assertEquals($expectedRegion, $actualResult);
-    }
-    
-    public function inputReportParameterProvider() {
-        return array (
-            array(
-                Requested_report_model::withValues(array(
-                    'pdfMode' => FALSE,
-                    'ageGroup' => array('Seniors'),
-                    'umpireType' => array('Field', 'Goal'),
-                    'season' => 2016,
-                    'league' => array('GFL', 'ABC', 'DEF', '12434', 'AJBVJHFBVDFVER JERI n'),
-                    'region' => 'Geelong',
-                    'reportNumber' => 1
-                )),
-                'expectedUmpireType' => "'Field','Goal'",
-                'expectedLeague' => "'GFL','ABC','DEF','12434','AJBVJHFBVDFVER JERI n'",
-                'expectedAgeGroup' => "'Seniors'",
-                'expectedRegion' => "'Geelong'"
-            ),
-            array(
-                Requested_report_model::withValues(array(
-                    'pdfMode' => FALSE,
-                    'ageGroup' => array('Seniors', 'Reserves'),
-                    'umpireType' => array('Field'),
-                    'season' => 2016,
-                    'league' => array('GFL', 'A12'),
-                    'region' => 'COLAC',
-                    'reportNumber' => 2
-                )),
-                'expectedUmpireType' => "'Field'",
-                'expectedLeague' => "'GFL','A12'",
-                'expectedAgeGroup' => "'Seniors','Reserves'",
-                'expectedRegion' => "'COLAC'"
-                
-            )
-        );
-    }
-    
-    public function testConvertParametersToSQLReadyValuesPDF() {
-        $inputRequestedReport = new Requested_report_model();
-        $inputRequestedReport->setAgeGroup('Seniors,Senior');
-        $inputRequestedReport->setUmpireType('Field,Goal,Umpires,ALL');
-        $inputRequestedReport->setSeason(2016);
-        $inputRequestedReport->setLeague('GFL,BF,GFL,GFL');
-        $inputRequestedReport->setRegion('GeelongASBE');
-        $inputRequestedReport->setReportNumber(1);
-        $inputRequestedReport->setPDFMode(TRUE);
-    
-        $this->userReport->convertParametersToSQLReadyValues($inputRequestedReport);
-    
-        //Umpire Type
-        $expectedResult = "'Field','Goal','Umpires','ALL'";
-        $actualResult = $this->userReport->getUmpireTypeSQLValues();
-        $this->assertEquals($expectedResult, $actualResult);
-    
-    
-        //League
-        $expectedResult = "'GFL','BF','GFL','GFL'";
-        $actualResult = $this->userReport->getLeagueSQLValues();
-        $this->assertEquals($expectedResult, $actualResult);
-    
-        //Age Group
-        $expectedResult = "'Seniors','Senior'";
-        $actualResult = $this->userReport->getAgeGroupSQLValues();
-        $this->assertEquals($expectedResult, $actualResult);
-    
-        //Region
-        $expectedResult = "'GeelongASBE'";
-        $actualResult = $this->userReport->getRegionSQLValues();
-        $this->assertEquals($expectedResult, $actualResult);
-    }
-    
-    /**
-     * @dataProvider inputReportParameterDisplayProvider
-     */
-    public function testConvertParametersToDisplayValues(Requested_report_model $pRequestedReport,
-        $expectedUmpireType, $expectedLeague, $expectedAgeGroup) {
-
-        $this->userReport->convertParametersToDisplayValues($pRequestedReport);
-        
-        //Umpire Type
-        //$expectedResult = "Field, Goal";
-        $actualResult = $this->userReport->getUmpireTypeDisplayValues();
-        $this->assertEquals($expectedUmpireType, $actualResult);
-        
-        //League
-        //$expectedResult = "GFL, ABC, DEF, 12434, AJBVJHFBVDFVER JERI n";
-        $actualResult = $this->userReport->getLeagueDisplayValues();
-        $this->assertEquals($expectedLeague, $actualResult);
-        
-        //Age Group
-        //$expectedResult = "Seniors";
-        $actualResult = $this->userReport->getAgeGroupDisplayValues();
-        $this->assertEquals($expectedAgeGroup, $actualResult);
-        
-    }
-    
-    public function inputReportParameterDisplayProvider() {
-        return array (
-            array(
-                Requested_report_model::withValues(array(
-                    'pdfMode' => FALSE,
-                    'ageGroup' => array('Seniors'),
-                    'umpireType' => array('Field', 'Goal'),
-                    'season' => 2016,
-                    'league' => array('GFL', 'ABC', 'DEF', '12434', 'AJBVJHFBVDFVER JERI n'),
-                    'region' => 'Geelong',
-                    'reportNumber' => 1
-                )),
-                'expectedUmpireType' => "Field, Goal",
-                'expectedLeague' => "GFL, ABC, DEF, 12434, AJBVJHFBVDFVER JERI n",
-                'expectedAgeGroup' => "Seniors",
-                'expectedRegion' => "Geelong"
-            ),
-            array(
-                Requested_report_model::withValues(array(
-                    'pdfMode' => FALSE,
-                    'ageGroup' => array('Seniors', 'Reserves'),
-                    'umpireType' => array('Field'),
-                    'season' => 2016,
-                    'league' => array('GFL', 'A12'),
-                    'region' => 'COLAC',
-                    'reportNumber' => 2
-                )),
-                'expectedUmpireType' => "Field",
-                'expectedLeague' => "GFL, A12",
-                'expectedAgeGroup' => "Seniors, Reserves"
-    
-            ),
-            array(
-                Requested_report_model::withValues(array(
-                    'pdfMode' => FALSE,
-                    'ageGroup' => array('Seniors', 'Reserves', 'U12', 'U15'),
-                    'umpireType' => array('Fie\'ld', 'GO'),
-                    'season' => 2016,
-                    'league' => array('12'),
-                    'region' => 'A',
-                    'reportNumber' => 2
-                )),
-                'expectedUmpireType' => "Fie'ld, GO",
-                'expectedLeague' => "12",
-                'expectedAgeGroup' => "Seniors, Reserves, U12, U15"
-    
-            )
-        );
-    }
     
 }
