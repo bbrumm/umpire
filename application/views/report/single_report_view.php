@@ -169,6 +169,13 @@ if ($debugMode) {
     echo "</pre>";
 }
 
+if ($debugMode) {
+    echo "loadedColumnGroupings From SRV:<pre>";
+    print_r($loadedColumnGroupings);
+    echo "</pre><BR />";
+}
+
+
 foreach ($loadedResultArray as $resultRow): 
 	if ($reportDisplayOptions->getFirstColumnFormat() == "text") {
 	   $tableRowOutput = "<tr><td class='cellNormal'>" . $resultRow[$rowLabels[0]->getFieldName()] . "</td>";
@@ -197,6 +204,8 @@ foreach ($loadedResultArray as $resultRow):
     	print_r($resultRow);
     	echo "</pre><BR />";
 	}
+
+	
 	//Loop through each of the columns to be displayed
 	for ($i=0; $i < $countLoadedColumnGroupings; $i++) {
 	    if(array_key_exists($loadedColumnGroupings[$i]["column_name"], $resultRow)) { 

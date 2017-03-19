@@ -52,7 +52,7 @@ Report query to populate mv_report_07
 */
 TRUNCATE mv_report_07;
 
-INSERT INTO mv_report_07 (season_year, umpire_type, age_group, short_league_name, display_order,
+INSERT INTO mv_report_07 (season_year, umpire_type, age_group, region, short_league_name, display_order,
 `GFL|2 Umpires`, `GFL|3 Umpires`, 
 `BFL|2 Umpires`, `BFL|3 Umpires`, 
 `GDFL|2 Umpires`, `GDFL|3 Umpires`, 
@@ -62,6 +62,7 @@ SELECT
 d1.season_year, 
 'Field' as umpire_type,
 d1.age_group,  
+d1.region_name,
 d1.short_league_name,
 d1.display_order,
 (CASE WHEN short_league_name = 'GFL' AND sub.umpire_count = 2 THEN COUNT(DISTINCT d1.match_played_ID) ELSE 0 END) AS 'GFL|2 Umpires',

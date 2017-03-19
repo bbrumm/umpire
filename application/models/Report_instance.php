@@ -111,30 +111,37 @@ class Report_instance extends CI_Model {
 	}
 	
 	public function setColumnLabelResultArray($pColumnLabelArray) {
-	    if ($this->requestedReport->getReportNumber() == 6) {
-	        $columnLabelArray = $this->getDistinctListOfValues('second_umpire', $pColumnLabelArray);
+	    $useNewDWTables = $this->config->item('use_new_dw_tables');
+	    
+	    if ($useNewDWTables) {
 	         
-	        //Convert column labels into array for the output page
-	        $columnLabelArray = $this->convertSimpleArrayToColumnLabelArray($columnLabelArray);
-	         
-	        $this->columnLabelResultArray = $columnLabelArray;
 	         
 	    } else {
-	        //Look up the column labels for this report
-	        $columnLabelQuery = $this->buildColumnLabelQuery();
-	        $query = $this->db->query($columnLabelQuery);
-	        $columnLabelResultArray = $query->result_array();
-	         
-	        //Add an extra entry if it is report 2, for the Total column
-	        if ($this->requestedReport->getReportNumber() == 2) {
-	            $columnLabelResultArray[] = array(
-	                'column_name' => 'Total',
-	                'report_column_id' => '0',
-	                'age_group' => 'Total',
-	                'short_league_name' => ''
-	            );
-	        }
-	        $this->columnLabelResultArray = $columnLabelResultArray;
+    	    if ($this->requestedReport->getReportNumber() == 6) {
+    	        $columnLabelArray = $this->getDistinctListOfValues('second_umpire', $pColumnLabelArray);
+    	         
+    	        //Convert column labels into array for the output page
+    	        $columnLabelArray = $this->convertSimpleArrayToColumnLabelArray($columnLabelArray);
+    	         
+    	        $this->columnLabelResultArray = $columnLabelArray;
+    	         
+    	    } else {
+    	        //Look up the column labels for this report
+    	        $columnLabelQuery = $this->buildColumnLabelQuery();
+    	        $query = $this->db->query($columnLabelQuery);
+    	        $columnLabelResultArray = $query->result_array();
+    	         
+    	        //Add an extra entry if it is report 2, for the Total column
+    	        if ($this->requestedReport->getReportNumber() == 2) {
+    	            $columnLabelResultArray[] = array(
+    	                'column_name' => 'Total',
+    	                'report_column_id' => '0',
+    	                'age_group' => 'Total',
+    	                'short_league_name' => ''
+    	            );
+    	        }
+    	        $this->columnLabelResultArray = $columnLabelResultArray;
+    	    }
 	    }
 	}
 	
@@ -165,6 +172,9 @@ class Report_instance extends CI_Model {
 	    $this->debug_library->debugOutput("reportParameters in setReportType", $pRequestedReport);
 	    $this->debug_library->debugOutput("POST in setReportType", $_POST);
 	    
+	    $useNewDWTables = $this->config->item('use_new_dw_tables');
+	    
+	    
 	    //RequestedReport values are set in controllers/report.php->index();
 	    if ($pRequestedReport->getPDFMode() == true) {
 	        $ageGroupValue = rtrim($pRequestedReport->getAgeGroup(), ',');
@@ -193,13 +203,20 @@ class Report_instance extends CI_Model {
 	    //TODO: Remove this variable and line as it is in the sub-object
 	    $this->reportID = $pRequestedReport->getReportNumber();
 	    
-	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
-	    $columnGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Column');
-	    $rowGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Row');	    
-	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
-	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
-
 	    $this->requestedReport = $pRequestedReport;
+	    
+	    if ($useNewDWTables) {
+	        
+	        
+	    } else {
+	    
+    	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
+    	    $columnGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Column');
+    	    $rowGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Row');	    
+    	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
+    	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
+	    }
+	    
 	    
 	    $this->convertParametersToSQLReadyValues();
 	    $this->convertParametersToDisplayValues();
@@ -220,19 +237,62 @@ class Report_instance extends CI_Model {
 	
 	
 	public function loadReportResults() {
-	    //Build SELECT query for report data
-	    $queryForReport = $this->buildSelectQueryForReport();
-	    //Run query and store result in array
-	    $query = $this->db->query($queryForReport);
-	     
-	    //Transform array to pivot
-	    $queryResultArray = $query->result_array();
+	    $useNewDWTables = $this->config->item('use_new_dw_tables');
 	    
-	    //Set result array (function includes logic for different reports
-	    $this->setResultArray($queryResultArray);
-	    $this->setColumnLabelResultArray($queryResultArray);
+	    if ($useNewDWTables) {
+	        $queryForReport = $this->buildSelectQueryForReportUsingDW();
+	        
+	        $query = $this->db->query($queryForReport);
+	        
+	        //Run query and store result in array
+	        $query = $this->db->query($queryForReport);
+	        
+	        //Transform array to pivot
+	        $queryResultArray = $query->result_array();
+	        	
+	        //Set result array (function includes logic for different reports
+	        $this->setResultArray($queryResultArray);
+	        
+	        //Pivot the array so it can be displayed
+	        
+	        
+	         
+	    } else {
+    	    //Build SELECT query for report data
+    	    $queryForReport = $this->buildSelectQueryForReport();
+    	    //Run query and store result in array
+    	    $query = $this->db->query($queryForReport);
+    	     
+    	    //Transform array to pivot
+    	    $queryResultArray = $query->result_array();
+    	    
+    	    //Set result array (function includes logic for different reports
+    	    $this->setResultArray($queryResultArray);
+    	    $this->setColumnLabelResultArray($queryResultArray);
+	    }
 	}
 	
+	
+	private function buildSelectQueryForReportUsingDW() {
+	    $queryString = "SELECT
+            u.last_first_name,
+            l.short_name,
+            te.club_name,
+            COUNT(DISTINCT m.match_id) AS match_count
+            FROM dw_fact_match m
+            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+            WHERE a.age_group = ". $this->getAgeGroupSQLValues() ."
+            AND l.short_name = ". $this->getLeagueSQLValues() ."
+            AND l.region_name = ". $this->getRegionSQLValues() ."
+            AND u.umpire_type = ". $this->getUmpireTypeSQLValues() ."
+            GROUP BY u.last_first_name, l.short_name, te.club_name
+            ORDER BY u.last_first_name, l.short_name, te.club_name";
+
+	    return $queryString;
+	}
 	
 	private function buildSelectQueryForReport() {
 	        //Increase maximum length for GROUP_CONCAT value
@@ -561,14 +621,20 @@ class Report_instance extends CI_Model {
 	}
 	
 	public function setResultArray($pResultArray) {
-	    if ($this->requestedReport->getReportNumber() == 6) {
-	        //Params: queryResultArray, field for row, field for columns
-	        $pivotedResultArray = $this->pivotQueryArray($pResultArray, 'first_umpire', 'second_umpire');
-	        $this->resultArray = $pivotedResultArray;
+	    $useNewDWTables = $this->config->item('use_new_dw_tables');
+	     
+	    if ($useNewDWTables) {
+	        $this->resultArray = $this->pivotQueryArrayNew($pResultArray, 'last_first_name', array('short_name', 'club_name'));
 	    } else {
-	        $this->resultArray = $pResultArray;
+	    
+    	    if ($this->requestedReport->getReportNumber() == 6) {
+    	        //Params: queryResultArray, field for row, field for columns
+    	        $pivotedResultArray = $this->pivotQueryArray($pResultArray, 'first_umpire', 'second_umpire');
+    	        $this->resultArray = $pivotedResultArray;
+    	    } else {
+    	        $this->resultArray = $pResultArray;
+    	    }
 	    }
-		
 	}
 	
 	
@@ -773,6 +839,40 @@ class Report_instance extends CI_Model {
 	        $pivotedArray[$resultRow['first_umpire']]['umpire_type_name'] = $resultRow['umpire_type_name'];
 	        $pivotedArray[$resultRow['first_umpire']][$resultRow['second_umpire']] = $resultRow['match_count'];
 	    }
+	
+	    return $pivotedArray;
+	}
+	
+	private function pivotQueryArrayNew($pResultArray, $pFieldForRowLabel, array $pFieldsForColumnLabel) {
+	    //Create new array to hold values for output
+	    $this->debug_library->debugOutput("pivotQueryArrayNew Before:", $pResultArray);
+	    
+	    $pivotedArray = array();
+	    $counterForRow = 0;
+	    $previousRowLabel = "";
+	    foreach ($pResultArray as $resultRow) {
+	        if ($resultRow[$pFieldForRowLabel] != $previousRowLabel) {
+	            //New row label, so reset counter
+	            $counterForRow = 0;
+	        }
+	        $previousRowLabel = $resultRow[$pFieldForRowLabel];
+	        
+	        foreach ($pFieldsForColumnLabel as $columnField) {
+	            
+	            $pivotedArray[$resultRow[$pFieldForRowLabel]][$counterForRow][$columnField] = $resultRow[$columnField];
+	            $pivotedArray[$resultRow[$pFieldForRowLabel]][$counterForRow]['match_count'] = $resultRow['match_count'];
+	            
+	        }
+	        $counterForRow++;
+	        /*
+	        $second_umpire_names[] = $resultRow['second_umpire'];
+	        $pivotedArray[$resultRow['first_umpire']]['umpire_name'] = $resultRow['first_umpire'];
+	        $pivotedArray[$resultRow['first_umpire']]['umpire_type_name'] = $resultRow['umpire_type_name'];
+	        $pivotedArray[$resultRow['first_umpire']][$resultRow['second_umpire']] = $resultRow['match_count'];
+	        */
+	    }
+	    
+	    $this->debug_library->debugOutput("pivotQueryArrayNew After:", $pivotedArray);
 	
 	    return $pivotedArray;
 	}

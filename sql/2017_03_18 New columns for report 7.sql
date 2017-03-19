@@ -194,6 +194,8 @@ ALTER TABLE mv_denormalised ADD COLUMN display_order INT(11);
 
 ALTER TABLE mv_report_05 ADD COLUMN display_order INT(11);
 
+INSERT INTO processed_table(id, table_name) VALUES (19, 'mv_report_07');
+
 /*DROP TABLE mv_report_07;*/
 
 CREATE TABLE mv_report_07 (
