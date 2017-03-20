@@ -158,7 +158,7 @@ class Report_instance extends CI_Model {
 	    
 	    $countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
 	    //TODO: Replace this temp array with data from the database (report param tables)
-	    $tempArrayForColumnLabels = array('short_name', 'club_name');
+	    $tempArrayForColumnLabels = array('short_league_name', 'club_name');
 	    /*
 	    echo "TEST TABLE:<BR />";
         echo "<table border=1>";
@@ -212,12 +212,10 @@ class Report_instance extends CI_Model {
     	                echo "D:" . $columnHeadingSet['club_name'] . "<BR />";
     	                */
     	                
-	                if ($columnItem['short_name'] == $columnHeadingSet['short_name'] &&
+	                if ($columnItem['short_league_name'] == $columnHeadingSet['short_league_name'] &&
 	                    $columnItem['club_name'] == $columnHeadingSet['club_name']) {
 	                    
 	                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
-	                        echo "Col(". $columnNumber .") Row (". $currentResultArrayRow .") Val (". $columnItem['match_count'] .")"; 
-	                        
 	                }
     	                
     	                
@@ -303,17 +301,17 @@ class Report_instance extends CI_Model {
 	    
 	    $this->requestedReport = $pRequestedReport;
 	    
-	    if ($useNewDWTables) {
+	    //if ($useNewDWTables) {
 	        
 	        
-	    } else {
+	    //} else {
 	    
     	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
     	    $columnGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Column');
     	    $rowGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Row');	    
     	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
     	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
-	    }
+	    //}
 	    
 	    
 	    $this->convertParametersToSQLReadyValues();
@@ -376,7 +374,7 @@ class Report_instance extends CI_Model {
 	private function buildSelectQueryForReportUsingDW() {
 	    $queryString = "SELECT
             u.last_first_name,
-            l.short_name,
+            l.short_league_name,
             te.club_name,
             COUNT(DISTINCT m.match_id) AS match_count
             FROM dw_fact_match m
@@ -385,11 +383,11 @@ class Report_instance extends CI_Model {
             INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
             INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
             WHERE a.age_group = ". $this->getAgeGroupSQLValues() ."
-            AND l.short_name = ". $this->getLeagueSQLValues() ."
+            AND l.short_league_name = ". $this->getLeagueSQLValues() ."
             AND l.region_name = ". $this->getRegionSQLValues() ."
             AND u.umpire_type = ". $this->getUmpireTypeSQLValues() ."
-            GROUP BY u.last_first_name, l.short_name, te.club_name
-            ORDER BY u.last_first_name, l.short_name, te.club_name";
+            GROUP BY u.last_first_name, l.short_league_name, te.club_name
+            ORDER BY u.last_first_name, l.short_league_name, te.club_name";
 
 	    return $queryString;
 	}
@@ -608,11 +606,11 @@ class Report_instance extends CI_Model {
 	    $useNewDWTables = $this->config->item('use_new_dw_tables');
 	     
 	    if ($useNewDWTables) {
-	       $columnLabelQuery = "SELECT DISTINCT short_name, club_name
+	       $columnLabelQuery = "SELECT DISTINCT short_league_name, club_name
 	           FROM (
 	        SELECT
             u.last_first_name,
-            l.short_name,
+            l.short_league_name,
             te.club_name,
             COUNT(DISTINCT m.match_id) AS match_count
             FROM dw_fact_match m
@@ -621,11 +619,11 @@ class Report_instance extends CI_Model {
             INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
             INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
             WHERE a.age_group = ". $this->getAgeGroupSQLValues() ."
-            AND l.short_name = ". $this->getLeagueSQLValues() ."
+            AND l.short_league_name = ". $this->getLeagueSQLValues() ."
             AND l.region_name = ". $this->getRegionSQLValues() ."
             AND u.umpire_type = ". $this->getUmpireTypeSQLValues() ."
-            GROUP BY u.last_first_name, l.short_name, te.club_name) AS sub
-            ORDER BY short_name, club_name";
+            GROUP BY u.last_first_name, l.short_league_name, te.club_name) AS sub
+            ORDER BY short_league_name, club_name";
 	       
 	       
 	       $this->debug_library->debugOutput("columnLabelQuery:", $columnLabelQuery);
@@ -755,7 +753,7 @@ class Report_instance extends CI_Model {
 	    $useNewDWTables = $this->config->item('use_new_dw_tables');
 	     
 	    if ($useNewDWTables) {
-	        $this->resultArray = $this->pivotQueryArrayNew($pResultArray, 'last_first_name', array('short_name', 'club_name'));
+	        $this->resultArray = $this->pivotQueryArrayNew($pResultArray, 'last_first_name', array('short_league_name', 'club_name'));
 	    } else {
 	    
     	    if ($this->requestedReport->getReportNumber() == 6) {
@@ -804,6 +802,8 @@ class Report_instance extends CI_Model {
 	        //Loop through columnLabelResults
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
 	           if ($i == 0) {
+	               //$this->debug_library->debugOutput("CL J:", $columnLabelResults[$j][$columnLabels[$i]]);
+	               
 	               if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                   //Value found in array. Increment counter value
 	                   //Find the array that stores this value

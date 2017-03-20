@@ -23,7 +23,7 @@ CREATE TABLE dw_dim_age_group (
 
 CREATE TABLE dw_dim_league (
 	league_key INT(11) PRIMARY KEY AUTO_INCREMENT,
-    short_name VARCHAR(50),
+    short_league_name VARCHAR(50),
     full_name VARCHAR(200),
     region_name VARCHAR(100),
     competition_name VARCHAR(500)
@@ -242,7 +242,7 @@ CREATE INDEX idx_sm_age ON staging_match (age_group_name, division_name);
 
 
 
-
+TRUNCATE dw_fact_match;
 
 /*
 Run time: 2s

@@ -509,7 +509,7 @@ $config['js_fixed'] = 'js/scrollheader.js';
 $config['reportSelection'] = 'js/reportSelection.js';
 $config['useradmin'] = 'js/useradmin.js';
 
-$config['debug_mode'] = TRUE;
+$config['debug_mode'] = FALSE;
 
 $config['use_new_dw_tables'] = TRUE;
 

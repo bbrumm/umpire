@@ -55,6 +55,12 @@ if ($useNewDWTables) {
         echo "<BR />columnLabelResultArray DW:<pre>";
         print_r($loadedColumnGroupings);
         echo "</pre><BR />";
+        
+        echo "<BR />reportDisplayOptions DW:<pre>";
+        print_r($reportDisplayOptions);
+        echo "</pre><BR />";
+        
+        echo "Test Table Start <BR />";
     }
     
     
@@ -79,7 +85,17 @@ if ($useNewDWTables) {
         
         $arrReportRowGroup = $reportDisplayOptions->getRowGroup(); //Array of ReportGroupingStructure objects
         $arrReportColumnGroup = $reportDisplayOptions->getColumnGroup();
-        
+        /*
+        if ($debugMode) {
+            echo "<BR />arrReportRowGroup DW:<pre>";
+            print_r($arrReportRowGroup);
+            echo "</pre><BR />";
+            
+            echo "<BR />arrReportColumnGroup DW:<pre>";
+            print_r($arrReportColumnGroup);
+            echo "</pre><BR />";
+        }
+        */
         for ($r=0; $r < count($arrReportRowGroup); $r++) {
             $thOutput = "<th class='". $thClassNameToUse ."'>";
             if ($i == 0) {
@@ -100,6 +116,47 @@ if ($useNewDWTables) {
         }
         echo "</tr>";
         */
+    
+    
+
+        $countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
+        if ($debugMode) {
+            echo "<BR />countLoadedColumnGroupings DW:" . $countLoadedColumnGroupings;
+        }
+        
+        for ($j=0; $j < $countLoadedColumnGroupings; $j++) {
+            //Check if cell should be merged
+            if ($j==0) {
+                $proceed = true;
+            }
+            if ($proceed) {
+                //print cell with colspan value
+                if ($columnLabels[$i] == 'club_name' || $reportID == 6) {
+                    //Some reports have their headers displayed differently
+                    $colspanForCell = 1;
+                    if ($PDFLayout) {
+                        //$cellClass = "rotatePDF";
+                        $cellClass = "rotated_cell_pdf";
+                        $divClass = "rotated_text_pdf";
+        
+                    } else {
+                        $cellClass = "rotated_cell";
+                        $divClass = "rotated_text";
+                    }
+                } else {
+                    //Increase the colspan if this column group is to be merged
+                    if ($arrReportColumnGroup[$i]->getMergeField() == 1) {
+                        $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
+                    } else {
+                        $colspanForCell = 1;
+                    }
+                    $cellClass = "columnHeadingNormal";
+                    $divClass = "normalHeadingText";
+                }
+                echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$columnCountForHeadingCells[$i][$j]["label"]."</div></th>";
+            }
+        }
+    
     }
     
     echo "</thead>";
@@ -107,27 +164,124 @@ if ($useNewDWTables) {
     $countRows = count($resultOutputArray);
     $countColumns = count($loadedColumnGroupings);
     
+    if ($debugMode) {
+        echo "<BR />loadedColumnGroupings DW:<pre>";
+        print_r($loadedColumnGroupings);
+        echo "</pre><BR />";
+    }
+    
     for ($rowCounter=0; $rowCounter < $countRows; $rowCounter++) {
     
-        echo "<tr>";
+        $tableRowOutput = "<tr>";
         for ($columnCounter=0; $columnCounter <= $countColumns; $columnCounter++) {
-            echo "<td>";
+            //$tableRowOutput .= "<td class='cellNormal'>";
+            
             if(array_key_exists($columnCounter, $resultOutputArray[$rowCounter])) {
-                //echo "(" . $rowCounter . ", ". $columnCounter . ") ". $resultOutputArray[$rowCounter][$columnCounter];
-                echo $resultOutputArray[$rowCounter][$columnCounter];
-            } else {
-                //echo "(" . $rowCounter . ", ". $columnCounter . ") -";
                 
+                
+                if ($columnCounter == 0) { //First column
+                    if ($reportDisplayOptions->getFirstColumnFormat() == "text") {
+                        $cellValue = $resultOutputArray[$rowCounter][$columnCounter];
+                        $cellClassToUse = "cellText cellNormal";
+                        /*if (count($rowLabels) > 1) {
+                            //Output a second row label
+                            $tableRowOutput .= $resultOutputArray[$rowCounter][$columnCounter];
+                        }
+                        */
+                    } elseif ($reportDisplayOptions->getFirstColumnFormat() == "date") {
+                        //$weekDate = date_create($resultRow[$rowLabels[0]]);
+                        //$weekDate = date_create($resultRow["weekdate"]);
+                        $weekDate = date_create($resultOutputArray[$rowCounter][$columnCounter]);
+                        $cellValue = date_format($weekDate, 'd/m/Y');
+                        
+                        /*if (count($rowLabels) > 1) {
+                            //Output a second row label
+                            $tableRowOutput .= date_format($weekDate, 'd/m/Y');
+                        }*/
+                        
+                    } else {
+                        
+                    }
+                
+                } else {
+                    if ($colourCells == 1) {
+                    
+                        /*
+                        if ($reportID == 6) {
+                            //$umpireTypeName = $resultRow['umpire_type_name'];
+                            $umpireTypeName = $resultOutputArray[$rowCounter][0];
+                        } else {
+                            $umpireTypeName = NULL;
+                        }
+                        */
+                        //$cellClassToUse = getCellClassNameFromOutputValue($resultRow[$loadedColumnGroupings[$i]["column_name"]], TRUE);
+                        $cellClassToUse = getCellClassNameFromOutputValue($resultOutputArray[$rowCounter][$columnCounter], TRUE);
+                    } elseif(is_numeric($resultOutputArray[$rowCounter][$columnCounter])) {
+                        $cellClassToUse = "cellNumber cellNormal";
+                    } else {
+                        $cellClassToUse = "cellText cellNormal";
+                    }
+                    
+                    /* TODO: Fix this and find the correct array reference
+                    if ($loadedColumnGroupings[$i]["column_name"] == "Total") {
+                        $cellClassToUse .= " cellTextTotal";
+                    }*/
+                    
+                    $cellValue = $resultOutputArray[$rowCounter][$columnCounter];
+                    
+                    
+                    /* Fix this and find the correct array reference
+                    if (strpos($loadedColumnGroupings[$i]["column_name"],"Pct") !== false) {
+                        $cellValue .= "%";
+                    }
+                    if ($reportID == 6) {
+                    
+                        if ($resultOutputArray[$rowCounter][0] == $loadedColumnGroupings[$i]["column_name"]) {
+                            $cellClassToUse .= " cellRowMatchesColumn";
+                        }
+                    }
+                    */
+                }
+                
+                $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $cellValue . "</td>";
+                
+                
+                
+                
+                //$tableRowOutput = $resultOutputArray[$rowCounter][$columnCounter];
+                /*
+                if (count($rowLabels) > 1) {
+                    //Output a second row label
+                    $tableRowOutput .= $resultOutputArray[$rowCounter][$columnCounter];
+                }
+                */
+                
+            } else {
+                $tableRowOutput .= "<td class='cellNormal'></td>";
             }
-            echo "</td>";
                 
         }
-        echo "</tr>";
+        $tableRowOutput .=  "</tr>";
+        
+        echo $tableRowOutput;
     }
-}
+
+    ?>
+    </table>
+    </div>
+    </div>
+<?php 
+//End UseNew TRUE
+} else {
 
 ?>
-</table>
+
+
+
+
+
+
+
 
 <!--<section class=''>
 <div class="container">-->
@@ -183,7 +337,6 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
     	echo $thOutput;
 	}
 
-	$countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
 	?>
 	
 
@@ -371,6 +524,10 @@ echo "</tbody>";
 </table>
 </div>
 </div>
+
+<?php 
+} //end useNew FALSE
+?>
 <!--
 </div>
 </section>
