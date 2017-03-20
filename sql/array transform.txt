@@ -1,0 +1,67 @@
+columnLabelResultArray:
+Array
+(
+    [0] => Array
+        (
+            [short_name] => BFL
+            [club_name] => Anglesea
+        )
+
+    [1] => Array
+        (
+            [short_name] => BFL
+            [club_name] => Barwon Heads
+	
+	...
+	
+------------------------------------
+resultArray:
+Array
+(
+    [Abbott, Trevor] => Array *currentRowItem*
+        (
+            [0] => Array
+                (
+                    [short_name] => BFL
+                    [match_count] => 1
+                    [club_name] => Modewarre
+                )
+
+            [1] => Array
+                (
+                    [short_name] => BFL
+                    [match_count] => 1
+                    [club_name] => Queenscliff
+                )
+
+        )
+
+    [Abrehart, Jack] => Array
+        (
+            [0] => Array
+                (
+                    [short_name] => BFL
+                    [match_count] => 1
+                    [club_name] => Ocean Grove
+					
+------------------------------------					
+tempArrayForColumnLabels:
+Array
+(
+    [0] => short_name
+    [1] => club_name
+)
+
+------------------------------------
+Required Output:
+
+Array (
+	[0] = Array (
+		[0] = 'Smith, John'
+		[6] = 2
+		[11] = 1
+	
+	)
+
+
+)

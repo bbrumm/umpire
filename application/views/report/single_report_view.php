@@ -3,7 +3,8 @@
 
 //LoadedReportItem is an object of type ReportInstance
 $loadedColumnGroupings = $loadedReportItem->getColumnLabelResultArray();
-$loadedResultArray = $loadedReportItem->getResultArray();
+$loadedResultArray = $loadedReportItem->getResultArray(); 
+$resultOutputArray = $loadedReportItem->getResultOutputArray(); //this might be the only object I need if I use the DW method
 $reportDisplayOptions = $loadedReportItem->getDisplayOptions();
 $columnLabels = $reportDisplayOptions->getColumnGroup();
 $colourCells = $reportDisplayOptions->getColourCells();
@@ -14,6 +15,7 @@ $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 $debugMode = $this->config->item('debug_mode');
 $reportID = $loadedReportItem->getReportID();
 $countFirstLoadedColumnGroupings = count($columnLabels);
+$useNewDWTables = $this->config->item('use_new_dw_tables');
 
 $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
@@ -30,6 +32,102 @@ echo "<br />";
         some really really wide content goes here
     </div>
      -->
+
+<!-- This table is used to test the new Data Warehouse style output. -->
+<div id='panelBelow'>
+<div id='moveLeftDown'>
+<table class='reportTable tableWithFloatingHeader' border=1>
+
+
+<thead>
+
+<?php 
+//$debugLibrary->debugOutput("test");
+
+
+if ($useNewDWTables) {
+
+    if ($debugMode) {
+        echo "<BR />resultOutputArray DW:<pre>";
+        print_r($resultOutputArray);
+        echo "</pre><BR />";
+        
+        echo "<BR />columnLabelResultArray DW:<pre>";
+        print_r($loadedColumnGroupings);
+        echo "</pre><BR />";
+    }
+    
+    
+    $countItemsInColumnHeadingSet = count($loadedColumnGroupings[0]);
+    //TODO: Replace this temp array with data from the database (report param tables)
+    $tempArrayForColumnLabels = array('short_name', 'club_name');
+    
+    for ($i=0; $i < $countItemsInColumnHeadingSet; $i++) {
+        echo "<tr class='header'>";
+        
+        $thOutput = "";
+        $thClassNameToUse = "";
+        
+        if ($reportDisplayOptions->getFirstColumnFormat() == "text") {
+            $thClassNameToUse = "columnHeadingNormal cellNameSize";
+        } elseif ($reportDisplayOptions->getFirstColumnFormat() == "date") {
+            $thClassNameToUse = "columnHeadingNormal cellDateSize";
+        } else {
+            $thClassNameToUse = "columnHeadingNormal cellNameSize";
+        }
+        
+        
+        $arrReportRowGroup = $reportDisplayOptions->getRowGroup(); //Array of ReportGroupingStructure objects
+        $arrReportColumnGroup = $reportDisplayOptions->getColumnGroup();
+        
+        for ($r=0; $r < count($arrReportRowGroup); $r++) {
+            $thOutput = "<th class='". $thClassNameToUse ."'>";
+            if ($i == 0) {
+                	
+                $thOutput .= $arrReportRowGroup[$r]->getGroupHeading();
+                $thOutput .= "<BR /><span class='columnSizeText'>". $arrReportRowGroup[$r]->getGroupSizeText() ."</span>";
+            }
+            $thOutput .= "</th>";
+            echo $thOutput;
+        }
+        
+        /*
+        echo "<th>Row Label Title</th>";
+        foreach ($loadedColumnGroupings as $columnHeadingSet) {
+            echo "<th>";    
+            echo $columnHeadingSet[$tempArrayForColumnLabels[$i]];        
+            echo "</th>";
+        }
+        echo "</tr>";
+        */
+    }
+    
+    echo "</thead>";
+    
+    $countRows = count($resultOutputArray);
+    $countColumns = count($loadedColumnGroupings);
+    
+    for ($rowCounter=0; $rowCounter < $countRows; $rowCounter++) {
+    
+        echo "<tr>";
+        for ($columnCounter=0; $columnCounter <= $countColumns; $columnCounter++) {
+            echo "<td>";
+            if(array_key_exists($columnCounter, $resultOutputArray[$rowCounter])) {
+                //echo "(" . $rowCounter . ", ". $columnCounter . ") ". $resultOutputArray[$rowCounter][$columnCounter];
+                echo $resultOutputArray[$rowCounter][$columnCounter];
+            } else {
+                //echo "(" . $rowCounter . ", ". $columnCounter . ") -";
+                
+            }
+            echo "</td>";
+                
+        }
+        echo "</tr>";
+    }
+}
+
+?>
+</table>
 
 <!--<section class=''>
 <div class="container">-->
