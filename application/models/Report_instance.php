@@ -279,6 +279,8 @@ class Report_instance extends CI_Model {
 	private function isFieldMatchingColumn($pColumnItem, $pColumnHeadingSet) {
 	    //$countColumnGroups = count($this->getReportColumnFields());
 	    
+	    
+	    
 	    switch (count($this->getReportColumnFields())) {
 	        case 1:
 	            if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
@@ -309,6 +311,14 @@ class Report_instance extends CI_Model {
 	            
 	            break;
 	        case 3:
+	            echo "A0: " . $pColumnItem[$this->getReportColumnFields()[0]];
+	            echo "A1: " . $pColumnItem[$this->getReportColumnFields()[1]];
+	            echo "A2: " . $pColumnItem[$this->getReportColumnFields()[2]];
+	             
+	            echo "B0: " . $pColumnHeadingSet[$this->getReportColumnFields()[0]];
+	            echo "B1: " . $pColumnHeadingSet[$this->getReportColumnFields()[1]];
+	            echo "B2: " . $pColumnHeadingSet[$this->getReportColumnFields()[2]];
+	            
 	            if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]] &&
 	                $pColumnItem[$this->getReportColumnFields()[1]] == $pColumnHeadingSet[$this->getReportColumnFields()[1]] &&
 	                $pColumnItem[$this->getReportColumnFields()[2]] == $pColumnHeadingSet[$this->getReportColumnFields()[2]]) {
