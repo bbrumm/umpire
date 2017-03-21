@@ -823,11 +823,11 @@ INSERT INTO mv_summary_staging (season_year, region, umpire_type_id, umpire_type
             INNER JOIN season ON season.ID = round.season_id 
             INNER JOIN region ON league.region_id = region.id 
             WHERE match_played.id NOT IN ( 
-            SELECT umpire_name_type_match.match_id 
-            FROM umpire_name_type_match 
-            INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id 
-            INNER JOIN umpire_type ut_sub ON ut_sub.ID = umpire_name_type.umpire_type_id 
-            WHERE ut_sub.umpire_type_name='Field' 
+				SELECT umpire_name_type_match.match_id 
+				FROM umpire_name_type_match 
+				INNER JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id 
+				INNER JOIN umpire_type ut_sub ON ut_sub.ID = umpire_name_type.umpire_type_id 
+				WHERE ut_sub.umpire_type_name='Field' 
             ) 
             AND season.id = pSeasonID 
             UNION 
@@ -935,10 +935,10 @@ INSERT INTO `mv_report_03` (season_year, region, weekdate,
             GROUP_CONCAT(home, ' vs ', away) AS team_list, 
             COUNT(home) AS match_count  
             FROM ( 
-            SELECT season_year, region, umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  
-            weekdate 
-            FROM mv_summary_staging 
-            WHERE season_year = @vSeasonYear 
+				SELECT season_year, region, umpire_type_id, umpire_type, age_group, short_league_name, round_date, match_id, home, away, home_club, away_club, age_group_ID,  
+				weekdate 
+				FROM mv_summary_staging 
+				WHERE season_year = @vSeasonYear 
             ) AS outer2 
             GROUP BY season_year, region, umpire_type, age_group, short_league_name, weekdate 
       ) AS outer3 

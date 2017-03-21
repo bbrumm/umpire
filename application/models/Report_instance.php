@@ -24,6 +24,8 @@ class Report_instance extends CI_Model {
 	private $ageGroupDisplayValues;
 	private $regionDisplayValues;
 	
+	private $reportColumnFields;
+	
 	private $reportID;
 	
 	public $requestedReport;
@@ -104,6 +106,10 @@ class Report_instance extends CI_Model {
 	
 	}
 	
+	public function getReportColumnFields() {
+	    return $this->reportColumnFields;
+	}
+	
 	public function getReportColumnLabelQuery() {
 	    return $this->reportColumnLabelQuery;
 	}
@@ -157,8 +163,12 @@ class Report_instance extends CI_Model {
 	    $resultOutputArray = "";
 	    
 	    $countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
-	    //TODO: Replace this temp array with data from the database (report param tables)
-	    $tempArrayForColumnLabels = array('short_league_name', 'club_name');
+	    //$tempArrayForColumnLabels = array('short_league_name', 'club_name');
+	    
+	    
+	    
+	    
+	    
 	    /*
 	    echo "TEST TABLE:<BR />";
         echo "<table border=1>";
@@ -191,17 +201,21 @@ class Report_instance extends CI_Model {
 	        foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
 	            //echo "<td>";
 	            $columnNumber++;
-	           foreach ($currentRowItem as $columnItem) { //Maps to a single match_count, not necessarily a column
+	            foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
     	            //Loop through each row and column intersection in the result array
     	            
     	            //Match the column headings to the values in the array
     	    /*
-    	            echo "columnLabelResultArray:<pre>";
-    	            print_r($columnLabelResultArray);
+    	            echo "columnItem:<pre>";
+    	            print_r($columnItem);
     	            echo "</pre>";
-    	      */      
+    	            */
+	                /*
+    	            echo "ColumnHeadingSet:<pre>";
+    	            print_r($columnHeadingSet);
+    	            echo "</pre>";
     	            //echo "<td>";
-    	            
+    	            */
 	                
 	                //foreach ($currentRowItem as $currentRowItemSubColumn) {
 	                    
@@ -211,11 +225,36 @@ class Report_instance extends CI_Model {
     	                echo "C:" . $columnHeadingSet['short_name'] . "<BR />";
     	                echo "D:" . $columnHeadingSet['club_name'] . "<BR />";
     	                */
+	               
+	               //echo "ColumnKey: " . $columnKey . "<BR />";
     	                
-	                if ($columnItem['short_league_name'] == $columnHeadingSet['short_league_name'] &&
-	                    $columnItem['club_name'] == $columnHeadingSet['club_name']) {
-	                    
+	                /*if ($columnItem['short_league_name'] == $columnHeadingSet['short_league_name'] &&
+	                    $columnItem['club_name'] == $columnHeadingSet['club_name']) {*/
+	               if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet)) {
+	                    if($this->requestedReport->getReportNumber() == 3) {
+	                        if ($columnHeadingSet['short_league_name'] == 'Total') {
+	                            //Output the Total column values for report 3
+	                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+	                        } else {
+	                            //Output the team list value for non-total columns
+	                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['team_list'];
+	                        }
+	                    } elseif ($this->requestedReport->getReportNumber() == 5) {
+	                        //TODO: Clean this code up
+	                        if ($columnNumber == 1) {
+	                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['age_group'];
+	                            $columnNumber++;
+	                        } elseif ($columnHeadingSet['subtotal'] == 'Games') {
+	                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_no_ump'];
+	                        } elseif ($columnHeadingSet['subtotal'] == 'Total') {
+	                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['total_match_count'];
+                            } elseif ($columnHeadingSet['subtotal'] == 'Pct') {
+                                $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_pct'];
+                            }
+	                    } else {
 	                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+	                    }
+	                        
 	                }
     	                
     	                
@@ -235,6 +274,63 @@ class Report_instance extends CI_Model {
 	    //echo "</table>";
 	    
 	    $this->resultOutputArray = $resultOutputArray;
+	}
+	
+	private function isFieldMatchingColumn($pColumnItem, $pColumnHeadingSet) {
+	    //$countColumnGroups = count($this->getReportColumnFields());
+	    
+	    switch (count($this->getReportColumnFields())) {
+	        case 1:
+	            if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
+                    return true;	            
+	            } else {
+	                return false;
+	            }
+	            break;
+	        case 2:
+	            if ($this->requestedReport->getReportNumber() == 5) {
+	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
+	                    return true;
+	                } else {
+	                    return false;
+	                } 
+	                
+	            } elseif ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]] && 
+	            $pColumnItem[$this->getReportColumnFields()[1]] == $pColumnHeadingSet[$this->getReportColumnFields()[1]]) {
+	                return true;
+	            } elseif ($this->requestedReport->getReportNumber() == 3 &&
+	                $pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]] && 
+	                $pColumnHeadingSet[$this->getReportColumnFields()[1]] == 'Total') {
+	                return true;
+	            } else {
+	                return false;
+	            }
+	            
+	            
+	            break;
+	        case 3:
+	            if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]] &&
+	                $pColumnItem[$this->getReportColumnFields()[1]] == $pColumnHeadingSet[$this->getReportColumnFields()[1]] &&
+	                $pColumnItem[$this->getReportColumnFields()[2]] == $pColumnHeadingSet[$this->getReportColumnFields()[2]]) {
+	                    return true;
+	                } else {
+	                    return false;
+	                }
+	            
+	            break;
+	    }
+    
+	}
+	
+	
+	private function translateRptGrStructureToSimpleArray($pReportGroupingStructureArray) {
+	    $simpleColumnFieldArray = "";
+	    for ($i=0; $i < count($pReportGroupingStructureArray); $i++) {
+	        if ($pReportGroupingStructureArray[$i]->getGroupingType() == 'Column') {
+	            $simpleColumnFieldArray[] = $pReportGroupingStructureArray[$i]->getFieldName();
+	        }
+	    }
+	    return $simpleColumnFieldArray;
 	}
 	
 	public function getResultOutputArray() {
@@ -287,6 +383,7 @@ class Report_instance extends CI_Model {
 	    $reportParamLoader->loadAllReportParametersForReport($pRequestedReport);
 	    $reportParameterArray = $reportParamLoader->getReportParameterArray();
 	    $reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
+	    
 	    $reportGroupingStructureArray = $reportParamLoader->getReportGroupingStructureArray();
 	    
 	    $this->reportDisplayOptions->setNoDataValue($this->lookupParameterValue($reportParameterArray, 'No Value To Display'));
@@ -295,6 +392,7 @@ class Report_instance extends CI_Model {
 	    $this->reportDisplayOptions->setPDFResolution($this->lookupParameterValue($reportParameterArray, 'PDF Resolution'));
 	    $this->reportDisplayOptions->setPDFPaperSize($this->lookupParameterValue($reportParameterArray, 'PDF Paper Size'));
 	    $this->reportDisplayOptions->setPDFOrientation($this->lookupParameterValue($reportParameterArray, 'PDF Orientation'));
+	    $this->reportColumnFields = $this->translateRptGrStructureToSimpleArray($reportGroupingStructureArray);
 	    $this->reportTitle = str_replace("%seasonYear", $pRequestedReport->getSeason(), $this->lookupParameterValue($reportParameterArray, 'Display Title'));
 	    //TODO: Remove this variable and line as it is in the sub-object
 	    $this->reportID = $pRequestedReport->getReportNumber();
@@ -372,22 +470,166 @@ class Report_instance extends CI_Model {
 	
 	
 	private function buildSelectQueryForReportUsingDW() {
-	    $queryString = "SELECT
-            u.last_first_name,
-            l.short_league_name,
-            te.club_name,
-            COUNT(DISTINCT m.match_id) AS match_count
-            FROM dw_fact_match m
-            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-            WHERE a.age_group = ". $this->getAgeGroupSQLValues() ."
-            AND l.short_league_name = ". $this->getLeagueSQLValues() ."
-            AND l.region_name = ". $this->getRegionSQLValues() ."
-            AND u.umpire_type = ". $this->getUmpireTypeSQLValues() ."
-            GROUP BY u.last_first_name, l.short_league_name, te.club_name
-            ORDER BY u.last_first_name, l.short_league_name, te.club_name";
+	    switch ($this->requestedReport->getReportNumber()) {
+	        case 1:
+	            $queryString = "SELECT
+                    u.last_first_name,
+                    l.short_league_name,
+                    te.club_name,
+                    COUNT(DISTINCT m.match_id) AS match_count
+                    FROM dw_fact_match m
+                    INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+                    INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+                    INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+                    INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+                    WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
+                    AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
+                    AND l.region_name IN (". $this->getRegionSQLValues() .")
+                    AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
+                    GROUP BY u.last_first_name, l.short_league_name, te.club_name
+                    ORDER BY u.last_first_name, l.short_league_name, te.club_name";
+	        
+	            break;
+	            
+	        case 2:
+	            $queryString = "SELECT
+    	            u.last_first_name,
+    	            a.age_group,
+    	            a.sort_order,
+    	            l.short_league_name,
+    	            0 AS two_ump_flag,
+    	            COUNT(DISTINCT m.match_id) AS match_count
+    	            FROM dw_fact_match m
+    	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+    	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+    	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+    	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+    	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+    	            WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
+    	            AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
+    	            AND l.region_name IN (". $this->getRegionSQLValues() .")
+    	            AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
+    	            GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
+    	            UNION ALL
+    	            SELECT
+    	            u.last_first_name,
+    	            a.age_group,
+    	            a.sort_order,
+    	            '2 Umpires' AS short_league_name,
+    	            1 AS two_ump_flag,
+    	            COUNT(DISTINCT m.match_id) AS match_count
+    	            FROM dw_fact_match m
+    	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+    	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+    	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+    	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+    	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+    	            INNER JOIN (
+    	                SELECT
+    	                m2.match_id,
+    	                COUNT(DISTINCT u2.umpire_key) AS umpire_count
+    	                FROM dw_fact_match m2
+    	                INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+    	                INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+    	                WHERE u2.umpire_type = 'Field'
+    	                AND a2.age_group = 'Seniors'
+    	                GROUP BY m2.match_id
+    	                HAVING COUNT(DISTINCT u2.umpire_key) = 2
+    	                ) AS qryMatchesWithTwoUmpires ON m.match_id = qryMatchesWithTwoUmpires.match_id
+    	                WHERE u.umpire_type = 'Field'
+    	                AND a.age_group = 'Seniors'
+    	                GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
+    	                ORDER BY last_first_name, sort_order, short_league_name;";
+	           
+	            break;
+	        case 3:
+	            $queryString = "SELECT 
+                    weekend_date,
+                    CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group,
+                    short_league_name,
+                    GROUP_CONCAT(team_names) AS team_list,
+                    (
+                    	SELECT
+                    	COUNT(DISTINCT match_id)
+                    	FROM staging_no_umpires s2
+                    	WHERE s2.age_group = s.age_group
+                    	AND s2.umpire_type = s.umpire_type
+                        AND s2.weekend_date = s.weekend_date
+                        AND short_league_name IN (". $this->getLeagueSQLValues() .")
+                    ) AS match_count
+                    FROM staging_no_umpires s
+                    WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
+                    AND CONCAT(age_group, ' ', umpire_type) IN (
+                    	'Seniors Boundary',
+                    	'Seniors Goal',
+                    	'Reserve Goal',
+                    	'Colts Field',
+                    	'Under 16 Field',
+                    	'Under 14 Field',
+                    	'Under 12 Field'
+                    )
+                    GROUP BY weekend_date, age_group, umpire_type, short_league_name
+                    ORDER BY weekend_date, age_group, umpire_type, short_league_name;";
+	            
+	            break;
+	        case 4:
+	            $queryString = "SELECT 
+                    club_name,
+                    age_group,
+                    short_league_name,
+                    umpire_type,
+                    match_count
+                    FROM dw_mv_report_04
+                    ORDER BY club_name, age_sort_order, league_sort_order;";
+	            
+	            break;
+	        case 5:
+	            $queryString = "SELECT
+    	            ua.umpire_type_name AS umpire_type,
+    	            ua.age_group,
+    	            sub_match_count.short_league_name,
+    	            IFNULL(sub_match_count.match_count, 0) AS match_no_ump,
+    	            IFNULL(sub_total_matches.total_match_count, 0) AS total_match_count,
+    	            IFNULL(FLOOR(sub_match_count.match_count / sub_total_matches.total_match_count * 100), 0) AS match_pct,
+    	            ua.display_order AS age_sort_order,
+    	            sub_total_matches.league_sort_order
+    	            FROM (
+    	                SELECT
+    	                ut.umpire_type_name,
+    	                ag.age_group,
+    	                ag.display_order
+    	                FROM
+    	                umpire_type ut, age_group ag
+    	                ) AS ua
+    	                LEFT JOIN (
+    	                    SELECT
+    	                    umpire_type,
+    	                    age_group,
+    	                    short_league_name,
+    	                    COUNT(s.match_id) AS Match_Count
+    	                    FROM staging_no_umpires s
+    	                    GROUP BY umpire_type, age_group, short_league_name
+    	                    ) AS sub_match_count
+                        ON ua.umpire_type_name = sub_match_count.umpire_type
+                        AND ua.age_group = sub_match_count.age_group
+                        LEFT JOIN (
+                            SELECT
+                            a.age_group,
+                            l.short_league_name,
+                            a.sort_order,
+                            l.league_sort_order,
+                            COUNT(DISTINCT match_id) AS total_match_count
+                            FROM dw_fact_match m
+                            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+                            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+                            GROUP BY a.age_group, l.short_league_name, a.sort_order, l.league_sort_order
+                            ) AS sub_total_matches
+                        ON ua.age_group = sub_total_matches.age_group
+                        AND sub_match_count.short_league_name = sub_total_matches.short_league_name
+                        ORDER BY ua.umpire_type_name, ua.display_order, sub_total_matches.league_sort_order;";
+    	            
+	            break;
+	    }
 
 	    return $queryString;
 	}
@@ -604,26 +846,158 @@ class Report_instance extends CI_Model {
 	
 	private function buildColumnLabelQuery() {
 	    $useNewDWTables = $this->config->item('use_new_dw_tables');
+
+	     //TODO: Move this into the buildQueryForReportDW function and 
+	     //change the return to be an object with two queries:
+	     //one with the data query and one with the column query
+	     //TODO: Simplify these queries with materialised views (like I have done with report 4)
 	     
+	    
 	    if ($useNewDWTables) {
-	       $columnLabelQuery = "SELECT DISTINCT short_league_name, club_name
-	           FROM (
-	        SELECT
-            u.last_first_name,
-            l.short_league_name,
-            te.club_name,
-            COUNT(DISTINCT m.match_id) AS match_count
-            FROM dw_fact_match m
-            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-            WHERE a.age_group = ". $this->getAgeGroupSQLValues() ."
-            AND l.short_league_name = ". $this->getLeagueSQLValues() ."
-            AND l.region_name = ". $this->getRegionSQLValues() ."
-            AND u.umpire_type = ". $this->getUmpireTypeSQLValues() ."
-            GROUP BY u.last_first_name, l.short_league_name, te.club_name) AS sub
-            ORDER BY short_league_name, club_name";
+	        switch ($this->requestedReport->getReportNumber()) {
+	            case 1:
+        	       $columnLabelQuery = "SELECT DISTINCT short_league_name, club_name
+        	           FROM (
+        	        SELECT
+                    u.last_first_name,
+                    l.short_league_name,
+                    te.club_name,
+                    COUNT(DISTINCT m.match_id) AS match_count
+                    FROM dw_fact_match m
+                    INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+                    INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+                    INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+                    INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+                    WHERE a.age_group = ". $this->getAgeGroupSQLValues() ."
+                    AND l.short_league_name = ". $this->getLeagueSQLValues() ."
+                    AND l.region_name = ". $this->getRegionSQLValues() ."
+                    AND u.umpire_type = ". $this->getUmpireTypeSQLValues() ."
+                    GROUP BY u.last_first_name, l.short_league_name, te.club_name) AS sub
+                    ORDER BY short_league_name, club_name";
+        	       
+        	       break;
+	            case 2:
+	                $columnLabelQuery = "SELECT DISTINCT age_group, short_league_name
+        	           FROM (
+            	        SELECT
+        	            u.last_first_name,
+        	            a.age_group,
+        	            a.sort_order AS age_sort_order,
+        	            l.short_league_name,
+        	            0 AS two_ump_flag,
+	                    l.league_sort_order,
+        	            COUNT(DISTINCT m.match_id) AS match_count
+        	            FROM dw_fact_match m
+        	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+        	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+        	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+        	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+        	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+        	            WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
+        	            AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
+        	            AND l.region_name IN (". $this->getRegionSQLValues() .")
+        	            AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
+        	            GROUP BY u.last_first_name, a.age_group, a.sort_order, l.league_sort_order, l.short_league_name
+        	            UNION ALL
+        	            SELECT
+        	            u.last_first_name,
+        	            a.age_group,
+        	            a.sort_order,
+        	            '2 Umpires' AS short_league_name,
+        	            1 AS two_ump_flag,
+        	            10 AS league_sort_order,
+        	            COUNT(DISTINCT m.match_id) AS match_count
+        	            FROM dw_fact_match m
+        	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+        	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+        	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+        	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+        	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+        	            INNER JOIN (
+        	                SELECT
+        	                m2.match_id,
+        	                COUNT(DISTINCT u2.umpire_key) AS umpire_count
+        	                FROM dw_fact_match m2
+        	                INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+        	                INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+        	                WHERE u2.umpire_type = 'Field'
+        	                AND a2.age_group = 'Seniors'
+        	                GROUP BY m2.match_id
+        	                HAVING COUNT(DISTINCT u2.umpire_key) = 2
+        	                ) AS qryMatchesWithTwoUmpires ON m.match_id = qryMatchesWithTwoUmpires.match_id
+        	                WHERE u.umpire_type = 'Field'
+        	                AND a.age_group = 'Seniors'
+        	                GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
+                        ) AS sub
+                        ORDER BY age_sort_order, league_sort_order";
+	                
+	                break;
+	            case 3:
+	                $columnLabelQuery = "SELECT DISTINCT
+                    	CONCAT('No ', sub.age_group, ' ', sub.umpire_type) AS umpire_type_age_group,
+                    	sub.short_league_name
+                    	FROM (
+                    	SELECT
+                    	s.age_group,
+                    	s.umpire_type,
+                    	s.short_league_name,
+                    	s.age_sort_order
+                    	FROM staging_all_ump_age_league s
+                    	UNION ALL
+                    	SELECT
+                    	s.age_group,
+                    	s.umpire_type,
+                    	'Total',
+                    	s.age_sort_order
+                    	FROM staging_all_ump_age_league s
+                    	ORDER BY age_sort_order, umpire_type, short_league_name
+                    ) sub
+                    WHERE CONCAT(sub.age_group, ' ', sub.umpire_type) IN
+                    	('Seniors Boundary' , 'Seniors Goal', 'Reserves Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field');";
+	                
+	                break;
+	            
+	            case 4:
+	                /*$columnLabelQuery = "SELECT DISTINCT umpire_type, age_group, short_league_name 
+	                    FROM (SELECT
+                        club_name,
+                        age_group,
+                        short_league_name,
+                        umpire_type,
+                        match_count,
+	                    age_sort_order,
+	                    league_sort_order
+                        FROM dw_mv_report_04
+	                    WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
+	                    ) sub
+	                    ORDER BY age_sort_order, league_sort_order;";
+	                */
+	                $columnLabelQuery = "SELECT
+                        s.umpire_type,
+                        s.age_group,
+                        s.short_league_name
+                        FROM staging_all_ump_age_league s
+                        WHERE s.short_league_name IN (". $this->getLeagueSQLValues() .")
+                        ORDER BY s.umpire_type, s.age_sort_order, s.league_sort_order;";
+	                
+	                break;
+	            case 5:
+	                $columnLabelQuery = "SELECT DISTINCT
+                        l.short_league_name,
+                        sub.subtotal
+                        FROM dw_dim_league l
+                        CROSS JOIN (
+                            SELECT 'Games' AS subtotal
+                            UNION
+                            SELECT 'Total'
+                            UNION
+                            SELECT 'Pct'
+                        ) AS sub
+                        WHERE l.short_league_name IN ('BFL', 'GFL', 'GDFL', 'CDFNL', 'GJFL');";
+	                
+	                break;
+	                    
+	        }
 	       
 	       
 	       $this->debug_library->debugOutput("columnLabelQuery:", $columnLabelQuery);
@@ -753,7 +1127,36 @@ class Report_instance extends CI_Model {
 	    $useNewDWTables = $this->config->item('use_new_dw_tables');
 	     
 	    if ($useNewDWTables) {
-	        $this->resultArray = $this->pivotQueryArrayNew($pResultArray, 'last_first_name', array('short_league_name', 'club_name'));
+	        //TODO: Get these fields from the database
+	        
+	        
+	        
+	        switch ($this->requestedReport->getReportNumber()) {
+	            case 1:
+	               $columnLabelArray = array('short_league_name', 'club_name');
+	               $rowLabelField =  array('last_first_name');
+	               
+	               break;
+	            case 2:
+	                $columnLabelArray = array('age_group', 'short_league_name');
+	                $rowLabelField =  array('last_first_name');
+	                break;
+                case 3:
+                    $columnLabelArray = array('umpire_type_age_group', 'short_league_name');
+                    $rowLabelField =  array('weekend_date');
+                    break;
+                case 4:
+                    $columnLabelArray = array('umpire_type', 'age_group', 'short_league_name');
+                    $rowLabelField =  array('club_name');
+                    break;
+                case 5:
+                    $columnLabelArray = array('short_league_name', 'subtotal');
+                    $rowLabelField =  array('umpire_type', 'age_group');
+                    break;
+	        }
+	        
+	        $this->resultArray = $this->pivotQueryArrayNew($pResultArray, $rowLabelField, $columnLabelArray);
+	        
 	    } else {
 	    
     	    if ($this->requestedReport->getReportNumber() == 6) {
@@ -974,27 +1377,63 @@ class Report_instance extends CI_Model {
 	    return $pivotedArray;
 	}
 	
-	private function pivotQueryArrayNew($pResultArray, $pFieldForRowLabel, array $pFieldsForColumnLabel) {
+	private function pivotQueryArrayNew($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
 	    //Create new array to hold values for output
 	    $this->debug_library->debugOutput("pivotQueryArrayNew Before:", $pResultArray);
 	    
+	    $this->debug_library->debugOutput("pFieldForRowLabel:", $pFieldForRowLabel);
+	    
+	    $countRowGroups = count($pFieldForRowLabel);
+	    
 	    $pivotedArray = array();
 	    $counterForRow = 0;
-	    $previousRowLabel = "";
+	    $previousRowLabel[0] = "";
 	    foreach ($pResultArray as $resultRow) {
-	        if ($resultRow[$pFieldForRowLabel] != $previousRowLabel) {
+	        if ($resultRow[$pFieldForRowLabel[0]] != $previousRowLabel[0]) {
 	            //New row label, so reset counter
 	            $counterForRow = 0;
+	        } elseif (array_key_exists(1, $pFieldForRowLabel)) {
+	            if ($resultRow[$pFieldForRowLabel[1]] != $previousRowLabel[1]) {
+	                //New row label, so reset counter
+	                $counterForRow = 0;
+	            }
 	        }
-	        $previousRowLabel = $resultRow[$pFieldForRowLabel];
+	            
+	        
+	        $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]];
+	        if (array_key_exists(1, $pFieldForRowLabel)) {
+	            $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]];
+	        }
 	        
 	        foreach ($pFieldsForColumnLabel as $columnField) {
 	            
-	            $pivotedArray[$resultRow[$pFieldForRowLabel]][$counterForRow][$columnField] = $resultRow[$columnField];
-	            $pivotedArray[$resultRow[$pFieldForRowLabel]][$counterForRow]['match_count'] = $resultRow['match_count'];
+	            //for ($j=0; $j < $countRowGroups; $j++) {
+	            
+    	            if ($this->requestedReport->getReportNumber() == 5) {
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['short_league_name'] = $resultRow['short_league_name'];
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['age_group'] = $resultRow['age_group'];
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['umpire_type'] = $resultRow['umpire_type'];
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_no_ump'] = $resultRow['match_no_ump'];
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['total_match_count'] = $resultRow['total_match_count'];
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_pct'] = $resultRow['match_pct'];
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['columnField'] = $columnField;
+    	                
+    	                
+    	            } else {
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
+    	            }
+    	            
+    	            
+    	            if ($this->requestedReport->getReportNumber() == 3) {
+    	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['team_list'] = $resultRow['team_list'];
+    	            }
+    	            
+    	            $counterForRow++;
+	            //}
 	            
 	        }
-	        $counterForRow++;
+	        
 	        /*
 	        $second_umpire_names[] = $resultRow['second_umpire'];
 	        $pivotedArray[$resultRow['first_umpire']]['umpire_name'] = $resultRow['first_umpire'];

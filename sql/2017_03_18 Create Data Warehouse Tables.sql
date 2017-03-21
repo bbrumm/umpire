@@ -26,8 +26,13 @@ CREATE TABLE dw_dim_league (
     short_league_name VARCHAR(50),
     full_name VARCHAR(200),
     region_name VARCHAR(100),
-    competition_name VARCHAR(500)
+    competition_name VARCHAR(500),
+    league_sort_order INT(11)
 );
+
+alter table `dw_dim_league` change column `short_name` `short_league_name` varchar(50);
+alter table `dw_dim_league` add column `league_sort_order` INT(11);
+truncate table dw_dim_league;
 
 CREATE TABLE dw_dim_team (
 	team_key INT(11) PRIMARY KEY AUTO_INCREMENT,
@@ -83,6 +88,36 @@ CREATE TABLE staging_match (
     competition_name VARCHAR(500)
 );
 
+CREATE TABLE staging_no_umpires (
+	weekend_date DATETIME,
+    age_group VARCHAR(100),
+    umpire_type VARCHAR(100),
+    short_league_name VARCHAR(100),
+    team_names VARCHAR(400),
+	match_id INT(11)
+);
+
+DROP TABLE staging_all_ump_age_league;
+
+CREATE TABLE staging_all_ump_age_league (
+	age_group VARCHAR(100),
+    umpire_type VARCHAR(100),
+    short_league_name VARCHAR(100),
+    age_sort_order INT(11),
+    league_sort_order INT(11)
+);
+
+
+CREATE TABLE dw_mv_report_04 (
+	club_name VARCHAR(100),
+	age_group VARCHAR(100),
+	short_league_name VARCHAR(100),
+	umpire_type VARCHAR(100),
+    age_sort_order INT(11),
+    league_sort_order INT(11),
+	match_count INT(11)
+);
+
 
 /*
     s.id,
@@ -135,13 +170,21 @@ ORDER BY ag.display_order;
 Populate DimLeague
 */
 
+TRUNCATE TABLE dw_dim_league;
 
-INSERT INTO dw_dim_league (short_name, full_name, region_name, competition_name)
+INSERT INTO dw_dim_league (short_league_name, full_name, region_name, competition_name, league_sort_order)
 SELECT DISTINCT
 l.short_league_name,
 l.league_name,
 r.region_name,
-c.competition_name
+c.competition_name,
+CASE short_league_name
+	WHEN 'GFL' THEN 1
+	WHEN 'BFL' THEN 2
+	WHEN 'GDFL' THEN 3
+	WHEN 'CDFNL' THEN 4
+	ELSE 10
+END league_sort_order
 FROM league l
 INNER JOIN region r ON l.region_id = r.id
 INNER JOIN competition_lookup c ON l.ID = c.league_id;
@@ -230,6 +273,105 @@ INNER JOIN    season s ON s.id = rn.season_id
 INNER JOIN    region r ON r.id = l.region_id
 WHERE  s.id = 2;
 
+TRUNCATE staging_no_umpires;
+
+INSERT INTO staging_no_umpires (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id)
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Field',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Field'
+)
+UNION ALL
+
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Boundary',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Boundary'
+)
+UNION ALL
+
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Goal',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Goal'
+);
+
+
+
+
+TRUNCATE TABLE staging_all_ump_age_league;
+
+INSERT INTO staging_all_ump_age_league (age_group, umpire_type, short_league_name, age_sort_order, league_sort_order)
+SELECT DISTINCT
+ag.age_group,
+ut.umpire_type_name,
+l.short_league_name,
+ag.display_order,
+NULL
+FROM age_group ag
+INNER JOIN age_group_division agd ON ag.ID = agd.age_group_id
+INNER JOIN league l ON l.age_group_division_id = agd.ID
+CROSS JOIN umpire_type ut;
+
+
+
 /*
 Create Indexes
 */
@@ -239,6 +381,10 @@ CREATE INDEX idx_dl_join ON dw_dim_league (short_name, full_name, region_name, c
 CREATE INDEX idx_dtm_join ON dw_dim_team (team_name, club_name);
 CREATE INDEX idx_dti_join ON dw_dim_time (match_date);
 CREATE INDEX idx_sm_age ON staging_match (age_group_name, division_name);
+
+
+CREATE INDEX idx_stg_no ON staging_no_umpires (umpire_type, short_league_name, age_group);
+CREATE INDEX idx_stg_no_mid ON staging_no_umpires (match_id);
 
 
 
@@ -258,7 +404,7 @@ dth.team_key AS home_team_key,
 dta.team_key AS away_team_key
 FROM
 staging_match s
-INNER JOIN dw_dim_umpire du ON (s.umpire_first_name = du.first_name
+LEFT JOIN dw_dim_umpire du ON (s.umpire_first_name = du.first_name
 	AND s.umpire_last_name = du.last_name
 	AND s.umpire_type_name = du.umpire_type
 )
@@ -267,7 +413,7 @@ INNER JOIN dw_dim_age_group dag ON (
 	AND s.division_name = dag.division
 )
 INNER JOIN dw_dim_league dl ON (
-	s.short_league_name = dl.short_name
+	s.short_league_name = dl.short_league_name
 	AND s.league_name = dl.full_name
 	AND s.region_name = dl.region_name
     AND s.competition_name = dl.competition_name
