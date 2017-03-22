@@ -36,7 +36,7 @@ echo "<br />";
 <!-- This table is used to test the new Data Warehouse style output. -->
 <div id='panelBelow'>
 <div id='moveLeftDown'>
-<table class='reportTable tableWithFloatingHeader' border=1>
+<table class='reportTable tableWithFloatingHeader'	>
 
 
 <thead>
@@ -131,7 +131,15 @@ if ($useNewDWTables) {
             }
             if ($proceed) {
                 //print cell with colspan value
-                if ($columnLabels[$i] == 'club_name' || $reportID == 6) {
+                if ($debugMode) {
+                    /*
+                    echo "<pre>columnLabels <BR/>";
+                    print_r($columnLabels[$i]);
+                    echo "</pre>";
+                    */
+                    echo $columnLabels[$i]->getFieldName() . "rotate cell 1<BR />";
+                }
+                if ($columnLabels[$i]->getFieldName() == 'club_name' || $reportID == 6) {
                     //Some reports have their headers displayed differently
                     $colspanForCell = 1;
                     if ($PDFLayout) {
@@ -140,10 +148,16 @@ if ($useNewDWTables) {
                         $divClass = "rotated_text_pdf";
         
                     } else {
+                        if ($debugMode) {
+                            echo "<BR />rotate cell YES<BR />";
+                        }
                         $cellClass = "rotated_cell";
                         $divClass = "rotated_text";
                     }
                 } else {
+                    if ($debugMode) {
+                        echo "dont rotate cell 2<BR />";
+                    }
                     //Increase the colspan if this column group is to be merged
                     if ($arrReportColumnGroup[$i]->getMergeField() == 1) {
                         $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
@@ -162,7 +176,14 @@ if ($useNewDWTables) {
     echo "</thead>";
     
     $countRows = count($resultOutputArray);
-    $countColumns = count($loadedColumnGroupings);
+    if ($reportID == 5) {
+        //TODO: Fix bug where report 5 is not getting the right number of columns.
+        //This happens because the COUNT here is only looking at data columns, not the row label columns,
+        //and in report 5, there are two of them.
+        $countColumns = count($loadedColumnGroupings) + 1;
+    } else {
+        $countColumns = count($loadedColumnGroupings);
+    }
     
     if ($debugMode) {
         echo "<BR />loadedColumnGroupings DW:<pre>";
@@ -230,20 +251,23 @@ if ($useNewDWTables) {
                     $cellValue = $resultOutputArray[$rowCounter][$columnCounter];
                     
                     
-                    /* Fix this and find the correct array reference
-                    if (strpos($loadedColumnGroupings[$i]["column_name"],"Pct") !== false) {
-                        $cellValue .= "%";
-                    }
-                    if ($reportID == 6) {
-                    
-                        if ($resultOutputArray[$rowCounter][0] == $loadedColumnGroupings[$i]["column_name"]) {
-                            $cellClassToUse .= " cellRowMatchesColumn";
+                    /* TODO: Fix this and find the correct array reference
+                    */
+                    if ($reportID == 5) {
+                        if ($columnCounter >= 2) {
+                            if ($loadedColumnGroupings[$columnCounter-2]["subtotal"] == "Pct") {
+                                $cellValue .= "%";
+                            }
                         }
                     }
-                    */
+                    
+                    
+                    
                 }
                 
-                $tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $cellValue . "</td>";
+                
+                
+                //$tableRowOutput .=  "<td class='". $cellClassToUse ."'>" . $cellValue . "</td>";
                 
                 
                 
@@ -257,10 +281,25 @@ if ($useNewDWTables) {
                 */
                 
             } else {
-                $tableRowOutput .= "<td class='cellNormal'></td>";
+                $cellClassToUse = "cellNormal";
+                $cellValue = "";
             }
+            
+            if ($reportID == 6 && $columnCounter > 0) {
+            
+                if ($resultOutputArray[$rowCounter][0] == $loadedColumnGroupings[$columnCounter-1]["second_umpire"]) {
+                    //echo "ROW resultOutputArray $rowCounter matches COL loadedColumnGroupings $columnCounter <BR />";
+                    $cellClassToUse .= " cellRowMatchesColumn";
+                }
+            }
+            
+            $tableRowOutput .= "<td class='$cellClassToUse'>$cellValue</td>";
+            
                 
         }
+        
+        
+        
         $tableRowOutput .=  "</tr>";
         
         echo $tableRowOutput;
@@ -272,17 +311,18 @@ if ($useNewDWTables) {
     </div>
 <?php 
 //End UseNew TRUE
+?>
+<!--
+</div>
+</section>
+-->
+<?php 
+
 } else {
 
 ?>
 
 
-
-
-
-    
-    
-    
     <!--<section class=''>
     <div class="container">-->
     <div id='panelBelow'>

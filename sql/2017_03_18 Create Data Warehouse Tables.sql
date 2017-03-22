@@ -6,6 +6,11 @@ DROP TABLE dw_dim_time;
 DROP TABLE dw_fact_match;
 DROP TABLE staging_match;
 
+
+DELETE FROM competition_lookup
+WHERE competition_name LIKE '%2015%'
+AND season_id = 2;
+
 CREATE TABLE dw_dim_umpire (
 	umpire_key INT(11) PRIMARY KEY AUTO_INCREMENT,
 	first_name VARCHAR(100),
@@ -27,11 +32,13 @@ CREATE TABLE dw_dim_league (
     full_name VARCHAR(200),
     region_name VARCHAR(100),
     competition_name VARCHAR(500),
+    league_year INT(11),
     league_sort_order INT(11)
 );
 
 alter table `dw_dim_league` change column `short_name` `short_league_name` varchar(50);
 alter table `dw_dim_league` add column `league_sort_order` INT(11);
+alter table `dw_dim_league` add column `league_year` INT(11);
 truncate table dw_dim_league;
 
 CREATE TABLE dw_dim_team (
@@ -118,6 +125,23 @@ CREATE TABLE dw_mv_report_04 (
 	match_count INT(11)
 );
 
+DROP TABLE dw_mv_report_06;
+
+CREATE TABLE dw_mv_report_06 (
+	umpire_type VARCHAR(100),
+	age_group VARCHAR(100),
+	region_name VARCHAR(100),
+    first_umpire VARCHAR(200),
+    second_umpire VARCHAR(200),
+    season_year INT(4),
+    match_count INT(11)
+);
+
+
+TRUNCATE TABLE dw_mv_report_06;
+
+
+
 
 /*
     s.id,
@@ -172,12 +196,13 @@ Populate DimLeague
 
 TRUNCATE TABLE dw_dim_league;
 
-INSERT INTO dw_dim_league (short_league_name, full_name, region_name, competition_name, league_sort_order)
+INSERT INTO dw_dim_league (short_league_name, full_name, region_name, competition_name, league_year, league_sort_order)
 SELECT DISTINCT
 l.short_league_name,
 l.league_name,
 r.region_name,
 c.competition_name,
+s.season_year,
 CASE short_league_name
 	WHEN 'GFL' THEN 1
 	WHEN 'BFL' THEN 2
@@ -187,7 +212,8 @@ CASE short_league_name
 END league_sort_order
 FROM league l
 INNER JOIN region r ON l.region_id = r.id
-INNER JOIN competition_lookup c ON l.ID = c.league_id;
+INNER JOIN competition_lookup c ON l.ID = c.league_id
+INNER JOIN season s ON c.season_id = s.id;
 
 
 
@@ -229,6 +255,8 @@ ORDER BY m.match_time;
 /*
 Populate FactMatch
 */
+TRUNCATE TABLE staging_match;
+
 INSERT INTO staging_match (season_id, season_year, umpire_id, umpire_first_name, umpire_last_name,
 home_club, home_team, away_club, away_team, short_league_name, league_name, age_group_id, age_group_name, 
 umpire_type_name, match_id, match_time, region_id, region_name, division_name, competition_name)
@@ -381,7 +409,8 @@ CREATE INDEX idx_dl_join ON dw_dim_league (short_name, full_name, region_name, c
 CREATE INDEX idx_dtm_join ON dw_dim_team (team_name, club_name);
 CREATE INDEX idx_dti_join ON dw_dim_time (match_date);
 CREATE INDEX idx_sm_age ON staging_match (age_group_name, division_name);
-
+DROP INDEX idx_du_nametype ON dw_dim_umpire;
+CREATE INDEX idx_du_nametype ON dw_dim_umpire (umpire_key, last_first_name, umpire_type);
 
 CREATE INDEX idx_stg_no ON staging_no_umpires (umpire_type, short_league_name, age_group);
 CREATE INDEX idx_stg_no_mid ON staging_no_umpires (match_id);
@@ -428,6 +457,7 @@ INNER JOIN dw_dim_team dta ON (
     )
 INNER JOIN dw_dim_time dt ON (
 	s.match_time = dt.match_date
+    AND s.season_year = dl.league_year
 );
 
 
@@ -438,3 +468,41 @@ CREATE INDEX idx_dwfm_league ON dw_fact_match (league_key);
 CREATE INDEX idx_dwfm_time ON dw_fact_match (time_key);
 CREATE INDEX idx_dwfm_home ON dw_fact_match (home_team_key);
 CREATE INDEX idx_dwfm_away ON dw_fact_match (away_team_key);
+CREATE INDEX idx_dwfm_matchid ON dw_fact_match (match_id);
+
+TRUNCATE TABLE dw_mv_report_06;
+
+INSERT INTO dw_mv_report_06 (umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count)
+SELECT 
+u.umpire_type,
+a.age_group,
+l.region_name,
+u.last_first_name AS first_umpire,
+u2.last_first_name AS second_umpire,
+dti.date_year,
+COUNT(DISTINCT m.match_id) AS match_count
+FROM dw_fact_match m
+INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_fact_match m2 ON m2.match_id = m.match_id
+INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	AND u.last_first_name <> u2.last_first_name
+    AND u.umpire_type = u2.umpire_type
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time dti ON m.time_key = dti.time_key
+GROUP BY u.umpire_type, a.age_group, u.last_first_name, u2.last_first_name, l.region_name;
+
+
+
+INSERT INTO field_list (FIELD_ID, FIELD_NAME) VALUES (11, 'first_umpire');
+INSERT INTO field_list (FIELD_ID, FIELD_NAME) VALUES (12, 'second_umpire');
+
+UPDATE report_grouping_structure
+SET field_id = 12
+WHERE grouping_type = 'Column'
+AND report_id = 6;
+
+UPDATE report_grouping_structure
+SET field_id = 11
+WHERE grouping_type = 'Row'
+AND report_id = 6;
