@@ -214,7 +214,7 @@ if ($useNewDWTables) {
                         //$weekDate = date_create($resultRow["weekdate"]);
                         $weekDate = date_create($resultOutputArray[$rowCounter][$columnCounter]);
                         $cellValue = date_format($weekDate, 'd/m/Y');
-                        
+                        $cellClassToUse = "cellNumber cellNormal";
                         /*if (count($rowLabels) > 1) {
                             //Output a second row label
                             $tableRowOutput .= date_format($weekDate, 'd/m/Y');
@@ -565,7 +565,9 @@ if ($useNewDWTables) {
 
 <?php 
 } //end useNew FALSE
+
 ?>
+<BR />
 <!--
 </div>
 </section>

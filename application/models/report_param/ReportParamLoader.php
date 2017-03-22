@@ -109,6 +109,7 @@ class ReportParamLoader extends CI_Model {
     }
     
     private function queryReportGroupingStructures(Requested_report_model $pRequestedReport) {        
+        $debugMode = $this->config->item('debug_mode');
         $queryString = "SELECT rgs.report_grouping_structure_id, rgs.grouping_type, " .
             "fl.field_name, rgs.field_group_order, rgs.merge_field, rgs.group_heading, rgs.group_size_text " .
             "FROM report_table rt " .
@@ -117,9 +118,18 @@ class ReportParamLoader extends CI_Model {
             "WHERE rt.report_name = ". $pRequestedReport->getReportNumber() ." " .
             "ORDER BY rgs.grouping_type, rgs.field_group_order;";
     
+        if ($debugMode) {
+            echo "queryReportGroupingStructures: $queryString <BR />";
+        }
+        
         $query = $this->db->query($queryString);
-    
-        return $query;
+        
+        if ($query->num_rows() > 0) {
+            return $query;
+        } else {
+            throw new Exception("No results found in reportGroupingStructure tables for report. Check query in ReportParamLoader/queryReportGroupingStructures");
+        }
+
     }
        
 }

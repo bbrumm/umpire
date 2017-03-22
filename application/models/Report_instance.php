@@ -685,7 +685,7 @@ class Report_instance extends CI_Model {
 	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
 	                AND region_name IN (". $this->getRegionSQLValues() .")
 	                AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-                    ORDER BY umpire_type, age_group, first_umpire, second_umpire;";
+                    ORDER BY first_umpire, second_umpire;";
 	            
 	            break;
 	    }
@@ -987,6 +987,7 @@ class Report_instance extends CI_Model {
         	                ) AS qryMatchesWithTwoUmpires ON m.match_id = qryMatchesWithTwoUmpires.match_id
         	                WHERE u.umpire_type = 'Field'
         	                AND a.age_group = 'Seniors'
+        	                AND a.age_group IN (". $this->getAgeGroupSQLValues() .")
         	                GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
                         ) AS sub
                         ORDER BY age_sort_order, league_sort_order";
@@ -1483,7 +1484,11 @@ Array
 	     */
 	    
 	    
-	    $this->debug_library->debugOutput("pivotQueryArrayNew Before:", $pResultArray);
+	    //$this->debug_library->debugOutput("pivotQueryArrayNew Before:", $pResultArray);
+	    
+	    if (!isset($pResultArray[0])) {
+	        throw new Exception("PivotedArray is empty. This is probably due to the SQL query not returning any results for report ". $this->requestedReport->getReportNumber() .".");
+	    }
 	    
 	    $this->debug_library->debugOutput("pFieldForRowLabel:", $pFieldForRowLabel);
 	    
@@ -1547,7 +1552,9 @@ Array
 	        */
 	    }
 	    
-	    $this->debug_library->debugOutput("pivotQueryArrayNew After:", $pivotedArray);
+	    //$this->debug_library->debugOutput("pivotQueryArrayNew After:", $pivotedArray);
+	    
+	    
 	
 	    return $pivotedArray;
 	}

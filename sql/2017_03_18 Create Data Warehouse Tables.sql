@@ -114,6 +114,7 @@ CREATE TABLE staging_all_ump_age_league (
     league_sort_order INT(11)
 );
 
+DROP TABLE dw_mv_report_04;
 
 CREATE TABLE dw_mv_report_04 (
 	club_name VARCHAR(100),
@@ -140,29 +141,6 @@ CREATE TABLE dw_mv_report_06 (
 
 TRUNCATE TABLE dw_mv_report_06;
 
-
-
-
-/*
-    s.id,
-    s.season_year,
-    u.id,
-    u.first_name,
-    u.last_name,
-    hmc.club_name AS home_club,
-    hmt.team_name AS home_team_name,
-    awc.club_name AS away_club,
-    awt.team_name AS away_team_name,
-    l.short_league_name,
-    l.league_name,
-    ag.id,
-    ag.age_group,
-    ut.umpire_type_name,
-    m.ID,
-    r.id,
-    r.region_name,
-    d.division_name,
-*/
 
 /*
 Populate DimUmpire
@@ -494,15 +472,15 @@ GROUP BY u.umpire_type, a.age_group, u.last_first_name, u2.last_first_name, l.re
 
 
 
-INSERT INTO field_list (FIELD_ID, FIELD_NAME) VALUES (11, 'first_umpire');
-INSERT INTO field_list (FIELD_ID, FIELD_NAME) VALUES (12, 'second_umpire');
+INSERT INTO field_list (FIELD_ID, FIELD_NAME) VALUES (12, 'first_umpire');
+INSERT INTO field_list (FIELD_ID, FIELD_NAME) VALUES (13, 'second_umpire');
 
 UPDATE report_grouping_structure
-SET field_id = 12
+SET field_id = 13
 WHERE grouping_type = 'Column'
 AND report_id = 6;
 
 UPDATE report_grouping_structure
-SET field_id = 11
+SET field_id = 12
 WHERE grouping_type = 'Row'
 AND report_id = 6;

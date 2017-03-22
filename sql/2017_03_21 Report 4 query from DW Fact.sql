@@ -72,6 +72,7 @@ GROUP BY te.club_name, a.age_group, l.short_league_name;
 
 
 
+
 SELECT 
 club_name,
 age_group,
