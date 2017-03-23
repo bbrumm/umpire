@@ -8,14 +8,14 @@
  */
 
 //class SelectableReportOption extends MY_Model
-class ReportSelectionParameter extends CI_Model
+class Report_selection_parameter extends CI_Model
 {
     /* Code .. */
 
     function __construct()
     {
         parent::__construct();
-        $this->load->model('SelectableReportOption');
+        $this->load->model('Selectable_report_option');
         //$this->load->config('constants');
     }
     
@@ -88,7 +88,7 @@ class ReportSelectionParameter extends CI_Model
             
         $query = $this->db->query($queryString);
         foreach ($query->result() as $row) {
-            $selectableReportOption = new SelectableReportOption();
+            $selectableReportOption = new Selectable_report_option();
             $selectableReportOption->setOptionName($row->parameter_value_name);
             $selectableReportOption->setOptionValue($row->parameter_value_name);
             $selectableReportOption->setOptionDisplayOrder($row->parameter_display_order);

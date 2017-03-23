@@ -1,11 +1,9 @@
 <?php
-require_once(__ROOT__.'/../system/libraries/MY_Model.php');
+//require_once(__ROOT__.'/../system/libraries/MY_Model.php');
 
-class Run_etl_stored_proc extends MY_Model
+class Run_etl_stored_proc extends CI_Model
 {
     /* Code .. */
-    
-    var $debugMode;
 
     function __construct()
     {
@@ -14,7 +12,7 @@ class Run_etl_stored_proc extends MY_Model
     }
     
     public function runETLProcedure($season, $importedFileID) {
-        $queryString = "CALL `bbrumm_umpire_data`.`RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
+        $queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
         $query = $this->db->query($queryString);
         
     }

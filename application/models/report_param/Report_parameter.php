@@ -7,7 +7,7 @@ It contains information such as the report title, the value to display, and the 
 
 
 */
-class ReportParameter 
+class Report_parameter 
 {
     function __construct()
     {

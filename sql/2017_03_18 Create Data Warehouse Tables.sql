@@ -108,8 +108,11 @@ CREATE TABLE staging_no_umpires (
     umpire_type VARCHAR(100),
     short_league_name VARCHAR(100),
     team_names VARCHAR(400),
-	match_id INT(11)
+	match_id INT(11),
+    season_year INT(4)
 );
+
+alter table `staging_no_umpires` add column `season_year` INT(4);
 
 DROP TABLE staging_all_ump_age_league;
 
@@ -470,11 +473,11 @@ CREATE INDEX idx_dl_join ON dw_dim_league (short_name, full_name, region_name, c
 CREATE INDEX idx_dtm_join ON dw_dim_team (team_name, club_name);
 CREATE INDEX idx_dti_join ON dw_dim_time (match_date);
 CREATE INDEX idx_sm_age ON staging_match (age_group_name, division_name);
-DROP INDEX idx_du_nametype ON dw_dim_umpire;
 CREATE INDEX idx_du_nametype ON dw_dim_umpire (umpire_key, last_first_name, umpire_type);
-
 CREATE INDEX idx_stg_no ON staging_no_umpires (umpire_type, short_league_name, age_group);
 CREATE INDEX idx_stg_no_mid ON staging_no_umpires (match_id);
+
+CREATE INDEX idx_dti_year ON dw_dim_time (date_year);
 
 
 

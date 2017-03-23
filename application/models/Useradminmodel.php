@@ -1,7 +1,7 @@
 <?php
-require_once(__ROOT__.'/../system/libraries/MY_Model.php');
+//require_once(__ROOT__.'/../system/libraries/MY_Model.php');
 
-class Useradminmodel extends MY_Model {
+class Useradminmodel extends CI_Model {
     function __construct()
     {
         parent::__construct();

@@ -8,7 +8,7 @@
  */
 
 //class SelectableReportOption extends MY_Model
-class SelectableReportOption
+class Selectable_report_option
 {
     /* Code .. */
 

@@ -601,92 +601,6 @@ ALTER TABLE staging_match ENABLE KEYS;
 
 
 
-ALTER TABLE staging_no_umpires DISABLE KEYS;
-
-INSERT INTO staging_no_umpires (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id)
-SELECT DISTINCT
-ti.weekend_date,
-a.age_group,
-'Field',
-l.short_league_name,
-CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
-m.match_id
-FROM dw_fact_match m
-LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
-INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
-WHERE m.match_id NOT IN (
-	SELECT
-	DISTINCT
-	m2.match_id
-	FROM dw_fact_match m2
-	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
-	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
-	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
-	WHERE u2.umpire_type = 'Field'
-)
-UNION ALL
-
-SELECT DISTINCT
-ti.weekend_date,
-a.age_group,
-'Boundary',
-l.short_league_name,
-CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
-m.match_id
-FROM dw_fact_match m
-LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
-INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
-WHERE m.match_id NOT IN (
-	SELECT
-	DISTINCT
-	m2.match_id
-	FROM dw_fact_match m2
-	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
-	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
-	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
-	WHERE u2.umpire_type = 'Boundary'
-)
-UNION ALL
-
-SELECT DISTINCT
-ti.weekend_date,
-a.age_group,
-'Goal',
-l.short_league_name,
-CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
-m.match_id
-FROM dw_fact_match m
-LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
-INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
-WHERE m.match_id NOT IN (
-	SELECT
-	DISTINCT
-	m2.match_id
-	FROM dw_fact_match m2
-	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
-	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
-	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
-	WHERE u2.umpire_type = 'Goal'
-);
-
-
-CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'staging_no_umpires'), 1, ROW_COUNT());
-
-ALTER TABLE staging_no_umpires ENABLE KEYS;
-
-
 ALTER TABLE staging_all_ump_age_league ENABLE KEYS;
 
 INSERT INTO staging_all_ump_age_league (age_group, umpire_type, short_league_name, region_name, age_sort_order, league_sort_order)
@@ -760,6 +674,100 @@ INNER JOIN dw_dim_time dt ON (
 CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'dw_fact_match'), 1, ROW_COUNT());
 
 ALTER TABLE dw_fact_match ENABLE KEYS;
+
+
+
+
+
+
+
+ALTER TABLE staging_no_umpires DISABLE KEYS;
+
+INSERT INTO staging_no_umpires (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Field',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id,
+ti.date_year
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Field'
+)
+UNION ALL
+
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Boundary',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id,
+ti.date_year
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Boundary'
+)
+UNION ALL
+
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Goal',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id,
+ti.date_year
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Goal'
+);
+
+
+CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'staging_no_umpires'), 1, ROW_COUNT());
+
+ALTER TABLE staging_no_umpires ENABLE KEYS;
 
 
 
@@ -984,6 +992,7 @@ LEFT JOIN (
 	short_league_name,
 	COUNT(s.match_id) AS Match_Count
 	FROM staging_no_umpires s
+    WHERE s.season_year = @vSeasonYear
 	GROUP BY umpire_type , age_group , short_league_name
 ) AS sub_match_count
 ON ua.umpire_type = sub_match_count.umpire_type

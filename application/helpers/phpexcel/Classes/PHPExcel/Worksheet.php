@@ -2448,7 +2448,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      *                               True - Return rows and columns indexed by their actual row and column IDs
      * @return array
      */
-	public function rangeToArray($pRange = 'A1', $nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false) {
+	public function rangeToArray($pRange = 'A1', array $pArrayKeys = NULL, $nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false) {
         // Returnvalue
         $returnValue = array();
         //    Identify the range that we need to extract from the worksheet
@@ -2466,7 +2466,12 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
             $c = -1;
             // Loop through columns in the current row
             for ($col = $minCol; $col != $maxCol; ++$col) {
-                $cRef = ($returnCellRef) ? $col : ++$c;
+                //BBRUMM: Use the supplied array keys value instead of a number for the column 
+                if (isset($pArrayKeys)) {
+                    $cRef = $pArrayKeys[++$c];
+                } else {
+                    $cRef = ($returnCellRef) ? $col : ++$c;
+                }
                 //    Using getCell() will create a new cell if it doesn't already exist. We don't want that to happen
                 //        so we test and retrieve directly against _cellCollection
                 if ($this->_cellCollection->isDataSet($col.$row)) {

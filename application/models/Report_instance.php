@@ -33,13 +33,13 @@ class Report_instance extends CI_Model {
 	public $reportDisplayOptions;
 
 	public function __construct() {
-	    $this->load->model('ReportDisplayOptions');
-	    $this->reportDisplayOptions = new ReportDisplayOptions();
+	    $this->load->model('Report_display_options');
+	    $this->reportDisplayOptions = new Report_display_options();
 	    $this->load->database();
 	    $this->load->library('Debug_library');
 	    $this->load->library('Array_library');
-	    $this->load->model('report_param/ReportParamLoader');
-	    $this->load->model('report_param/ReportParameter');
+	    $this->load->model('report_param/Report_param_loader');
+	    $this->load->model('report_param/Report_parameter');
 	    $this->load->model('Requested_report_model');
 	    $this->requestedReport = new Requested_report_model();
 	}
@@ -386,7 +386,7 @@ class Report_instance extends CI_Model {
     	    $umpireDisciplineValue = implode(',', $pRequestedReport->getUmpireType());
 	    }
 	    
-	    $reportParamLoader = new ReportParamLoader();
+	    $reportParamLoader = new Report_param_loader();
 	    $reportParamLoader->loadAllReportParametersForReport($pRequestedReport);
 	    $reportParameterArray = $reportParamLoader->getReportParameterArray();
 	    $reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
@@ -479,25 +479,6 @@ class Report_instance extends CI_Model {
 	private function buildSelectQueryForReportUsingDW() {
 	    switch ($this->requestedReport->getReportNumber()) {
 	        case 1:
-	            /*$queryString = "SELECT
-                    u.last_first_name,
-                    l.short_league_name,
-                    te.club_name,
-	                ti.date_year,
-                    COUNT(DISTINCT m.match_id) AS match_count
-                    FROM dw_fact_match m
-                    INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-                    INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-                    INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-                    INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-	                INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-                    WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
-                    AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
-                    AND l.region_name IN (". $this->getRegionSQLValues() .")
-                    AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-                    GROUP BY u.last_first_name, l.short_league_name, te.club_name
-                    ORDER BY u.last_first_name, l.short_league_name, te.club_name";
-	               */
 	            $queryString = "SELECT
 	                last_first_name,
 	                short_league_name,
@@ -516,56 +497,6 @@ class Report_instance extends CI_Model {
 	            break;
 	            
 	        case 2:
-	            
-	            /*$queryString = "SELECT
-    	            u.last_first_name,
-    	            a.age_group,
-    	            a.sort_order,
-    	            l.short_league_name,
-    	            0 AS two_ump_flag,
-    	            COUNT(DISTINCT m.match_id) AS match_count
-    	            FROM dw_fact_match m
-    	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-    	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-    	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-    	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-    	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-    	            WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
-    	            AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
-    	            AND l.region_name IN (". $this->getRegionSQLValues() .")
-    	            AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-    	            GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
-    	            UNION ALL
-    	            SELECT
-    	            u.last_first_name,
-    	            a.age_group,
-    	            a.sort_order,
-    	            '2 Umpires' AS short_league_name,
-    	            1 AS two_ump_flag,
-    	            COUNT(DISTINCT m.match_id) AS match_count
-    	            FROM dw_fact_match m
-    	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-    	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-    	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-    	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-    	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-    	            INNER JOIN (
-    	                SELECT
-    	                m2.match_id,
-    	                COUNT(DISTINCT u2.umpire_key) AS umpire_count
-    	                FROM dw_fact_match m2
-    	                INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
-    	                INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
-    	                WHERE u2.umpire_type = 'Field'
-    	                AND a2.age_group = 'Seniors'
-    	                GROUP BY m2.match_id
-    	                HAVING COUNT(DISTINCT u2.umpire_key) = 2
-    	                ) AS qryMatchesWithTwoUmpires ON m.match_id = qryMatchesWithTwoUmpires.match_id
-    	                WHERE u.umpire_type = 'Field'
-    	                AND a.age_group = 'Seniors'
-    	                GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
-    	                ORDER BY last_first_name, sort_order, short_league_name;";
-	           */
 	            $queryString = "SELECT
     	            last_first_name,
     	            age_group,
@@ -602,6 +533,7 @@ class Report_instance extends CI_Model {
                     ) AS match_count
                     FROM staging_no_umpires s
                     WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
+                    AND season_year = ". $this->requestedReport->getSeason() ."
                     AND CONCAT(age_group, ' ', umpire_type) IN (
                     	'Seniors Boundary',
                     	'Seniors Goal',
@@ -630,56 +562,6 @@ class Report_instance extends CI_Model {
 	            break;
 	        
 	        case 5:
-	            /*$queryString = "SELECT
-                    ua.umpire_type,
-                    ua.age_group,
-                    ua.short_league_name,
-                    IFNULL(sub_match_count.match_count, 0) AS match_no_ump,
-                    IFNULL(sub_total_matches.total_match_count, 0) AS total_match_count,
-                    IFNULL(FLOOR(sub_match_count.match_count / sub_total_matches.total_match_count * 100), 0) AS match_pct,
-                    ua.age_sort_order,
-                    ua.league_sort_order
-                    FROM (
-                    	SELECT 
-                    	umpire_type,
-                        age_group,
-                        short_league_name,
-                        age_sort_order,
-                        league_sort_order
-                        FROM staging_all_ump_age_league
-	                    WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
-                        ) AS ua
-                        
-                    LEFT JOIN (
-                    	SELECT
-                    	a.age_group,
-                    	l.short_league_name,
-                    	a.sort_order,
-                    	l.league_sort_order,
-                    	COUNT(DISTINCT match_id) AS total_match_count
-                    	FROM dw_fact_match m
-                    	INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-                    	INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-	                    WHERE l.short_league_name IN (". $this->getLeagueSQLValues() .")
-                        GROUP BY a.age_group, l.short_league_name, a.sort_order, l.league_sort_order
-                    ) AS sub_total_matches
-                    ON ua.age_group = sub_total_matches.age_group
-                    AND ua.short_league_name = sub_total_matches.short_league_name
-                    LEFT JOIN (
-                    	SELECT
-                    	umpire_type,
-                    	age_group,
-                    	short_league_name,
-                    	COUNT(s.match_id) AS Match_Count
-                    	FROM staging_no_umpires s
-	                    WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
-                    	GROUP BY umpire_type, age_group, short_league_name
-                    ) AS sub_match_count
-                    ON ua.umpire_type = sub_match_count.umpire_type
-                    AND ua.age_group = sub_match_count.age_group
-                    AND ua.short_league_name = sub_match_count.short_league_name
-                    ORDER BY ua.umpire_type, ua.age_sort_order, ua.league_sort_order";*/
-    	            
 	           $queryString = "SELECT umpire_type,
                     age_group,
                     short_league_name,
@@ -739,8 +621,6 @@ class Report_instance extends CI_Model {
 	        } else {
 	            $rowsToSelect = $this->convertReportGroupingStructureArrayToSelectClause(
 	               $this->getDisplayOptions()->getRowGroup());
-	            
-	            //TODO: Merge this query with the buildColumnLabels query, as it is quite similar.
 	            $columnsToSelect = $this->findColumnsToSelect();
 	        }
 	        
@@ -965,7 +845,7 @@ class Report_instance extends CI_Model {
 	                break;
 	            
 	            case 4:
-	                $columnLabelQuery = "SELECT
+	                $columnLabelQuery = "SELECT DISTINCT
                         s.umpire_type,
                         s.age_group,
                         s.short_league_name
@@ -1109,7 +989,7 @@ class Report_instance extends CI_Model {
 	
 	
 	private function extractGroupFromGroupingStructure($pReportGroupingStructureArray, $pGroupingType) {
-	    $reportGroupingStructure = new ReportGroupingStructure();
+	    $reportGroupingStructure = new Report_grouping_structure();
 	    
 	    for($i=0; $i<count($pReportGroupingStructureArray); $i++) {
 	        if ($pReportGroupingStructureArray[$i]->getGroupingType() == $pGroupingType) {
@@ -1124,7 +1004,7 @@ class Report_instance extends CI_Model {
 	    $parameterValue = "";
 	    
 	    for($i=0; $i<count($reportParameterArray); $i++) {
-	        $reportParameter = new ReportParameter();
+	        $reportParameter = new Report_parameter();
 	        $reportParameter = $reportParameterArray[$i];
 	        
 	        if($reportParameter->getParameterName() == $parameterName) {

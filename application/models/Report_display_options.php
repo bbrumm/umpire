@@ -1,6 +1,6 @@
 <?php
 
-class Reportdisplayoptions {
+class Report_display_options {
 	
 	private $columnGroup;
 	private $rowGroup;

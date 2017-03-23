@@ -7,13 +7,13 @@
  */
 
 
-class ReportParamLoader extends CI_Model {
+class Report_param_loader extends CI_Model {
    
     function __construct()
     {
         parent::__construct();
-        $this->load->model('report_param/ReportGroupingStructure');
-        $this->load->model('report_param/ReportParameter');
+        $this->load->model('report_param/Report_grouping_structure');
+        $this->load->model('report_param/Report_parameter');
     }
     
     private $reportParameterArray;
@@ -43,7 +43,7 @@ class ReportParamLoader extends CI_Model {
 
         //Create report param and report grouping objects for this report
         foreach ($queryDataReportParameters->result() as $row) {
-            $reportParameter = new ReportParameter();
+            $reportParameter = new Report_parameter();
             $reportParameter->setParameterName($row->parameter_name);
             $reportParameter->setParameterType($row->parameter_type);
             $reportParameter->setParameterValue($row->parameter_value);
@@ -63,7 +63,7 @@ class ReportParamLoader extends CI_Model {
         
         //Create report param and report grouping objects for this report
         foreach ($queryDataReportGroupingStructures->result() as $row) {
-            $reportGroupingStructure = new ReportGroupingStructure();
+            $reportGroupingStructure = new Report_grouping_structure();
             $reportGroupingStructure->setReportGroupingStructureID($row->report_grouping_structure_id);
             $reportGroupingStructure->setGroupingType($row->grouping_type);
             $reportGroupingStructure->setFieldName($row->field_name);

@@ -4,7 +4,7 @@ ReportGroupingStructure
 Defines how the reports are grouped and displayed, in terms of the columns and rows that are shown
 
 */
-class ReportGroupingStructure
+class Report_grouping_structure
 {
     function __construct()
     {

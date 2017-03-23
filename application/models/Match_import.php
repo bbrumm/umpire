@@ -1,11 +1,14 @@
 <?php
+/*
 define('__ROOT__', dirname(dirname(__FILE__))); 
-require_once(__ROOT__.'/../system/libraries/MY_Model.php');
+require_once(__ROOT__.'/system/libraries/MY_Model.php');
+
+*/
 //require_once('/system/libraries/MY_Model.php');
 
 
 
-class Match_import extends MY_Model 
+class Match_import extends CI_Model 
 {   
   /* Code .. */   
     
@@ -30,7 +33,7 @@ class Match_import extends MY_Model
 	$sheet = $objPHPExcel->getActiveSheet();
 	$lastRow = $sheet->getHighestRow();
 	//echo "Last row: $lastRow<BR/>";
-	$data = $sheet->rangeToArray('A2:S'.$lastRow);
+	
 	//echo "Rows available: " . count($data) . "\n"
 	/*
 	echo "<pre>";
@@ -41,11 +44,17 @@ class Match_import extends MY_Model
 	    'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3', 
 	    'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4', 
 	    'boundary_umpire_5', 'boundary_umpire_6', 'goal_umpire_1', 'goal_umpire_2');
+	
+	$data = $sheet->rangeToArray('A2:S'.$lastRow, $columns);
+	
 	$rows = $data;
-	/*echo "<pre>";
+	/*
+	echo "<pre>";
 	print_r($data);
-	echo "</pre>";*/
-	$queryStatus = $this->insert_rows('match_import', $columns, $rows);
+	echo "</pre>";
+	*/
+	//$queryStatus = $this->insert_rows('match_import', $columns, $rows);
+	$queryStatus = $this->db->insert_batch('match_import', $data);
 	if ($queryStatus) {
 	   //echo "File imported!";
 	   //Now the data is imported, extract it into the normalised tables.
@@ -56,7 +65,7 @@ class Match_import extends MY_Model
 	} else {
 	    $error = $this->db->error();
 	    //print_r($error);
-	    echo "File import error: " . $error['code'] . " - " . $error['message'];
+	    //echo "File import error: " . $error['code'] . " - " . $error['message'];
 	}
 	
   }
@@ -81,12 +90,12 @@ class Match_import extends MY_Model
       $queryString = "DELETE FROM ". $tableName;
       $this->db->query($queryString);
       
-      $debugMode = $this->config->item('debug_mode');
+      /*$debugMode = $this->config->item('debug_mode');
       if ($debugMode) {
           echo "--deleteFromSingleTable SQL:<BR />" . $queryString . "<BR />";
           echo "Table deleted: " . $tableName . ", " . $this->db->affected_rows() . " rows.<BR />";
       }
-      
+      */
       if ($logDeletedRow) {
           $this->logTableOperation('DELETE', $tableName, $importedFileID, $this->db->affected_rows());
       }
@@ -142,9 +151,11 @@ class Match_import extends MY_Model
   }  
   
   public function findMissingDataOnImport() {
-      $queryString = "CALL `bbrumm_umpire_data`.`FindMissingData`()";
+      $queryString = "CALL `FindMissingData`()";
       $query = $this->db->query($queryString);
-      mysqli_next_result($this->db->conn_id);
+      if (mysqli_more_results($this->db->conn_id)) {
+          mysqli_next_result($this->db->conn_id);
+      }
       
       $resultArray = $query->result_array();
       $query->free_result();
@@ -152,10 +163,6 @@ class Match_import extends MY_Model
       return $resultArray;
 
   }
-  
-  
  
 }
 ?>
-
-
