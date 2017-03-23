@@ -73,18 +73,6 @@ TRUNCATE match_staging;
 CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'match_staging'), 3, ROW_COUNT());
 
 
-TRUNCATE mv_summary_staging;
-
-CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_summary_staging'), 3, ROW_COUNT());
-
-TRUNCATE mv_umpire_list;
-
-CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_umpire_list'), 3, ROW_COUNT());
-
-TRUNCATE mv_denormalised;
-
-CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_denormalised'), 3, ROW_COUNT());
-
 
 /*Delete from MV tables*/
 
@@ -426,73 +414,6 @@ CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE ta
 
 ALTER TABLE umpire_name_type_match ENABLE KEYS;
 
-INSERT INTO mv_denormalised (season_year, umpire_id, umpire_first_name, umpire_last_name, umpire_full_name, club_name, team_name,
-short_league_name, age_group_id, age_group, umpire_type_name, season_id, match_played_id, region_id, region_name, display_order)
-SELECT DISTINCT season.season_year, 
-umpire.id,
-umpire.first_name, 
-umpire.last_name, 
-CONCAT(umpire.last_name, ', ', umpire.first_name),
-club.club_name, 
-team.team_name, 
-league.short_league_name, 
-age_group.id,
-age_group.age_group, 
-umpire_type.umpire_type_name,
-season.id,
-match_played.ID,
-region.id,
-region.region_name,
-age_group.display_order
-FROM match_played 
-INNER JOIN round ON round.ID = match_played.round_id 
-INNER JOIN league ON league.ID = round.league_id 
-INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id 
-INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id 
-INNER JOIN team ON team.ID = match_played.home_team_id 
-INNER JOIN club ON club.ID = team.club_id 
-LEFT JOIN umpire_name_type_match ON match_played.ID = umpire_name_type_match.match_id 
-LEFT JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id 
-LEFT JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
-LEFT JOIN umpire ON umpire.ID = umpire_name_type.umpire_id 
-INNER JOIN season ON season.id = round.season_id 
-INNER JOIN region ON region.id = league.region_id
-WHERE season.id = pSeasonID 
-
-UNION ALL 
-
-SELECT DISTINCT season.season_year, 
-umpire.id,
-umpire.first_name, 
-umpire.last_name, 
-CONCAT(umpire.last_name, ', ', umpire.first_name),
-club.club_name, 
-team.team_name, 
-league.short_league_name, 
-age_group.id,
-age_group.age_group, 
-umpire_type.umpire_type_name,
-season.id,
-match_played.ID,
-region.id,
-region.region_name,
-age_group.display_order
-FROM match_played 
-INNER JOIN round ON round.ID = match_played.round_id 
-INNER JOIN league ON league.ID = round.league_id 
-INNER JOIN age_group_division ON age_group_division.ID = league.age_group_division_id 
-INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id 
-INNER JOIN team ON team.ID = match_played.away_team_id 
-INNER JOIN club ON club.ID = team.club_id 
-LEFT JOIN umpire_name_type_match ON match_played.ID = umpire_name_type_match.match_id 
-LEFT JOIN umpire_name_type ON umpire_name_type.ID = umpire_name_type_match.umpire_name_type_id 
-LEFT JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
-LEFT JOIN umpire ON umpire.ID = umpire_name_type.umpire_id 
-INNER JOIN season ON season.id = round.season_id 
-INNER JOIN region ON region.id = league.region_id
-WHERE season.id = pSeasonID;
-
-CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'mv_denormalised'), 1, ROW_COUNT());
 
 /*
 Truncate DIM and FACT tables
