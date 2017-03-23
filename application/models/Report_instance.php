@@ -509,27 +509,45 @@ class Report_instance extends CI_Model {
 	private function buildSelectQueryForReportUsingDW() {
 	    switch ($this->requestedReport->getReportNumber()) {
 	        case 1:
-	            $queryString = "SELECT
+	            /*$queryString = "SELECT
                     u.last_first_name,
                     l.short_league_name,
                     te.club_name,
+	                ti.date_year,
                     COUNT(DISTINCT m.match_id) AS match_count
                     FROM dw_fact_match m
                     INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
                     INNER JOIN dw_dim_league l ON m.league_key = l.league_key
                     INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
                     INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+	                INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
                     WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
                     AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
                     AND l.region_name IN (". $this->getRegionSQLValues() .")
                     AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
                     GROUP BY u.last_first_name, l.short_league_name, te.club_name
                     ORDER BY u.last_first_name, l.short_league_name, te.club_name";
-	        
+	               */
+	            $queryString = "SELECT
+	                last_first_name,
+	                short_league_name,
+	                club_name,
+	                age_group,
+	                SUM(match_count) AS match_count
+	                FROM dw_mv_report_01
+	                WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
+                    AND short_league_name IN (". $this->getLeagueSQLValues() .")
+                    AND region_name IN (". $this->getRegionSQLValues() .")
+                    AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
+                    AND season_year = ". $this->requestedReport->getSeason() ."
+                    GROUP BY last_first_name, short_league_name, club_name
+                    ORDER BY last_first_name, short_league_name, club_name";
+
 	            break;
 	            
 	        case 2:
-	            $queryString = "SELECT
+	            
+	            /*$queryString = "SELECT
     	            u.last_first_name,
     	            a.age_group,
     	            a.sort_order,
@@ -577,9 +595,27 @@ class Report_instance extends CI_Model {
     	                AND a.age_group = 'Seniors'
     	                GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
     	                ORDER BY last_first_name, sort_order, short_league_name;";
-	           
+	           */
+	            $queryString = "SELECT
+    	            last_first_name,
+    	            age_group,
+    	            age_sort_order,
+    	            short_league_name,
+    	            two_ump_flag,
+    	            SUM(match_count) AS match_count
+	                FROM dw_mv_report_02
+	                WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
+    	            AND short_league_name IN ('2 Umpires', ". $this->getLeagueSQLValues() .")
+    	            AND region_name IN (". $this->getRegionSQLValues() .")
+    	            AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
+    	            AND season_year = ". $this->requestedReport->getSeason() ."
+    	            GROUP BY last_first_name, age_group, age_sort_order, short_league_name, two_ump_flag
+    	            ORDER BY last_first_name, age_sort_order, short_league_name;";
+	            
 	            break;
 	        case 3:
+	            //This has remained as a query on staging tables instead of moving to a MV table, because of the subquery using parameters from the UI selection.
+	            //Creating a MV would look similar to this and probably wouldn't improve performance.
 	            $queryString = "SELECT 
                     weekend_date,
                     CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group,
@@ -617,11 +653,14 @@ class Report_instance extends CI_Model {
                     umpire_type,
                     match_count
                     FROM dw_mv_report_04
+	                WHERE region_name IN (". $this->getRegionSQLValues() .")
+	                AND season_year = ". $this->requestedReport->getSeason() ."
                     ORDER BY club_name, age_sort_order, league_sort_order;";
 	            
 	            break;
+	        
 	        case 5:
-	            $queryString = "SELECT
+	            /*$queryString = "SELECT
                     ua.umpire_type,
                     ua.age_group,
                     ua.short_league_name,
@@ -669,8 +708,19 @@ class Report_instance extends CI_Model {
                     ON ua.umpire_type = sub_match_count.umpire_type
                     AND ua.age_group = sub_match_count.age_group
                     AND ua.short_league_name = sub_match_count.short_league_name
-                    ORDER BY ua.umpire_type, ua.age_sort_order, ua.league_sort_order";
+                    ORDER BY ua.umpire_type, ua.age_sort_order, ua.league_sort_order";*/
     	            
+	           $queryString = "SELECT umpire_type,
+                    age_group,
+                    short_league_name,
+                    match_no_ump,
+                    total_match_count,
+                    match_pct
+                    FROM dw_mv_report_05
+	                WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
+	                AND region_name IN (". $this->getRegionSQLValues() .")
+	                AND season_year = ". $this->requestedReport->getSeason() ."
+                    ORDER BY umpire_type, age_sort_order, league_sort_order;";
 	            break;
 	        case 6:
 	            $queryString = "SELECT
@@ -686,6 +736,22 @@ class Report_instance extends CI_Model {
 	                AND region_name IN (". $this->getRegionSQLValues() .")
 	                AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
                     ORDER BY first_umpire, second_umpire;";
+	            
+	            break;
+	            
+	        case 7:
+	            $queryString = "SELECT
+                    umpire_type,
+                    age_group,
+                    short_league_name,
+                    umpire_count,
+                    match_count
+                    FROM dw_mv_report_07
+	                WHERE season_year IN (". $this->requestedReport->getSeason() .")
+	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
+	                AND region_name IN (". $this->getRegionSQLValues() .")
+	                AND umpire_type IN ('Field')
+                    ORDER BY age_sort_order, league_sort_order, umpire_type, umpire_count;";
 	            
 	            break;
 	    }
@@ -852,145 +918,46 @@ class Report_instance extends CI_Model {
 	     
 	}
 	
-	private function buildWhereClause() {
-        $whereClause = "WHERE season_year = '". $this->requestedReport->getSeason() ."' ";
-        
-        switch ($this->requestedReport->getReportNumber()) {
-            case 1:
-                $whereClause .=
-                " AND age_group IN (".$this->getAgeGroupSQLValues().")
-                AND umpire_type_name IN (".$this->getUmpireTypeSQLValues().")
-                AND short_league_name IN (".$this->getLeagueSQLValues().")";
-                break;
-            
-            case 2:
-                $whereClause .=
-                " AND age_group IN (".$this->getAgeGroupSQLValues().")
-                AND umpire_type_name IN (".$this->getUmpireTypeSQLValues().")
-                AND short_league_name IN (".$this->getLeagueSQLValues().")";
-                break;
-            
-            case 3:
-                $whereClause .=
-                " AND region IN (".$this->getRegionSQLValues().")";
-                break;
-            
-            case 4:
-                $whereClause .=
-                " AND region IN (".$this->getRegionSQLValues().")";
-                break;
-            
-            case 5:
-                $whereClause .=
-                " AND region IN (".$this->getRegionSQLValues().")";
-                break;
-            
-            case 6:
-                $whereClause .=
-                " AND age_group IN (".$this->getAgeGroupSQLValues().")
-                AND umpire_type_name IN (".$this->getUmpireTypeSQLValues().")
-                AND region IN (".$this->getRegionSQLValues().")";
-                break;
-                
-            case 7:
-                $whereClause .=
-                " AND age_group IN (".$this->getAgeGroupSQLValues().")
-                AND umpire_type IN (".$this->getUmpireTypeSQLValues().")
-                AND region IN (".$this->getRegionSQLValues().")";
-                break;
-        }
-        
-        return $whereClause;
-}
 	
 	
 	private function buildColumnLabelQuery() {
 	    $useNewDWTables = $this->config->item('use_new_dw_tables');
 
-	     //TODO: Move this into the buildQueryForReportDW function and 
-	     //change the return to be an object with two queries:
-	     //one with the data query and one with the column query
-	     //TODO: Simplify these queries with materialised views (like I have done with report 4)
-	     
-	    
+	     /*
+	      * 
+	      *@TODO: Move this into the buildQueryForReportDW function and 
+	      *change the return to be an object with two queries:
+	      *one with the data query and one with the column query
+	      */
 	    if ($useNewDWTables) {
 	        switch ($this->requestedReport->getReportNumber()) {
 	            case 1:
         	       $columnLabelQuery = "SELECT DISTINCT short_league_name, club_name
-        	           FROM (
-        	        SELECT
-                    u.last_first_name,
-                    l.short_league_name,
-                    te.club_name,
-                    COUNT(DISTINCT m.match_id) AS match_count
-                    FROM dw_fact_match m
-                    INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-                    INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-                    INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-                    INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-                    WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
-                    AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
-                    AND l.region_name IN (". $this->getRegionSQLValues() .")
-                    AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-                    GROUP BY u.last_first_name, l.short_league_name, te.club_name) AS sub
-                    ORDER BY short_league_name, club_name";
-        	       
+        	           FROM dw_mv_report_01 
+        	           WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
+                       AND short_league_name IN (". $this->getLeagueSQLValues() .")
+                       AND region_name IN (". $this->getRegionSQLValues() .")
+                       AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
+                       ORDER BY short_league_name, club_name";
+            	       
         	       break;
 	            case 2:
 	                $columnLabelQuery = "SELECT DISTINCT age_group, short_league_name
-        	           FROM (
-            	        SELECT
-        	            u.last_first_name,
-        	            a.age_group,
-        	            a.sort_order AS age_sort_order,
-        	            l.short_league_name,
-        	            0 AS two_ump_flag,
-	                    l.league_sort_order,
-        	            COUNT(DISTINCT m.match_id) AS match_count
-        	            FROM dw_fact_match m
-        	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-        	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-        	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-        	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-        	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-        	            WHERE a.age_group IN (". $this->getAgeGroupSQLValues() .")
-        	            AND l.short_league_name IN (". $this->getLeagueSQLValues() .")
-        	            AND l.region_name IN (". $this->getRegionSQLValues() .")
-        	            AND u.umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-        	            GROUP BY u.last_first_name, a.age_group, a.sort_order, l.league_sort_order, l.short_league_name
-        	            UNION ALL
-        	            SELECT
-        	            u.last_first_name,
-        	            a.age_group,
-        	            a.sort_order,
-        	            '2 Umpires' AS short_league_name,
-        	            1 AS two_ump_flag,
-        	            10 AS league_sort_order,
-        	            COUNT(DISTINCT m.match_id) AS match_count
-        	            FROM dw_fact_match m
-        	            INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-        	            INNER JOIN dw_dim_league l ON m.league_key = l.league_key
-        	            INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
-        	            INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-        	            INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-        	            INNER JOIN (
-        	                SELECT
-        	                m2.match_id,
-        	                COUNT(DISTINCT u2.umpire_key) AS umpire_count
-        	                FROM dw_fact_match m2
-        	                INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
-        	                INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
-        	                WHERE u2.umpire_type = 'Field'
-        	                AND a2.age_group = 'Seniors'
-        	                GROUP BY m2.match_id
-        	                HAVING COUNT(DISTINCT u2.umpire_key) = 2
-        	                ) AS qryMatchesWithTwoUmpires ON m.match_id = qryMatchesWithTwoUmpires.match_id
-        	                WHERE u.umpire_type = 'Field'
-        	                AND a.age_group = 'Seniors'
-        	                AND a.age_group IN (". $this->getAgeGroupSQLValues() .")
-        	                GROUP BY u.last_first_name, a.age_group, a.sort_order, l.short_league_name
-                        ) AS sub
-                        ORDER BY age_sort_order, league_sort_order";
+        	            FROM (
+    	                    SELECT
+            	            last_first_name,
+            	            age_group,
+            	            age_sort_order,
+            	            short_league_name,
+            	            two_ump_flag
+        	                FROM dw_mv_report_02
+        	                WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
+            	            AND short_league_name IN ('2 Umpires', ". $this->getLeagueSQLValues() .")
+            	            AND region_name IN (". $this->getRegionSQLValues() .")
+            	            AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
+            	            AND season_year = ". $this->requestedReport->getSeason() ."
+        	            ) AS sub
+        	            ORDER BY last_first_name, age_sort_order, short_league_name;";
 	                
 	                break;
 	            case 3:
@@ -1019,20 +986,6 @@ class Report_instance extends CI_Model {
 	                break;
 	            
 	            case 4:
-	                /*$columnLabelQuery = "SELECT DISTINCT umpire_type, age_group, short_league_name 
-	                    FROM (SELECT
-                        club_name,
-                        age_group,
-                        short_league_name,
-                        umpire_type,
-                        match_count,
-	                    age_sort_order,
-	                    league_sort_order
-                        FROM dw_mv_report_04
-	                    WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
-	                    ) sub
-	                    ORDER BY age_sort_order, league_sort_order;";
-	                */
 	                $columnLabelQuery = "SELECT
                         s.umpire_type,
                         s.age_group,
@@ -1069,6 +1022,35 @@ class Report_instance extends CI_Model {
                     ORDER BY second_umpire;";
 	                
 	                break;
+	            
+	            case 7:
+	                $columnLabelQuery = "SELECT DISTINCT
+	                    short_league_name,
+	                    umpire_count
+	                    FROM (
+	                    SELECT DISTINCT 
+                        short_league_name,
+	                    league_sort_order,
+                        '2 Umpires' AS umpire_count
+                        FROM dw_mv_report_07
+    	                WHERE season_year IN (". $this->requestedReport->getSeason() .")
+    	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
+    	                AND region_name IN (". $this->getRegionSQLValues() .")
+    	                AND umpire_type IN ('Field')
+	                    UNION ALL
+	                    SELECT DISTINCT 
+                        short_league_name,
+    	                league_sort_order,
+                        '3 Umpires'
+                        FROM dw_mv_report_07
+    	                WHERE season_year IN (". $this->requestedReport->getSeason() .")
+    	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
+    	                AND region_name IN (". $this->getRegionSQLValues() .")
+    	                AND umpire_type IN ('Field')
+    	                ) AS sub
+   	                    ORDER BY league_sort_order, umpire_count;";
+	                
+	                break;
 	                    
 	        }
 	       
@@ -1077,8 +1059,6 @@ class Report_instance extends CI_Model {
 	       return $columnLabelQuery;
         
 	    } else {
-        
-        
             /*
              * This query finds the column labels for the report
              * It joins to the MV table for the report, as some of the criteria that has been selected is not available in the report_column tables.
@@ -1201,9 +1181,6 @@ class Report_instance extends CI_Model {
 	     
 	    if ($useNewDWTables) {
 	        //TODO: Get these fields from the database
-	        
-	        
-	        
 	        switch ($this->requestedReport->getReportNumber()) {
 	            case 1:
 	               $columnLabelArray = array('short_league_name', 'club_name');
@@ -1229,6 +1206,10 @@ class Report_instance extends CI_Model {
                 case 6:
                     $columnLabelArray = array('second_umpire');
                     $rowLabelField =  array('first_umpire');
+                    break;
+                case 7:
+                    $columnLabelArray = array('short_league_name', 'umpire_count');
+                    $rowLabelField =  array('age_group');
                     break;
 	        }
 	        
@@ -1373,9 +1354,6 @@ class Report_instance extends CI_Model {
 	private function convertParametersToSQLReadyValues() {
 	    //Converts several of the reportParameters arrays into comma separate values that are ready for SQL queries
 	    //Add a value of "All" and "None" to the League list, so that reports that users select for ages with no league (e.g. Colts) are still able to be loaded
-	    //$reportParameters['league'][] = 'All';
-	    //$reportParameters['league'][] = 'None';
-	    //echo "reportParameters UmpireType: " . $reportParameters['umpireType'] . "<BR/>";
 	    if ($this->requestedReport->getPDFMode()) {
 	        $this->umpireTypeSQLValues = str_replace(",", "','", "'" . rtrim($this->requestedReport->getUmpireType(), ',')) . "'";
 	        $this->leagueSQLValues = str_replace(",", "','", "'" . rtrim($this->requestedReport->getLeague(), ',')) . "'";
@@ -1476,10 +1454,6 @@ Array
                 )
 
         )
-	     * 
-	     * 
-	     * 
-	     * 
 	     * 
 	     */
 	    

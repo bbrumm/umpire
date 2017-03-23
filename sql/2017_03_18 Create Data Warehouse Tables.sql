@@ -110,20 +110,75 @@ CREATE TABLE staging_all_ump_age_league (
 	age_group VARCHAR(100),
     umpire_type VARCHAR(100),
     short_league_name VARCHAR(100),
+    region_name VARCHAR(100),
     age_sort_order INT(11),
     league_sort_order INT(11)
 );
 
+CREATE TABLE dw_mv_report_01 (
+	last_first_name VARCHAR(200),
+	short_league_name VARCHAR(100),
+	club_name VARCHAR(100),
+    age_group VARCHAR(100),
+    region_name VARCHAR(100),
+    umpire_type VARCHAR(100),
+	match_count INT(11),
+	season_year INT(4)
+);
+
+DROP TABLE dw_mv_report_02;
+
+CREATE TABLE dw_mv_report_02 (
+	last_first_name VARCHAR(200),
+	short_league_name VARCHAR(100),
+    age_group VARCHAR(100),
+    age_sort_order INT(2),
+    two_ump_flag INT(1),
+    region_name VARCHAR(100),
+    umpire_type VARCHAR(100),
+	match_count INT(11),
+	season_year INT(4)
+);
+
+DROP TABLE dw_mv_report_03;
+/*
+CREATE TABLE dw_mv_report_03 (
+	weekend_date DATE,
+    age_group VARCHAR(100),
+	umpire_type VARCHAR(100),
+	umpire_type_age_group VARCHAR(200),
+	team_list VARCHAR(4000),
+	match_count INT(11),
+	season_year INT(4)
+);
+*/
 DROP TABLE dw_mv_report_04;
 
 CREATE TABLE dw_mv_report_04 (
 	club_name VARCHAR(100),
 	age_group VARCHAR(100),
 	short_league_name VARCHAR(100),
+    region_name VARCHAR(100),
 	umpire_type VARCHAR(100),
     age_sort_order INT(11),
     league_sort_order INT(11),
-	match_count INT(11)
+	match_count INT(11),
+    season_year INT(4)
+);
+
+DROP TABLE dw_mv_report_05;
+
+CREATE TABLE dw_mv_report_05 (
+	umpire_type VARCHAR(100),
+    age_group VARCHAR(100),
+    age_sort_order INT(2),
+    short_league_name VARCHAR(100),
+    league_sort_order INT(2),
+    region_name VARCHAR(100),
+	match_no_ump INT(11),
+    total_match_count INT(11),
+    match_pct INT(11),
+	season_year INT(4)
 );
 
 DROP TABLE dw_mv_report_06;
@@ -138,8 +193,20 @@ CREATE TABLE dw_mv_report_06 (
     match_count INT(11)
 );
 
+DROP TABLE dw_mv_report_07;
 
-TRUNCATE TABLE dw_mv_report_06;
+CREATE TABLE dw_mv_report_07 (
+	umpire_type VARCHAR(100),
+	age_group VARCHAR(100),
+	region_name VARCHAR(100),
+    short_league_name VARCHAR(200),
+    season_year INT(4),
+    age_sort_order INT(2),
+    league_sort_order INT(2),
+    umpire_count VARCHAR(100),
+    match_count INT(11)
+);
+
 
 
 /*
@@ -364,16 +431,24 @@ WHERE m.match_id NOT IN (
 
 TRUNCATE TABLE staging_all_ump_age_league;
 
-INSERT INTO staging_all_ump_age_league (age_group, umpire_type, short_league_name, age_sort_order, league_sort_order)
+INSERT INTO staging_all_ump_age_league (age_group, umpire_type, short_league_name, region_name, age_sort_order, league_sort_order)
 SELECT DISTINCT
 ag.age_group,
 ut.umpire_type_name,
 l.short_league_name,
+r.region_name,
 ag.display_order,
-NULL
+CASE short_league_name
+	WHEN 'GFL' THEN 1
+	WHEN 'BFL' THEN 2
+	WHEN 'GDFL' THEN 3
+	WHEN 'CDFNL' THEN 4
+	ELSE 10
+END league_sort_order
 FROM age_group ag
 INNER JOIN age_group_division agd ON ag.ID = agd.age_group_id
 INNER JOIN league l ON l.age_group_division_id = agd.ID
+INNER JOIN region r ON l.region_id = r.id
 CROSS JOIN umpire_type ut;
 
 
@@ -448,6 +523,207 @@ CREATE INDEX idx_dwfm_home ON dw_fact_match (home_team_key);
 CREATE INDEX idx_dwfm_away ON dw_fact_match (away_team_key);
 CREATE INDEX idx_dwfm_matchid ON dw_fact_match (match_id);
 
+/* Run time 2.2s */
+INSERT INTO dw_mv_report_01 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, season_year, match_count)
+SELECT
+u.last_first_name,
+l.short_league_name,
+te.club_name,
+a.age_group,
+l.region_name,
+u.umpire_type,
+ti.date_year,
+COUNT(DISTINCT m.match_id) AS match_count
+FROM dw_fact_match m
+INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+GROUP BY u.last_first_name, l.short_league_name, te.club_name, a.age_group, l.region_name, u.umpire_type, ti.date_year;
+
+
+/* Run time 1.7s */
+INSERT INTO dw_mv_report_02 (last_first_name, short_league_name, age_group, age_sort_order, two_ump_flag, region_name, umpire_type, season_year, match_count)
+SELECT
+u.last_first_name,
+l.short_league_name,
+a.age_group,
+a.sort_order,
+0 AS two_ump_flag,
+l.region_name,
+u.umpire_type,
+ti.date_year,
+COUNT(DISTINCT m.match_id) AS match_count
+FROM dw_fact_match m
+INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.region_name, u.umpire_type, ti.date_year
+UNION ALL
+SELECT
+u.last_first_name,
+'2 Umpires' AS short_league_name,
+a.age_group,
+a.sort_order,
+1 AS two_ump_flag,
+l.region_name,
+u.umpire_type,
+ti.date_year,
+COUNT(DISTINCT m.match_id) AS match_count
+FROM dw_fact_match m
+INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN (
+	SELECT
+	m2.match_id,
+	COUNT(DISTINCT u2.umpire_key) AS umpire_count
+	FROM dw_fact_match m2
+	INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Field'
+	AND a2.age_group = 'Seniors'
+	GROUP BY m2.match_id
+	HAVING COUNT(DISTINCT u2.umpire_key) = 2
+	) AS qryMatchesWithTwoUmpires ON m.match_id = qryMatchesWithTwoUmpires.match_id
+WHERE u.umpire_type = 'Field'
+AND a.age_group = 'Seniors'
+GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.region_name, u.umpire_type, ti.date_year;
+
+
+TRUNCATE TABLE dw_mv_report_04;
+
+INSERT INTO dw_mv_report_04 (club_name, age_group, short_league_name, umpire_type, age_sort_order, league_sort_order, match_count, season_year, region_name)
+SELECT
+te.club_name,
+a.age_group,
+l.short_league_name,
+'Field' AS umpire_type,
+a.sort_order,
+l.league_sort_order,
+COUNT(DISTINCT match_id) AS match_count,
+ti.date_year,
+l.region_name
+FROM dw_fact_match m
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+WHERE m.match_id IN (
+	SELECT match_id
+	FROM staging_no_umpires s
+	WHERE s.umpire_type = 'Field'
+	AND s.short_league_name = l.short_league_name
+	AND s.age_group = a.age_group
+)
+GROUP BY te.club_name, a.age_group, l.short_league_name
+UNION ALL
+SELECT
+te.club_name,
+a.age_group,
+l.short_league_name,
+'Goal' AS umpire_type,
+a.sort_order,
+l.league_sort_order,
+COUNT(DISTINCT match_id) AS match_count,
+ti.date_year,
+l.region_name
+FROM dw_fact_match m
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+WHERE m.match_id IN (
+	SELECT match_id
+	FROM staging_no_umpires s
+	WHERE s.umpire_type = 'Goal'
+	AND s.short_league_name = l.short_league_name
+	AND s.age_group = a.age_group
+)
+GROUP BY te.club_name, a.age_group, l.short_league_name
+UNION ALL
+SELECT
+te.club_name,
+a.age_group,
+l.short_league_name,
+'Boundary' AS umpire_type,
+a.sort_order,
+l.league_sort_order,
+COUNT(DISTINCT match_id) AS match_count,
+ti.date_year,
+l.region_name
+FROM dw_fact_match m
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+WHERE m.match_id IN (
+	SELECT match_id
+	FROM staging_no_umpires s
+	WHERE s.umpire_type = 'Boundary'
+	AND s.short_league_name = l.short_league_name
+	AND s.age_group = a.age_group
+)
+GROUP BY te.club_name, a.age_group, l.short_league_name;
+
+TRUNCATE TABLE dw_mv_report_05;
+
+INSERT INTO dw_mv_report_05 (umpire_type, age_group, age_sort_order, short_league_name, league_sort_order, region_name, match_no_ump, total_match_count, match_pct, season_year) 
+SELECT 
+ua.umpire_type,
+ua.age_group,
+ua.age_sort_order,
+ua.short_league_name,
+ua.league_sort_order,
+ua.region_name,
+IFNULL(sub_match_count.match_count, 0) AS match_no_ump,
+IFNULL(sub_total_matches.total_match_count, 0) AS total_match_count,
+IFNULL(FLOOR(sub_match_count.match_count / sub_total_matches.total_match_count * 100),0) AS match_pct,
+sub_total_matches.date_year
+FROM (
+    SELECT 
+	umpire_type,
+	age_group,
+	short_league_name,
+	age_sort_order,
+	league_sort_order,
+	region_name
+    FROM staging_all_ump_age_league
+) AS ua
+LEFT JOIN (
+	SELECT 
+	a.age_group,
+	l.short_league_name,
+	a.sort_order,
+	l.league_sort_order,
+	ti.date_year,
+	COUNT(DISTINCT match_id) AS total_match_count
+	FROM dw_fact_match m
+	INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+	INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+	INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+	GROUP BY a.age_group , l.short_league_name , a.sort_order , l.league_sort_order, ti.date_year
+) AS sub_total_matches
+ON ua.age_group = sub_total_matches.age_group
+AND ua.short_league_name = sub_total_matches.short_league_name
+LEFT JOIN (
+	SELECT 
+	umpire_type,
+	age_group,
+	short_league_name,
+	COUNT(s.match_id) AS Match_Count
+	FROM staging_no_umpires s
+	GROUP BY umpire_type , age_group , short_league_name
+) AS sub_match_count
+ON ua.umpire_type = sub_match_count.umpire_type
+AND ua.age_group = sub_match_count.age_group
+AND ua.short_league_name = sub_match_count.short_league_name;
+
 TRUNCATE TABLE dw_mv_report_06;
 
 INSERT INTO dw_mv_report_06 (umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count)
@@ -469,6 +745,47 @@ INNER JOIN dw_dim_league l ON m.league_key = l.league_key
 INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
 INNER JOIN dw_dim_time dti ON m.time_key = dti.time_key
 GROUP BY u.umpire_type, a.age_group, u.last_first_name, u2.last_first_name, l.region_name;
+
+
+TRUNCATE TABLE dw_mv_report_07;
+
+INSERT INTO dw_mv_report_07 (umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count)
+SELECT
+u.umpire_type,
+a.age_group,
+l.region_name,
+l.short_league_name,
+ti.date_year,
+a.sort_order,
+l.league_sort_order,
+CONCAT(sub.umpire_count, ' Umpires'),
+COUNT(DISTINCT sub.match_id)
+FROM dw_fact_match m
+INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN (
+	SELECT
+	m2.match_id,
+    u2.umpire_type,
+    a2.age_group,
+    l2.short_league_name,
+	COUNT(DISTINCT u2.umpire_key) AS umpire_count
+	FROM dw_fact_match m2
+	INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+    INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	GROUP BY m2.match_id,  u2.umpire_type, a2.age_group, l2.short_league_name
+	HAVING COUNT(DISTINCT u2.umpire_key) IN (2, 3)
+) AS sub
+ON m.match_id = sub.match_id
+AND u.umpire_type = sub.umpire_type
+AND a.age_group = sub.age_group
+GROUP BY l.short_league_name, a.age_group, l.region_name, u.umpire_type, ti.date_year, a.sort_order, sub.umpire_count, l.league_sort_order;
+
+
+
 
 
 

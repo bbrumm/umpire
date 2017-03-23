@@ -16,8 +16,8 @@ class Home extends CI_Controller {
             $data['maxDateOutput'] = $this->getLatestImportDateOutput();
             $this->load->view('templates/header', $data);
             
-            $data['reportSelectionParameters'] = $this->getAllReportSelectionParameters();
             
+            $data['reportSelectionParameters'] = $this->getAllReportSelectionParameters();
             $this->load->helper('form');
             $this->load->view('report_home', $data);
             $this->load->view('templates/footer');

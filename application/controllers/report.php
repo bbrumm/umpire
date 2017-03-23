@@ -7,6 +7,7 @@ class Report extends CI_Controller {
 		$this->load->helper('url_helper');
 		$this->load->helper('cell_formatting_helper');
 		$this->load->model('Requested_report_model');
+		$this->load->library('Debug_library');
 	}
 	
 	public function index() {
@@ -34,6 +35,7 @@ class Report extends CI_Controller {
 	    $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
+		$data['debugLibrary'] = new Debug_library();
 		
 		//Note: You can't pass an array through a hidden POST variable.
 		//This is why I have used the checkboxes and then imploded them
