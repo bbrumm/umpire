@@ -37,7 +37,7 @@ echo "<br />";
 if ($useNewDWTables) {
     $debugLibrary->debugOutput("resultOutputArray DW", $resultOutputArray);
     $debugLibrary->debugOutput("columnLabelResultArray DW", $loadedColumnGroupings);
-    $debugLibrary->debugOutput("reportDisplayOptions DW", $reportDisplayOptions);
+    //$debugLibrary->debugOutput("reportDisplayOptions DW", $reportDisplayOptions);
     
     $countItemsInColumnHeadingSet = count($loadedColumnGroupings[0]);
     for ($i=0; $i < $countItemsInColumnHeadingSet; $i++) {
@@ -80,7 +80,7 @@ if ($useNewDWTables) {
             if ($proceed) {
                 //print cell with colspan value
                 if ($debugMode) {
-                    echo $columnLabels[$i]->getFieldName() . "rotate cell 1<BR />";
+                    //echo $columnLabels[$i]->getFieldName() . "rotate cell 1<BR />";
                 }
                 if ($columnLabels[$i]->getFieldName() == 'club_name' || $reportID == 6) {
                     //Some reports have their headers displayed differently
@@ -98,7 +98,7 @@ if ($useNewDWTables) {
                     }
                 } else {
                     if ($debugMode) {
-                        echo "dont rotate cell 2<BR />";
+                        //echo "dont rotate cell 2<BR />";
                     }
                     //Increase the colspan if this column group is to be merged
                     if ($arrReportColumnGroup[$i]->getMergeField() == 1) {
@@ -148,6 +148,8 @@ if ($useNewDWTables) {
                 } else {
                     if ($colourCells == 1) {
                         $cellClassToUse = getCellClassNameFromOutputValue($resultOutputArray[$rowCounter][$columnCounter], TRUE);
+                    } elseif ($reportID == 2 && $loadedColumnGroupings[$columnCounter-1]['age_group'] == 'Total') {
+                        $cellClassToUse = "cellNumber cellTextTotal";
                     } elseif(is_numeric($resultOutputArray[$rowCounter][$columnCounter])) {
                         $cellClassToUse = "cellNumber cellNormal";
                     } else {

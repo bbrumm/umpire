@@ -1,3 +1,10 @@
+
+UPDATE league
+SET region_id = 1
+WHERE id = 35
+AND league_name = 'AFL Barwon - Buckley''s Bellarine FNL Reserves';
+
+
 DROP TABLE dw_dim_umpire;
 DROP TABLE dw_dim_age_group;
 DROP TABLE dw_dim_league;
@@ -133,6 +140,7 @@ CREATE TABLE dw_mv_report_02 (
 	short_league_name VARCHAR(100),
     age_group VARCHAR(100),
     age_sort_order INT(2),
+    league_sort_order INT(2),
     two_ump_flag INT(1),
     region_name VARCHAR(100),
     umpire_type VARCHAR(100),
@@ -448,8 +456,8 @@ END league_sort_order
 FROM age_group ag
 INNER JOIN age_group_division agd ON ag.ID = agd.age_group_id
 INNER JOIN league l ON l.age_group_division_id = agd.ID
-INNER JOIN region r ON l.region_id = r.id
-CROSS JOIN umpire_type ut;
+CROSS JOIN umpire_type ut
+INNER JOIN region r ON l.region_id = r.id;
 
 
 
@@ -542,14 +550,16 @@ INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
 INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
 GROUP BY u.last_first_name, l.short_league_name, te.club_name, a.age_group, l.region_name, u.umpire_type, ti.date_year;
 
+TRUNCATE TABLE dw_mv_report_02;
 
 /* Run time 1.7s */
-INSERT INTO dw_mv_report_02 (last_first_name, short_league_name, age_group, age_sort_order, two_ump_flag, region_name, umpire_type, season_year, match_count)
+INSERT INTO dw_mv_report_02 (last_first_name, short_league_name, age_group, age_sort_order, league_sort_order, two_ump_flag, region_name, umpire_type, season_year, match_count)
 SELECT
 u.last_first_name,
 l.short_league_name,
 a.age_group,
 a.sort_order,
+l.league_sort_order,
 0 AS two_ump_flag,
 l.region_name,
 u.umpire_type,
@@ -568,6 +578,7 @@ u.last_first_name,
 '2 Umpires' AS short_league_name,
 a.age_group,
 a.sort_order,
+10 AS league_sort_order,
 1 AS two_ump_flag,
 l.region_name,
 u.umpire_type,

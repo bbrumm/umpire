@@ -12,7 +12,7 @@ class Report_instance extends CI_Model {
 	private $columnLabelResultArray;
 	private $rowLabelResultArray;
 	
-	private $resultOutputArray; //New variable to store the array so it cna be directly output to the screen
+	private $resultOutputArray; //New variable to store the array so it can be directly output to the screen
 	
 	private $umpireTypeSQLValues;
 	private $leagueSQLValues;
@@ -126,6 +126,8 @@ class Report_instance extends CI_Model {
 	        $columnLabelQuery = $this->buildColumnLabelQuery();
 	        $query = $this->db->query($columnLabelQuery);
 	        $this->columnLabelResultArray = $query->result_array();
+	        
+	        $this->debug_library->debugOutput("columnLabelResultArray in setColumnLabelResultArray:", $this->getColumnLabelResultArray());
 	         
 	    } else {
     	    if ($this->requestedReport->getReportNumber() == 6) {
@@ -151,6 +153,7 @@ class Report_instance extends CI_Model {
     	                'short_league_name' => ''
     	            );
     	        }
+    	        
     	        $this->columnLabelResultArray = $columnLabelResultArray;
     	    }
 	    }
@@ -214,36 +217,16 @@ class Report_instance extends CI_Model {
 	                    $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['age_group'];
 	                    $columnNumber++;
 	                }
-	                 
 	                
     	            //Match the column headings to the values in the array
-    	    /*
-    	            echo "columnItem:<pre>";
-    	            print_r($columnItem);
-    	            echo "</pre>";
-    	            */
-	                /*
-    	            echo "ColumnHeadingSet:<pre>";
-    	            print_r($columnHeadingSet);
-    	            echo "</pre>";
-    	            //echo "<td>";
-    	            */
-	                
-	                //foreach ($currentRowItem as $currentRowItemSubColumn) {
-	                    
-	                    /*
-    	                echo "A:" . $currentRowItemSubColumn['short_name'] . "<BR />";
-    	                echo "B:" . $currentRowItemSubColumn['club_name'] . "<BR />";
-    	                echo "C:" . $columnHeadingSet['short_name'] . "<BR />";
-    	                echo "D:" . $columnHeadingSet['club_name'] . "<BR />";
-    	                */
-	               
-	               //echo "ColumnKey: " . $columnKey . "<BR />";
-    	                
-	                /*if ($columnItem['short_league_name'] == $columnHeadingSet['short_league_name'] &&
-	                    $columnItem['club_name'] == $columnHeadingSet['club_name']) {*/
 	               if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet)) {
-	                    if($this->requestedReport->getReportNumber() == 3) {
+	                   if($this->requestedReport->getReportNumber() == 2) { 
+	                       //Add up total values for report 2, only if the "short_league_name" equivalent value is not "2 Umpires"
+	                       if ($columnHeadingSet['short_league_name'] != '2 Umpires') {
+	                           $totalForRow = $totalForRow + $columnItem['match_count'];
+	                       }
+	                       $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+	                   } elseif($this->requestedReport->getReportNumber() == 3) {
 	                        if ($columnHeadingSet['short_league_name'] == 'Total') {
 	                            //Output the Total column values for report 3
 	                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
@@ -267,29 +250,16 @@ class Report_instance extends CI_Model {
 	                    }
 	                        
 	                }
-    	                
-    	                
-    	            //$columnNumber++;
-    	                
-	                
-	                //echo $columnHeadingSet[$tempArrayForColumnLabels[$i]];
-	                //echo "</td>";
 	            }
-	            
-	            
-	            //echo "</td>";
-	    
 	        }
-	        
-	        //echo "</tr>";
-	        
-	        //Add on final column for report 5 for totals for the row
-	        if ($this->requestedReport->getReportNumber() == 5) {
-	            
+	        //Add on final column for report 2 and 5 for totals for the row
+	        if ($this->requestedReport->getReportNumber() == 5 || 
+	            $this->requestedReport->getReportNumber() == 2) {
 	            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $totalForRow;
 	            //$this->debug_library->debugOutput("totalForRow", $currentResultArrayRow . ", " . $columnNumber . ", " . $totalForRow);
 	            //$columnNumber++;
 	        }
+	        
 	        
 	        //$this->debug_library->debugOutput("columnNumber", $columnNumber);
 	        //$this->debug_library->debugOutput("countItemsInColumnHeadingSet", count($columnHeadingSet));
@@ -945,43 +915,52 @@ class Report_instance extends CI_Model {
 	                $columnLabelQuery = "SELECT DISTINCT age_group, short_league_name
         	            FROM (
     	                    SELECT
-            	            last_first_name,
             	            age_group,
             	            age_sort_order,
-            	            short_league_name,
-            	            two_ump_flag
+	                        league_sort_order,
+            	            short_league_name
         	                FROM dw_mv_report_02
         	                WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
             	            AND short_league_name IN ('2 Umpires', ". $this->getLeagueSQLValues() .")
             	            AND region_name IN (". $this->getRegionSQLValues() .")
             	            AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
             	            AND season_year = ". $this->requestedReport->getSeason() ."
+            	            UNION ALL
+            	            SELECT
+        	                'Total',
+        	                50,
+        	                50,
+        	                ''
         	            ) AS sub
-        	            ORDER BY last_first_name, age_sort_order, short_league_name;";
+        	            ORDER BY age_sort_order, league_sort_order;";
 	                
 	                break;
 	            case 3:
 	                $columnLabelQuery = "SELECT DISTINCT
-                    	CONCAT('No ', sub.age_group, ' ', sub.umpire_type) AS umpire_type_age_group,
-                    	sub.short_league_name
+                    	CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group,
+                    	short_league_name
                     	FROM (
-                    	SELECT
-                    	s.age_group,
-                    	s.umpire_type,
-                    	s.short_league_name,
-                    	s.age_sort_order
-                    	FROM staging_all_ump_age_league s
-                    	UNION ALL
-                    	SELECT
-                    	s.age_group,
-                    	s.umpire_type,
-                    	'Total',
-                    	s.age_sort_order
-                    	FROM staging_all_ump_age_league s
-                    	ORDER BY age_sort_order, umpire_type, short_league_name
-                    ) sub
-                    WHERE CONCAT(sub.age_group, ' ', sub.umpire_type) IN
-                    	('Seniors Boundary' , 'Seniors Goal', 'Reserves Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field');";
+                        	SELECT
+                        	s.age_group,
+                        	s.umpire_type,
+                        	s.short_league_name,
+    	                    s.region_name,
+                        	s.age_sort_order
+                        	FROM staging_all_ump_age_league s
+                        	UNION ALL
+                        	SELECT
+                        	s.age_group,
+                        	s.umpire_type,
+                        	'Total',
+    	                    'Total',
+                        	s.age_sort_order
+                        	FROM staging_all_ump_age_league s
+                        ) sub
+                        WHERE CONCAT(age_group, ' ', umpire_type) IN
+                        	('Seniors Boundary' , 'Seniors Goal', 'Reserves Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field')
+                        AND age_group IN (". $this->getAgeGroupSQLValues() .")
+	                    AND region_name IN ('Total', ". $this->getRegionSQLValues() .")
+                        ORDER BY age_sort_order, umpire_type, short_league_name;";
 	                
 	                break;
 	            
@@ -1053,8 +1032,6 @@ class Report_instance extends CI_Model {
 	                break;
 	                    
 	        }
-	       
-	       
 	       $this->debug_library->debugOutput("columnLabelQuery:", $columnLabelQuery);
 	       return $columnLabelQuery;
         
