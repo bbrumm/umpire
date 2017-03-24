@@ -6,6 +6,41 @@
  <body>
 	<h2>User Administration</h2>
 	<br />
+	<?php echo form_open('UserAdmin/addNewUser'); ?>
+<div class="addNewUser">
+	<p class="regularUserOptionsHeading">Add New User</p>
+	<div class="newUserFieldRow">
+		<span class="fieldLabel"><label for="username">Username:</label></span>
+		<span class="fieldControl"><input type="text" size="20" id="username" name="username" class="customTextBox"/></span>
+	</div>
+	<div class="newUserFieldRow">
+		<span class="fieldLabel"><label for="username">First Name:</label></span>
+		<span class="fieldControl"><input type="text" size="50" id="firstname" name="firstname" class="customTextBox"/></span>
+	</div>
+	<div class="newUserFieldRow">
+		<span class="fieldLabel"><label for="username">Last Name:</label></span>
+		<span class="fieldControl"><input type="text" size="50" id="lastname" name="lastname" class="customTextBox"/></span>
+	</div>
+	<div class="newUserFieldRow">
+		<span class="fieldLabel"><label for="password">Password:</label></span>
+		<span class="fieldControl"><input type="password" size="50" id="password" name="password" class="customTextBox"/></span>
+	</div>
+	
+	<br/>
+	<div class="reportSelectorRow">
+		<input type="submit" value="Add New User" class="btn" />
+	</div>
+	<?php 
+	if (isset($userAddedMessage)) {
+	    echo "<BR /><div class='successMessage'>" . $userAddedMessage . "</div>";
+	}
+	?>
+	<br/>
+	<br/>
+
+</div>	
+	<?php echo form_close(); ?>
+	
 <div class="roleDefinitions">
 <p class="regularUserOptionsHeading">Definitions:</p>
 <p><span class="boldedText">Administrator</span>: Can import files, view all reports and options in their competition, and set other user's privileges here.</p>
@@ -13,7 +48,7 @@
 <p><span class="boldedText">Regular User</span>: Can only view certain reports for their specified umpire disciplines, age groups, and leagues.</p>
 </div>
 	<br />
-	
+<div class='userRoleList'>
 	<?php 
 	/*
 	echo "<pre>";
@@ -29,7 +64,7 @@ for($i=0; $i<count($userArray); $i++) {
 ?>
 	
 	<div class="userNameRow">
-		<span class="userNameLabel"><label for="username">
+		<span class="userLabel"><label for="username">
 		<?php 
 		echo $userIteration->getFirstName() . " " . $userIteration->getLastName() . " (". $userIteration->getUsername() .")";
 		?>
@@ -148,7 +183,7 @@ for($i=0; $i<count($userArray); $i++) {
 }
     ?>
     
-
+</div>
 
 	<?php 
 	/*

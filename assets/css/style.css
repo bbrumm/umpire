@@ -508,7 +508,8 @@ Login Page
 .customTextBox
 { 
 	background:#F8F8F8;
-	color:#999999;
+	/*color:#999999;*/
+	color:#555555;
 	border:1px solid #DCDCDC;
 	border-radius:2px ;
 	font-size:16px ;
@@ -593,7 +594,7 @@ Login Page
 	
 	}
  
- .userNameLabel{
+ .userLabel{
 	width:50%;
 	text-align:right;
 	/*background:#C0C0C0;*/
@@ -633,7 +634,7 @@ Login Page
  
  .optionsSection {
 	display: inline-block;
- 	width: 24%; /* (100%/number of elements)- 1% */
+ 	width: 19%; /* (100%/number of elements)- 1% */
  	/*background:#A0A0C0;*/
  	vertical-align: top;
 
@@ -856,3 +857,57 @@ Login Page
 }
 
 
+/*
+User Admin specific classes
+*/
+
+.addNewUser {
+	border:1px solid #999999;
+ 	background: #E5F2FF; /* Light blue */
+	width:80%;
+	margin: auto; /* Causes the DIV to be center aligned*/
+}
+
+
+.newUserFieldRow {
+	width:100%;
+	position:relative;
+    overflow:hidden;
+    white-space: nowrap;
+	text-align:center;
+}
+
+.fieldLabel {
+	width:50%;
+	text-align:right;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	font-size: 16px;
+	padding:5px;
+	/*font-weight: bold;*/
+	
+	
+}
+
+
+
+.fieldControl {
+	width:50%;
+	text-align:left;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	padding:5px;
+	
+}
+
+.successMessage {
+	color:#206020;
+	font-weight: bold;
+	text-align:center;
+}
+
+.userRoleList {
+	margin: auto;
+	/*border:1px solid #999999;
+ 	background: #E5F2FF;*/ /* Light blue */
+}

@@ -6,6 +6,7 @@ class Useradminmodel extends CI_Model {
     {
         parent::__construct();
         $this->load->model("User");
+        $this->load->library('Debug_library');
     }
     
     public function getAllUsers() {
@@ -94,10 +95,42 @@ class Useradminmodel extends CI_Model {
         return $this->getArrayFromQuery($queryString);
     }
     
+    private function createUserFromAddNew($pUserName, $pFirstName, $pLastName, $pPassword) {
+        $newUser = new User();
+        
+        $newUser->setUsername($pUserName);
+        $newUser->setFirstName($pFirstName);
+        $newUser->setLastName($pLastName);
+        $newUser->setPassword($pPassword);
+        
+        return $newUser;
+        
+    }
     
+    public function addNewUser($pSubmittedData) {
+        $newUser = new User();
+        $newUser = $this->createUserFromAddNew(
+                $pSubmittedData['username'], $pSubmittedData['firstname'], $pSubmittedData['lastname'], MD5($pSubmittedData['password']));
+        return $this->insertUserIntoDatabase($newUser);
+    }
     
-    
-    
+    private function insertUserIntoDatabase(User $pUser) {
+        //TODO: Replace the default role with a user selection, once it is built into the UI.
+        $queryString = "INSERT INTO umpire_users
+            (first_name, last_name, user_name, user_email, user_password, role_sub_role_id)
+            VALUES (?, ?, ?, 'None', ?, 6);";
+        
+        $query = $this->db->query($queryString, array(
+            $pUser->getFirstName(), $pUser->getLastName(), $pUser->getUsername(), $pUser->getPassword()
+        ));
+        
+        if ($this->db->affected_rows() == 1) {
+            return true;
+        } else {
+            throw new exception("There was an error when inserting the user. Please contact support.");
+        }
+        
+    }
     
 
 }

@@ -17,7 +17,7 @@
     <br/>
 	<div class="loginFieldRow">
 		<span class="loginLabel"><label for="password">Password:</label></span>
-		<span class="loginControl"><input type="password" size="20" id="passowrd" name="password" class="customTextBox"/></span>
+		<span class="loginControl"><input type="password" size="20" id="password" name="password" class="customTextBox"/></span>
     </div>
 	<br/>
 	<div class="reportSelectorRow">
