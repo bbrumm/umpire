@@ -1026,6 +1026,9 @@ INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
 INNER JOIN dw_dim_league l ON m.league_key = l.league_key
 INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
 INNER JOIN dw_dim_time dti ON m.time_key = dti.time_key
+INNER JOIN dw_dim_time dti2 ON m2.time_key = dti2.time_key
+WHERE dti.date_year = @vSeasonYear
+AND dti2.date_year = @vSeasonYear
 GROUP BY u.umpire_type, a.age_group, u.last_first_name, u2.last_first_name, l.region_name;
 
 CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'dw_mv_report_06'), 1, ROW_COUNT());
@@ -1068,6 +1071,7 @@ INNER JOIN (
 ON m.match_id = sub.match_id
 AND u.umpire_type = sub.umpire_type
 AND a.age_group = sub.age_group
+WHERE ti.date_year = @vSeasonYear
 GROUP BY l.short_league_name, a.age_group, l.region_name, u.umpire_type, ti.date_year, a.sort_order, sub.umpire_count, l.league_sort_order;
 
 CALL LogTableOperation(pImportedFileID, (SELECT id FROM processed_table WHERE table_name = 'dw_mv_report_07'), 1, ROW_COUNT());
@@ -1079,6 +1083,8 @@ ALTER TABLE dw_mv_report_07 ENABLE KEYS;
 /*
 Insert New Competitions
 These will be displayed to the user when a file is imported. The leagues need to be assigned manually by the person who imported them.
+NOTE: This assumes that a competition name is unique to a season. If the same name is used in a different season, this needs to be changed
+so that the subquery includes WHERE season_id = pSeasonID
 */
 
 INSERT INTO competition_lookup (competition_name, season_id, league_id)
@@ -1086,7 +1092,7 @@ SELECT DISTINCT competition_name, pSeasonID, NULL
 FROM match_import
 WHERE competition_name NOT IN (
 	SELECT competition_name
-    FROM bbrumm_umpire_data.competition_lookup
+    FROM competition_lookup
 );
 
 END$$

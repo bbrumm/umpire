@@ -7,6 +7,7 @@ GROUP BY imported_file_id
 ORDER BY imported_file_id;
 
 SELECT
+op.imported_file_id,
 op.id,
 op.processed_table_id,
 t.table_name,
@@ -16,6 +17,11 @@ op.rowcount
 FROM table_operations op
 INNER JOIN processed_table t ON op.processed_table_id = t.id
 INNER JOIN operation_ref r ON op.operation_id = r.id
-WHERE imported_file_id = 96
+WHERE 1=1
+/*AND op.imported_file_id > 90*/
+AND imported_file_id = 107
+/*AND table_name = 'dw_fact_match'*/
 
 ORDER BY id ASC;
+
+

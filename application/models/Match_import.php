@@ -16,8 +16,9 @@ class Match_import extends CI_Model
   function __construct()
     {
           parent::__construct();
-          $this->load->model("Table_operation");
+          $this->load->model('Table_operation');
           $this->load->model('Season');
+          $this->load->library('Debug_library');
     }
   
   public function fileImport($data) {
@@ -76,7 +77,9 @@ class Match_import extends CI_Model
       $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
   }
   
-  private function findSeasonToUpdate() {
+  
+  
+  public function findSeasonToUpdate() {
       $queryString = "SELECT MAX(season.ID) AS season_id " .
         "FROM season " .
         "INNER JOIN match_import ON season.season_year = match_import.season;";
@@ -84,6 +87,14 @@ class Match_import extends CI_Model
       $resultArray = $query->result_array();
       //echo "findSeasonToUpdate: ". $resultArray[0]['season_id'] . "<BR />";
       return $resultArray[0]['season_id'];
+  }
+  
+  public function findLatestImportedFile() {
+      $queryString = "SELECT MAX(imported_file_id) AS imported_file_id
+          FROM table_operations";
+      $query = $this->db->query($queryString);
+      $resultArray = $query->result_array();
+      return $resultArray[0]['imported_file_id'];
   }
   
   private function deleteFromSingleTable($tableName, $importedFileID, $logDeletedRow = TRUE) {
@@ -153,15 +164,46 @@ class Match_import extends CI_Model
   public function findMissingDataOnImport() {
       $queryString = "CALL `FindMissingData`()";
       $query = $this->db->query($queryString);
+      
+      
+      
+      $queryString = "SELECT DISTINCT record_type, source_id, source_value
+          FROM incomplete_records
+          ORDER BY record_type, source_id;";
+      $query = $this->db->query($queryString);
+      
       if (mysqli_more_results($this->db->conn_id)) {
           mysqli_next_result($this->db->conn_id);
       }
       
+      
+      
       $resultArray = $query->result_array();
       $query->free_result();
       
+      $resultArray = $this->splitArrayBasedOnType($resultArray);
+      
+      $this->debug_library->debugOutput("resultArray (in findMissingDataOnImport):", $resultArray);
+      
       return $resultArray;
+      
 
+  }
+  
+  private function splitArrayBasedOnType(array $pResultArray) {
+      $resultArray = "";
+      
+      //Split the results into separate arrays, based on the record type
+      $this->debug_library->debugOutput("pResultArray (in splitArrayBasedOnType):", $pResultArray);
+      
+      foreach ($pResultArray as $currentRowItem) {
+          switch ($currentRowItem['record_type']) {
+            case 'competition':
+                $resultArray['competition'][] = $currentRowItem;
+                break;
+          }
+      }
+      return $resultArray;
   }
  
 }

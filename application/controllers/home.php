@@ -8,7 +8,7 @@ class Home extends CI_Controller {
     
     function index() {
          
-        $this->load->model('ReportSelectionParameter');
+        $this->load->model('Report_selection_parameter');
         $this->load->model('User');
          
         if($this->session->userdata('logged_in')) {
@@ -57,7 +57,7 @@ class Home extends CI_Controller {
         
         $query = $this->db->query($queryString);
         foreach ($query->result() as $row) {
-            $reportSelectionParameter = new ReportSelectionParameter();
+            $reportSelectionParameter = new Report_selection_parameter();
             $reportSelectionParameter->setParameterID($row->parameter_id);
             $reportSelectionParameter->setParameterName($row->parameter_name);
             $reportSelectionParameter->setParameterDisplayOrder($row->parameter_display_order);

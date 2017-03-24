@@ -6,6 +6,7 @@ BEGIN
 
 DECLARE vSeasonYear INT(4);
 
+TRUNCATE TABLE incomplete_records;
 /*
 Find new or incomplete competition records.
 These records were inserted as part of the ETL job, but the league was not assigned, as it needs a user to confirm the values.

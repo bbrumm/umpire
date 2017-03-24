@@ -1,5 +1,7 @@
 <?php
 class FileImport extends CI_Controller {
+    
+    private $showSuccessPageWithoutImporting;
 	
 	public function __construct() {
 		parent::__construct();
@@ -8,6 +10,8 @@ class FileImport extends CI_Controller {
 		$this->load->helper('url_helper');
 		$this->load->model('Match_import');
 		$this->load->model('Run_etl_stored_proc');
+		$this->load->model('Missing_data_updater');
+		$this->load->helper('form');
 		
 		//$this->load->helper('cell_formatting_helper');
 		//$this->load->helper('phpexcel/Classes/PHPExcel');
@@ -17,13 +21,10 @@ class FileImport extends CI_Controller {
 	}
 	
 	public function index() {
-		
 	    //$this->do_upload();
-		
 	}
 	
 	function testProc() {
-	    
 	    $this->Run_etl_stored_proc->runETLProcedure();
 	}
 	
@@ -32,14 +33,17 @@ class FileImport extends CI_Controller {
 	    $config['upload_path'] = './application/import/';
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
-	
-
-	    //var_dump(debug_backtrace());
-	    
 	    $this->load->library('upload', $config);
-	    
-	    if ( ! $this->upload->do_upload())
-	    {
+	     
+	    echo "DO UPLOAD<BR/>";
+	    //$this->showSuccessPageWithoutImporting = FALSE;  
+	    //if (! $this->showSuccessPageWithoutImporting) {
+	       $uploadPassed = $this->upload->do_upload();
+	    //} else {
+	    //    $uploadPassed = TRUE;
+	    //}
+
+	    if ( ! $uploadPassed) {
 	        $error = array('error' => $this->upload->display_errors());
 	        
 	        $data['test'] = "Test Report";
@@ -47,24 +51,44 @@ class FileImport extends CI_Controller {
 	        $this->load->view('templates/header', $data);
 	        $this->load->view('upload_form', $error);
 	        $this->load->view('templates/footer');
-	    }
-	    else
-	    {
-	        
+	    } else {
 	        $data = array('upload_data' => $this->upload->data());
 	        $data['progress_pct'] = 10;
-	        /*
-	        echo "<pre>";
-	        print_r($data);
-	        echo "</pre>";
-	        */
-	        $this->Match_import->fileImport($data);
-	        $data['missing_data'] = $this->Match_import->findMissingDataOnImport();
-	        $this->load->view('templates/header', $data);
-	        $this->load->view('upload_success', $data);
-	        $this->load->view('templates/footer');
+	        echo "IMPORT 2 <BR/>";
+	        
+	        //if (! $this->showSuccessPageWithoutImporting) {
+	            $this->Match_import->fileImport($data);
+	        //}
+	        $this->showUploadComplete();
 	        
 	    }
+	}
+	
+	public function runETLProcess() {
+	    
+	    
+	    $this->Missing_data_updater->updateDataAndRunETLProcedure();
+	    echo "IMPORT 1 <BR/>";
+	    $this->showUploadComplete();
+	}
+	
+	private function showUploadComplete() {
+	    
+	    /*
+	     echo "<pre>";
+	     print_r($data);
+	     echo "</pre>";
+	     */
+	    echo "IMPORT 3 <BR/>";
+	    $data['missing_data'] = $this->Match_import->findMissingDataOnImport();
+	    $data['possibleLeaguesForComp'] = $this->Missing_data_updater->loadPossibleLeaguesForComp();
+	     
+	     
+	    $this->load->view('templates/header', $data);
+	    $this->load->view('upload_success', $data);
+	    $this->load->view('templates/footer');
+	    
+	    
 	}
 	
 

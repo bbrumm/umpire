@@ -50,7 +50,7 @@ class Report extends CI_Controller {
 		echo "</form>";	
 		
 		$this->load->view('templates/header', $data);
-		$this->load->view('Report/single_report_view', $data);
+		$this->load->view('report/single_report_view', $data);
 		$this->load->view('templates/footer');
 		
 	}
