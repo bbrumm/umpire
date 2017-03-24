@@ -164,9 +164,7 @@ class Match_import extends CI_Model
   public function findMissingDataOnImport() {
       $queryString = "CALL `FindMissingData`()";
       $query = $this->db->query($queryString);
-      
-      
-      
+
       $queryString = "SELECT DISTINCT record_type, source_id, source_value
           FROM incomplete_records
           ORDER BY record_type, source_id;";
@@ -175,9 +173,7 @@ class Match_import extends CI_Model
       if (mysqli_more_results($this->db->conn_id)) {
           mysqli_next_result($this->db->conn_id);
       }
-      
-      
-      
+
       $resultArray = $query->result_array();
       $query->free_result();
       
@@ -197,11 +193,7 @@ class Match_import extends CI_Model
       $this->debug_library->debugOutput("pResultArray (in splitArrayBasedOnType):", $pResultArray);
       
       foreach ($pResultArray as $currentRowItem) {
-          switch ($currentRowItem['record_type']) {
-            case 'competition':
-                $resultArray['competition'][] = $currentRowItem;
-                break;
-          }
+        $resultArray[$currentRowItem['record_type']][] = $currentRowItem;
       }
       return $resultArray;
   }

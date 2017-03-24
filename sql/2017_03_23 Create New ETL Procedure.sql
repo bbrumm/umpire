@@ -1095,5 +1095,24 @@ WHERE competition_name NOT IN (
     FROM competition_lookup
 );
 
+/*
+Insert new teams. Clubs are added manually by the person importing the data
+*/
+INSERT INTO team (team_name, club_id)
+SELECT home_team, NULL
+FROM match_import
+WHERE home_team NOT IN (
+	SELECT team_name
+    FROM team
+)
+UNION
+SELECT away_team, NULL
+FROM match_import
+WHERE away_team NOT IN (
+	SELECT team_name
+    FROM team
+);
+
+
 END$$
 DELIMITER ;

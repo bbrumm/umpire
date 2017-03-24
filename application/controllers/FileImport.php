@@ -35,7 +35,6 @@ class FileImport extends CI_Controller {
 	    $config['max_size']	= '4096';
 	    $this->load->library('upload', $config);
 	     
-	    echo "DO UPLOAD<BR/>";
 	    //$this->showSuccessPageWithoutImporting = FALSE;  
 	    //if (! $this->showSuccessPageWithoutImporting) {
 	       $uploadPassed = $this->upload->do_upload();
@@ -54,8 +53,6 @@ class FileImport extends CI_Controller {
 	    } else {
 	        $data = array('upload_data' => $this->upload->data());
 	        $data['progress_pct'] = 10;
-	        echo "IMPORT 2 <BR/>";
-	        
 	        //if (! $this->showSuccessPageWithoutImporting) {
 	            $this->Match_import->fileImport($data);
 	        //}
@@ -65,30 +62,20 @@ class FileImport extends CI_Controller {
 	}
 	
 	public function runETLProcess() {
-	    
+	    //This function runs when the user presses "Update Reports" on the File Import page if missing data is found.
 	    
 	    $this->Missing_data_updater->updateDataAndRunETLProcedure();
-	    echo "IMPORT 1 <BR/>";
 	    $this->showUploadComplete();
 	}
 	
 	private function showUploadComplete() {
-	    
-	    /*
-	     echo "<pre>";
-	     print_r($data);
-	     echo "</pre>";
-	     */
-	    echo "IMPORT 3 <BR/>";
 	    $data['missing_data'] = $this->Match_import->findMissingDataOnImport();
 	    $data['possibleLeaguesForComp'] = $this->Missing_data_updater->loadPossibleLeaguesForComp();
-	     
-	     
+	    $data['possibleClubsForTeam'] = $this->Missing_data_updater->loadPossibleClubsForTeam();
+	    
 	    $this->load->view('templates/header', $data);
 	    $this->load->view('upload_success', $data);
 	    $this->load->view('templates/footer');
-	    
-	    
 	}
 	
 

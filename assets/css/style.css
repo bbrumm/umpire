@@ -856,6 +856,40 @@ Login Page
 	display: table-row-group;
 }
 
+.missingDataCell {
+	vertical-align:middle;
+}
+
+
+.divSubTableInvisible{
+	display: table;
+	width: 100%;
+	border:0px;
+ 	/*background: #FFFFFF;*/
+}
+
+.divSubTableCellInvisible {
+	border: 0px;
+	display: table-cell;
+	padding: 3px 3px;
+}
+
+
+
+.newData {
+  /*margin: 5px;*/
+  background: transparent;
+  /*width: 150px;*/
+  padding: 5px 35px 5px 5px;
+  font-size: medium;
+  border: 1px solid #000;
+  /*height: 34px;*/
+  /*-webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;*/
+}
+
+
 
 /*
 User Admin specific classes

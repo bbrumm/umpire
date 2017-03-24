@@ -17,5 +17,14 @@ SELECT DISTINCT 'competition', id, competition_name
 FROM competition_lookup
 WHERE league_id IS NULL;
 
+/*
+Find new or incomplete teams
+*/
+
+INSERT INTO incomplete_records(record_type, source_id, source_value)
+SELECT DISTINCT 'team', id, team_name
+FROM team
+WHERE club_id IS NULL;
+
 END$$
 DELIMITER ;
