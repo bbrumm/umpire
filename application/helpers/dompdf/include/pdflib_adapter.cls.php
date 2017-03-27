@@ -536,7 +536,7 @@ class PDFLib_Adapter implements Canvas {
   }
   
   function set_default_view($view, $options = array()) {
-    // TODO
+    // 
     // http://www.pdflib.com/fileadmin/pdflib/pdf/manuals/PDFlib-8.0.2-API-reference.pdf
     /**
      * fitheight Fit the page height to the window, with the x coordinate left at the left edge of the window.
@@ -672,7 +672,7 @@ class PDFLib_Adapter implements Canvas {
   }
   
   function clipping_roundrectangle($x1, $y1, $w, $h, $rTL, $rTR, $rBR, $rBL) {
-    // @todo
+    
     $this->clipping_rectangle($x1, $y1, $w, $h);
   }
   

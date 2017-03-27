@@ -133,7 +133,7 @@ class CI_DB_sqlite3_forge extends CI_DB_forge {
 	/**
 	 * ALTER TABLE
 	 *
-	 * @todo	implement drop_column(), modify_column()
+	 * 	implement drop_column(), modify_column()
 	 * @param	string	$alter_type	ALTER type
 	 * @param	string	$table		Table name
 	 * @param	mixed	$field		Column definition

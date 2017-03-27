@@ -81,7 +81,7 @@ class PHPExcel_Writer_OpenDocument_Meta extends PHPExcel_Writer_OpenDocument_Wri
                 foreach ($keywords as $keyword) {
                     $objWriter->writeElement('meta:keyword', $keyword);
                 }
-                //<meta:document-statistic meta:table-count="XXX" meta:cell-count="XXX" meta:object-count="XXX"/>
+                //<meta:document-statistic meta:table-count="AAA" meta:cell-count="AAA" meta:object-count="AAA"/>
                 $objWriter->startElement('meta:user-defined');
                     $objWriter->writeAttribute('meta:name', 'Company');
                     $objWriter->writeRaw($pPHPExcel->getProperties()->getCompany());

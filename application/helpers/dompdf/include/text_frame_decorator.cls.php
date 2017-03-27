@@ -43,7 +43,7 @@ class Text_Frame_Decorator extends Frame_Decorator {
   function get_text_spacing() { return $this->_text_spacing; }
       
   function get_text() {
-    // FIXME: this should be in a child class (and is incorrect)
+    // : this should be in a child class (and is incorrect)
 //    if ( $this->_frame->get_style()->content !== "normal" ) {
 //      $this->_frame->get_node()->data = $this->_frame->get_style()->content;
 //      $this->_frame->get_style()->content = "normal";

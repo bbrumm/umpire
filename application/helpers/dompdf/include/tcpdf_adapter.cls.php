@@ -244,7 +244,7 @@ class TCPDF_Adapter implements Canvas {
 
     $this->_set_stroke_color($color);
 
-    // FIXME: ugh, need to handle different styles here
+    // : ugh, need to handle different styles here
     $this->_pdf->line($x1, $y1, $x2, $y2);
   }
 
@@ -272,7 +272,7 @@ class TCPDF_Adapter implements Canvas {
 
     $this->_set_stroke_color($color);
     
-    // FIXME: ugh, need to handle styles here
+    // : ugh, need to handle styles here
     $this->_pdf->rect($x1, $y1, $w, $h);
     
   }
@@ -292,7 +292,7 @@ class TCPDF_Adapter implements Canvas {
 
     $this->_set_fill_color($color);
     
-    // FIXME: ugh, need to handle styles here
+    // : ugh, need to handle styles here
     $this->_pdf->rect($x1, $y1, $w, $h, "F");
   }
 
@@ -321,7 +321,7 @@ class TCPDF_Adapter implements Canvas {
    * @param bool  $fill  Fills the polygon if true
    */
   function polygon($points, $color, $width = null, $style = null, $fill = false) {
-    // FIXME
+    
   }
 
   /**
@@ -340,7 +340,7 @@ class TCPDF_Adapter implements Canvas {
    * @param bool $fill Fills the circle if true   
    */   
   function circle($x, $y, $r, $color, $width = null, $style = null, $fill = false) {
-    // FIXME
+    
   }
 
   /**
@@ -358,7 +358,7 @@ class TCPDF_Adapter implements Canvas {
    * @return void
    */
   function image($img_url, $x, $y, $w, $h, $resolution = "normal") {
-    // FIXME
+    
   }
 
   /**
@@ -378,11 +378,11 @@ class TCPDF_Adapter implements Canvas {
    * @return void
    */
   function text($x, $y, $text, $font, $size, $color = array(0,0,0), $word_space = 0.0, $char_space = 0.0, $angle = 0.0) {
-    // FIXME
+    
   }
 
   function javascript($code) {
-    // FIXME
+    
   }
   
   /**
@@ -391,7 +391,7 @@ class TCPDF_Adapter implements Canvas {
    * @param string $anchorname The name of the named destination
    */
   function add_named_dest($anchorname) {
-    // FIXME
+    
   }
 
   /**
@@ -404,7 +404,7 @@ class TCPDF_Adapter implements Canvas {
    * @param float  $height   The height of the link
    */
   function add_link($url, $x, $y, $width, $height) {
-    // FIXME
+    
   }
   
   /**
@@ -432,7 +432,7 @@ class TCPDF_Adapter implements Canvas {
    * @return float
    */
   function get_text_width($text, $font, $size, $word_spacing = 0.0, $char_spacing = 0.0) {
-    // FIXME
+    
   }
 
   /**
@@ -443,7 +443,7 @@ class TCPDF_Adapter implements Canvas {
    * @return float
    */
   function get_font_height($font, $size) {
-    // FIXME
+    
   }
 
   
@@ -453,7 +453,7 @@ class TCPDF_Adapter implements Canvas {
    * Subsequent drawing operations will appear on the new page.
    */
   function new_page() {
-    // FIXME
+    
   }
 
   /**
@@ -463,7 +463,7 @@ class TCPDF_Adapter implements Canvas {
    * @param array  $options associative array, 'Attachment' => 0 or 1, 'compress' => 1 or 0
    */
   function stream($filename, $options = null) {
-    // FIXME
+    
   }
 
   /**
@@ -473,7 +473,7 @@ class TCPDF_Adapter implements Canvas {
    * @return string
    */
   function output($options = null) {
-    // FIXME
+    
   }
 
   /**
@@ -485,7 +485,7 @@ class TCPDF_Adapter implements Canvas {
    * @param float $h
    */
   function clipping_rectangle($x1, $y1, $w, $h) {
-    // TODO: Implement clipping_rectangle() method.
+    
   }
 
   /**
@@ -503,63 +503,63 @@ class TCPDF_Adapter implements Canvas {
    * @return void
    */
   function clipping_roundrectangle($x1, $y1, $w, $h, $tl, $tr, $br, $bl) {
-    // TODO: Implement clipping_roundrectangle() method.
+    
   }
 
   /**
    * Ends the last clipping shape
    */
   function clipping_end() {
-    // TODO: Implement clipping_end() method.
+    
   }
 
   /**
    * Save current state
    */
   function save() {
-    // TODO: Implement save() method.
+    
   }
 
   /**
    * Restore last state
    */
   function restore() {
-    // TODO: Implement restore() method.
+    
   }
 
   /**
    * Rotate
    */
   function rotate($angle, $x, $y) {
-    // TODO: Implement rotate() method.
+    // : Implement rotate() method.
   }
 
   /**
    * Skew
    */
   function skew($angle_x, $angle_y, $x, $y) {
-    // TODO: Implement skew() method.
+    
   }
 
   /**
    * Scale
    */
   function scale($s_x, $s_y, $x, $y) {
-    // TODO: Implement scale() method.
+    
   }
 
   /**
    * Translate
    */
   function translate($t_x, $t_y) {
-    // TODO: Implement translate() method.
+    
   }
 
   /**
    * Transform
    */
   function transform($a, $b, $c, $d, $e, $f) {
-    // TODO: Implement transform() method.
+    
   }
 
   /**
@@ -579,7 +579,7 @@ class TCPDF_Adapter implements Canvas {
    * @return void
    */
   function arc($x, $y, $r1, $r2, $astart, $aend, $color, $width, $style = array()) {
-    // TODO: Implement arc() method.
+    
   }
 
   /**
@@ -591,7 +591,7 @@ class TCPDF_Adapter implements Canvas {
    * @return float
    */
   function get_font_baseline($font, $size) {
-    // TODO: Implement get_font_baseline() method.
+    // : Implement get_font_baseline() method.
   }
 
   /**
@@ -601,7 +601,7 @@ class TCPDF_Adapter implements Canvas {
    * @param string $mode
    */
   function set_opacity($opacity, $mode = "Normal") {
-    // TODO: Implement set_opacity() method.
+    // : Implement set_opacity() method.
   }
 
   /**
@@ -621,7 +621,7 @@ class TCPDF_Adapter implements Canvas {
    * @return void
    */
   function set_default_view($view, $options = array()) {
-    // TODO: Implement set_default_view() method.
+    // : Implement set_default_view() method.
   }}
     
 // Workaround for idiotic limitation on statics...

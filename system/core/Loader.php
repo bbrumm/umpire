@@ -146,7 +146,7 @@ class CI_Loader {
 	/**
 	 * Initializer
 	 *
-	 * @todo	Figure out a way to move this to the constructor
+	 * 	Figure out a way to move this to the constructor
 	 *		without breaking *package_path*() methods.
 	 * @uses	CI_Loader::_ci_autoloader()
 	 * @used-by	CI_Controller::__construct()

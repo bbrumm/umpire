@@ -1045,7 +1045,7 @@ function imagecreatefromgd2part ($filename, $srcX, $srcY, $width, $height) {}
  * </p>
  * @param int $filters [optional] <p>
  * Allows reducing the PNG file size. It is a bitmask field which may be
- * set to any combination of the PNG_FILTER_XXX 
+ * set to any combination of the PNG_FILTER_AAA 
  * constants. PNG_NO_FILTER or 
  * PNG_ALL_FILTERS may also be used to respectively
  * disable or activate all filters.

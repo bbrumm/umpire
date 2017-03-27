@@ -222,7 +222,7 @@ class List_Bullet_Renderer extends Abstract_Renderer {
         
         // Take line-height into account
         $line_height = $style->line_height;
-        $y += ($line_height - $font_size) / 4; // FIXME I thought it should be 2, but 4 gives better results
+        $y += ($line_height - $font_size) / 4; // I thought it should be 2, but 4 gives better results
         
         $this->_canvas->text($x, $y, $text,
                              $font_family, $font_size,

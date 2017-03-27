@@ -75,7 +75,7 @@ class Absolute_Positioner extends Positioner {
       }
       else {
         if ( $orig_width === "auto" ) {
-          // D - TODO change width
+          // D -  change width
           $x += $left;
         }
         else {
@@ -109,7 +109,7 @@ class Absolute_Positioner extends Positioner {
       }
       else {
         if ( $orig_height === "auto" ) {
-          // D - TODO change height
+          // D -  change height
           $y += $top;
         }
         else {

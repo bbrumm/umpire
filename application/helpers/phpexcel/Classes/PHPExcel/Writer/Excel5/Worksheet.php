@@ -526,7 +526,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 		$arrConditionalStyles = $_phpSheet->getConditionalStylesCollection();
 		if(!empty($arrConditionalStyles)){
 			$arrConditional = array();
-			// @todo CFRule & CFHeader
+			//  CFRule & CFHeader
 			// Write CFHEADER record
 			$this->_writeCFHeader();
 			// Write ConditionalFormattingTable records
@@ -1327,7 +1327,6 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 		$header  = pack("vv",   $record, $length);
 		$data	= pack("vvv", $grbit, $rwTop, $colLeft);
 
-		// FIXME !!!
 		$rgbHdr	   = 0x0040; // Row/column heading and gridline color index
 		$zoom_factor_page_break = ($fPageBreakPreview? $this->_phpSheet->getSheetView()->getZoomScale() : 0x0000);
 		$zoom_factor_normal =  $this->_phpSheet->getSheetView()->getZoomScaleNormal();
@@ -3417,14 +3416,14 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT  : $blockLineStyle |= 0x0C << 12; break;
 				case PHPExcel_Style_Border::BORDER_SLANTDASHDOT      : $blockLineStyle |= 0x0D << 12; break;
 			}
-			//@todo _writeCFRule() => $blockLineStyle => Index Color for left line
-			//@todo _writeCFRule() => $blockLineStyle => Index Color for right line
-			//@todo _writeCFRule() => $blockLineStyle => Top-left to bottom-right on/off
-			//@todo _writeCFRule() => $blockLineStyle => Bottom-left to top-right on/off
+			// _writeCFRule() => $blockLineStyle => Index Color for left line
+			// _writeCFRule() => $blockLineStyle => Index Color for right line
+			// _writeCFRule() => $blockLineStyle => Top-left to bottom-right on/off
+			// _writeCFRule() => $blockLineStyle => Bottom-left to top-right on/off
 			$blockColor = 0;
-			//@todo _writeCFRule() => $blockColor => Index Color for top line
-			//@todo _writeCFRule() => $blockColor => Index Color for bottom line
-			//@todo _writeCFRule() => $blockColor => Index Color for diagonal line
+			// _writeCFRule() => $blockColor => Index Color for top line
+			// _writeCFRule() => $blockColor => Index Color for bottom line
+			// _writeCFRule() => $blockColor => Index Color for diagonal line
 			switch ($conditional->getStyle()->getBorders()->getDiagonal()->getBorderStyle()){
 				case PHPExcel_Style_Border::BORDER_NONE              : $blockColor |= 0x00 << 21; break;
 				case PHPExcel_Style_Border::BORDER_THIN              : $blockColor |= 0x01 << 21; break;

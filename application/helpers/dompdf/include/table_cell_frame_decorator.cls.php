@@ -62,7 +62,7 @@ class Table_Cell_Frame_Decorator extends Block_Frame_Decorator {
       switch ($style->vertical_align) {
         default:
         case "baseline":
-          // FIXME: this isn't right
+          // : this isn't right
           
         case "top":
           // Don't need to do anything

@@ -132,7 +132,7 @@ if ( ! function_exists('standard_date'))
 	 * As of PHP 5.2, the DateTime extension provides constants that
 	 * serve for the exact same purpose and are used with date().
 	 *
-	 * @todo	Remove in version 3.1+.
+	 * 	Remove in version 3.1+.
 	 * @deprecated	3.0.0	Use PHP's native date() instead.
 	 * @link	http://www.php.net/manual/en/class.datetime.php#datetime.constants.types
 	 *

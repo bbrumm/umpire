@@ -1425,7 +1425,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 
 							}
 
-                            // TODO: Autoshapes from twoCellAnchors!
+                            // : Autoshapes from twoCellAnchors!
 							if ($zip->locateName(dirname("$dir/$fileWorksheet") . "/_rels/" . basename($fileWorksheet) . ".rels")) {
 								$relsWorksheet = simplexml_load_string($this->securityScan($this->_getFromZipArchive($zip,  dirname("$dir/$fileWorksheet") . "/_rels/" . basename($fileWorksheet) . ".rels")), 'SimpleXMLElement', PHPExcel_Settings::getLibXmlLoaderOptions()); //~ http://schemas.openxmlformats.org/package/2006/relationships");
 								$drawings = array();
@@ -1609,10 +1609,10 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 												break;
 
 											case '_xlnm.Print_Area':
-												$rangeSets = explode(',', $extractedRange);		// FIXME: what if sheetname contains comma?
+												$rangeSets = explode(',', $extractedRange);		// : what if sheetname contains comma?
 												$newRangeSets = array();
 												foreach($rangeSets as $rangeSet) {
-													$range = explode('!', $rangeSet);	// FIXME: what if sheetname contains exclamation mark?
+													$range = explode('!', $rangeSet);	// : what if sheetname contains exclamation mark?
 													$rangeSet = isset($range[1]) ? $range[1] : $range[0];
 													if (strpos($rangeSet, ':') === FALSE) {
 														$rangeSet = $rangeSet . ':' . $rangeSet;

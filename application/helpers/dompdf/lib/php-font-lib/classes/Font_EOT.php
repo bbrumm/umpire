@@ -61,7 +61,7 @@ class Font_EOT extends Font_TrueType {
       // Process XOR
     }
 
-    // TODO Read font data ...
+    //  Read font data ...
   }
 
   /**

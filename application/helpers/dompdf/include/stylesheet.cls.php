@@ -578,8 +578,8 @@ class Stylesheet {
           $tok = "";
           break;
           
-        case "first-line": // TODO
-        case "first-letter": // TODO
+        case "first-line": // 
+        case "first-letter": // 
         
         // N/A
         case "active":
@@ -688,7 +688,7 @@ class Stylesheet {
           break;
 
         case "~=":
-          // FIXME: this will break if $value contains quoted strings
+          // : this will break if $value contains quoted strings
           // (e.g. [type~="a b c" "d e f"])
           $values = explode(" ", $value);
           $query .=  "[";
@@ -803,7 +803,7 @@ class Stylesheet {
     // styles have been assigned, we order the cached styles by specificity
     // and create a final style object to assign to the frame.
 
-    // FIXME: this is not particularly robust...
+    // : this is not particularly robust...
 
     $styles = array();
     $xp = new DOMXPath($tree->get_dom());
@@ -1008,7 +1008,7 @@ class Stylesheet {
       "/-->$/"
     ), "", $str);
 
-    // FIXME: handle '{' within strings, e.g. [attr="string {}"]
+    // : handle '{' within strings, e.g. [attr="string {}"]
 
     // Something more legible:
     $re =
@@ -1154,7 +1154,7 @@ class Stylesheet {
         $path .= $parsed_url["path"] . $parsed_url["file"];
         $path = realpath($path);
         // If realpath returns FALSE then specifically state that there is no background image
-        // FIXME: Is this causing problems for imported CSS files? There are some './none' references when running the test cases.
+        //  Is this causing problems for imported CSS files? There are some './none' references when running the test cases.
         if (!$path) { $path = 'none'; }
       }
       else {
@@ -1290,7 +1290,7 @@ class Stylesheet {
     
     foreach ($properties as $prop) {
       // If the $prop contains an url, the regex may be wrong
-      // @todo: fix the regex so that it works everytime
+      // : fix the regex so that it works everytime
       /*if (strpos($prop, "url(") === false) {
         if (preg_match("/([a-z-]+)\s*:\s*[^:]+$/i", $prop, $m))
           $prop = $m[0];

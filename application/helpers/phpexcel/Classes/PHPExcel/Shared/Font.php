@@ -65,7 +65,7 @@ class PHPExcel_Shared_Font
 	const CHARSET_ANSI_LATIN_II				= 0xEE;
 	const CHARSET_OEM_LATIN_I				= 0xFF;
 
-	//  XXX: Constants created!
+	//  Constants created!
 	/** Font filenames */
 	const ARIAL								= 'arial.ttf';
 	const ARIAL_BOLD						= 'arialbd.ttf';

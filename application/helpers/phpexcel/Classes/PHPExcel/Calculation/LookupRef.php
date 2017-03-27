@@ -292,7 +292,7 @@ class PHPExcel_Calculation_LookupRef {
 	 * @param	PHPExcel_Cell	$pCell			The current cell (containing this formula)
 	 * @return	mixed			The cells referenced by cellAddress
 	 *
-	 * @todo	Support for the optional a1 parameter introduced in Excel 2010
+	 * 	Support for the optional a1 parameter introduced in Excel 2010
 	 *
 	 */
 	public static function INDIRECT($cellAddress = NULL, PHPExcel_Cell $pCell = NULL) {

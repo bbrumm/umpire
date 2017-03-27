@@ -451,7 +451,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 		$part3 .= $this->_writeRecalcId();
 
 		$part3 .= $this->_writeSupbookInternal();
-		/* TODO: store external SUPBOOK records and XCT and CRN records
+		/* : store external SUPBOOK records and XCT and CRN records
 		in case of external references for BIFF8 */
 		$part3 .= $this->_writeExternsheetBiff8();
 		$part3 .= $this->_writeAllDefinedNamesBiff8();
@@ -972,7 +972,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 		$record   = 0x0017;                     // Record identifier
 		$length   = 2 + 6 * $total_references;  // Number of bytes to follow
 
-		$supbook_index = 0;           // FIXME: only using internal SUPBOOK record
+		$supbook_index = 0;           // : only using internal SUPBOOK record
 		$header           = pack("vv",  $record, $length);
 		$data             = pack('v', $total_references);
 		for ($i = 0; $i < $total_references; ++$i) {

@@ -44,7 +44,7 @@ class Table_Cell_Renderer extends Block_Renderer {
     }
 
     // The collapsed case is slightly complicated...
-    // @todo Add support for outlines here
+    // Add support for outlines here
 
     $cellmap  = $table->get_cellmap();
     $cells    = $cellmap->get_spanned_cells($frame);

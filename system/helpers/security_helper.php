@@ -87,7 +87,7 @@ if ( ! function_exists('do_hash'))
 	/**
 	 * Hash encode a string
 	 *
-	 * @todo	Remove in version 3.1+.
+	 * 	Remove in version 3.1+.
 	 * @deprecated	3.0.0	Use PHP's native hash() instead.
 	 * @param	string	$str
 	 * @param	string	$type = 'sha1'

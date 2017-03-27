@@ -225,7 +225,7 @@ class PHPExcel_Calculation_Database {
 	 *										column.
 	 * @return	integer
 	 *
-	 * @TODO	The field argument is optional. If field is omitted, DCOUNT counts all records in the
+	 * 	The field argument is optional. If field is omitted, DCOUNT counts all records in the
 	 *			database that match the criteria.
 	 *
 	 */
@@ -274,7 +274,7 @@ class PHPExcel_Calculation_Database {
 	 *										column.
 	 * @return	integer
 	 *
-	 * @TODO	The field argument is optional. If field is omitted, DCOUNTA counts all records in the
+	 * 	The field argument is optional. If field is omitted, DCOUNTA counts all records in the
 	 *			database that match the criteria.
 	 *
 	 */

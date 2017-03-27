@@ -492,7 +492,7 @@ abstract class Abstract_Renderer {
 
 
   protected function _border_solid($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0) {
-    // TODO: Solve rendering where one corner is beveled (radius == 0), one corner isn't.
+    // : Solve rendering where one corner is beveled (radius == 0), one corner isn't.
     if ( $corner_style !== "bevel" || $r1 > 0 || $r2 > 0 ) {
       // do it the simple way
       $this->_border_line($x, $y, $length, $color, $widths, $side, $corner_style, "solid", $r1, $r2);

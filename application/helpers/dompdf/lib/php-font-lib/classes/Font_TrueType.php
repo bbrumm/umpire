@@ -197,7 +197,7 @@ class Font_TrueType extends Font_Binary_Stream {
     sort($gids);
 
     $this->glyph_subset = $gids;
-    $this->glyph_all = array_values($glyphIndexArray); // FIXME
+    $this->glyph_all = array_values($glyphIndexArray);
   }
 
   function getSubset() {
@@ -217,7 +217,7 @@ class Font_TrueType extends Font_Binary_Stream {
     }
 
     $num_tables = count($tags);
-    $n = 16;// @todo
+    $n = 16;
 
     Font::d("Tables : ".implode(", ", $tags));
 

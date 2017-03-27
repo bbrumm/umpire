@@ -138,7 +138,7 @@ class Line_Box {
       return;
     }
       
-    static $anti_infinite_loop = 500; // FIXME smelly hack
+    static $anti_infinite_loop = 500; // smelly hack
     
     $reflower = $this->_block_frame->get_reflower();
     

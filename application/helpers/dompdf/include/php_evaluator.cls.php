@@ -38,7 +38,7 @@ class PHP_Evaluator {
       $$k = $v;
     }
 
-    //$code = html_entity_decode($code); // @todo uncomment this when tested
+    //$code = html_entity_decode($code); // uncomment this when tested
     eval($code); 
   }
 

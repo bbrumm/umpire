@@ -42,7 +42,7 @@ class Frame_Factory {
    *
    * @throws DOMPDF_Exception
    * @return Frame_Decorator
-   * FIXME: this is admittedly a little smelly...
+   * : this is admittedly a little smelly...
    */
   static function decorate_frame(Frame $frame, DOMPDF $dompdf, Frame $root = null) {
     if ( is_null($dompdf) ) {
@@ -161,7 +161,7 @@ class Frame_Factory {
       break;
 
     default:
-      // FIXME: should throw some sort of warning or something?
+      // : should throw some sort of warning or something?
     case "none":
       if ( $style->_dompdf_keep !== "yes" ) {
         // Remove the node and the frame

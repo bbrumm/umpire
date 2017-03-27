@@ -9,7 +9,7 @@
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
-// FIXME: Need to sanity check inputs to this class
+// : Need to sanity check inputs to this class
 require_once(DOMPDF_LIB_DIR . "/class.pdf.php");
 
 /**
@@ -619,7 +619,7 @@ class CPDF_Adapter implements Canvas {
     case IMAGETYPE_GIF:
     case IMAGETYPE_BMP:
       if ($debug_png) print '!!!bmp or gif!!!';
-      // @todo use cache for BMP and GIF
+      // use cache for BMP and GIF
       $img = $this->_convert_gif_bmp_to_png($img, $type);
 
     case IMAGETYPE_PNG:

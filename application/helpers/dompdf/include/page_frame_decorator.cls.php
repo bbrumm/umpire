@@ -327,7 +327,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
         return false;
       }
 
-      // FIXME: Checking widows is tricky without having laid out the
+      //  Checking widows is tricky without having laid out the
       // remaining line boxes.  Just ignore it for now...
 
       // Rule D
@@ -428,7 +428,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
     
     $margin_height = $frame->get_margin_height();
     
-    // FIXME If the row is taller than the page and 
+    // If the row is taller than the page and 
     // if it the first of the page, we don't break
     if ( $frame->get_style()->display === "table-row" &&
          !$frame->get_prev_sibling() && 

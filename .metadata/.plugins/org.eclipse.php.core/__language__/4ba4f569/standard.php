@@ -842,7 +842,7 @@ function iptcembed ($iptcdata, $jpeg_file_name, $spool = null) {}
  * zero for width and height in these cases.
  * </p>
  * <p>
- * Index 2 is one of the IMAGETYPE_XXX constants indicating 
+ * Index 2 is one of the IMAGETYPE_AAA constants indicating 
  * the type of the image.
  * </p>
  * <p>
@@ -894,7 +894,7 @@ function getimagesizefromstring ($imagedata, array &$imageinfo = null) {}
    exif_read_data, exif_thumbnail, exif_imagetype
  * @link http://www.php.net/manual/en/function.image-type-to-mime-type.php
  * @param int $imagetype <p>
- * One of the IMAGETYPE_XXX constants.
+ * One of the IMAGETYPE_AAA constants.
  * </p>
  * @return string The returned values are as follows
  * <table>
@@ -981,7 +981,7 @@ function image_type_to_mime_type ($imagetype) {}
  * Get file extension for image type
  * @link http://www.php.net/manual/en/function.image-type-to-extension.php
  * @param int $imagetype <p>
- * One of the IMAGETYPE_XXX constant.
+ * One of the IMAGETYPE_AAA constant.
  * </p>
  * @param bool $include_dot [optional] <p>
  * Whether to prepend a dot to the extension or not. Default to true.
@@ -5302,7 +5302,7 @@ function connection_aborted () {}
  * Returns connection status bitfield
  * @link http://www.php.net/manual/en/function.connection-status.php
  * @return int the connection status bitfield, which can be used against the
- * CONNECTION_XXX constants to determine the connection
+ * CONNECTION_AAA constants to determine the connection
  * status.
  */
 function connection_status () {}

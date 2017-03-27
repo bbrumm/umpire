@@ -50,7 +50,7 @@ class Font_Table_cmap extends Font_Table {
       
       $subtable["format"] = $font->readUInt16();
       
-      // @todo Only CMAP version 4
+      //  Only CMAP version 4
       if($subtable["format"] != 4) {
         unset($data["subtables"][$i]);
         $data["numberSubtables"]--;

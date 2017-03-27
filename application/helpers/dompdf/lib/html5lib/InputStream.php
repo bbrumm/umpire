@@ -65,7 +65,7 @@ class HTML5_InputStream {
         could not be converted to Unicode characters must be converted
         to U+FFFD REPLACEMENT CHARACTER code points. */
 
-        // XXX currently assuming input data is UTF-8; once we
+        // currently assuming input data is UTF-8; once we
         // build encoding detection this will no longer be the case
         //
         // We previously had an mbstring implementation here, but that
@@ -151,7 +151,7 @@ class HTML5_InputStream {
                 );
             }
         } else {
-            // XXX: Need non-PCRE impl, probably using substr_count
+            // AAA: Need non-PCRE impl, probably using substr_count
         }
 
         $this->data = $data;

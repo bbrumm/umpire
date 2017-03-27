@@ -207,7 +207,7 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
             }
         } else {
             //	We have a Rich Text run
-            //	TODO
+            //	
             $this->_dataArray[$row][$column] = 'RICH TEXT: ' . $cellContent;
         }
         $cellContent = (string) '';
@@ -223,7 +223,6 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
                     $cellContent .= $domText;
                 } else {
                     //	but if we have a rich text run instead, we need to append it correctly
-                    //	TODO
                 }
             } elseif ($child instanceof DOMElement) {
 //				echo '<b>DOM ELEMENT: </b>' , strtoupper($child->nodeName) , '<br />';
@@ -239,7 +238,7 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
                         foreach ($attributeArray as $attributeName => $attributeValue) {
                             switch ($attributeName) {
                                 case 'content':
-                                    //	TODO
+                                    //	
                                     //	Extract character set, so we can convert to UTF-8 if required
                                     break;
                             }

@@ -557,7 +557,7 @@ class Cellmap {
   
       if ( $frame_min > $min ) {
         // The frame needs more space.  Expand each sub-column
-        // FIXME try to avoid putting this dummy value when table-layout:fixed
+        // try to avoid putting this dummy value when table-layout:fixed
         $inc = ($this->is_layout_fixed() ? 10e-10 : ($frame_min - $min) / $colspan);
         for ($c = 0; $c < $colspan; $c++) {
           $col =& $this->get_column($this->__col + $c);
@@ -566,7 +566,7 @@ class Cellmap {
       }
   
       if ( $frame_max > $max ) {
-        // FIXME try to avoid putting this dummy value when table-layout:fixed
+        // try to avoid putting this dummy value when table-layout:fixed
         $inc = ($this->is_layout_fixed() ? 10e-10 : ($frame_max - $max) / $colspan);
         for ($c = 0; $c < $colspan; $c++) {
           $col =& $this->get_column($this->__col + $c);

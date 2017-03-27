@@ -138,7 +138,7 @@ function curl_copy_handle ($ch) {}
  * </tr>
  * <tr valign="top">
  * <td>features</td>
- * <td>A bitmask of the CURL_VERSION_XXX constants</td>
+ * <td>A bitmask of the CURL_VERSION_AAA constants</td>
  * </tr>
  * <tr valign="top">
  * <td>protocols</td>
@@ -152,7 +152,7 @@ function curl_version ($age = null) {}
  * @link http://www.php.net/manual/en/function.curl-setopt.php
  * @param resource $ch 
  * @param int $option <p>
- * The CURLOPT_XXX option to set.
+ * The CURLOPT_AAA option to set.
  * </p>
  * @param mixed $value <p>
  * The value to be set on option.
@@ -1450,7 +1450,7 @@ function curl_multi_init () {}
  * @link http://www.php.net/manual/en/function.curl-multi-add-handle.php
  * @param resource $mh 
  * @param resource $ch 
- * @return int 0 on success, or one of the CURLM_XXX errors
+ * @return int 0 on success, or one of the CURLM_AAA errors
  * code.
  */
 function curl_multi_add_handle ($mh, $ch) {}
@@ -1460,7 +1460,7 @@ function curl_multi_add_handle ($mh, $ch) {}
  * @link http://www.php.net/manual/en/function.curl-multi-remove-handle.php
  * @param resource $mh 
  * @param resource $ch 
- * @return int 0 on success, or one of the CURLM_XXX error
+ * @return int 0 on success, or one of the CURLM_AAA error
  * codes.
  */
 function curl_multi_remove_handle ($mh, $ch) {}

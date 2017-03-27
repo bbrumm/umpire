@@ -656,7 +656,7 @@ abstract class Frame_Decorator extends Frame {
     }
   }
 
-  // TODO: What version is the best : this one or the one in List_Bullet_Renderer ?
+  // : What version is the best : this one or the one in List_Bullet_Renderer ?
   function counter_value($id = self::DEFAULT_COUNTER, $type = "decimal") {
     $type = mb_strtolower($type);
     

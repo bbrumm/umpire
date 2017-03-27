@@ -91,7 +91,7 @@ class Text_Frame_Reflower extends Frame_Reflower {
     $str = "";
     reset($words);
 
-    // @todo support <shy>, <wbr>
+    // support <shy>, <wbr>
     for ($i = 0; $i < $wc; $i += 2) {
       $word = $words[$i] . (isset($words[$i+1]) ? $words[$i+1] : "");
       $word_width = Font_Metrics::get_text_width($word, $font, $size, $word_spacing, $char_spacing);
@@ -284,7 +284,7 @@ class Text_Frame_Reflower extends Frame_Reflower {
 
       // Remove empty space from start and end of line, but only where there isn't an inline sibling
       // and the parent node isn't an inline element with siblings
-      // FIXME: Include non-breaking spaces?
+      //  Include non-breaking spaces?
       $t = $frame->get_text();
       $parent = $frame->get_parent();
       $is_inline_frame = get_class($parent) === 'Inline_Frame_Decorator';
@@ -405,7 +405,7 @@ class Text_Frame_Reflower extends Frame_Reflower {
       break;
 
     case "pre-line":
-      //XXX: Is this correct?
+      //AAA: Is this correct?
       $str = preg_replace( "/[ \t]+/u", " ", $text);
 
     case "pre-wrap":

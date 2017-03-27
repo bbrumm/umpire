@@ -89,7 +89,7 @@ class PHPExcel_Cell_DataType
     public static function checkString($pValue = null)
     {
         if ($pValue instanceof PHPExcel_RichText) {
-            // TODO: Sanitize Rich-Text string (max. character count is 32,767)
+            // : Sanitize Rich-Text string (max. character count is 32,767)
             return $pValue;
         }
 

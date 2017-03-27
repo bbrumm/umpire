@@ -555,7 +555,7 @@ abstract class CI_DB_forge {
 	/**
 	 * Column Add
 	 *
-	 * @todo	Remove deprecated $_after option in 3.1+
+	 * 	Remove deprecated $_after option in 3.1+
 	 * @param	string	$table	Table name
 	 * @param	array	$field	Column definition
 	 * @param	string	$_after	Column for AFTER clause (deprecated)

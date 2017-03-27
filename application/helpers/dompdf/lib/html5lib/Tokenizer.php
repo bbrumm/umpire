@@ -62,7 +62,7 @@ class HTML5_Tokenizer {
     const PLAINTEXT = 3;
 
     // These are constants describing tokens
-    // XXX should probably be moved somewhere else, probably the
+    // should probably be moved somewhere else, probably the
     // HTML5 class.
     const DOCTYPE        = 0;
     const STARTTAG       = 1;
@@ -100,7 +100,7 @@ class HTML5_Tokenizer {
         $this->parse();
     }
 
-    // XXX maybe convert this into an iterator? regardless, this function
+    // maybe convert this into an iterator? regardless, this function
     // and the save function should go into a Parser facade of some sort
     /**
      * Performs the actual parsing of the document.
@@ -453,7 +453,7 @@ class HTML5_Tokenizer {
                             ...then emit a U+003C LESS-THAN SIGN character token, a
                             U+002F SOLIDUS character token, and switch to the data
                             state to process the next input character. */
-                            // XXX: Probably ought to replace in_array with $following === x ||...
+                            // AAA: Probably ought to replace in_array with $following === x ||...
 
                             // We also need to emit $name now we've consumed that, as we
                             // know it'll just be emitted as a character token.
@@ -1182,7 +1182,7 @@ class HTML5_Tokenizer {
                     } elseif(strtoupper($alpha) === 'DOCTYPE') {
                         $state = 'DOCTYPE';
 
-                    // XXX not implemented
+                    // not implemented
                     /* Otherwise, if the insertion mode is "in foreign content"
                     and the current node is not an element in the HTML namespace
                     and the next seven characters are an ASCII case-sensitive
@@ -1612,7 +1612,7 @@ class HTML5_Tokenizer {
                         $this->token['name'] .= $char;
                     }
 
-                    // XXX this is probably some sort of quirks mode designation,
+                    // this is probably some sort of quirks mode designation,
                     // check tree-builder to be sure. In general 'error' needs
                     // to be specc'ified, this probably means removing it at the end
                     $this->token['error'] = ($this->token['name'] === 'HTML')
@@ -2229,7 +2229,7 @@ class HTML5_Tokenizer {
                     if ($codepoint > 0x10FFFF) {
                         $this->emitToken(array(
                             'type' => self::PARSEERROR,
-                            'data' => 'overlong-character-entity' // XXX probably not correct
+                            'data' => 'overlong-character-entity' // probably not correct
                         ));
                         return "\xEF\xBF\xBD";
                     }

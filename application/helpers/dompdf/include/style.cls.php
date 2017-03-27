@@ -522,7 +522,7 @@ class Style {
         continue;
       }
       
-      // FIXME: em:ex ratio?
+      //  em:ex ratio?
       if ( ($i = mb_strpos($l, "ex"))  !== false ) {
         $ret += mb_substr($l, 0, $i) * $this->__get("font_size") / 2;
         continue;
@@ -1868,7 +1868,7 @@ class Style {
     //$border_spec = str_replace(",", " ", $border_spec); // Why did we have this ?? rbg(10, 102, 10) > rgb(10  102  10)
     $arr = explode(" ", $border_spec);
 
-    // FIXME: handle partial values
+    // : handle partial values
  
     //For consistency of individal and combined properties, and with ie8 and firefox3
     //reset all attributes, even if only partially given

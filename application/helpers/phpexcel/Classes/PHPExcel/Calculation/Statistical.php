@@ -974,7 +974,7 @@ class PHPExcel_Calculation_Statistical {
 	 * @param	boolean		$cumulative
 	 * @return	float
 	 *
-	 * @todo	Cumulative distribution function
+	 * 	Cumulative distribution function
 	 *
 	 */
 	public static function BINOMDIST($value, $trials, $probability, $cumulative) {
@@ -1321,7 +1321,7 @@ class PHPExcel_Calculation_Statistical {
 	 * @param	float		$alpha			criterion value
 	 * @return	int
 	 *
-	 * @todo	Warning. This implementation differs from the algorithm detailed on the MS
+	 *       	Warning. This implementation differs from the algorithm detailed on the MS
 	 *			web site in that $CumPGuessMinus1 = $CumPGuess - 1 rather than $CumPGuess - $PGuess
 	 *			This eliminates a potential endless loop error, but may have an adverse affect on the
 	 *			accuracy of the function (although all my tests have so far returned correct results).
@@ -2067,7 +2067,7 @@ class PHPExcel_Calculation_Statistical {
 	 * @param	float		$stdDev
 	 * @return	float
 	 *
-	 * @todo	Try implementing P J Acklam's refinement algorithm for greater
+	 *       	Try implementing P J Acklam's refinement algorithm for greater
 	 *			accuracy if I can get my head round the mathematics
 	 *			(as described at) http://home.online.no/~pjacklam/notes/invnorm/
 	 */

@@ -198,7 +198,7 @@ class SoapServer  {
 	 * Sets SoapServer persistence mode
 	 * @link http://www.php.net/manual/en/soapserver.setpersistence.php
 	 * @param int $mode <p>
-	 * One of the SOAP_PERSISTENCE_XXX constants.
+	 * One of the SOAP_PERSISTENCE_AAA constants.
 	 * </p>
 	 * <p>
 	 * SOAP_PERSISTENCE_REQUEST - SoapServer data does not persist between

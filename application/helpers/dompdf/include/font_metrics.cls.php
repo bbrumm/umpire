@@ -86,7 +86,7 @@ class Font_Metrics {
   static function get_text_width($text, $font, $size, $word_spacing = 0.0, $char_spacing = 0.0) {
     //return self::$_pdf->get_text_width($text, $font, $size, $word_spacing, $char_spacing);
     
-    // @todo Make sure this cache is efficient before enabling it
+    // Make sure this cache is efficient before enabling it
     static $cache = array();
     
     if ( $text === "" ) {
@@ -232,7 +232,7 @@ class Font_Metrics {
   static function load_font_families() {
     $dist_fonts = require_once DOMPDF_DIR . "/lib/fonts/dompdf_font_family_cache.dist.php";
     
-    // FIXME: temporary step for font cache created before the font cache fix
+    // : temporary step for font cache created before the font cache fix
     if ( is_readable( DOMPDF_FONT_DIR . "dompdf_font_family_cache" ) ) {
       $old_fonts = require_once DOMPDF_FONT_DIR . "dompdf_font_family_cache";
       // If the font family cache is still in the old format

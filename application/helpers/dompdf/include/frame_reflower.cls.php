@@ -381,18 +381,18 @@ abstract class Frame_Reflower {
         // Directive match
 
         if ( $match[7] === "open-quote" ) {
-          // FIXME: do something here
+          
           $text .= $quotes[0][0];
         }
         else if ( $match[7] === "close-quote" ) {
-          // FIXME: do something else here
+          
           $text .= $quotes[0][1];
         }
         else if ( $match[7] === "no-open-quote" ) {
-          // FIXME:
+          
         }
         else if ( $match[7] === "no-close-quote" ) {
-          // FIXME:
+         
         }
         else if ( mb_strpos($match[7],"attr(") === 0 ) {
 
@@ -437,7 +437,7 @@ abstract class Frame_Reflower {
     if ( $style->content && !$frame->get_first_child() && $frame->get_node()->nodeName === "dompdf_generated" ) {
       $content = $this->_parse_content();
       // add generated content to the font subset
-      // FIXME: This is currently too late because the font subset has already been generated.
+      // : This is currently too late because the font subset has already been generated.
       //        See notes in issue #750.
       if ( $frame->get_dompdf()->get_option("enable_font_subsetting") && $frame->get_dompdf()->get_canvas() instanceof CPDF_Adapter ) {
         $frame->get_dompdf()->get_canvas()->register_string_subset($style->font_family, $content);

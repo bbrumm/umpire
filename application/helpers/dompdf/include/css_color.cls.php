@@ -161,7 +161,7 @@ class CSS_Color {
   static function parse($color) {
     if ( is_array($color) ) {
       // Assume the array has the right format...
-      // FIXME: should/could verify this.
+      // : should/could verify this.
       return $color;
     }
     
@@ -206,7 +206,7 @@ class CSS_Color {
       $triplet = explode(",", mb_substr($color, $i+1, $j-$i-1));
       
       // alpha transparency
-      // FIXME: not currently using transparency
+      // : not currently using transparency
       $alpha = 1;
       if ( count( $triplet ) == 4 ) {
         $alpha = (float) ( trim( array_pop( $triplet ) ) );

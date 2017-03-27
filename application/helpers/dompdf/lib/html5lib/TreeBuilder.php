@@ -27,7 +27,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 // Tags for FIX ME!!!: (in order of priority)
-//      XXX - should be fixed NAO!
+//      AAA - should be fixed NAO!
 //      XERROR - with regards to parse errors
 //      XSCRIPT - with regards to scripting mode
 //      XENCODING - with regards to encoding (for reparsing tests)
@@ -161,7 +161,7 @@ class HTML5_TreeBuilder {
 
     // Process tag tokens
     public function emitToken($token, $mode = null) {
-        // XXX: ignore parse errors... why are we emitting them, again?
+        // AAA: ignore parse errors... why are we emitting them, again?
         if ($token['type'] === HTML5_Tokenizer::PARSEERROR) return;
         if ($mode === null) $mode = $this->mode;
 

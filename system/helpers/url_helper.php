@@ -470,7 +470,7 @@ if ( ! function_exists('url_title'))
 	 * human-friendly URL string with a "separator" string
 	 * as the word separator.
 	 *
-	 * @todo	Remove old 'dash' and 'underscore' usage in 3.1+.
+	 * 	Remove old 'dash' and 'underscore' usage in 3.1+.
 	 * @param	string	$str		Input string
 	 * @param	string	$separator	Word separator
 	 *			(usually '-' or '_')

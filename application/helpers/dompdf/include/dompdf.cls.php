@@ -340,7 +340,7 @@ class DOMPDF {
 
   /**
    * Sets the protocol to use
-   * FIXME validate these
+   * validate these
    *
    * @param string $proto
    */
@@ -520,7 +520,7 @@ class DOMPDF {
   /**
    * Loads an HTML string
    * Parse errors are stored in the global array _dompdf_warnings.
-   * @todo use the $encoding variable
+   * use the $encoding variable
    *
    * @param string $str      HTML text to load
    * @param string $encoding Not used yet
@@ -528,7 +528,7 @@ class DOMPDF {
   function load_html($str, $encoding = null) {
     $this->save_locale();
 
-    // FIXME: Determine character encoding, switch to UTF8, update meta tag. Need better http/file stream encoding detection, currently relies on text or meta tag.
+    //  Determine character encoding, switch to UTF8, update meta tag. Need better http/file stream encoding detection, currently relies on text or meta tag.
     mb_detect_order('auto');
 
     if (mb_detect_encoding($str) !== 'UTF-8') {
@@ -575,7 +575,7 @@ class DOMPDF {
     }
 
     // remove BOM mark from UTF-8, it's treated as document text by DOMDocument
-    // FIXME: roll this into the encoding detection using UTF-8/16/32 BOM (http://us2.php.net/manual/en/function.mb-detect-encoding.php#91051)?
+    // : roll this into the encoding detection using UTF-8/16/32 BOM (http://us2.php.net/manual/en/function.mb-detect-encoding.php#91051)?
     if ( substr($str, 0, 3) == chr(0xEF).chr(0xBB).chr(0xBF) ) {
       $str = substr($str, 3);
     }
@@ -591,7 +591,7 @@ class DOMPDF {
     // Store parsing warnings as messages
     set_error_handler("record_warnings");
 
-    // @todo Take the quirksmode into account
+    // Take the quirksmode into account
     // http://hsivonen.iki.fi/doctype/
     // https://developer.mozilla.org/en/mozilla's_quirks_mode
     $quirksmode = false;
@@ -883,7 +883,7 @@ class DOMPDF {
         }
         
         // Handle other generated content (pseudo elements)
-        // FIXME: This only captures the text of the stylesheet declaration,
+        // : This only captures the text of the stylesheet declaration,
         //        not the actual generated content, and forces all possible counter
         //        values. See notes in issue #750.
         if ( $frame->get_node()->nodeName == "dompdf_generated" ) {

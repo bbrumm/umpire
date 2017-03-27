@@ -406,7 +406,7 @@ class Attribute_Translator {
       break;
 
     case "groups":
-      // FIXME: unsupported
+      // : unsupported
       return null;
 
     case "rows":
@@ -561,7 +561,7 @@ class Attribute_Translator {
    * @return null
    */
   static protected function _set_basefont_size(DOMElement $node, $value) {
-    // FIXME: ? we don't actually set the font size of anything here, just
+    //  ? we don't actually set the font size of anything here, just
     // the base size for later modification by <font> tags.
     self::$_last_basefont_size = $value;
     return null;

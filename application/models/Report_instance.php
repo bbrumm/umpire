@@ -21,6 +21,8 @@ class Report_instance extends CI_Model {
 	
 	public $requestedReport;
 	public $reportDisplayOptions;
+	
+	private $filterParameterUmpireType;
 
 	public function __construct() {
 	    $this->load->model('Report_display_options');
@@ -31,10 +33,12 @@ class Report_instance extends CI_Model {
 	    $this->load->model('report_param/Report_param_loader');
 	    $this->load->model('report_param/Report_parameter');
 	    $this->load->model('Requested_report_model');
+	    $this->load->model('Report_filter_parameter');
 	    $this->requestedReport = new Requested_report_model();
+	    $this->filterParameterUmpireType = new Report_filter_parameter();
 	}
 	
-	
+	//TODO: Replace these with a new object - SQLValueString, or ReportFilterParameter, or something. Also merge the Display Value variables into it.
 	public function getUmpireTypeSQLValues() {
 	    return $this->umpireTypeSQLValues;
 	}
@@ -250,6 +254,7 @@ class Report_instance extends CI_Model {
 	    
 	    $reportGroupingStructureArray = $reportParamLoader->getReportGroupingStructureArray();
 	    
+	    //TODO: Replace this with a single function in reportDisplayOptions to create new RDO object.
 	    $this->reportDisplayOptions->setNoDataValue($this->lookupParameterValue($reportParameterArray, 'No Value To Display'));
 	    $this->reportDisplayOptions->setFirstColumnFormat($this->lookupParameterValue($reportParameterArray, 'First Column Format'));
 	    $this->reportDisplayOptions->setColourCells($this->lookupParameterValue($reportParameterArray, 'Colour Cells'));
@@ -269,8 +274,10 @@ class Report_instance extends CI_Model {
 	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
 	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
 	    
-	    $this->convertParametersToSQLReadyValues();
-	    $this->convertParametersToDisplayValues();
+	    //TODO: Move this into Report_filter_parameter and call it inside another method (so I don't forget to call it)
+	    //TODO: Also replace the getSQLValues and getDisplayValues with instances of this object
+	    $this->filterParameterUmpireType->createFilterParameter($this->requestedReport->getPDFMode(), $this->requestedReport->getUmpireType());
+	    
 	    
 		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason());
 		
@@ -446,12 +453,6 @@ class Report_instance extends CI_Model {
 	}
 	
 	private function buildColumnLabelQuery() {
-     /*
-      * 
-      *@TODO: Move this into the buildQueryForReportDW function and 
-      *change the return to be an object with two queries:
-      *one with the data query and one with the column query
-      */
         switch ($this->requestedReport->getReportNumber()) {
             case 1:
     	       $columnLabelQuery = "SELECT DISTINCT short_league_name, club_name
@@ -637,53 +638,6 @@ class Report_instance extends CI_Model {
         }
         
         $this->resultArray = $this->pivotQueryArrayNew($pResultArray, $rowLabelField, $columnLabelArray);
-	}
-	
-	private function convertParametersToSQLReadyValues() {
-	    //Converts several of the reportParameters arrays into comma separate values that are ready for SQL queries
-	    //Add a value of "All" and "None" to the League list, so that reports that users select for ages with no league (e.g. Colts) are still able to be loaded
-	    //TODO: Replace the similar function calls with a single function
-	    if ($this->requestedReport->getPDFMode()) {
-	        $this->umpireTypeSQLValues = $this->strReplaceWithApostrophe($this->requestedReport->getUmpireType());
-	        $this->leagueSQLValues = $this->strReplaceWithApostrophe($this->requestedReport->getLeague());
-	        $this->ageGroupSQLValues = $this->strReplaceWithApostrophe($this->requestedReport->getAgeGroup());
-	        $this->regionSQLValues = $this->strReplaceWithApostrophe($this->requestedReport->getRegion());
-	    } else {
-    	    $this->umpireTypeSQLValues = $this->implodeWithApostrophe($this->requestedReport->getUmpireType());
-    	    $this->leagueSQLValues = $this->implodeWithApostrophe($this->requestedReport->getLeague());
-    	    $this->ageGroupSQLValues = $this->implodeWithApostrophe($this->requestedReport->getAgeGroup());
-    	    $this->regionSQLValues = $this->strReplaceWithApostrophe($this->requestedReport->getRegion());
-	    }
-	}
-	
-	private function convertParametersToDisplayValues() {
-	    
-	    if ($this->requestedReport->getPDFMode()) {
-	        $this->umpireTypeDisplayValues = $this->strReplaceWithoutApostrophe($this->requestedReport->getUmpireType()) ;
-	        $this->leagueDisplayValues = $this->strReplaceWithoutApostrophe($this->requestedReport->getLeague());
-	        $this->ageGroupDisplayValues = $this->strReplaceWithoutApostrophe($this->requestedReport->getAgeGroup());
-	    } else {
-    	    $this->umpireTypeDisplayValues = $this->implodeWithoutApostrophe($this->requestedReport->getUmpireType());
-    	    $this->leagueDisplayValues = $this->implodeWithoutApostrophe($this->requestedReport->getLeague());
-    	    $this->ageGroupDisplayValues = $this->implodeWithoutApostrophe($this->requestedReport->getAgeGroup());
-	    }
-	}
-	
-	//These strReplace and Implode functions are used in the convertParam functions above
-	private function strReplaceWithApostrophe($pInputString) {
-	    return str_replace(",", "','", "'" . rtrim($pInputString, ',')) . "'";
-	}
-	
-	private function strReplaceWithoutApostrophe($pInputString) {
-	    return str_replace(",", ", ", rtrim($pInputString, ',')) . "'";
-	}
-	
-	private function implodeWithApostrophe($pInputString) {
-	    return "'".implode("','", $pInputString)."'";
-	}
-	
-	private function implodeWithoutApostrophe($pInputString) {
-	    return implode(", ", $pInputString);
 	}
 	
 	
@@ -883,41 +837,7 @@ class Report_instance extends CI_Model {
 	        }
 	    }
 	    return $arrayKeyFound;
-	     
-	    //TODO: Get these fields from the database
-	    switch ($this->requestedReport->getReportNumber()) {
-	        case 1:
-	            $columnLabelArray = array('short_league_name', 'club_name');
-	            $rowLabelField =  array('last_first_name');
-	             
-	            break;
-	        case 2:
-	            $columnLabelArray = array('age_group', 'short_league_name');
-	            $rowLabelField =  array('last_first_name');
-	            break;
-	        case 3:
-	            $columnLabelArray = array('umpire_type_age_group', 'short_league_name');
-	            $rowLabelField =  array('weekend_date');
-	            break;
-	        case 4:
-	            $columnLabelArray = array('umpire_type', 'age_group', 'short_league_name');
-	            $rowLabelField =  array('club_name');
-	            break;
-	        case 5:
-	            $columnLabelArray = array('short_league_name', 'subtotal');
-	            $rowLabelField =  array('umpire_type', 'age_group');
-	            break;
-	        case 6:
-	            $columnLabelArray = array('second_umpire');
-	            $rowLabelField =  array('first_umpire');
-	            break;
-	        case 7:
-	            $columnLabelArray = array('short_league_name', 'umpire_count');
-	            $rowLabelField =  array('age_group');
-	            break;
-	    }
-	
-	    $this->resultArray = $this->pivotQueryArrayNew($pResultArray, $rowLabelField, $columnLabelArray);
+
 	}
 	
 }

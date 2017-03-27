@@ -189,7 +189,7 @@ class GD_Adapter implements Canvas {
    * @param $mode
    */
   function set_opacity($opacity, $mode = "Normal") {
-    // FIXME
+    
   }
 
   /**
@@ -311,7 +311,7 @@ class GD_Adapter implements Canvas {
   }
 
   function arc($x1, $y1, $r1, $r2, $astart, $aend, $color, $width, $style = array()) {
-    // @todo
+    
   }
 
   /**
@@ -393,46 +393,46 @@ class GD_Adapter implements Canvas {
    * @param float $h
    */
   function clipping_rectangle($x1, $y1, $w, $h) {
-    // @todo
+    
   }
   
   function clipping_roundrectangle($x1, $y1, $w, $h, $rTL, $rTR, $rBR, $rBL) {
-    // @todo
+    
   }
   
   /**
    * Ends the last clipping shape
    */  
   function clipping_end() {
-    // @todo
+    
   }
   
   function save() {
-    // @todo
+    
   }
   
   function restore() {
-    // @todo
+    
   }
   
   function rotate($angle, $x, $y) {
-    // @todo
+    
   }
   
   function skew($angle_x, $angle_y, $x, $y) {
-    // @todo
+    
   }
   
   function scale($s_x, $s_y, $x, $y) {
-    // @todo
+    
   }
   
   function translate($t_x, $t_y) {
-    // @todo
+    
   }
   
   function transform($a, $b, $c, $d, $e, $f) {
-    // @todo
+    
   }
 
   /**
@@ -611,7 +611,7 @@ class GD_Adapter implements Canvas {
 
     $font = $this->get_ttf_file($font);
 
-    // FIXME: word spacing
+    // : word spacing
     @imagettftext($this->_img, $size, $angle, $x, $y + $h, $c, $font, $text);
     
   }
@@ -672,7 +672,7 @@ class GD_Adapter implements Canvas {
       
     $text = mb_encode_numericentity($text, array(0x0080, 0xffff, 0, 0xffff), 'UTF-8');
 
-    // FIXME: word spacing
+    // : word spacing
     list($x1,,$x2) = @imagettfbbox($size, 0, $font, $text);
     return $x2 - $x1;
   }
@@ -701,7 +701,7 @@ class GD_Adapter implements Canvas {
     $font = $this->get_ttf_file($font);
     $ratio = $this->_dompdf->get_option("font_height_ratio");
 
-    // FIXME: word spacing
+    // : word spacing
     list(,$y2,,,,$y1) = imagettfbbox($size, 0, $font, "MXjpqytfhl");  // Test string with ascenders, descenders and caps
     return ($y2 - $y1) * $ratio;
   }

@@ -48,7 +48,7 @@ if ( file_exists(DOMPDF_DIR . "/dompdf_config.custom.inc.php") ){
   require_once(DOMPDF_DIR . "/dompdf_config.custom.inc.php");
 }
 
-//FIXME: Some function definitions rely on the constants defined by DOMPDF. However, might this location prove problematic?
+// Some function definitions rely on the constants defined by DOMPDF. However, might this location prove problematic?
 require_once(DOMPDF_INC_DIR . "/functions.inc.php");
 
 /**

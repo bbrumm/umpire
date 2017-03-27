@@ -71,7 +71,7 @@ class XML implements Serializer
         } elseif (is_int($node)) {
             $this->writer->writeElement('scalar:int', (string) $node);
         } elseif (is_float($node)) {
-            // TODO Higher precision conversion?
+            //  Higher precision conversion?
             $this->writer->writeElement('scalar:float', (string) $node);
         } elseif (true === $node) {
             $this->writer->writeElement('scalar:true');

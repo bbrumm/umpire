@@ -997,7 +997,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case pack('C', 0x06):
 					// print area
 					//	in general, formula looks like this: Foo!$C$7:$J$66,Bar!$A$1:$IV$2
-					$ranges = explode(',', $definedName['formula']); // FIXME: what if sheetname contains comma?
+					$ranges = explode(',', $definedName['formula']); // : what if sheetname contains comma?
 
 					$extractedRanges = array();
 					foreach ($ranges as $range) {
@@ -1005,7 +1005,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 						//		Foo!$C$7:$J$66
 						//		Bar!$A$1:$IV$2
 
-						$explodes = explode('!', $range);	// FIXME: what if sheetname contains exclamation mark?
+						$explodes = explode('!', $range);	// : what if sheetname contains exclamation mark?
 						$sheetName = trim($explodes[0], "'");
 
 						if (count($explodes) == 2) {
@@ -1032,7 +1032,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					// 3. both repeating rows and repeating columns
 					//		formula looks like this: Sheet!$A$1:$B$65536,Sheet!$A$1:$IV$2
 
-					$ranges = explode(',', $definedName['formula']); // FIXME: what if sheetname contains comma?
+					$ranges = explode(',', $definedName['formula']); // : what if sheetname contains comma?
 
 					foreach ($ranges as $range) {
 						// $range should look like this one of these
@@ -1085,7 +1085,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					}
 				} else {
 					//	Named Value
-					//	TODO Provide support for named values
+					//	 Provide support for named values
 				}
 			}
 		}
@@ -4276,7 +4276,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		// bit: 11; mask: 0x0800; 0 = normal view, 1 = page break view
 		$isPageBreakPreview = (bool) ((0x0800 & $options) >> 11);
 
-		//FIXME: set $firstVisibleRow and $firstVisibleColumn
+		//: set $firstVisibleRow and $firstVisibleColumn
 
 		if ($this->_phpSheet->getSheetView()->getView() !== PHPExcel_Worksheet_SheetView::SHEETVIEW_PAGE_LAYOUT) {
 			//NOTE: this setting is inferior to page layout view(Excel2007-)
@@ -4863,7 +4863,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					break;
 
 				case 0x28:
-					// TODO: Investigate structure for .xls SHEETLAYOUT record as saved by MS Office Excel 2007
+					// : Investigate structure for .xls SHEETLAYOUT record as saved by MS Office Excel 2007
 					return;
 					break;
 			}
@@ -6221,7 +6221,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		list($baseCol, $baseRow) = PHPExcel_Cell::coordinateFromString($baseCell);
 		$baseCol = PHPExcel_Cell::columnIndexFromString($baseCol) - 1;
 
-		// TODO: if cell range is just a single cell, should this funciton
+		// : if cell range is just a single cell, should this funciton
 		// not just return e.g. 'A1' and not 'A1:A1' ?
 
 		// offset: 0; size: 2; first row
@@ -6395,7 +6395,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					break;
 
 				default:
-					// TODO: external sheet support
+					// : external sheet support
 					throw new PHPExcel_Reader_Exception('Excel5 reader only supports internal sheets in fomulas');
 					break;
 			}

@@ -40,7 +40,6 @@ class Table_Cell_Frame_Reflower extends Block_Frame_Reflower {
       $w += $col["used-width"];
     }
 
-    //FIXME?
     $h = $this->_frame->get_containing_block("h");
 
     $left_space = $style->length_in_pt(array($style->margin_left,

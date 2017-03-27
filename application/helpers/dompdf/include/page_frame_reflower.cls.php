@@ -42,7 +42,7 @@ class Page_Frame_Reflower extends Frame_Reflower {
       
       $style = clone $page_styles["base"];
     
-      // FIXME RTL
+      // RTL
       if ( $odd && isset($page_styles[":right"]) ) {
         $style->merge($page_styles[":right"]);
       }
@@ -51,7 +51,7 @@ class Page_Frame_Reflower extends Frame_Reflower {
         $style->merge($page_styles[":odd"]);
       }
   
-      // FIXME RTL
+      // RTL
       if ( !$odd && isset($page_styles[":left"]) ) {
         $style->merge($page_styles[":left"]);
       }

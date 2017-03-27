@@ -54,7 +54,7 @@ class PHPExcel_Writer_OpenDocument_Cell_Comment
             //$objWriter->writeAttribute('draw:caption-point-x', $comment->getMarginLeft());
             //$objWriter->writeAttribute('draw:caption-point-y', $comment->getMarginTop());
                 $objWriter->writeElement('dc:creator', $comment->getAuthor());
-                // TODO: Not realized in PHPExcel_Comment yet.
+                // : Not realized in PHPExcel_Comment yet.
                 //$objWriter->writeElement('dc:date', $comment->getDate());
                 $objWriter->writeElement('text:p', $comment->getText()->getPlainText());
                     //$objWriter->writeAttribute('draw:text-style-name', 'P1');

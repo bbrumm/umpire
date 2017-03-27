@@ -2338,7 +2338,7 @@ EOT;
           // load the pfb file, and put that into an object too.
           // note that pdf supports only binary format type 1 font files, though there is a
           // simple utility to convert them from pfa to pfb.
-          // FIXME: should we move font subset creation to CPDF::output? See notes in issue #750.
+          // : should we move font subset creation to CPDF::output? See notes in issue #750.
           if (!$this->isUnicode || $fbtype !== 'ttf' || empty($this->stringSubsets)) {
             $data = file_get_contents($fbfile);
           }
@@ -2610,7 +2610,7 @@ EOT;
    */
   function setGraphicsState($parameters) {
     // Create a new graphics state object
-    // FIXME: should actually keep track of states that have already been created...
+    // : should actually keep track of states that have already been created...
     $this->numObj++;
     $this->o_extGState($this->numObj, 'new', $parameters);
     $this->addContent("\n/GS$this->numStates gs");
@@ -3117,7 +3117,7 @@ EOT;
     header("Cache-Control: private");
     header("Content-type: application/pdf");
 
-    //FIXME: I don't know that this is sufficient for determining content length (i.e. what about transport compression?)
+    //: I don't know that this is sufficient for determining content length (i.e. what about transport compression?)
     header("Content-Length: " . mb_strlen($tmp, '8bit'));
     $fileName = (isset($options['Content-Disposition']) ?  $options['Content-Disposition'] :  'file.pdf');
 
@@ -3135,7 +3135,7 @@ EOT;
     header("Content-Disposition: $attachment; filename=". $encodedfallbackfilename ."; filename*=UTF-8''$encodedfilename");
 
     if (isset($options['Accept-Ranges']) && $options['Accept-Ranges'] == 1) {
-      //FIXME: Is this the correct value ... spec says 1#range-unit
+      //: Is this the correct value ... spec says 1#range-unit
       header("Accept-Ranges: " . mb_strlen($tmp, '8bit'));
     }
 
@@ -3897,7 +3897,7 @@ EOT;
       return;
     }
 
-    // FIXME The pixel transformation doesn't work well with 8bit PNGs
+    // The pixel transformation doesn't work well with 8bit PNGs
     $eight_bit = ($byte & 4) !== 4;
 
     $wpx = imagesx($img);
@@ -4099,7 +4099,7 @@ EOT;
       $img = imagecreatetruecolor($sx,$sy);
       imagealphablending($img, true);
 
-      // @todo is it still needed ??
+      //  is it still needed ??
       $ti = imagecolortransparent($imgtmp);
       if ($ti >= 0) {
         $tc = imagecolorsforindex($imgtmp,$ti);

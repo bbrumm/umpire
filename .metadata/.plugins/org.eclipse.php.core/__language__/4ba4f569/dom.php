@@ -166,7 +166,7 @@ class DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -407,7 +407,7 @@ class DOMDocumentFragment extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -1023,7 +1023,7 @@ class DOMDocument extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->AAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -1398,7 +1398,7 @@ class DOMCharacterData extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -1639,7 +1639,7 @@ class DOMAttr extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -2101,7 +2101,7 @@ class DOMElement extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -2431,7 +2431,7 @@ class DOMText extends DOMCharacterData  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -2735,7 +2735,7 @@ class DOMComment extends DOMCharacterData  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -3110,7 +3110,7 @@ class DOMCdataSection extends DOMText  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -3336,7 +3336,7 @@ class DOMDocumentType extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -3562,7 +3562,7 @@ class DOMNotation extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -3788,7 +3788,7 @@ class DOMEntity extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -4021,7 +4021,7 @@ class DOMEntityReference extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>
@@ -4255,7 +4255,7 @@ class DOMProcessingInstruction extends DOMNode  {
 	 * @link http://www.php.net/manual/en/domnode.replacechild.php
 	 * @param DOMNode $newnode <p>
 	 * The new node. It must be a member of the target document, i.e.
-	 * created by one of the DOMDocument->createXXX() methods or imported in
+	 * created by one of the DOMDocument->createAAA() methods or imported in
 	 * the document by .
 	 * </p>
 	 * @param DOMNode $oldnode <p>

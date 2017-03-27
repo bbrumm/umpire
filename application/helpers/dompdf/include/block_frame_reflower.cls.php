@@ -325,7 +325,7 @@ class Block_Frame_Reflower extends Frame_Reflower {
             if ( $height        === "auto" ) $height = $content_height;
           }
 
-          // FIXME: overflow hidden
+          // : overflow hidden
         }
 
       }
@@ -338,7 +338,7 @@ class Block_Frame_Reflower extends Frame_Reflower {
         $height = $content_height;
       }
 
-      // FIXME: this should probably be moved to a seperate function as per
+      // : this should probably be moved to a seperate function as per
       // _calculate_restricted_width
       
       // Only handle min/max height if the height is independent of the frame's content
@@ -654,7 +654,7 @@ class Block_Frame_Reflower extends Frame_Reflower {
       }
       
       if ( $cb_w < $float_x + $float_w - $old_x ) {
-        // TODO handle when floating elements don't fit
+        //  handle when floating elements don't fit
       }
       
       $line_box->get_float_offsets();
