@@ -20,6 +20,19 @@ class Report_display_options {
 		
 	}
 	
+	public function createReportDisplayOptions(Report_instance $pReportInstance) {
+	    
+	    $this->setNoDataValue($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'No Value To Display'));
+	    $this->setFirstColumnFormat($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'First Column Format'));
+	    $this->setColourCells($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'Colour Cells'));
+	    $this->setPDFResolution($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'PDF Resolution'));
+	    $this->setPDFPaperSize($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'PDF Paper Size'));
+	    $this->setPDFOrientation($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'PDF Orientation'));
+	    
+	}
+	
+	
+	
 	//GET functions
 	public function getColumnGroup() {
 		return $this->columnGroup;

@@ -17,9 +17,9 @@ $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells()
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
 echo "<div class='reportInformation'><span class='boldedText'>Last Game Date</span>: ". $reportDisplayOptions->getLastGameDate() ."</div>";
-echo "<div class='reportInformation'><span class='boldedText'>Umpire Discipline</span>: ". $loadedReportItem->getUmpireTypeDisplayValues() ."</div>";
-echo "<div class='reportInformation'><span class='boldedText'>League</span>: ". $loadedReportItem->getLeagueDisplayValues() ."</div>";
-echo "<div class='reportInformation'><span class='boldedText'>Age Group</span>: ". $loadedReportItem->getAgeGroupDisplayValues() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>Umpire Discipline</span>: ". $loadedReportItem->filterParameterUmpireType->getFilterDisplayValues() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>League</span>: ". $loadedReportItem->filterParameterLeague->getFilterDisplayValues() ."</div>";
+echo "<div class='reportInformation'><span class='boldedText'>Age Group</span>: ". $loadedReportItem->filterParameterAgeGroup->getFilterDisplayValues() ."</div>";
 echo "<br />";
 ?>
 <!-- 

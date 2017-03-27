@@ -6,17 +6,19 @@ class Report_filter_parameter extends CI_Model {
     private $useStrReplaceForSQL; //Used only for setting Region SQL values when PDF Mode is false
     
     public function __construct() {
-        
+        $this->load->library('Debug_library');
     }
     
-    public function createFilterParameter(array $pFilterParameter, $pdfMode, $pFilterIsRegion = false) {
+    public function createFilterParameter($pFilterParameter, $pdfMode, $pFilterIsRegion = false) {
+        $this->debug_library->debugOutput("pFilterParameters in createFilterParameter", $pFilterParameter);
         
         if ($pdfMode) {
             $this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameter);
             $this->filterDisplayValues = $this->strReplaceWithoutApostrophe($pFilterParameter);
         } elseif ($pFilterIsRegion) {
             $this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameter);
-            $this->filterDisplayValues = $this->implodeWithoutApostrophe($pFilterParameter);
+            //$this->filterDisplayValues = $this->implodeWithoutApostrophe($pFilterParameter);
+            $this->filterDisplayValues = $pFilterParameter;
         } else {
             $this->filterSQLValues = $this->implodeWithApostrophe($pFilterParameter);
             $this->filterDisplayValues = $this->implodeWithoutApostrophe($pFilterParameter);
@@ -24,11 +26,11 @@ class Report_filter_parameter extends CI_Model {
     }
     
     public function getFilterSQLValues() {
-        return $this->getFilterSQLValues();
+        return $this->filterSQLValues;
     }
     
     public function getFilterDisplayValues() {
-        return $this->getFilterDisplayValues();
+        return $this->filterDisplayValues;
     }
     
     /*

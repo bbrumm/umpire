@@ -84,7 +84,7 @@ interface Reflector  {
 }
 
 class ReflectionFunctionAbstract implements Reflector {
-	abstract public $name;
+	public $name;
 
 
 	/**
@@ -266,14 +266,14 @@ class ReflectionFunctionAbstract implements Reflector {
 	 * @link http://www.php.net/manual/en/reflector.export.php
 	 * @return string 
 	 */
-	abstract public static function export () {}
+	public static function export () {}
 
 	/**
 	 * To string
 	 * @link http://www.php.net/manual/en/reflector.tostring.php
 	 * @return string 
 	 */
-	abstract public function __toString () {}
+	public function __toString () {}
 
 }
 

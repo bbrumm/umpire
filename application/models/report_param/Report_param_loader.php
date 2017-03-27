@@ -131,6 +131,21 @@ class Report_param_loader extends CI_Model {
         }
 
     }
+    
+    public function lookupParameterValue($reportParameterArray, $parameterName) {
+        $parameterValue = "";
+         
+        for($i=0; $i<count($reportParameterArray); $i++) {
+            $reportParameter = new Report_parameter();
+            $reportParameter = $reportParameterArray[$i];
+             
+            if($reportParameter->getParameterName() == $parameterName) {
+                $parameterValue = $reportParameter->getParameterValue();
+                break;
+            }
+        }
+        return $parameterValue;
+    }
        
 }
 ?>

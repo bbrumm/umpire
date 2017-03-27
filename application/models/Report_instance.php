@@ -9,20 +9,16 @@ class Report_instance extends CI_Model {
 	
 	private $resultOutputArray; //New variable to store the array so it can be directly output to the screen
 	
-	private $umpireTypeSQLValues;
-	private $leagueSQLValues;
-	private $ageGroupSQLValues;
-	private $regionSQLValues;
-	
-	private $umpireTypeDisplayValues;
-	private $leagueDisplayValues;
-	private $ageGroupDisplayValues;
-	private $regionDisplayValues;
-	
 	public $requestedReport;
 	public $reportDisplayOptions;
 	
-	private $filterParameterUmpireType;
+	public $reportParamLoader;
+	public $reportParameterArray;
+	
+	public $filterParameterUmpireType;
+	public $filterParameterAgeGroup;
+	public $filterParameterLeague;
+	public $filterParameterRegion;
 
 	public function __construct() {
 	    $this->load->model('Report_display_options');
@@ -36,35 +32,12 @@ class Report_instance extends CI_Model {
 	    $this->load->model('Report_filter_parameter');
 	    $this->requestedReport = new Requested_report_model();
 	    $this->filterParameterUmpireType = new Report_filter_parameter();
-	}
-	
-	//TODO: Replace these with a new object - SQLValueString, or ReportFilterParameter, or something. Also merge the Display Value variables into it.
-	public function getUmpireTypeSQLValues() {
-	    return $this->umpireTypeSQLValues;
-	}
-	
-	public function getLeagueSQLValues() {
-	    return $this->leagueSQLValues;
-	}
-	
-	public function getAgeGroupSQLValues() {
-	    return $this->ageGroupSQLValues;
-	}
-	
-	public function getRegionSQLValues() {
-	    return $this->regionSQLValues;
-	}
-	
-	public function getUmpireTypeDisplayValues() {
-	    return $this->umpireTypeDisplayValues;
-	}
-	
-	public function getLeagueDisplayValues() {
-	    return $this->leagueDisplayValues;
-	}
-	
-	public function getAgeGroupDisplayValues() {
-	    return $this->ageGroupDisplayValues;
+	    $this->filterParameterAgeGroup = new Report_filter_parameter();
+	    $this->filterParameterLeague = new Report_filter_parameter();
+	    $this->filterParameterRegion = new Report_filter_parameter();
+	    $this->reportParamLoader = new Report_param_loader();
+	    $this->load->model('separate_reports/Report_factory');
+
 	}
 	
 	public function getResultArray() {
@@ -84,9 +57,20 @@ class Report_instance extends CI_Model {
 	    return $this->reportColumnFields;
 	}
 	
+
+	public function getResultOutputArray() {
+	    return $this->resultOutputArray;
+	}
+	
+	public function getColumnLabelResultArray() {
+	    return $this->columnLabelResultArray;
+	}
+	
 	public function setColumnLabelResultArray($pColumnLabelArray) {
         //Find a distinct list of values to use as column headings
-        $columnLabelQuery = $this->buildColumnLabelQuery();
+        $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
+        $columnLabelQuery = $separateReport->getReportColumnQuery($this);
+        
         $query = $this->db->query($columnLabelQuery);
         $this->columnLabelResultArray = $query->result_array();
         $this->debug_library->debugOutput("columnLabelResultArray in setColumnLabelResultArray:", $this->getColumnLabelResultArray());
@@ -220,68 +204,52 @@ class Report_instance extends CI_Model {
 	    }
 	    return $simpleColumnFieldArray;
 	}
-	
-	public function getResultOutputArray() {
-	    return $this->resultOutputArray;
-	}
-	
-	public function getColumnLabelResultArray() {
-	    return $this->columnLabelResultArray;
-	}
+
 
 	public function setReportType(Requested_report_model $pRequestedReport) {
-	    $this->debug_library->debugOutput("reportParameters in setReportType", $pRequestedReport);
-	    $this->debug_library->debugOutput("POST in setReportType", $_POST);
-	    
-	    $useNewDWTables = $this->config->item('use_new_dw_tables');
-	    
 	    //RequestedReport values are set in controllers/report.php->index();
 	    if ($pRequestedReport->getPDFMode() == true) {
 	        $ageGroupValue = rtrim($pRequestedReport->getAgeGroup(), ',');
 	        $umpireDisciplineValue = rtrim($pRequestedReport->getUmpireType(), ',');
-	        
-	        $this->debug_library->debugOutput("Umpire Discipline in setReportType:", $umpireDisciplineValue);
 	    } else {
     	    $ageGroupValue = implode(',', $pRequestedReport->getAgeGroup());
     	    $leagueValue = "";
     	    $umpireDisciplineValue = implode(',', $pRequestedReport->getUmpireType());
 	    }
 	    
-	    $reportParamLoader = new Report_param_loader();
-	    $reportParamLoader->loadAllReportParametersForReport($pRequestedReport);
-	    $reportParameterArray = $reportParamLoader->getReportParameterArray();
-	    $reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
+	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport);
+	    $this->reportParameterArray = $this->reportParamLoader->getReportParameterArray();
+	    $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
 	    
-	    $reportGroupingStructureArray = $reportParamLoader->getReportGroupingStructureArray();
+	    $reportGroupingStructureArray = $this->reportParamLoader->getReportGroupingStructureArray();
 	    
-	    //TODO: Replace this with a single function in reportDisplayOptions to create new RDO object.
-	    $this->reportDisplayOptions->setNoDataValue($this->lookupParameterValue($reportParameterArray, 'No Value To Display'));
-	    $this->reportDisplayOptions->setFirstColumnFormat($this->lookupParameterValue($reportParameterArray, 'First Column Format'));
-	    $this->reportDisplayOptions->setColourCells($this->lookupParameterValue($reportParameterArray, 'Colour Cells'));
-	    $this->reportDisplayOptions->setPDFResolution($this->lookupParameterValue($reportParameterArray, 'PDF Resolution'));
-	    $this->reportDisplayOptions->setPDFPaperSize($this->lookupParameterValue($reportParameterArray, 'PDF Paper Size'));
-	    $this->reportDisplayOptions->setPDFOrientation($this->lookupParameterValue($reportParameterArray, 'PDF Orientation'));
+	    //Replace this with a single function in reportDisplayOptions to create new RDO object.
+	    $this->reportDisplayOptions->createReportDisplayOptions($this);
+	    
 	    $this->reportColumnFields = $this->translateRptGrStructureToSimpleArray($reportGroupingStructureArray);
-	    $this->reportTitle = str_replace("%seasonYear", $pRequestedReport->getSeason(), $this->lookupParameterValue($reportParameterArray, 'Display Title'));
+	    $this->reportTitle = $this->setReportTitle($pRequestedReport->getSeason());
 	    
 	    $this->requestedReport = $pRequestedReport;
 
 	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
 	    $columnGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Column');
 	    $rowGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Row');
-	    $this->debug_library->debugOutput("columnGroupForReport", $columnGroupForReport);
-	    $this->debug_library->debugOutput("rowGroupForReport", $rowGroupForReport);
 	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
 	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
 	    
-	    //TODO: Move this into Report_filter_parameter and call it inside another method (so I don't forget to call it)
-	    //TODO: Also replace the getSQLValues and getDisplayValues with instances of this object
-	    $this->filterParameterUmpireType->createFilterParameter($this->requestedReport->getPDFMode(), $this->requestedReport->getUmpireType());
+	    $this->filterParameterUmpireType->createFilterParameter($this->requestedReport->getUmpireType(), $this->requestedReport->getPDFMode());
+	    $this->filterParameterAgeGroup->createFilterParameter($this->requestedReport->getAgeGroup(), $this->requestedReport->getPDFMode());
+	    $this->filterParameterLeague->createFilterParameter($this->requestedReport->getLeague(), $this->requestedReport->getPDFMode());
+	    $this->filterParameterRegion->createFilterParameter($this->requestedReport->getRegion(), $this->requestedReport->getPDFMode(), true);
 	    
 	    
 		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason());
 		
 		$this->reportTableName = $this->lookupReportTableName();
+	}
+	
+	private function setReportTitle($pSeasonYear) {
+	    return str_replace("%seasonYear", $pSeasonYear, $this->reportParamLoader->lookupParameterValue($this->reportParameterArray, 'Display Title'));
 	}
 	
 	
@@ -295,7 +263,12 @@ class Report_instance extends CI_Model {
 	
 	
 	public function loadReportResults() {
-        $queryForReport = $this->buildSelectQueryForReportUsingDW();
+        //$queryForReport = $this->buildSelectQueryForReportUsingDW();
+
+        $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
+        $queryForReport = $separateReport->getReportDataQuery($this);
+        
+        //echo "Factory Query: ". $separateReport->getReportDataQuery($this) ." <BR />";
         
         $query = $this->db->query($queryForReport);
         
@@ -314,281 +287,7 @@ class Report_instance extends CI_Model {
         $this->setResultOutputArray();
 
 	}
-	
-	
-	private function buildSelectQueryForReportUsingDW() {
-	    switch ($this->requestedReport->getReportNumber()) {
-	        case 1:
-	            $queryString = "SELECT
-	                last_first_name,
-	                short_league_name,
-	                club_name,
-	                age_group,
-	                SUM(match_count) AS match_count
-	                FROM dw_mv_report_01
-	                WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
-                    AND short_league_name IN (". $this->getLeagueSQLValues() .")
-                    AND region_name IN (". $this->getRegionSQLValues() .")
-                    AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-                    AND season_year = ". $this->requestedReport->getSeason() ."
-                    GROUP BY last_first_name, short_league_name, club_name
-                    ORDER BY last_first_name, short_league_name, club_name";
 
-	            break;
-	            
-	        case 2:
-	            $queryString = "SELECT
-    	            last_first_name,
-    	            age_group,
-    	            age_sort_order,
-    	            short_league_name,
-    	            two_ump_flag,
-    	            SUM(match_count) AS match_count
-	                FROM dw_mv_report_02
-	                WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
-    	            AND short_league_name IN ('2 Umpires', ". $this->getLeagueSQLValues() .")
-    	            AND region_name IN (". $this->getRegionSQLValues() .")
-    	            AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-    	            AND season_year = ". $this->requestedReport->getSeason() ."
-    	            GROUP BY last_first_name, age_group, age_sort_order, short_league_name, two_ump_flag
-    	            ORDER BY last_first_name, age_sort_order, short_league_name;";
-	            
-	            break;
-	        case 3:
-	            //This has remained as a query on staging tables instead of moving to a MV table, because of the subquery using parameters from the UI selection.
-	            //Creating a MV would look similar to this and probably wouldn't improve performance.
-	            $queryString = "SELECT 
-                    weekend_date,
-                    CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group,
-                    short_league_name,
-                    GROUP_CONCAT(team_names) AS team_list,
-                    (
-                    	SELECT
-                    	COUNT(DISTINCT match_id)
-                    	FROM staging_no_umpires s2
-                    	WHERE s2.age_group = s.age_group
-                    	AND s2.umpire_type = s.umpire_type
-                        AND s2.weekend_date = s.weekend_date
-                        AND short_league_name IN (". $this->getLeagueSQLValues() .")
-                    ) AS match_count
-                    FROM staging_no_umpires s
-                    WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
-                    AND season_year = ". $this->requestedReport->getSeason() ."
-                    AND CONCAT(age_group, ' ', umpire_type) IN (
-                    	'Seniors Boundary',
-                    	'Seniors Goal',
-                    	'Reserve Goal',
-                    	'Colts Field',
-                    	'Under 16 Field',
-                    	'Under 14 Field',
-                    	'Under 12 Field'
-                    )
-                    GROUP BY weekend_date, age_group, umpire_type, short_league_name
-                    ORDER BY weekend_date, age_group, umpire_type, short_league_name;";
-	            
-	            break;
-	        case 4:
-	            $queryString = "SELECT 
-                    club_name,
-                    age_group,
-                    short_league_name,
-                    umpire_type,
-                    match_count
-                    FROM dw_mv_report_04
-	                WHERE region_name IN (". $this->getRegionSQLValues() .")
-	                AND season_year = ". $this->requestedReport->getSeason() ."
-                    ORDER BY club_name, age_sort_order, league_sort_order;";
-	            
-	            break;
-	        
-	        case 5:
-	           $queryString = "SELECT umpire_type,
-                    age_group,
-                    short_league_name,
-                    match_no_ump,
-                    total_match_count,
-                    match_pct
-                    FROM dw_mv_report_05
-	                WHERE short_league_name IN (". $this->getLeagueSQLValues() .")
-	                AND region_name IN (". $this->getRegionSQLValues() .")
-	                AND season_year = ". $this->requestedReport->getSeason() ."
-                    ORDER BY umpire_type, age_sort_order, league_sort_order;";
-	            break;
-	        case 6:
-	            $queryString = "SELECT
-                    umpire_type,
-	                age_group,
-	                region_name,
-	                first_umpire,
-	                second_umpire,
-	                match_count
-                    FROM dw_mv_report_06
-	                WHERE season_year IN (". $this->requestedReport->getSeason() .")
-	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
-	                AND region_name IN (". $this->getRegionSQLValues() .")
-	                AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-                    ORDER BY first_umpire, second_umpire;";
-	            
-	            break;
-	            
-	        case 7:
-	            $queryString = "SELECT
-                    umpire_type,
-                    age_group,
-                    short_league_name,
-                    umpire_count,
-                    match_count
-                    FROM dw_mv_report_07
-	                WHERE season_year IN (". $this->requestedReport->getSeason() .")
-	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
-	                AND region_name IN (". $this->getRegionSQLValues() .")
-	                AND umpire_type IN ('Field')
-                    ORDER BY age_sort_order, league_sort_order, umpire_type, umpire_count;";
-	            
-	            break;
-	    }
-	    
-	    $this->debug_library->debugOutput("SQL queryString:", $queryString);
-	    return $queryString;
-	}
-	
-	private function buildColumnLabelQuery() {
-        switch ($this->requestedReport->getReportNumber()) {
-            case 1:
-    	       $columnLabelQuery = "SELECT DISTINCT short_league_name, club_name
-    	           FROM dw_mv_report_01 
-    	           WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
-                   AND short_league_name IN (". $this->getLeagueSQLValues() .")
-                   AND region_name IN (". $this->getRegionSQLValues() .")
-                   AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-                   ORDER BY short_league_name, club_name";
-        	       
-    	       break;
-            case 2:
-                $columnLabelQuery = "SELECT DISTINCT age_group, short_league_name
-    	            FROM (
-	                    SELECT
-        	            age_group,
-        	            age_sort_order,
-                        league_sort_order,
-        	            short_league_name
-    	                FROM dw_mv_report_02
-    	                WHERE age_group IN (". $this->getAgeGroupSQLValues() .")
-        	            AND short_league_name IN ('2 Umpires', ". $this->getLeagueSQLValues() .")
-        	            AND region_name IN (". $this->getRegionSQLValues() .")
-        	            AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-        	            AND season_year = ". $this->requestedReport->getSeason() ."
-        	            UNION ALL
-        	            SELECT
-    	                'Total',
-    	                50,
-    	                50,
-    	                ''
-    	            ) AS sub
-    	            ORDER BY age_sort_order, league_sort_order;";
-                
-                break;
-            case 3:
-                $columnLabelQuery = "SELECT DISTINCT
-                	CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group,
-                	short_league_name
-                	FROM (
-                    	SELECT
-                    	s.age_group,
-                    	s.umpire_type,
-                    	s.short_league_name,
-	                    s.region_name,
-                    	s.age_sort_order
-                    	FROM staging_all_ump_age_league s
-                    	UNION ALL
-                    	SELECT
-                    	s.age_group,
-                    	s.umpire_type,
-                    	'Total',
-	                    'Total',
-                    	s.age_sort_order
-                    	FROM staging_all_ump_age_league s
-                    ) sub
-                    WHERE CONCAT(age_group, ' ', umpire_type) IN
-                    	('Seniors Boundary' , 'Seniors Goal', 'Reserves Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field')
-                    AND age_group IN (". $this->getAgeGroupSQLValues() .")
-                    AND region_name IN ('Total', ". $this->getRegionSQLValues() .")
-                    ORDER BY age_sort_order, umpire_type, short_league_name;";
-                
-                break;
-            
-            case 4:
-                $columnLabelQuery = "SELECT DISTINCT
-                    s.umpire_type,
-                    s.age_group,
-                    s.short_league_name
-                    FROM staging_all_ump_age_league s
-                    WHERE s.short_league_name IN (". $this->getLeagueSQLValues() .")
-                    ORDER BY s.umpire_type, s.age_sort_order, s.league_sort_order;";
-                
-                break;
-            case 5:
-                $columnLabelQuery = "SELECT DISTINCT
-                    l.short_league_name,
-                    sub.subtotal
-                    FROM dw_dim_league l
-                    CROSS JOIN (
-                        SELECT 'Games' AS subtotal
-                        UNION
-                        SELECT 'Total'
-                        UNION
-                        SELECT 'Pct'
-                    ) AS sub
-                    WHERE l.short_league_name IN (". $this->getLeagueSQLValues() .")
-                    UNION ALL
-                    SELECT 'All', 'Total';";
-                
-                break;
-            case 6:
-                $columnLabelQuery = "SELECT DISTINCT second_umpire
-                FROM dw_mv_report_06
-                WHERE season_year IN (". $this->requestedReport->getSeason() .")
-                AND age_group IN (". $this->getAgeGroupSQLValues() .")
-                AND region_name IN (". $this->getRegionSQLValues() .")
-                AND umpire_type IN (". $this->getUmpireTypeSQLValues() .")
-                ORDER BY second_umpire;";
-                
-                break;
-            
-            case 7:
-                $columnLabelQuery = "SELECT DISTINCT
-                    short_league_name,
-                    umpire_count
-                    FROM (
-                    SELECT DISTINCT 
-                    short_league_name,
-                    league_sort_order,
-                    '2 Umpires' AS umpire_count
-                    FROM dw_mv_report_07
-	                WHERE season_year IN (". $this->requestedReport->getSeason() .")
-	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
-	                AND region_name IN (". $this->getRegionSQLValues() .")
-	                AND umpire_type IN ('Field')
-                    UNION ALL
-                    SELECT DISTINCT 
-                    short_league_name,
-	                league_sort_order,
-                    '3 Umpires'
-                    FROM dw_mv_report_07
-	                WHERE season_year IN (". $this->requestedReport->getSeason() .")
-	                AND age_group IN (". $this->getAgeGroupSQLValues() .")
-	                AND region_name IN (". $this->getRegionSQLValues() .")
-	                AND umpire_type IN ('Field')
-	                ) AS sub
-                    ORDER BY league_sort_order, umpire_count;";
-                
-                break;
-                    
-        }
-       $this->debug_library->debugOutput("columnLabelQuery:", $columnLabelQuery);
-       return $columnLabelQuery;
-	}
-	
 	private function extractGroupFromGroupingStructure($pReportGroupingStructureArray, $pGroupingType) {
 	    $reportGroupingStructure = new Report_grouping_structure();
 	    
@@ -598,22 +297,6 @@ class Report_instance extends CI_Model {
 	        }
 	    }
 	    return $outputReportGroupingStructure;
-	}
-	
-	
-	private function lookupParameterValue($reportParameterArray, $parameterName) {
-	    $parameterValue = "";
-	    
-	    for($i=0; $i<count($reportParameterArray); $i++) {
-	        $reportParameter = new Report_parameter();
-	        $reportParameter = $reportParameterArray[$i];
-	        
-	        if($reportParameter->getParameterName() == $parameterName) {
-	            $parameterValue = $reportParameter->getParameterValue();
-	            break;
-	        }
-	    }
-	    return $parameterValue;
 	}
 	
 	
@@ -752,9 +435,11 @@ class Report_instance extends CI_Model {
 	        //Loop through columnLabelResults
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
 	            if ($i == 0) {
+	                //$this->debug_library->debugOutput("getColumnCountForHeadingCells: i is ", "0");
 	                //$this->debug_library->debugOutput("CL J:", $columnLabelResults[$j][$columnLabels[$i]]);
 	
-	                if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
+	                //if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
+	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {
 	                    //Value found in array. Increment counter value
 	                    //Find the array that stores this value
 	                    $currentArrayKey = $this->findKeyFromValue(
@@ -770,53 +455,71 @@ class Report_instance extends CI_Model {
 	                }
 	            }
 	            if ($i == 1) {
-	                if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-	                    $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
-	                        //Value found in array. Increment counter value
-	                        //$this->debug_library->debugOutput("- Value found:", $columnLabelResults[$j][$columnLabels[$i]]);
-	                        //Check if the value on the first row matches
-	                        if ($columnLabelResults[$j-1][$columnLabels[$i-1]->getFieldName()] == $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()]) {
-	                            //echo "-- Match";
-	
-	                            $currentArrayKey = $this->findKeyFromValue($columnCountLabels[$i],
-	                                $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-	                                $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
-	                            //echo "-- Increment array key [". $i ."][". $currentArrayKey ."]<BR/>";
-	                            $columnCountLabels[$i][$currentArrayKey]["count"]++;
-	                        } else {
-	                            $columnCountLabels[$i][$arrayKeyNumber]["label"] =
-	                            $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                            $columnCountLabels[$i][$arrayKeyNumber]["unique label"] =
-	                            $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-	                            $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                            $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
-	                            $arrayKeyNumber++;
-	                        }
-	                    } else {
-	                        //Value not found. Add to array.
-	                        $columnCountLabels[$i][$arrayKeyNumber]["label"] =
-	                        $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                        $columnCountLabels[$i][$arrayKeyNumber]["unique label"] =
-	                        $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-	                        $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                        $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
-	                        $arrayKeyNumber++;
-	                    }
+                    if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {
+                        //Value found in array. Increment counter value
+                        //$this->debug_library->debugOutput("- Value found:", $columnLabelResults[$j][$columnLabels[$i]]);
+                        //Check if the value on the first row matches
+                        if ($this->isFirstRowMatching($columnLabels, $columnLabelResults, $i, $j)) {
+                            //echo "-- Match";
+                            $currentArrayKey = $this->findKeyFromValue($columnCountLabels[$i],
+                                $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
+                                $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
+                            //echo "-- Increment array key [". $i ."][". $currentArrayKey ."]<BR/>";
+                            $columnCountLabels[$i][$currentArrayKey]["count"]++;
+                        } else {
+                            $columnCountLabels[$i][$arrayKeyNumber]["label"] =
+                               $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+                            $columnCountLabels[$i][$arrayKeyNumber]["unique label"] =
+                               $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
+                               $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+                            $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
+                            $arrayKeyNumber++;
+                        }
+                    } else {
+                        //Value not found. Add to array.
+                        $columnCountLabels[$i][$arrayKeyNumber]["label"] =
+                           $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+                        $columnCountLabels[$i][$arrayKeyNumber]["unique label"] =
+                           $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
+                           $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+                        $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
+                        $arrayKeyNumber++;
+                    }
 	            }
 	            if ($i == 2) {
+	                //$this->debug_library->debugOutput("getColumnCountForHeadingCells: i is ", "2");
 	                //Set all count values to 1 for this level, as it is not likely that the third row will need to be merged/have a higher than 1 colspan.
 	                $columnCountLabels[$i][$j]["label"] =
-	                $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                $columnCountLabels[$i][$j]["unique label"] =
-	                $columnLabelResults[$j][$columnLabels[$i-2]->getFieldName()] . "|" .
-	                $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-	                $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
+	                   $columnLabelResults[$j][$columnLabels[$i-2]->getFieldName()] . "|" .
+	                   $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
+	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                $columnCountLabels[$i][$j]["count"] = 1;
 	            }
 	        }
 	    }
+	    $this->debug_library->debugOutput("ColumnCountLabels:", $columnCountLabels);
 	    return $columnCountLabels;
 	     
+	}
+	
+	private function isFirstColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $pColumnCountLabels, $firstLoopCounter, $secondLoopCounter) {
+	    return $this->in_array_r(
+	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $pColumnCountLabels[$firstLoopCounter]
+	    );
+	}
+	
+	private function isFirstAndSecondColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $pColumnCountLabels, $firstLoopCounter, $secondLoopCounter) {
+	    return $this->in_array_r(
+	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()] . "|" .
+            $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $pColumnCountLabels[$firstLoopCounter]
+	    );
+	}
+	
+	private function isFirstRowMatching($pColumnLabels, $pColumnLabelResults, $firstLoopCounter, $secondLoopCounter) {
+	    return $pColumnLabelResults[$secondLoopCounter-1][$pColumnLabels[$firstLoopCounter-1]->getFieldName()] == 
+	       $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()];
 	}
 	
 	private function in_array_r($needle, $haystack, $strict = false) {

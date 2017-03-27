@@ -33,7 +33,6 @@ class Report_instance_test extends TestCase {
         $actualResult = $this->userReport->reportDisplayOptions->getPDFPaperSize();
         $this->assertEquals($expectedPDFPaperSize, $actualResult);
         
-        //TODO: Test upper and lower case of these values
         $actualResult = $this->userReport->reportDisplayOptions->getPDFOrientation();
         $this->assertEquals($expectedPDFOrientation, $actualResult);
         
@@ -51,8 +50,6 @@ class Report_instance_test extends TestCase {
         $actualResult = $this->userReport->reportDisplayOptions->getColumnGroup();
         $this->assertEquals($expectedResult, $actualResult);
         */
-        
-        //TODO: Write test for row grouping
 
         $actualResult = $this->userReport->reportDisplayOptions->getLastGameDate();
         $this->assertEquals($expectedLastGameDate, $actualResult);
