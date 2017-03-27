@@ -6,8 +6,7 @@ if (! defined('BASEPATH'))
 class UserAdmin extends CI_Controller
 {
 
-    function __construct()
-    {
+    function __construct() {
         parent::__construct();
         
         $this->load->model('Report_instance');
@@ -17,8 +16,7 @@ class UserAdmin extends CI_Controller
         $this->load->library('Debug_library');
     }
 
-    function index()
-    {
+    function index() {
         $this->loadPage(NULL);
     }
     
@@ -35,12 +33,9 @@ class UserAdmin extends CI_Controller
             $this->debug_library->debugOutput("userAddedMessage", $userAddedMessage);
             $this->loadPage($userAddedMessage);
         }
-        
     }
     
-    
     public function loadPage($pUserAddedMessage = "") {
-    
         $userAdmin = new Useradminmodel();
         $userArray = $userAdmin->getAllUsers();
         $roleArray = $userAdmin->getRoleArray();
@@ -65,13 +60,6 @@ class UserAdmin extends CI_Controller
         $data['leagueSelectionArray'] = $leagueSelectionArray;
         $this->load->view('useradmin', $data);
         $this->load->view('templates/footer');
-        
     }
-    
-    
-    
-    
-    
 }
-
 ?>

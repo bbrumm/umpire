@@ -115,8 +115,4 @@ class Requested_report_model extends CI_Model {
             return explode(",", $_POST[$pPostKeyHidden]);
         }
     }
-    
-    
-    
-    
 }

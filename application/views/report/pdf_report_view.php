@@ -10,7 +10,7 @@ $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 //$debugLibrary = new DebugLibrary();
 $debugMode = $this->config->item('debug_mode');
-$reportID = $loadedReportItem->getReportID();
+$reportID = $loadedReportItem->requestedReport->getReportNumber();
 
 //$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);

@@ -7,7 +7,7 @@
 	<h2>User Administration</h2>
 	<br />
 	<?php echo form_open('UserAdmin/addNewUser'); ?>
-<div class="addNewUser">
+    <div class="addNewUser">
 	<p class="regularUserOptionsHeading">Add New User</p>
 	<div class="newUserFieldRow">
 		<span class="fieldLabel"><label for="username">Username:</label></span>
@@ -50,18 +50,9 @@
 	<br />
 <div class='userRoleList'>
 	<?php 
-	/*
-	echo "<pre>";
-	print_r($userArray);
-	echo "</pre>";
-	*/
 for($i=0; $i<count($userArray); $i++) {
     $userIteration = $userArray[$i];
-    //echo "Username :" . $userIteration->getUsername() ."<BR />";
-    
-
-
-?>
+    ?>
 	
 	<div class="userNameRow">
 		<span class="userLabel"><label for="username">
@@ -70,8 +61,6 @@ for($i=0; $i<count($userArray); $i++) {
 		?>
 		</label></span>
 		<span class="userAdminLevel">
-		
-    		
     		<?php
     		echo "<select id='". $userIteration->getUsername() ."' onchange=\"toggleUserAdminOptionsSection('". $userIteration->getUsername() ."', '". $userIteration->getUsername() ."Options')\">";
     		for($j=0; $j<count($roleArray); $j++) {
@@ -83,8 +72,6 @@ for($i=0; $i<count($userArray); $i++) {
     		}
     		echo "</select>";
             ?>
-            
-        	
         	<select>
     		<?php 
     		for($k=0; $k<count($subRoleArray); $k++) {
@@ -186,7 +173,7 @@ for($i=0; $i<count($userArray); $i++) {
 </div>
 
 	<?php 
-	/*
+	/* TODO: Comment this out once the update code is written
 	<div class="loginFieldRow">
 		<span class="submitButton">
 			<input type="submit" value="Save Changes" class="btn" />

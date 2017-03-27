@@ -12,35 +12,29 @@ class User extends CI_Model
     private $subRoleName;
     private $permissionArray;
     
-    function __construct()
-    {
+    function __construct() {
         parent::__construct();
         $this->load->model('useradmin/User_role_permission');
     }
     
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getUsername()
-    {
+    public function getUsername() {
         return $this->username;
     }
 
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
-    public function getFirstName()
-    {
+    public function getFirstName() {
         return $this->firstName;
     }
 
-    public function getLastName()
-    {
+    public function getLastName() {
         return $this->lastName;
     }
     
@@ -56,32 +50,24 @@ class User extends CI_Model
         return $this->permissionArray;
     }
     
-    
-    
-    
-
-    public function setId($pValue)
-    {
+    //SET Functions
+    public function setId($pValue) {
         $this->id = $pValue;
     }
 
-    public function setUsername($pValue)
-    {
+    public function setUsername($pValue) {
         $this->username = $pValue;
     }
 
-    public function setPassword($pValue)
-    {
+    public function setPassword($pValue) {
         $this->password = $pValue;
     }
 
-    public function setFirstName($pValue)
-    {
+    public function setFirstName($pValue) {
         $this->firstName = $pValue;
     }
 
-    public function setLastName($pValue)
-    {
+    public function setLastName($pValue) {
         $this->lastName = $pValue;
     }
     
@@ -97,13 +83,7 @@ class User extends CI_Model
         $this->permissionArray = $pValue;
     }
     
-    
-    
-    
-    
-
-    function login($username, $password)
-    {
+    function login($username, $password) {
         $this->db->select('id, user_name, user_password');
         $this->db->from('umpire_users');
         $this->db->where('user_name', $username);
@@ -120,13 +100,13 @@ class User extends CI_Model
     }
     
     public function getUserFromUsername($username) {
-        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, r.role_name, s.sub_role_name " .
-            "FROM umpire_users u " .
-            "INNER JOIN role_sub_role rsr ON u.role_sub_role_id = rsr.id " .
-            "INNER JOIN role r ON rsr.role_id = r.id " .
-            "INNER JOIN sub_role s ON s.id = rsr.sub_role_id " .
-            "WHERE u.user_name = '$username' " .
-            "LIMIT 1;";
+        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, r.role_name, s.sub_role_name
+            FROM umpire_users u 
+            INNER JOIN role_sub_role rsr ON u.role_sub_role_id = rsr.id 
+            INNER JOIN role r ON rsr.role_id = r.id 
+            INNER JOIN sub_role s ON s.id = rsr.sub_role_id 
+            WHERE u.user_name = '$username' 
+            LIMIT 1;";
         
         $query = $this->db->query($queryString);
         
@@ -143,28 +123,25 @@ class User extends CI_Model
             $this->setPermissionArrayForUser();
             
             return true;
-            
         } else {
             return false;
         }
-        
-        
     }
     
     public function setPermissionArrayForUser() {
-        $queryString = "SELECT ps.id, ps.permission_id, p.permission_name, ps.selection_name " .
-            "FROM permission_selection ps " .
-            "INNER JOIN permission p ON ps.permission_id = p.id " .
-            "WHERE (ps.id IN ( " .
-            	"SELECT ups.permission_selection_id " .
-            	"FROM user_permission_selection ups " .
-            	"WHERE user_id = ". $this->getId() ." " .
-            ") OR ps.id IN ( " .
-            	"SELECT rps.permission_selection_id " .
-            	"FROM role_permission_selection rps " .
-            	"INNER JOIN role_sub_role rsr ON rps.role_sub_role_id = rsr.id " .
-            	"INNER JOIN umpire_users u ON rsr.id = u.role_sub_role_id " .
-            	"WHERE u.id = ". $this->getId() ."));";
+        $queryString = "SELECT ps.id, ps.permission_id, p.permission_name, ps.selection_name 
+            FROM permission_selection ps 
+            INNER JOIN permission p ON ps.permission_id = p.id 
+            WHERE (ps.id IN ( 
+            	SELECT ups.permission_selection_id 
+            	FROM user_permission_selection ups 
+            	WHERE user_id = ". $this->getId() ." 
+            ) OR ps.id IN ( 
+            	SELECT rps.permission_selection_id 
+            	FROM role_permission_selection rps 
+            	INNER JOIN role_sub_role rsr ON rps.role_sub_role_id = rsr.id 
+            	INNER JOIN umpire_users u ON rsr.id = u.role_sub_role_id 
+            	WHERE u.id = ". $this->getId() ."));";
         
         $query = $this->db->query($queryString);
         $resultArray = $query->result_array();
@@ -219,7 +196,6 @@ class User extends CI_Model
     
     public function userHasSpecificPermission($permissionName, $selectionName) {
        return $this->findPermissionInArray($permissionName, $selectionName);
-    
     }
     
 }

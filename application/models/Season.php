@@ -2,12 +2,10 @@
 /*
 Season
 This class represents a season object, which includes a year and an ID.
-
 */
 class Season
 {
-    function __construct()
-    {
+    function __construct() {
         //Nothing
     }
     

@@ -13,7 +13,7 @@ $fieldToDisplay = $reportDisplayOptions->getFieldToDisplay();
 $noDataValueToDisplay = $reportDisplayOptions->getNoDataValue();
 //$debugLibrary = new DebugLibrary();
 $debugMode = $this->config->item('debug_mode');
-$reportID = $loadedReportItem->getReportID();
+$reportID = $loadedReportItem->requestedReport->getReportNumber();
 
 //$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
@@ -171,25 +171,9 @@ for ($i=0; $i < $countFirstLoadedColumnGroupings; $i++) {
 			}
 			//echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$loadedColumnGroupings[$j][$columnLabels[$i]]."</div></th>";
 			echo "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>".$columnCountForHeadingCells[$i][$j]["label"]."</div></th>";
-			//TODO: Does a DIV need to go here??
 		}
-		
-		
-		
-		
-		//else
-		//nothing - don't even write a td		
 	}
-	/*
-	if ($loadedReportItem->getReportID() == 2) {
-	    if ($i == 0) {
-	        //Display the Total column if we are looking at report 2
-	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'>Total</div></th>";
-	    } else {
-	        echo "<th class='columnHeadingNormal' colspan='1'><div class='$divClass'> </div></th>";
-	    }
-	}*/
-	//echo "<td>".$a."</td>";
+
 	?>
 	</tr>
 	
@@ -202,13 +186,6 @@ $loopCounter = 0;
 $matchFound = false;
 
 echo "<tbody>";
-
-
-//** Loop through rows and output them to the page **
-
-//$currentReportRowLabel;
-//$currentColumnLabelFirst;
-//$currentColumnLabelSecond;
 
 $tableRowOutput = "";
 if ($debugMode) {

@@ -127,9 +127,6 @@ class Report_display_options {
 	    $this->lastGameDate = $pValue;
 	}
 	
-	
-	
-	
 }
 
 ?>

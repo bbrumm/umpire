@@ -28,14 +28,14 @@ class Home extends CI_Controller {
         }
     }
     
-    function logout() {
+    public function logout() {
         $this->session->unset_userdata('logged_in');
         session_destroy();
         //Reloads itself, causing the index() method above to be called.
         redirect('home', 'refresh');
     }
     
-    function getLatestImportDate() {
+    private function getLatestImportDate() {
         $queryString = "SELECT MAX(imported_datetime) as MAX_DATE FROM imported_files";
         $query = $this->db->query($queryString);
         foreach ($query->result() as $row) {

@@ -12,22 +12,15 @@ class FileImport extends CI_Controller {
 		$this->load->model('Run_etl_stored_proc');
 		$this->load->model('Missing_data_updater');
 		$this->load->helper('form');
-		
-		//$this->load->helper('cell_formatting_helper');
-		//$this->load->helper('phpexcel/Classes/PHPExcel');
 		include 'application/helpers/phpexcel/Classes/PHPExcel.php';
 		
 		
 	}
 	
 	public function index() {
-	    //$this->do_upload();
+	    
 	}
-	
-	function testProc() {
-	    $this->Run_etl_stored_proc->runETLProcedure();
-	}
-	
+
 	function do_upload()
 	{
 	    $config['upload_path'] = './application/import/';
@@ -35,16 +28,10 @@ class FileImport extends CI_Controller {
 	    $config['max_size']	= '4096';
 	    $this->load->library('upload', $config);
 	     
-	    //$this->showSuccessPageWithoutImporting = FALSE;  
-	    //if (! $this->showSuccessPageWithoutImporting) {
-	       $uploadPassed = $this->upload->do_upload();
-	    //} else {
-	    //    $uploadPassed = TRUE;
-	    //}
+        $uploadPassed = $this->upload->do_upload();
 
 	    if ( ! $uploadPassed) {
 	        $error = array('error' => $this->upload->display_errors());
-	        
 	        $data['test'] = "Test Report";
 	        $this->load->helper(array('form', 'url'));
 	        $this->load->view('templates/header', $data);
@@ -53,9 +40,7 @@ class FileImport extends CI_Controller {
 	    } else {
 	        $data = array('upload_data' => $this->upload->data());
 	        $data['progress_pct'] = 10;
-	        //if (! $this->showSuccessPageWithoutImporting) {
-	            $this->Match_import->fileImport($data);
-	        //}
+            $this->Match_import->fileImport($data);
 	        $this->showUploadComplete();
 	        
 	    }
@@ -63,7 +48,6 @@ class FileImport extends CI_Controller {
 	
 	public function runETLProcess() {
 	    //This function runs when the user presses "Update Reports" on the File Import page if missing data is found.
-	    
 	    $this->Missing_data_updater->updateDataAndRunETLProcedure();
 	    $this->showUploadComplete();
 	}
@@ -77,6 +61,4 @@ class FileImport extends CI_Controller {
 	    $this->load->view('upload_success', $data);
 	    $this->load->view('templates/footer');
 	}
-	
-
 }

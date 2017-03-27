@@ -40,7 +40,7 @@ class Report_instance_test extends TestCase {
         $actualResult = $this->userReport->getReportTitle();
         $this->assertEquals($expectedReportTitle, $actualResult);
         
-        $actualResult = $this->userReport->getReportId();
+        $actualResult = $this->userReport->requestedReport->getReportNumber();
         $this->assertEquals($expectedReportID, $actualResult);
         
         /*
@@ -184,120 +184,7 @@ class Report_instance_test extends TestCase {
         
         
     }
-    
-    public function testGetColumnCountForHeadingCells() {
-        
-        $inputRequestedReport = new Requested_report_model();
-        $inputRequestedReport->setAgeGroup(array('Seniors'));
-        $inputRequestedReport->setUmpireType(array('Field'));
-        $inputRequestedReport->setSeason(2016);
-        $inputRequestedReport->setLeague(array('BFL'));
-        $inputRequestedReport->setRegion('Geelong');
-        $inputRequestedReport->setReportNumber(1);
-        $inputRequestedReport->setPDFMode(FALSE);
-        
-        $columnLabelArray = array(
-            0 => Array (
-                'column_name' => 'BFL|Anglesea',
-                'report_column_id' => 1,
-                'short_league_name' => 'BFL',
-                'club_name' => 'Anglesea'
-            ),
-            1 => Array (
-                'column_name' => 'BFL|Barwon_Heads',
-                'report_column_id' => 2,
-                'short_league_name' => 'BFL',
-                'club_name' => 'Barwon Heads'
-            ),
-            2 => Array (
-                'column_name' => 'BFL|Drysdale',
-                'report_column_id' => 3,
-                'short_league_name' => 'BFL',
-                'club_name' => 'Drysdale'
-            ),
-            3 => Array (
-                'column_name' => 'BFL|Geelong_Amateur',
-                'report_column_id' => 4,
-                'short_league_name' => 'BFL',
-                'club_name' => 'Geelong Amateur'
-            ),
-            4 => Array (
-                'column_name' => 'BFL|Modewarre',
-                'report_column_id' => 5,
-                'short_league_name' => 'BFL',
-                'club_name' => 'Modewarre'
-            )
-        );
-        
-        $this->userReport->setReportType($inputRequestedReport);
-        
-        $this->userReport->setColumnLabelResultArray($columnLabelArray);
-        
-        $expectedResult = array(
-            0 => array (
-                0 => array (
-                    'label' => 'BFL',
-                    'unique label' => 'BFL',
-                    'count' => 10
-                    )
-            ),
-            1 => array (
-                0 => array (
-                    'label' => 'Anglesea',
-                    'unique label' => 'BFL|Anglesea',
-                    'count' => 1
-                ),
-                1 => array (
-                    'label' => 'Barwon Heads',
-                    'unique label' => 'BFL|Barwon Heads',
-                    'count' => 1
-                ),
-                2 => array (
-                    'label' => 'Drysdale',
-                    'unique label' => 'BFL|Drysdale',
-                    'count' => 1
-                ),
-                3 => array (
-                    'label' => 'Geelong Amateur',
-                    'unique label' => 'BFL|Geelong Amateur',
-                    'count' => 1
-                ),
-                4 => array (
-                    'label' => 'Modewarre',
-                    'unique label' => 'BFL|Modewarre',
-                    'count' => 1
-                ),
-                5 => array (
-                    'label' => 'Newcomb',
-                    'unique label' => 'BFL|Newcomb',
-                    'count' => 1
-                ),
-                6 => array (
-                    'label' => 'Ocean Grove',
-                    'unique label' => 'BFL|Ocean Grove',
-                    'count' => 1
-                ),
-                7 => array (
-                    'label' => 'Portarlington',
-                    'unique label' => 'BFL|Portarlington',
-                    'count' => 1
-                ),
-                8 => array (
-                    'label' => 'Queenscliff',
-                    'unique label' => 'BFL|Queenscliff',
-                    'count' => 1
-                ),
-                9 => array (
-                    'label' => 'Torquay',
-                    'unique label' => 'BFL|Torquay',
-                    'count' => 1
-                )
-            )
-            
-        );
-        $actualResult = $this->userReport->getColumnCountForHeadingCells();
-        $this->assertEquals($expectedResult, $actualResult);
-    }
+
     
     
     

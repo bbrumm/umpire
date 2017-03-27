@@ -1,12 +1,8 @@
 <?php
 class UmpireMatchRecord extends CI_Model
 {
-    /* Code .. */
-
-    function __construct()
-    {
+    function __construct() {
         parent::__construct();
-        //$this->load->config('constants');
     }
 
     private $umpireName;

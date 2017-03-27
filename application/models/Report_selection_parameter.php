@@ -1,17 +1,12 @@
 <?php
-//require_once(__ROOT__.'/../system/libraries/MY_Model.php');
-//require_once(__ROOT__.'/config/constants.php');
 /*
  * This class defines a ReportSelectionParameter, which is a collection of SelectableReportOptions on the report selection page.
  * It matches to a single drop-down on the page.
  *  
  */
 
-//class SelectableReportOption extends MY_Model
 class Report_selection_parameter extends CI_Model
 {
-    /* Code .. */
-
     function __construct()
     {
         parent::__construct();
@@ -72,13 +67,6 @@ class Report_selection_parameter extends CI_Model
     
     
     public function loadSelectableReportOptions() {
-        /*$queryString = "SELECT parameter_name, parameter_display_order, allow_multiple_selections " . 
-            "FROM report_selection_parameters " .
-            "WHERE parameter_id = $parameterID " .
-            "ORDER BY parameter_display_order;";
-                */
-        
-        //$selectableReportOptionsForParameter[] = '';
         $parameterID = $this->getParameterID();
         
         $queryString = "SELECT parameter_value_name, parameter_display_order " .
@@ -92,16 +80,9 @@ class Report_selection_parameter extends CI_Model
             $selectableReportOption->setOptionName($row->parameter_value_name);
             $selectableReportOption->setOptionValue($row->parameter_value_name);
             $selectableReportOption->setOptionDisplayOrder($row->parameter_display_order);
-            
             $selectableReportOptionsForParameter[] = $selectableReportOption;
-            //print_r($selectableReportOption);
         }
-         
         $this->setSelectableReportOptions($selectableReportOptionsForParameter);
-            
-        
-    
-    
     }
 }
 ?>

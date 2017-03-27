@@ -4,9 +4,8 @@ ReportParameter
 This class represents a parameter for a particular report. It's a join of the report_parameter and 
 report_parameter_map tables.
 It contains information such as the report title, the value to display, and the PDF resolution.
-
-
 */
+
 class Report_parameter 
 {
     function __construct()
@@ -20,7 +19,6 @@ class Report_parameter
     private $parameterName;
     private $parameterType;
     private $parameterValue;
-    //private $reportGroupingStructure;
 
     //Get Functions
     public function getReportID() {
@@ -42,11 +40,6 @@ class Report_parameter
     public function getParameterValue() {
         return $this->parameterValue;
     }
-    /*
-    public function getReportGroupingStructure() {
-        return $this->reportGroupingStructure;
-    }
-*/
 
     //Set Functions
     public function setReportID($pValue) {
@@ -68,11 +61,6 @@ class Report_parameter
     public function setParameterValue($pValue) {
         $this->parameterValue = $pValue;
     }
-   /* 
-    public function setReportGroupingStructure($pValue) {
-        $this->reportGroupingStructure = $pValue;
-    }
-*/
 }
 
 ?>

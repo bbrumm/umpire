@@ -1,19 +1,13 @@
 <?php
-//require_once(__ROOT__.'/../system/libraries/MY_Model.php');
-//require_once(__ROOT__.'/config/constants.php');
 /*
  * This class defines a SelectableReportOption, which is contained within a drop-down box on the report selection page. 
  * It is single selection inside one of the drop-downs
  *  
  */
 
-//class SelectableReportOption extends MY_Model
 class Selectable_report_option
 {
-    /* Code .. */
-
-    function __construct()
-    {
+    function __construct() {
         //parent::__construct();
     }
     

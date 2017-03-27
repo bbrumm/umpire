@@ -52,60 +52,60 @@ echo "<div class='validationError' id='validationError'>". $error ."</div>";
 for ($i=0; $i < $countReportParameters; $i++) {
     $currentReportSelectionParameter = $reportSelectionParameters[$i];
 ?>
-			<div class="optionsSection">
-			<?php 
-			echo "<div class='optionsSubHeading'>". $currentReportSelectionParameter->getParameterName() ."</div> <br />";
-			$countReportParameterSelections = count($currentReportSelectionParameter->getSelectableReportOptions());
-			echo "<div class='optionsLabelsSection'>";
+		<div class="optionsSection">
+		<?php 
+		echo "<div class='optionsSubHeading'>". $currentReportSelectionParameter->getParameterName() ."</div> <br />";
+		$countReportParameterSelections = count($currentReportSelectionParameter->getSelectableReportOptions());
+		echo "<div class='optionsLabelsSection'>";
 
-			if ($currentReportSelectionParameter->getAllowMultipleSelections() == 1) {
-			    echo "<div class='optionsSelectAllRow'>";
-			    echo "<input type='checkbox' id='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll' " .
-			    "onClick='toggle(this, \"chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]\")'></input>";
-			    echo "<label class='reportControlLabel' for='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll'>Select All</label>";
-			    echo "</div>";
-			}
-				
-			for ($j=0; $j < $countReportParameterSelections; $j++) {
-			    $currentReportSelectableReportOption = $currentReportSelectionParameter->getSelectableReportOptions()[$j];
-			    echo "<div class='optionsSelectionRow'>";
-			    if ($currentReportSelectionParameter->getAllowMultipleSelections() == 0) {
-			         echo "<input type='radio' id='". $currentReportSelectableReportOption->getOptionValue() ."' " .
-    		         "name='rd". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."' " .
-    		         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
-			         "onClick='updatePageFromCheckboxSelection(this)'";
-			         
-			         /*if ($j==0) {
-			             //Mark the first radio as selected
-			             echo " checked";
-			         }
-			         */
-			         echo ">";
-			         echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label>";
-			         
-			    } else {
-			        echo "<input type='checkbox' id='". $currentReportSelectableReportOption->getOptionValue() .
-			         "' name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]' " .
-			         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
-			         "onClick='updatePageFromCheckboxSelection(this, ". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll)'></input>";
-			        
-			        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label>";
-			        
-			    }
-			    echo "</div>";
-			}
+		if ($currentReportSelectionParameter->getAllowMultipleSelections() == 1) {
+		    echo "<div class='optionsSelectAllRow'>";
+		    echo "<input type='checkbox' id='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll' " .
+		    "onClick='toggle(this, \"chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]\")'></input>";
+		    echo "<label class='reportControlLabel' for='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll'>Select All</label>";
+		    echo "</div>";
+		}
 			
-			//Add hidden value
-			echo "<input type='hidden' id='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
-			    "name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
-			    "value='' />";
-			
-			echo "</div>";
-			?>
-			</div>
+		for ($j=0; $j < $countReportParameterSelections; $j++) {
+		    $currentReportSelectableReportOption = $currentReportSelectionParameter->getSelectableReportOptions()[$j];
+		    echo "<div class='optionsSelectionRow'>";
+		    if ($currentReportSelectionParameter->getAllowMultipleSelections() == 0) {
+		         echo "<input type='radio' id='". $currentReportSelectableReportOption->getOptionValue() ."' " .
+		         "name='rd". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."' " .
+		         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
+		         "onClick='updatePageFromCheckboxSelection(this)'";
+		         
+		         /*if ($j==0) {
+		             //Mark the first radio as selected
+		             echo " checked";
+		         }
+		         */
+		         echo ">";
+		         echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label>";
+		         
+		    } else {
+		        echo "<input type='checkbox' id='". $currentReportSelectableReportOption->getOptionValue() .
+		         "' name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]' " .
+		         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
+		         "onClick='updatePageFromCheckboxSelection(this, ". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll)'></input>";
+		        
+		        echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label>";
+		        
+		    }
+		    echo "</div>";
+		}
+		
+		//Add hidden value
+		echo "<input type='hidden' id='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
+		    "name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
+		    "value='' />";
+		
+		echo "</div>";
+		?>
+		</div>
 
 <?php 
-			}
+    }
 ?>
 		</div>
 	</div>

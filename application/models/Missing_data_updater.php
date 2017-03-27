@@ -118,10 +118,4 @@ class Missing_data_updater extends CI_Model {
         $this->debug_library->debugOutput("updateTeamTable", $pTeamID);
         $query = $this->db->query($queryString, array($pClubID, $pTeamID));
     }
-    
-    
-    
-    
-    
 }
-

@@ -1,12 +1,6 @@
 <?php
-//$debugMode = $this->config->item('debug_mode');
-
-
-
 echo "<div class='uploadSuccessMessage'>Upload completed!</div>";
 echo "<div class='centerText'>Return to the Home page to generate reports.</div><BR />";
-
-//$countMissingData = count($missing_data);
 
 if (isset ($missing_data['competition'])) {
     $countMissingCompetitions = count($missing_data['competition']);
@@ -19,20 +13,10 @@ if (isset ($missing_data['team'])) {
 } else {
     $countMissingTeams = 0;
 }
-/*
-echo "countmissingdata(". $countMissingData .")<BR/>";
-echo "missingdata value(". $missing_data .")<BR/>";
-echo "missingdata empty(". empty($missing_data) .")<BR/>";
-*/
+
 if (!empty($missing_data)) {
     echo "<div class='uploadSuccessMessage'>Missing Data</div><BR />";
     echo "<div class='centerText'>The following information has been imported, but is new to the system.</div><BR />";
-
-    /*
-    echo "<pre>";
-    print_r($possibleLeaguesForComp);
-    echo "</pre>";
-    */
     
     echo form_open_multipart('FileImport/runETLProcess');
     
@@ -45,7 +29,6 @@ if (!empty($missing_data)) {
         echo "<th>Select League</th>";
         echo "</tr>";
         for ($i=0; $i < $countMissingCompetitions; $i++) {
-            
             echo "<tr>";
             echo "<td class='missingDataCell'>". $missing_data['competition'][$i]['source_id'] ."</td>";
             echo "<td class='missingDataCell'>". $missing_data['competition'][$i]['source_value'] ."</td>";
@@ -74,9 +57,7 @@ if (!empty($missing_data)) {
             echo "</div>";
             echo "</div></td>";
             echo "</tr>";
-        
         }
-        
         echo "</table>";
     }
     
@@ -89,11 +70,9 @@ if (!empty($missing_data)) {
         echo "<th>Select Club</th>";
         echo "</tr>";
         for ($i=0; $i < $countMissingTeams; $i++) {
-        
             echo "<tr>";
             echo "<td class='missingDataCell'>". $missing_data['team'][$i]['source_id'] ."</td>";
             echo "<td class='missingDataCell'>". $missing_data['team'][$i]['source_value'] ."</td>";
-            
             echo "<td class='missingDataCell'>";
             echo "<div class='divSubTableInvisible'>";
             echo "<div class='divSubTableBody'>";
@@ -101,10 +80,11 @@ if (!empty($missing_data)) {
             echo "<div class='divSubTableCellInvisible'><input type='radio' name='rdTeam[". $missing_data['team'][$i]['source_id'] ."]' value='existing' checked/></div>";
             echo "<div class='divSubTableCellInvisible'>Select an existing club:</div>";
             echo "<div class='divSubTableCellInvisible'><select class='newData' name='cboTeam[". $missing_data['team'][$i]['source_id'] ."]'>";
+
             foreach ($possibleClubsForTeam as $possibleTeamItem) {
                 echo "<option value='". $possibleTeamItem['id'] ."'>". $possibleTeamItem['club_name'] ."</option>";
-
             }
+
             echo "</select></div>";
             echo "</div>";
             echo "<div class='divSubTableRow'>";
@@ -115,15 +95,9 @@ if (!empty($missing_data)) {
             echo "</div>";
             echo "</div></td>";
             echo "</tr>";
-        
         }
-        
         echo "</table>";
-        
-        
     }
-    
-    
     echo "<BR />";
     echo "<div class='centerText'>Once you have made your selections, press this button. This will update the report data, and can take up to 30 seconds.</div><BR />";
     echo "<div class='reportSelectorRow'><input type='submit' id='submit' value='Update Reports' class='btn'></div><BR />";
