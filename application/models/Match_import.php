@@ -20,12 +20,22 @@ class Match_import extends CI_Model
     	$objPHPExcel = PHPExcel_IOFactory::load($dataFile);
     	$sheet = $objPHPExcel->getActiveSheet();
     	$lastRow = $sheet->getHighestRow();
-    	$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time', 
+    	/*TODO: Put in a permanent fix to dynamically map the column headings to DB tables.
+    	Column headings can vary depending on data in the source system (e.g. sometimes there are 4 boundary umpires, or 5, or 6)
+    	
+    	*/
+    	/*$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time', 
     	    'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3', 
     	    'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4', 
     	    'boundary_umpire_5', 'boundary_umpire_6', 'goal_umpire_1', 'goal_umpire_2');
+    	   $data = $sheet->rangeToArray('A2:S'.$lastRow, $columns);
+    	    */
+    	$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time',
+    	    'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3',
+    	    'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4',
+    	    'boundary_umpire_5', 'goal_umpire_1', 'goal_umpire_2');
     	
-    	$data = $sheet->rangeToArray('A2:S'.$lastRow, $columns);
+    	$data = $sheet->rangeToArray('A2:R'.$lastRow, $columns);
     	
     	$rows = $data;
     	$queryStatus = $this->db->insert_batch('match_import', $data);
