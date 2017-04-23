@@ -19,9 +19,28 @@ INNER JOIN processed_table t ON op.processed_table_id = t.id
 INNER JOIN operation_ref r ON op.operation_id = r.id
 WHERE 1=1
 /*AND op.imported_file_id > 90*/
-AND imported_file_id = 107
+AND imported_file_id = 124
 /*AND table_name = 'dw_fact_match'*/
 
 ORDER BY id ASC;
 
 
+
+
+SELECT
+op.imported_file_id,
+op.id,
+op.processed_table_id,
+t.table_name,
+r.operation_name,
+op.operation_datetime,
+op.rowcount
+FROM table_operations op
+INNER JOIN processed_table t ON op.processed_table_id = t.id
+INNER JOIN operation_ref r ON op.operation_id = r.id
+WHERE 1=1
+/*AND op.imported_file_id > 90*/
+/*AND imported_file_id = 124*/
+/*AND table_name = 'dw_fact_match'*/
+AND t.table_name = 'umpire_name_type'
+ORDER BY id ASC;
