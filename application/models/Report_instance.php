@@ -268,7 +268,7 @@ class Report_instance extends CI_Model {
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryForReport = $separateReport->getReportDataQuery($this);
         
-        //echo "Factory Query: ". $separateReport->getReportDataQuery($this) ." <BR />";
+        echo "Factory Query: ". $separateReport->getReportDataQuery($this) ." <BR />";
         
         $query = $this->db->query($queryForReport);
         

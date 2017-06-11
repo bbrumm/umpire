@@ -1,1 +1,0 @@
-INSERT INTO umpire_users (id, user_name, user_email, user_password) VALUES (1, 'bb', 'bb@bb.com', MD5('aa'));

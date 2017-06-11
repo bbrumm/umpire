@@ -945,3 +945,9 @@ User Admin specific classes
 	/*border:1px solid #999999;
  	background: #E5F2FF;*/ /* Light blue */
 }
+
+.importDataUpdated {
+	background:#206020;
+	text-align:center;
+	
+}

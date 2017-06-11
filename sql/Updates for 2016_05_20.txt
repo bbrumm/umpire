@@ -1,5 +1,0 @@
-ALTER TABLE role ADD COLUMN display_order INT(11);
-INSERT INTO permission (permission_name) VALUES ('VIEW_USER_ADMIN');
-INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (8,'General', 'All');
-INSERT INTO permission_selection(permission_id, category, selection_name) VALUES (7,'Age Group', 'Under 14');
-UPDATE role SET display_order = id;

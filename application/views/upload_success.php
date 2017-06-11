@@ -1,6 +1,102 @@
+<script type="text/javascript">
+function updateCompetition(competitionID) {
+	//TODO: Pass the name of the button that was clicked, then extact the number from the end of the button to find the ID of the competition.
+	var selectedRegion = document.getElementById('cboRegion['+ competitionID +']').value;
+	var selectedAgeGroup = document.getElementById('cboAgeGroup['+ competitionID +']').value;
+	var selectedDivision = document.getElementById('cboDivision['+ competitionID +']').value;
+	var selectedLeague = document.getElementById('cboLeague['+ competitionID +']').value;
+
+	//alert(selectedRegion);
+	//alert(selectedRegion && ", " && selectedAgeGroup && ", " && selectedDivision && ", " && selectedLeague);
+
+	var xhr;
+	if (window.XMLHttpRequest) { // Mozilla, Safari, ... 
+		xhr = new XMLHttpRequest(); 
+	} else if (window.ActiveXObject) { 
+		// IE 8 and older 
+		xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	var data = "selectedRegion=" + selectedRegion +
+	"&selectedAgeGroup=" + selectedAgeGroup +
+	"&selectedDivision=" + selectedDivision +
+	"&selectedLeague=" + selectedLeague +
+	"&competitionID=" + competitionID;
+
+	console.log("Current file location:");
+	console.log(window.location.pathname)
+	console.log(data);
+	//xhr.open("POST", "../../application/libraries/updateCompetition.php", true);
+	xhr.open("POST", "<?php echo base_url(); ?>" + "index.php/ajax_post_controller/updateCompetition", true);
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); 
+	xhr.send(data);
+
+
+	xhr.onreadystatechange = display_data;
+
+	function display_data() {
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200) {
+				//document.getElementById("suggestion").innerHTML = xhr.responseText;
+				if (xhr.responseText == "OK") {
+					document.getElementById("competitionRow"+competitionID).innerHTML = "<td class='importDataUpdated' colspan=4>Data updated!</td>";
+				} else {
+					document.getElementById("updateFailedMsg"+competitionID).innerHTML = "No league found with these selections.";
+				}
+			} else {
+				alert('There was a problem with the request.');
+			}
+		}
+	}	
+}
+
+</script>
+
 <?php
 echo "<div class='uploadSuccessMessage'>Upload completed!</div>";
 echo "<div class='centerText'>Return to the Home page to generate reports.</div><BR />";
+
+function outputSelectionRow($pMissingData, $pIterationNumber, $pPossibleSelections, $pLabel, $pCboBoxName, $pValueFieldName) {
+    
+    echo "<div class='divSubTableRow'>";
+    echo "<div class='divSubTableCellInvisible'>$pLabel:</div>";
+    echo "<div class='divSubTableCellInvisible'>";
+    echo "<select class='newData' name='".$pCboBoxName."[". $pMissingData['competition'][$pIterationNumber]['source_id'] ."]' ";
+    echo "id='".$pCboBoxName."[". $pMissingData['competition'][$pIterationNumber]['source_id'] ."]'>";
+    foreach ($pPossibleSelections as $possibleSelectionItem) {
+        //This IF statement checks if the value in the drop-down box is contained within the Competition Name.
+        //If it is found, the option is automatically selected.
+        if (strpos($pMissingData['competition'][$pIterationNumber]['source_value'], $possibleSelectionItem[$pValueFieldName]) !== FALSE) {
+            echo "<option selected ";
+        } elseif ($pLabel == "League" && $possibleSelectionItem[$pValueFieldName] == "GJFL") {
+            /* 
+             *Set the default league to GJFL. This is because most new age groups seem to be Juniors, 
+             *and only the Seniors and Reserves have BFL. We want to avoid users just leaving the default as BFL and messing up their reports.
+             *TODO: Improve this logic to make it not dependent on a specific value, somehow.
+             */
+            echo "<option selected ";
+        } else {
+            echo "<option ";
+        }
+        
+        $valueToUse = "";
+	    if ($pLabel == "League") {
+	        $valueToUse = $possibleSelectionItem[$pValueFieldName];
+	    } else {
+	        $valueToUse = $possibleSelectionItem['id'];
+	    }
+        
+	    echo "value='". $valueToUse."'>". $possibleSelectionItem[$pValueFieldName];
+        echo "</option>";
+        
+        
+    }
+    echo "</select></div>";
+    //echo "(" . $pMissingData['competition'][$pIterationNumber]['source_value'] . ")";
+    echo "</div>";
+    
+    
+    
+}
 
 if (isset ($missing_data['competition'])) {
     $countMissingCompetitions = count($missing_data['competition']);
@@ -26,36 +122,26 @@ if (!empty($missing_data)) {
         echo "<tr>";
         echo "<th>ID</th>";
         echo "<th>Competition Name</th>";
-        echo "<th>Select League</th>";
+        echo "<th>Select League/Region/Age Group</th>";
+        echo "<th>Update</th>";
         echo "</tr>";
         for ($i=0; $i < $countMissingCompetitions; $i++) {
-            echo "<tr>";
+            echo "<tr id='competitionRow". $missing_data['competition'][$i]['source_id']."'>";
             echo "<td class='missingDataCell'>". $missing_data['competition'][$i]['source_id'] ."</td>";
             echo "<td class='missingDataCell'>". $missing_data['competition'][$i]['source_value'] ."</td>";
             echo "<td><div class='divSubTable'>";
-            echo "<div class='divSubTableHeading'>";
-                echo "<div class='divSubTableHead'>&nbsp;</div>";
-                echo "<div class='divSubTableHead'>ID</div>";
-                echo "<div class='divSubTableHead'>League Name</div>";
-                echo "<div class='divSubTableHead'>Short League Name</div>";
-                echo "<div class='divSubTableHead'>Age Group</div>";
-                echo "<div class='divSubTableHead'>Division</div>";
-                echo "<div class='divSubTableHead'>Region</div>";
-            echo "</div>";
-            echo "<div class='divSubTableBody'>";
-            foreach ($possibleLeaguesForComp as $possibleLeagueItem) {
-                echo "<div class='divSubTableRow'>";
-                echo "<div class='divSubTableCell'><input type='radio' name='competition[". $missing_data['competition'][$i]['source_id'] ."]' value='". $possibleLeagueItem['id'] ."'/></div>";
-                echo "<div class='divSubTableCell'>". $possibleLeagueItem['id'] ."</div>";
-                echo "<div class='divSubTableCell'>". $possibleLeagueItem['league_name'] ."</div>";
-                echo "<div class='divSubTableCell'>". $possibleLeagueItem['short_league_name'] ."</div>";
-                echo "<div class='divSubTableCell'>". $possibleLeagueItem['age_group'] ."</div>";
-                echo "<div class='divSubTableCell'>". $possibleLeagueItem['division_name'] ."</div>";
-                echo "<div class='divSubTableCell'>". $possibleLeagueItem['region_name'] ."</div>";
-                echo "</div>";
-            }
-            echo "</div>";
+           
+            outputSelectionRow($missing_data, $i, $possibleRegions, "Region", "cboRegion", "region_name");
+            outputSelectionRow($missing_data, $i, $possibleAgeGroups, "Age Group", "cboAgeGroup", "age_group");
+            outputSelectionRow($missing_data, $i, $possibleDivisions, "Division", "cboDivision", "division_name");
+            outputSelectionRow($missing_data, $i, $possibleShortLeagueNames, "League", "cboLeague", "short_league_name");
+            
             echo "</div></td>";
+            echo "<td><input type='button' class='btn' ";
+            echo "'name='btnUpdateCompetition". $missing_data['competition'][$i]['source_id']."' ";
+            echo "value='Update' onClick='updateCompetition(". $missing_data['competition'][$i]['source_id'].")'/>";
+            echo "<div id='updateFailedMsg". $missing_data['competition'][$i]['source_id']."'></div>";
+            echo "</td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -80,9 +166,19 @@ if (!empty($missing_data)) {
             echo "<div class='divSubTableCellInvisible'><input type='radio' name='rdTeam[". $missing_data['team'][$i]['source_id'] ."]' value='existing' checked/></div>";
             echo "<div class='divSubTableCellInvisible'>Select an existing club:</div>";
             echo "<div class='divSubTableCellInvisible'><select class='newData' name='cboTeam[". $missing_data['team'][$i]['source_id'] ."]'>";
-
+            
+            $isTeamMatchFound = false;
             foreach ($possibleClubsForTeam as $possibleTeamItem) {
-                echo "<option value='". $possibleTeamItem['id'] ."'>". $possibleTeamItem['club_name'] ."</option>";
+                if ($isTeamMatchFound == false && strpos($missing_data['team'][$i]['source_value'], $possibleTeamItem['club_name']) !== FALSE) {
+                    echo "<option selected ";
+                    $isTeamMatchFound = true;
+                    //echo "value='". $possibleTeamItem['id'] ."'>(". $possibleTeamItem['club_name'] .") CHECKED ((". $missing_data['team'][$i]['source_value'] .") ". strpos($missing_data['team'][$i]['source_value'], $possibleTeamItem['club_name']).")</option>";
+                } else {
+                    echo "<option ";
+                    //echo "value='". $possibleTeamItem['id'] ."'>(". $possibleTeamItem['club_name'] .") None ((". $missing_data['team'][$i]['source_value'] .") ". strpos($missing_data['team'][$i]['source_value'], $possibleTeamItem['club_name']).")</option>";
+                }
+                echo "value='". $possibleTeamItem['id'] ."'>". $possibleTeamItem['club_name'] ."</option>";
+                
             }
 
             echo "</select></div>";

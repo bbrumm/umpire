@@ -52,6 +52,9 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("Under 12", false, true);
 			setCheckboxStatus("Junior Girls", false, true);
 			setCheckboxStatus("Youth Girls", false, true);
+			setCheckboxStatus("Under 19 Girls", false, true);
+			setCheckboxStatus("Under 15 Girls", false, true);
+			setCheckboxStatus("Under 12 Girls", false, true);
 			setCheckboxStatus("Under 17.5", false, false);
 			setCheckboxStatus("Under 14.5", false, false);
 			
@@ -82,6 +85,10 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", true);
 				setCheckboxStatus("Junior Girls", true);
 				setCheckboxStatus("Youth Girls", true);
+				setCheckboxStatus("Under 19 Girls", true);
+				setCheckboxStatus("Under 15 Girls", true);
+				setCheckboxStatus("Under 12 Girls", true);
+				
 			} else {
 				setCheckboxStatus("Colts", false, false);
 				setCheckboxStatus("Under 16", false, false);
@@ -89,6 +96,10 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", false, false);
 				setCheckboxStatus("Junior Girls", false, false);
 				setCheckboxStatus("Youth Girls", false, false);
+				setCheckboxStatus("Under 19 Girls", false, false);
+				setCheckboxStatus("Under 15 Girls", false, false);
+				setCheckboxStatus("Under 12 Girls", false, false);
+				
 			}
 			
 			if (document.getElementById("BFL").checked == true || 
@@ -130,6 +141,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", true);
 				setCheckboxStatus("Junior Girls", true);
 				setCheckboxStatus("Youth Girls", true);
+				setCheckboxStatus("Under 19 Girls", true);
+				setCheckboxStatus("Under 15 Girls", true);
+				setCheckboxStatus("Under 12 Girls", true);
 			} else {
 				setCheckboxStatus("Colts", false, false);
 				setCheckboxStatus("Under 16", false, false);
@@ -137,6 +151,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", false, false);
 				setCheckboxStatus("Junior Girls", false, false);
 				setCheckboxStatus("Youth Girls", false, false);
+				setCheckboxStatus("Under 19 Girls", false, false);
+				setCheckboxStatus("Under 15 Girls", false, false);
+				setCheckboxStatus("Under 12 Girls", false, false);
 			}
 			
 			if (document.getElementById("BFL").checked == true || 
@@ -173,6 +190,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", true);
 				setCheckboxStatus("Junior Girls", true);
 				setCheckboxStatus("Youth Girls", true);
+				setCheckboxStatus("Under 19 Girls", true);
+				setCheckboxStatus("Under 15 Girls", true);
+				setCheckboxStatus("Under 12 Girls", true);
 			} else {
 				setCheckboxStatus("Colts", false, false);
 				setCheckboxStatus("Under 16", false, false);
@@ -180,6 +200,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", false, false);
 				setCheckboxStatus("Junior Girls", false, false);
 				setCheckboxStatus("Youth Girls", false, false);
+				setCheckboxStatus("Under 19 Girls", false, false);
+				setCheckboxStatus("Under 15 Girls", false, false);
+				setCheckboxStatus("Under 12 Girls", false, false);
 			}
 			
 			if (document.getElementById("BFL").checked == true || 
@@ -216,6 +239,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", false, false);
 				setCheckboxStatus("Junior Girls", false, false);
 				setCheckboxStatus("Youth Girls", false, false);
+				setCheckboxStatus("Under 19 Girls", false, false);
+				setCheckboxStatus("Under 15 Girls", false, false);
+				setCheckboxStatus("Under 12 Girls", false, false);
 				setCheckboxStatus("Seniors", false, true);
 				setCheckboxStatus("Reserves", false, true);
 				setCheckboxStatus("Under 17.5", false, true);
@@ -246,6 +272,10 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", false, false);
 				setCheckboxStatus("Junior Girls", false, false);
 				setCheckboxStatus("Youth Girls", false, false);
+				setCheckboxStatus("Under 19 Girls", false, false);
+				setCheckboxStatus("Under 15 Girls", false, false);
+				setCheckboxStatus("Under 12 Girls", false, false);
+				
 				
 				if (document.getElementById("CDFNL").checked == true) {
 					setCheckboxStatus("Seniors", true);
@@ -283,6 +313,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", false, false);
 				setCheckboxStatus("Junior Girls", false, false);
 				setCheckboxStatus("Youth Girls", false, false);
+				setCheckboxStatus("Under 19 Girls", false, false);
+				setCheckboxStatus("Under 15 Girls", false, false);
+				setCheckboxStatus("Under 12 Girls", false, false);
 				
 				if (document.getElementById("CDFNL").checked == true) {
 					setCheckboxStatus("Seniors", true);
@@ -321,6 +354,9 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Under 12", false, false);
 				setCheckboxStatus("Junior Girls", false, false);
 				setCheckboxStatus("Youth Girls", false, false);
+				setCheckboxStatus("Under 19 Girls", false, false);
+				setCheckboxStatus("Under 15 Girls", false, false);
+				setCheckboxStatus("Under 12 Girls", false, false);
 				
 				if (document.getElementById("CDFNL").checked == true) {
 					setCheckboxStatus("Seniors", true);
@@ -485,6 +521,3 @@ function convertValueArrayToString(nodeListToConvert) {
 	
 	
 }
-
-
-

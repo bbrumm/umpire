@@ -1,5 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Umpire Report</title>
+		
+	</head>
+	
+	<?php 
+	echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $css ."' />";
+	?>
+<body>
+
 <?php
 echo "<h2>Data Test</h2>";
+
 /*
 echo "<pre>";
 print_r($umpireTestResultsArray);
@@ -26,28 +39,37 @@ foreach ($umpireTestResultsArray['tableOperations'] as $key => $val) {
 ?>
 </table>
 <BR />
-<h3>Umpire Match Count Check - Report 01</h3>
+<h3>Umpire Match Count - Report 01 - Missing Data</h3>
+
 <table>
 <thead>
-<th>Umpire Name</th>
+<th>Umpire</th>
 <th>Club</th>
-<th>Short League Name</th>
-<th>Age Group</th>
-<th>Umpire Type</th>
-<th>Match Count - Source</th>
-<th>Match Count - Destination</th>
+<th>Region</th>
+<th>Matches - Field (Match Import)</th>
+<th>Matches - Field (MV)</th>
+<th>Matches - Boundary (Match Import)</th>
+<th>Matches - Boundary (MV)</th>
+<th>Matches - Goal (Match Import)</th>
+<th>Matches - Goal (MV)</th>
 </thead>
 <?php 
 foreach ($umpireTestResultsArray['report01'] as $key => $val) {
     echo "<tr>";
-    echo "<td>". $val['umpire_full_name'] ."</td>";
+    echo "<td>". $val['umpire_name'] ."</td>";
     echo "<td>". $val['club_name'] ."</td>";
-    echo "<td>". $val['short_league_name'] ."</td>";
-    echo "<td>". $val['age_group'] ."</td>";
-    echo "<td>". $val['umpire_type'] ."</td>";
-    echo "<td>". $val['match_count_staging'] ."</td>";
-    echo "<td>". $val['match_count_report01'] ."</td>";
+    echo "<td>". $val['region_name'] ."</td>";
+    echo "<td>". $val['mi_sum_field'] ."</td>";
+    echo "<td>". $val['mv_sum_field'] ."</td>";
+    echo "<td>". $val['mi_sum_boundary'] ."</td>";
+    echo "<td>". $val['mv_sum_boundary'] ."</td>";
+    echo "<td>". $val['mi_sum_goal'] ."</td>";
+    echo "<td>". $val['mv_sum_goal'] ."</td>";
     echo "</tr>";
 }
 ?>
 </table>
+
+
+</body>
+</html>

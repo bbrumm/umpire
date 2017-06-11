@@ -52,6 +52,7 @@ class Match_import extends CI_Model
     private function prepareNormalisedTables($importedFileID) {
         $season = new Season();
         $season->setSeasonID($this->findSeasonToUpdate());
+        echo "Run ETL file " . $season->getSeasonID() . ", " . $importedFileID . "<BR />";
         $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
     }
   
@@ -151,7 +152,8 @@ class Match_import extends CI_Model
     }
     
     private function splitArrayBasedOnType(array $pResultArray) {
-        $resultArray = "";
+        //$resultArray = "";
+        $resultArray = array(); 
       
         //Split the results into separate arrays, based on the record type
         $this->debug_library->debugOutput("pResultArray (in splitArrayBasedOnType):", $pResultArray);

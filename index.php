@@ -55,7 +55,8 @@
  */
 	//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 	switch($_SERVER["HTTP_HOST"]){
-	    case "localhost":
+	    
+	    case "localhost:8888":
 	        define('ENVIRONMENT', 'development');
 	        break;
 	    default:

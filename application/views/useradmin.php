@@ -158,11 +158,9 @@ for($i=0; $i<count($userArray); $i++) {
             	}
             	?>
             </div>
-
-		<?php 
-		echo "</div>";
-		?>
 		
+		</div>
+
 		</div>
 		<br/>
 	</div>
@@ -172,16 +170,13 @@ for($i=0; $i<count($userArray); $i++) {
     
 </div>
 
-	<?php 
-	/* TODO: Comment this out once the update code is written
 	<div class="loginFieldRow">
 		<span class="submitButton">
 			<input type="submit" value="Save Changes" class="btn" />
 		</span>
 	</div>
-	*/
-	?>
-
+	
+	<BR /><BR />
 
  </body>
 </html>

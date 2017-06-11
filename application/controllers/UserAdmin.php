@@ -61,5 +61,10 @@ class UserAdmin extends CI_Controller
         $this->load->view('useradmin', $data);
         $this->load->view('templates/footer');
     }
+    
+    public function saveUserPrivileges() {
+        //TODO: Add logic here for saving user privileges
+    }
+    
 }
 ?>

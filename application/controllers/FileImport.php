@@ -27,6 +27,8 @@ class FileImport extends CI_Controller {
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
 	    $this->load->library('upload', $config);
+	    
+	    //echo "Upload Path(". $config['upload_path'] .")";
 	     
         $uploadPassed = $this->upload->do_upload();
 
@@ -56,9 +58,29 @@ class FileImport extends CI_Controller {
 	    $data['missing_data'] = $this->Match_import->findMissingDataOnImport();
 	    $data['possibleLeaguesForComp'] = $this->Missing_data_updater->loadPossibleLeaguesForComp();
 	    $data['possibleClubsForTeam'] = $this->Missing_data_updater->loadPossibleClubsForTeam();
+	    $data['possibleRegions'] = $this->Missing_data_updater->loadPossibleRegions();
+	    $data['possibleAgeGroups'] = $this->Missing_data_updater->loadPossibleAgeGroups();
+	    $data['possibleShortLeagueNames'] = $this->Missing_data_updater->loadPossibleShortLeagueNames();
+	    $data['possibleDivisions'] = $this->Missing_data_updater->loadPossibleDivisions();
 	    
 	    $this->load->view('templates/header', $data);
 	    $this->load->view('upload_success', $data);
 	    $this->load->view('templates/footer');
+	}
+	
+	
+	public function updateCompetition() {
+	    $selectedRegion = $_POST['selectedRegion'];
+	    
+	    /*
+	     $sqlQuery = "";
+	     $result = mysql_query($sql);
+	     
+	     while($row=mysql_fetch_array($result)) {
+	     echo "".$row['book_name']."";
+	     }
+	     */
+	    
+	    echo "Ajax output";
 	}
 }
