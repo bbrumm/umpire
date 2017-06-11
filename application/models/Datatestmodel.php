@@ -51,6 +51,8 @@ class Datatestmodel extends CI_Model
     }
     
     private function refreshTempTables() {
+        $queryResultArray = array();
+        
         $queryString = "TRUNCATE TABLE test_mi_all;";
         
         $query = $this->db->query($queryString);
@@ -173,6 +175,8 @@ WHERE m.goal_umpire_2 IS NOT NULL;";
     
     
     private function getUmpireMatchCountForReport01() {
+        $queryResultArray = array();
+        
         $queryString = "SELECT umpire_name, club_name, region_name,
 mi_sum_field, mi_sum_boundary, mi_sum_goal, mv_sum_field, mv_sum_boundary, mv_sum_goal, q_check
 FROM (
@@ -255,6 +259,8 @@ ORDER BY umpire_name, club_name";
     }
     
     private function checkImportedTableOperations() {
+        $queryResultArray = array();
+        
         $queryString = "SELECT t.operation_datetime, o.operation_name, p.table_name, t.rowcount " .
             "FROM table_operations t " .
             "INNER JOIN operation_ref o ON t.operation_id = o.id " .

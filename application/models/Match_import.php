@@ -52,7 +52,7 @@ class Match_import extends CI_Model
     private function prepareNormalisedTables($importedFileID) {
         $season = new Season();
         $season->setSeasonID($this->findSeasonToUpdate());
-        echo "Run ETL file " . $season->getSeasonID() . ", " . $importedFileID . "<BR />";
+        //echo "Run ETL file " . $season->getSeasonID() . ", " . $importedFileID . "<BR />";
         $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
     }
   
