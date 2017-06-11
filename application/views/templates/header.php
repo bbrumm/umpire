@@ -21,9 +21,9 @@ if (isset($PDFLayout)) {
     $showHeader = TRUE;
 }
 
-//echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
+echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
 //Localhost version of the JQuery script
-echo "<script src='". asset_url() . "jquery.min.js'></script>";
+//echo "<script src='". asset_url() . "jquery.min.js'></script>";
 
 if ($showHeader) {
     echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
