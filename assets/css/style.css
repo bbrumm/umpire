@@ -951,3 +951,9 @@ User Admin specific classes
 	text-align:center;
 	
 }
+
+.forgotPassword {
+	text-align:center;
+	font-style: italic;
+}
+

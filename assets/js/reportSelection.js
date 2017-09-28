@@ -43,6 +43,7 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("GDFL", false, true);
 			setCheckboxStatus("GJFL", false, true);
 			setCheckboxStatus("CDFNL", false, false);
+			setCheckboxStatus("Women", false, true);
 			
 			setCheckboxStatus("Seniors", false, true);
 			setCheckboxStatus("Reserves", false, true);
@@ -74,7 +75,8 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("GDFL", false, true);
 			setCheckboxStatus("GJFL", false, true);
 			setCheckboxStatus("CDFNL", false, false);
-			
+			setCheckboxStatus("Women", false, true);
+
 			setCheckboxStatus("Under 17.5", false, false);
 			setCheckboxStatus("Under 14.5", false, false);
 			
@@ -104,7 +106,8 @@ function updateCheckboxEnabledStatus() {
 			
 			if (document.getElementById("BFL").checked == true || 
 				document.getElementById("GFL").checked == true ||
-				document.getElementById("GDFL").checked == true) {
+				document.getElementById("GDFL").checked == true||
+				document.getElementById("Women").checked == true) {
 				setCheckboxStatus("Seniors", true);
 				setCheckboxStatus("Reserves", true);
 			} else {
@@ -126,6 +129,7 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("GDFL", true);
 			setCheckboxStatus("GJFL", true);
 			setCheckboxStatus("CDFNL", false, false);
+			setCheckboxStatus("Women", true);
 			
 			setCheckboxStatus("Field", false, true);
 			setCheckboxStatus("Boundary", false, false);
@@ -158,7 +162,8 @@ function updateCheckboxEnabledStatus() {
 			
 			if (document.getElementById("BFL").checked == true || 
 				document.getElementById("GFL").checked == true ||
-				document.getElementById("GDFL").checked == true) {
+				document.getElementById("GDFL").checked == true ||
+				document.getElementById("Women").checked == true) {
 				setCheckboxStatus("Seniors", true);
 				setCheckboxStatus("Reserves", true);
 			} else {
@@ -178,6 +183,7 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("GDFL", true);
 			setCheckboxStatus("GJFL", true);
 			setCheckboxStatus("CDFNL", false, false);
+			setCheckboxStatus("Women", true);
 			
 			
 			setCheckboxStatus("Under 17.5", false, false);
@@ -207,7 +213,8 @@ function updateCheckboxEnabledStatus() {
 			
 			if (document.getElementById("BFL").checked == true || 
 				document.getElementById("GFL").checked == true ||
-				document.getElementById("GDFL").checked == true) {
+				document.getElementById("GDFL").checked == true ||
+				document.getElementById("Women").checked == true) {
 				setCheckboxStatus("Seniors", true);
 				setCheckboxStatus("Reserves", true);
 			} else {
@@ -231,6 +238,7 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("GDFL", false, false);
 				setCheckboxStatus("GJFL", false, false);
 				setCheckboxStatus("CDFNL", false, true);
+				setCheckboxStatus("Women", false, false);
 				
 				
 				setCheckboxStatus("Colts", false, false);
@@ -264,6 +272,8 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("GDFL", false, false);
 				setCheckboxStatus("GJFL", false, false);
 				setCheckboxStatus("CDFNL", false, true);
+				setCheckboxStatus("Women", false, false);
+
 				
 				
 				setCheckboxStatus("Colts", false, false);
@@ -305,7 +315,7 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("GDFL", false, false);
 				setCheckboxStatus("GJFL", false, false);
 				setCheckboxStatus("CDFNL", false, true);
-				
+				setCheckboxStatus("Women", false, false);
 				
 				setCheckboxStatus("Colts", false, false);
 				setCheckboxStatus("Under 16", false, false);
@@ -346,6 +356,7 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("GDFL", false, false);
 				setCheckboxStatus("GJFL", false, false);
 				setCheckboxStatus("CDFNL", true);
+				setCheckboxStatus("Women", false, false);
 				
 				
 				setCheckboxStatus("Colts", false, false);

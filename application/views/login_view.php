@@ -21,6 +21,8 @@
     </div>
 	<br/>
 	<div class="reportSelectorRow">
+	<div class='forgotPassword'><a href='ForgotPassword'>Forgot password?</a></div>
+	<br />
 		<input type="submit" value="Login" class="btn" />
 	</div>
 
