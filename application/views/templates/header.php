@@ -75,6 +75,7 @@ if ($showHeader) {
     		$menuHome = "<div class='menuBarLink'>Home Page</div>";
     		$menuImportFile = "<div class='menuBarLink'>Import File</div>";
     		$menuUserAdmin = "<div class='menuBarLink'>User Admin</div>";
+    		$menuUmpireAdmin = "<div class='menuBarLink'>Umpire Admin</div>";
     		$menuDataTest = "<div class='menuBarLink'>Data Test</div>";
     		$menuLogout = "<div class='menuBarLink'>Logout</div>";
     		/*
@@ -89,6 +90,7 @@ if ($showHeader) {
     		
     		if($currentUser->userCanSeeUserAdminPage()) {
     		    echo anchor("UserAdmin", $menuUserAdmin);
+    		    echo anchor("UmpireAdmin", $menuUmpireAdmin);
     		}
     		
     		if ($currentUser->userCanSeeDataTestPage()) {

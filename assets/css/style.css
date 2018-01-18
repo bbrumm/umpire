@@ -319,11 +319,15 @@ td {
 }
 
 
-tr:nth-child(even) {
+tr.altRow:nth-child(even) {
 	background: #e5e5e5;
 }
 
-tr:nth-child(odd) {
+tr.altRow:nth-child(odd) {
+	background: #ffffff;
+}
+
+tr.noBackground {
 	background: #ffffff;
 }
 
@@ -521,6 +525,53 @@ Login Page
 	-webkit-box-shadow: 0px 0px 8px #DCDCDC; 
 	-moz-box-shadow: 0px 0px 8px #DCDCDC; 
 }
+
+/*
+Umpire Admin page
+*/
+
+.umpireGamesTextBox
+{ 
+	background:#F8F8F8;
+	color:#555555;
+	border:1px solid #DCDCDC;
+	border-radius:2px ;
+	font-size:16px ;
+	height: 20px ;
+	line-height:30px ;
+	width: 50px ;
+	padding: 5px ;
+	box-shadow: 0px 0px 8px #DCDCDC; 
+	-webkit-box-shadow: 0px 0px 8px #DCDCDC; 
+	-moz-box-shadow: 0px 0px 8px #DCDCDC;
+	text-align:right; 
+}
+
+.umpireGamesLabel {
+	text-align:left;
+	/*background:#C0C0C0;*/
+	display: inline-block;
+	font-size: 16px;
+	padding:5px;
+	/*font-weight: bold;*/
+}
+
+td.umpireGamesCellLabel {
+	
+	vertical-align:middle;
+}
+
+.umpireGamesTable {
+	/*text-align:center;*/
+	background: #ffffff;
+}
+
+.umpireGamesTableHeader {
+	padding:5px;
+}
+
+
+
 
 .validationError {
 	color:red;

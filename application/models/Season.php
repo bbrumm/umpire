@@ -27,7 +27,11 @@ class Season
     }
     
     public function setSeasonYear($pValue) {
-        $this->seasonYear = $pValue;
+        if(is_numeric($pValue)) {
+            $this->seasonYear= $pValue;
+        } else {
+            throw new Exception('Season Year must be numeric.');
+        }
     }
     
 }

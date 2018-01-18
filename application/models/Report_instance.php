@@ -13,7 +13,7 @@ class Report_instance extends CI_Model {
 	public $reportDisplayOptions;
 	
 	public $reportParamLoader;
-	public $reportParameterArray;
+	public $reportParameter;
 	
 	public $filterParameterUmpireType;
 	public $filterParameterAgeGroup;
@@ -85,6 +85,8 @@ class Report_instance extends CI_Model {
 	    $countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
         
+        //$this->debug_library->debugOutput("countItemsInColumnHeadingSet:", $countItemsInColumnHeadingSet);
+        
 	    foreach ($resultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
 	        $columnNumber = 0;
 	        $totalForRow = 0;
@@ -95,8 +97,41 @@ class Report_instance extends CI_Model {
 	            $resultOutputArray[$currentResultArrayRow][0] = $rowKey;
 	        }
 	        
+	        //$this->debug_library->debugOutput("columnLabelResultArray:", $columnLabelResultArray);
+	        /*
+	         * columnLabelResultArray example:
+Array
+(
+    [0] => Array
+        (
+            [short_league_name] => GFL
+            [umpire_count] => 2 Umpires
+        )
+
+    [1] => Array
+        (
+            [short_league_name] => GFL
+            [umpire_count] => 3 Umpires
+        )
+
+    [2] => Array
+        (
+            [short_league_name] => BFL
+            [umpire_count] => 2 Umpires
+        )
+	         * 
+	         * 
+	         * 
+	         */
 	        foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
 	            $columnNumber++;
+	            
+	            //Loops through each value of $columnLabelResultArray.
+	            //This comes from the results found in the separate_reports.ReportX.getReportColumnQuery() function.
+	            //E.g. if Report 8's column query returns 4 rows, then this columnHeadingSet has 4 records in it
+	            
+	            //$this->debug_library->debugOutput("currentRowItem:", $currentRowItem);
+	            
 	            
 	            foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
     	            //Loop through each row and column intersection in the result array
@@ -107,7 +142,27 @@ class Report_instance extends CI_Model {
 	                    $columnNumber++;
 	                }
 	                
+	                if ($this->requestedReport->getReportNumber() == 8) {
+	                    /*if ($columnNumber == 1) {
+	                        //Add extra column for report 8. Column heading is called Other Games, the heading does not come from column data.
+	                        //$this->debug_library->debugOutput("COLUMN NUMBER:", $columnNumber);
+	                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Other Games';
+	                        $columnNumber++;
+	                    }
+    	                */
+    	                
+    	                if ($columnNumber == 4) {
+    	                    //Add extra column for report 8, after column 3 (array index 3 which is column 4). Column heading is called Total, the heading does not come from column data.
+    	                    //$this->debug_library->debugOutput("COLUMN NUMBER:", $columnNumber);
+    	                    $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total';
+    	                    //$columnNumber++;
+    	                }
+	                }
+	                
     	            //Match the column headings to the values in the array
+	                //$this->debug_library->debugOutput("isFieldMatchingColumnA:", $columnItem);
+	                //$this->debug_library->debugOutput("isFieldMatchingColumnB:", $columnHeadingSet);
+	                
 	               if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet)) {
 	                   if($this->requestedReport->getReportNumber() == 2) { 
 	                       //Add up total values for report 2, only if the "short_league_name" equivalent value is not "2 Umpires"
@@ -134,16 +189,35 @@ class Report_instance extends CI_Model {
                             } elseif ($columnHeadingSet['subtotal'] == 'Pct') {
                                 $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_pct'];
                             }
+	                    } elseif ($this->requestedReport->getReportNumber() == 8) {
+	                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+	                        //$resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['total_match_count'];
+	                        //$totalForRow = $columnItem['total_match_count'];
+	                        
 	                    } else {
 	                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
 	                    }
 	                        
-	                }
+	                } //end isFieldMatchingColumn
 	            }
 	        }
-	        //Add on final column for report 2 and 5 for totals for the row
-	        if ($this->requestedReport->getReportNumber() == 5 || 
-	            $this->requestedReport->getReportNumber() == 2) {
+	        //Add on final column for report 2 and 5 and 8 for totals for the row
+	        if ($this->requestedReport->getReportNumber() == 2 || 
+	            $this->requestedReport->getReportNumber() == 5) {
+	            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $totalForRow;
+	        }
+	        if ($this->requestedReport->getReportNumber() == 8) {
+	            $totalGeelong = 99; //TODO update this once it displays correctly
+	            $totalForRow = 88;
+	            /*
+	            $totalGeelong = $columnItem['0']['match_count'] +
+	            $columnItem['1']['match_count'] +
+	            $columnItem['2']['match_count'] +
+	            $columnItem['4']['match_count'] +
+	            $columnItem['0']['match_count'];
+	            
+	            $totalForRow = $totalGeelong + $columnItem['4']['match_count'];
+	            */
 	            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $totalForRow;
 	        }
 	        $currentResultArrayRow++;
@@ -152,21 +226,70 @@ class Report_instance extends CI_Model {
 	}
 	
 	private function isFieldMatchingColumn($pColumnItem, $pColumnHeadingSet) {
+	    //$this->debug_library->debugOutput("getReportColumnFields count:", count($this->getReportColumnFields()));
+	    /* Explanation:
+	     * - pColumnItem: An array that contains values from the report query that could go into a column.
+	     * Array
+            (
+                [season_year] => 2017
+                [match_count] => 25
+                [total_match_count] => 174
+            )
+	     * - $this->getReportColumnFields(): Returns an array that contains the fields from the results to use as columns:
+	     * Array
+            (
+                [0] => season_year
+                [1] => total_match_count
+            )
+	     * - pColumnHeadingSet: Array that contains... the column names and values that apply to this row??
+	     * Array
+            (
+                [season_year] => 2015
+            )
+	     * 
+	     * 
+	     */
+	    
+	    
 	    switch (count($this->getReportColumnFields())) {
+	        
 	        case 1:
-	            if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
+	            //$this->debug_library->debugOutput("getReportColumnFields:", $this->getReportColumnFields());
+	            //$this->debug_library->debugOutput("pColItem check:", $pColumnItem[$this->getReportColumnFields()[0]]);
+	            //$this->debug_library->debugOutput("pColHeadingSet check:", $pColumnHeadingSet);
+	            
+	            if($this->getReportTitle() == 8) {
+	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet['column_heading']) {
+	                    return true;
+	                } else {
+	                    return false;
+	                }
+	            } elseif ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
                     return true;	            
 	            } else {
 	                return false;
 	            }
 	            break;
 	        case 2:
+	            
+	            //$this->debug_library->debugOutput("getReportColumnFields:", count($this->getReportColumnFields()));
+	            /*
+	            $this->debug_library->debugOutput("getReportColumnFields:", $this->getReportColumnFields());
+	            $this->debug_library->debugOutput("pColumnItem:", $pColumnItem);
+	            $this->debug_library->debugOutput("pColumnHeadingSet:", $pColumnHeadingSet);
+	            */
 	            if ($this->requestedReport->getReportNumber() == 5) {
 	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
 	                    return true;
 	                } else {
 	                    return false;
-	                } 
+	                }
+	            } elseif ($this->requestedReport->getReportNumber() == 8) {
+	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
+	                    return true;
+	                } else {
+	                    return false;
+	                }
 	                
 	            } elseif ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]] && 
 	            $pColumnItem[$this->getReportColumnFields()[1]] == $pColumnHeadingSet[$this->getReportColumnFields()[1]]) {
@@ -218,14 +341,18 @@ class Report_instance extends CI_Model {
 	    }
 	    
 	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport);
-	    $this->reportParameterArray = $this->reportParamLoader->getReportParameterArray();
+	    $this->reportParameter = $this->reportParamLoader->getReportParameter();
 	    $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
 	    
 	    $reportGroupingStructureArray = $this->reportParamLoader->getReportGroupingStructureArray();
 	    
+	    //$this->debug_library->debugOutput("reportGroupingStructureArray:", $reportGroupingStructureArray);
+	    
 	    //Replace this with a single function in reportDisplayOptions to create new RDO object.
 	    $this->reportDisplayOptions->createReportDisplayOptions($this);
 	    
+	    
+	    //ReportGroupingStructureArray comes from the database tables
 	    $this->reportColumnFields = $this->translateRptGrStructureToSimpleArray($reportGroupingStructureArray);
 	    $this->reportTitle = $this->setReportTitle($pRequestedReport->getSeason());
 	    
@@ -245,22 +372,24 @@ class Report_instance extends CI_Model {
 	    
 		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason());
 		
-		$this->reportTableName = $this->lookupReportTableName();
+		//$this->reportTableName = $this->lookupReportTableName();
 	}
 	
 	private function setReportTitle($pSeasonYear) {
-	    return str_replace("%seasonYear", $pSeasonYear, $this->reportParamLoader->lookupParameterValue($this->reportParameterArray, 'Display Title'));
+	    //return str_replace("%seasonYear", $pSeasonYear, $this->reportParamLoader->lookupParameterValue($this->reportParameterArray, 'Display Title'));
+	    return str_replace("%seasonYear", $pSeasonYear, $this->reportParameter->getReportTitle());
 	}
 	
 	
 	//Find the table to select the data for the report. This tablename is stored in the database
-	public function lookupReportTableName() {
+	/*public function lookupReportTableName() {
+	    //RPTOLD $tableNameQuery = "SELECT table_name FROM report_table WHERE report_name = ". $this->requestedReport->getReportNumber() .";";
 	    $tableNameQuery = "SELECT table_name FROM report_table WHERE report_name = ". $this->requestedReport->getReportNumber() .";";
 	    $query = $this->db->query($tableNameQuery);
 	    $tableNameResultArray = $query->result_array();
 	    return $tableNameResultArray[0]['table_name'];
 	}
-	
+	*/
 	
 	public function loadReportResults() {
         //$queryForReport = $this->buildSelectQueryForReportUsingDW();
@@ -270,14 +399,19 @@ class Report_instance extends CI_Model {
         
         //echo "Factory Query: ". $separateReport->getReportDataQuery($this) ." <BR />";
         
-        $query = $this->db->query($queryForReport);
+        //$query = $this->db->query($queryForReport);
         
         //Run query and store result in array
         $query = $this->db->query($queryForReport);
         
         //Transform array to pivot
         $queryResultArray = $query->result_array();
-        	
+        
+        if (!isset($queryResultArray[0])) {
+            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for report "
+                . $this->requestedReport->getReportNumber() .".<BR />Query:<BR />" . $queryForReport);
+        }
+        
         //Set result array (function includes logic for different reports
         $this->setResultArray($queryResultArray);
         
@@ -321,6 +455,7 @@ class Report_instance extends CI_Model {
         }
         
         $this->resultArray = $this->pivotQueryArrayNew($pResultArray, $rowLabelField, $columnLabelArray);
+        //$this->debug_library->debugOutput("pResultArray:", $pResultArray);
 	}
 	
 	
@@ -350,11 +485,8 @@ class Report_instance extends CI_Model {
 	     * 
 	     */
 	    
-	    if (!isset($pResultArray[0])) {
-	        throw new Exception("PivotedArray is empty. This is probably due to the SQL query not returning any results for report ". $this->requestedReport->getReportNumber() .".");
-	    }
 	    
-	    $this->debug_library->debugOutput("pFieldForRowLabel:", $pFieldForRowLabel);
+	    //$this->debug_library->debugOutput("pFieldForRowLabel:", $pFieldForRowLabel);
 	    
 	    $countRowGroups = count($pFieldForRowLabel);
 	    
@@ -362,6 +494,14 @@ class Report_instance extends CI_Model {
 	    $counterForRow = 0;
 	    $previousRowLabel[0] = "";
 	    foreach ($pResultArray as $resultRow) {
+	        /*
+	         *IMPORTANT: If the SQL query DOES NOT order by the row labels (e.g. the umpire name),
+	         *then this loop structure will cause all values to be set to the last column,
+	         *and show incorrect data in the report.
+	         *If this happens, ensure the SELECT query inside the Report_data_query object for this report (e.g. Report8.php)
+	         *orders by the correct column
+	         *
+	         */
 	        if ($resultRow[$pFieldForRowLabel[0]] != $previousRowLabel[0]) {
 	            //New row label, so reset counter
 	            $counterForRow = 0;
@@ -381,23 +521,46 @@ class Report_instance extends CI_Model {
 	        foreach ($pFieldsForColumnLabel as $columnField) {
 	            if ($this->requestedReport->getReportNumber() == 5) {
 	                $rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[1]];
+	                //$this->debug_library->debugOutput("pFieldForRowLabel:",  $pFieldForRowLabel);
 	                $pivotedArray[$rowArrayKey][$counterForRow]['short_league_name'] = $resultRow['short_league_name'];
 	                $pivotedArray[$rowArrayKey][$counterForRow]['age_group'] = $resultRow['age_group'];
 	                $pivotedArray[$rowArrayKey][$counterForRow]['umpire_type'] = $resultRow['umpire_type'];
 	                $pivotedArray[$rowArrayKey][$counterForRow]['match_no_ump'] = $resultRow['match_no_ump'];
 	                $pivotedArray[$rowArrayKey][$counterForRow]['total_match_count'] = $resultRow['total_match_count'];
 	                $pivotedArray[$rowArrayKey][$counterForRow]['match_pct'] = $resultRow['match_pct'];
-	            } else {
+	            } elseif ($this->requestedReport->getReportNumber() == 8) {
+	                //$this->debug_library->debugOutput("pFieldForRowLabel:",  $pFieldForRowLabel);
+	                //$this->debug_library->debugOutput("resultRow:",  $resultRow);
+	                $rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[0]];
+	                
+	                
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
+	                
+	            } else {
+	                
+	                //$this->debug_library->debugOutput("pivot before:",  $pivotedArray[$resultRow[$pFieldForRowLabel[0]]]);
+	                
+	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
+	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
+	                
+	                
+	                //$this->debug_library->debugOutput("pivot value updated:", $resultRow[$columnField]);
+	                //$this->debug_library->debugOutput("pivot after:",  $pivotedArray[$resultRow[$pFieldForRowLabel[0]]]);
 	            }
 	            
 	            if ($this->requestedReport->getReportNumber() == 3) {
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['team_list'] = $resultRow['team_list'];
 	            }
+	            
+	            
 	        }
+	        
+	        
+	        
 	        $counterForRow++;
 	    }
+	    //$this->debug_library->debugOutput("pivotedArray:", $pivotedArray);
 	    return $pivotedArray;
 	}
 	
@@ -411,12 +574,12 @@ class Report_instance extends CI_Model {
 	     
 	    $columnLabelResults = $this->columnLabelResultArray;
 	     
-	    $this->debug_library->debugOutput("CLR:", $columnLabelResults);
+	    //$this->debug_library->debugOutput("CLR:", $columnLabelResults);
 	     
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
 	    $columnCountLabels = [];
 	     
-	    $this->debug_library->debugOutput("CL:", $columnLabels);
+	    //$this->debug_library->debugOutput("CL:", $columnLabels);
 	     
 	    //Loop through the possible labels
 	    for ($i=0; $i < count($columnLabels); $i++) {

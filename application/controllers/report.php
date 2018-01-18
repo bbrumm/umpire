@@ -37,6 +37,12 @@ class Report extends CI_Controller {
 		$data['PDFLayout'] = FALSE;
 		$data['debugLibrary'] = new Debug_library();
 		
+		/*
+		TODO: Also write some code to check if the passed value is "All", then it should look up all applicable values from
+		the database and add them to the array, rather that look up a string of "All" in the table.
+		*/
+		
+		
 		//Note: You can't pass an array through a hidden POST variable.
 		//This is why I have used the checkboxes and then imploded them
     	echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";

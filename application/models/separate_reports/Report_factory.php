@@ -6,6 +6,7 @@ include 'Report4.php';
 include 'Report5.php';
 include 'Report6.php';
 include 'Report7.php';
+include 'Report8.php';
 
 class Report_factory {
     
@@ -33,6 +34,9 @@ class Report_factory {
                 break;
             case 7:
                 $report = new Report7();
+                break;
+            case 8:
+                $report = new Report8();
                 break;
         }
         

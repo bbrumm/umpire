@@ -9,6 +9,8 @@ class Home extends CI_Controller {
     function index() {
          
         $this->load->model('Report_selection_parameter');
+        $this->load->model('Report_selection');
+        $this->load->model('Season');
         $this->load->model('User');
          
         if($this->session->userdata('logged_in')) {
@@ -18,6 +20,8 @@ class Home extends CI_Controller {
             
             
             $data['reportSelectionParameters'] = $this->getAllReportSelectionParameters();
+            $data['reportList'] = $this->getListOfReports();
+            $data['seasonList'] = $this->getListOfSeasons();
             $this->load->helper('form');
             $this->load->view('report_home', $data);
             $this->load->view('templates/footer');
@@ -67,6 +71,39 @@ class Home extends CI_Controller {
             $allReportSelectionParameters[] = $reportSelectionParameter;
         }
         return $allReportSelectionParameters;
+    }
+    
+    private function getListOfReports() {
+        $queryString = "SELECT report_id, report_name
+            FROM t_report
+            ORDER BY report_name ASC;";
+        
+        $query = $this->db->query($queryString);
+        
+        foreach ($query->result() as $row) {
+            $reportSelection = new Report_selection();
+            $reportSelection->setReportID($row->report_id);
+            $reportSelection->setReportName($row->report_name);
+            
+            $allReports[] = $reportSelection;
+        }
+        return $allReports;
+    }
+    
+    private function getListOfSeasons() {
+        $queryString = "SELECT DISTINCT season_year
+            FROM season
+            ORDER BY season_year;";
+        
+        $query = $this->db->query($queryString);
+        
+        foreach ($query->result() as $row) {
+            $season = new Season();
+            $season->setSeasonYear($row->season_year);
+            
+            $allSeasons[] = $season;
+        }
+        return $allSeasons;
     }
 }
 ?>

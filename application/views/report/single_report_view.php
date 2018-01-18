@@ -133,7 +133,7 @@ if ($useNewDWTables) {
     }
     $cellClassToUse = "";
     for ($rowCounter=0; $rowCounter < $countRows; $rowCounter++) {
-        $tableRowOutput = "<tr>";
+        $tableRowOutput = "<tr class='altRow'>";
         for ($columnCounter=0; $columnCounter <= $countColumns; $columnCounter++) {
             if(array_key_exists($columnCounter, $resultOutputArray[$rowCounter])) {
                 if ($columnCounter == 0) { //First column

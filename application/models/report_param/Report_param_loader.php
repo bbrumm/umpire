@@ -16,15 +16,15 @@ class Report_param_loader extends CI_Model {
         $this->load->model('report_param/Report_parameter');
     }
     
-    private $reportParameterArray;
+    private $reportParameter;
     private $reportGroupingStructureArray;
     
     public function getReportParameterArray() {
-        return $this->reportParameterArray;
+        return $this->reportParameter;
     }
     
-    public function setReportParameterArray($pValue) {
-        $this->reportParameterArray = $pValue;
+    public function setReportParameter($pValue) {
+        $this->reportParameter = $pValue;
     }
     
     public function getReportGroupingStructureArray() {
@@ -38,10 +38,24 @@ class Report_param_loader extends CI_Model {
     
     public function loadAllReportParametersForReport(Requested_report_model $pRequestedReport) {
         //Load all report parameters
-        $queryDataReportParameters = 
-            $this->queryReportParameters($pRequestedReport);
+        $queryDataReportParameters = $this->queryReportParameters($pRequestedReport);
 
-        //Create report param and report grouping objects for this report
+        $queryResultArray = $queryDataReportParameters->result_array();
+            
+            
+        $reportParameter = new Report_parameter();
+        
+        
+        $reportParameter->setReportTitle($queryResultArray[0]['report_title']);
+        $reportParameter->setValueFieldID($queryResultArray[0]['value_field_id']);
+        $reportParameter->setNoValueDisplay($queryResultArray[0]['no_value_display']);
+        $reportParameter->setFirstColumnFormat($queryResultArray[0]['first_column_format']);
+        $reportParameter->setColourCells($queryResultArray[0]['colour_cells']);
+        $reportParameter->setPDFOrientation($queryResultArray[0]['orientation']);
+        $reportParameter->setPDFPaperSize($queryResultArray[0]['paper_size']);
+        $reportParameter->setPDFResolution($queryResultArray[0]['resolution']);
+            
+        /*    
         foreach ($queryDataReportParameters->result() as $row) {
             $reportParameter = new Report_parameter();
             $reportParameter->setParameterName($row->parameter_name);
@@ -50,8 +64,8 @@ class Report_param_loader extends CI_Model {
             
             $reportParameterArray[] = $reportParameter;
         }
-        
-        $this->setReportParameterArray($reportParameterArray);
+        */
+        $this->setReportParameter($reportParameter);
     }
     
     public function loadAllGroupingStructuresForReport(Requested_report_model $pRequestedReport) {
@@ -85,6 +99,8 @@ class Report_param_loader extends CI_Model {
     }
     
     private function queryReportParameters(Requested_report_model $pRequestedReport) {
+        
+        /*
         $queryString = "SELECT rp.report_parameter_id,rp.parameter_name, " .
             "rp.parameter_type, rpm.parameter_value " .
             "FROM report_table rt " .
@@ -102,6 +118,21 @@ class Report_param_loader extends CI_Model {
             "WHERE rt.report_name = ". $pRequestedReport->getReportNumber() ." " .
             "AND rp.parameter_type = 'Field' " .
             "ORDER BY report_parameter_id";
+        */
+        $queryString = "SELECT
+            t.report_name,
+            t.report_title,
+            t.value_field_id,
+            t.no_value_display,
+            t.first_column_format,
+            t.colour_cells,
+            p.orientation,
+            p.paper_size,
+            p.resolution
+            FROM t_report t
+            INNER JOIN t_pdf_settings p ON t.pdf_settings_id = p.pdf_settings_id
+            WHERE t.report_id = ". $pRequestedReport->getReportNumber() .";";
+        
         
         $query = $this->db->query($queryString);
         
