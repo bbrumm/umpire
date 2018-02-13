@@ -17,7 +17,7 @@ class Report extends CI_Controller {
 	    $requestedReport = new Requested_report_model();
 	    $requestedReport->setReportNumber(intval($_POST['reportName']));
 	    $requestedReport->setSeason(intval($_POST['season']));
-	    $requestedReport->setRegion($_POST['rdRegion']);
+	    //$requestedReport->setRegion($_POST['rdRegion']);
 
 	    /* Why are we treating these separately?
     	 * Maybe because when I submit the home page to the Report page, these chk keys exist.

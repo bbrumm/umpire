@@ -89,6 +89,7 @@ class Report_instance extends CI_Model {
         
 	    foreach ($resultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
 	        $columnNumber = 0;
+	        $totalGeelong = 0;
 	        $totalForRow = 0;
 	        
 	        if ($this->requestedReport->getReportNumber() == 5) {
@@ -98,6 +99,8 @@ class Report_instance extends CI_Model {
 	        }
 	        
 	        //$this->debug_library->debugOutput("columnLabelResultArray:", $columnLabelResultArray);
+	        //$this->debug_library->debugOutput("resultOutputArray key:", $resultOutputArray[$currentResultArrayRow][0]);
+	        
 	        /*
 	         * columnLabelResultArray example:
 Array
@@ -151,10 +154,16 @@ Array
 	                    }
     	                */
     	                
-    	                if ($columnNumber == 4) {
-    	                    //Add extra column for report 8, after column 3 (array index 3 which is column 4). Column heading is called Total, the heading does not come from column data.
+    	                if ($columnNumber == 6) {
+    	                    //Add extra column for report 8, after column 5 (array index 5 which is column 6).
+    	                    //Column heading is called Total Geelong, the heading does not come from column data.
     	                    //$this->debug_library->debugOutput("COLUMN NUMBER:", $columnNumber);
-    	                    $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total';
+    	                    $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Geelong';
+    	                    //$columnNumber++;
+    	                }
+    	                if ($columnNumber == 8) {
+    	                    //$this->debug_library->debugOutput("COLUMN NUMBER:", $columnNumber);
+    	                    $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Overall';
     	                    //$columnNumber++;
     	                }
 	                }
@@ -191,6 +200,19 @@ Array
                             }
 	                    } elseif ($this->requestedReport->getReportNumber() == 8) {
 	                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+	                        
+	                        //TODO: Update this logic to remove the specific year numbers, and the hardcoding of column 6 and 8
+	                        if ($columnItem['season_year'] == 'Games Prior' ||
+	                            $columnItem['season_year'] == '2015' ||
+	                            $columnItem['season_year'] == '2016' ||
+	                            $columnItem['season_year'] == '2017' ||
+	                            $columnItem['season_year'] == '2018') {
+	                                $totalGeelong = $totalGeelong + $columnItem['match_count'];
+	                                $totalForRow = $totalForRow+ $columnItem['match_count'];
+	                        }
+	                        if ($columnItem['season_year'] == 'Games Other Leagues') {
+	                            $totalForRow = $totalForRow+ $columnItem['match_count'];
+	                        }
 	                        //$resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['total_match_count'];
 	                        //$totalForRow = $columnItem['total_match_count'];
 	                        
@@ -207,18 +229,9 @@ Array
 	            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $totalForRow;
 	        }
 	        if ($this->requestedReport->getReportNumber() == 8) {
-	            $totalGeelong = 99; //TODO update this once it displays correctly
-	            $totalForRow = 88;
-	            /*
-	            $totalGeelong = $columnItem['0']['match_count'] +
-	            $columnItem['1']['match_count'] +
-	            $columnItem['2']['match_count'] +
-	            $columnItem['4']['match_count'] +
-	            $columnItem['0']['match_count'];
-	            
-	            $totalForRow = $totalGeelong + $columnItem['4']['match_count'];
-	            */
-	            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $totalForRow;
+	            //$this->debug_library->debugOutput("columnitem array:", $columnItem);
+	            $resultOutputArray[$currentResultArrayRow][6] = $totalGeelong;
+	            $resultOutputArray[$currentResultArrayRow][8] = $totalForRow;
 	        }
 	        $currentResultArrayRow++;
 	    }
@@ -259,7 +272,7 @@ Array
 	            //$this->debug_library->debugOutput("pColHeadingSet check:", $pColumnHeadingSet);
 	            
 	            if($this->getReportTitle() == 8) {
-	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet['column_heading']) {
+	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet['season_year']) {
 	                    return true;
 	                } else {
 	                    return false;
@@ -397,7 +410,7 @@ Array
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryForReport = $separateReport->getReportDataQuery($this);
         
-        //echo "Factory Query: ". $separateReport->getReportDataQuery($this) ." <BR />";
+        echo "Factory Query: ". $separateReport->getReportDataQuery($this) ." <BR />";
         
         //$query = $this->db->query($queryForReport);
         
@@ -415,10 +428,15 @@ Array
         //Set result array (function includes logic for different reports
         $this->setResultArray($queryResultArray);
         
+        //$this->debug_library->debugOutput("loadReportResults.queryResultArray:",  $queryResultArray);
+        
         //Pivot the array so it can be displayed
         $this->setColumnLabelResultArray($queryResultArray);
         
+        //TODO: This function is causing the output values to be misaligned.
         $this->setResultOutputArray();
+        
+        //$this->debug_library->debugOutput("loadReportResults.getResultOutputArray:",  $this->getResultOutputArray());
 
 	}
 
@@ -530,12 +548,14 @@ Array
 	                $pivotedArray[$rowArrayKey][$counterForRow]['match_pct'] = $resultRow['match_pct'];
 	            } elseif ($this->requestedReport->getReportNumber() == 8) {
 	                //$this->debug_library->debugOutput("pFieldForRowLabel:",  $pFieldForRowLabel);
-	                //$this->debug_library->debugOutput("resultRow:",  $resultRow);
-	                $rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[0]];
+	                //$this->debug_library->debugOutput("columnField:",  $columnField);
+	                $this->debug_library->debugOutput("resultRow:",  $resultRow);
+	                //$rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[0]];
 	                
 	                
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
+	                //echo "pivotArray key (". $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField].") set to (". $resultRow[$columnField].")<BR />";
 	                
 	            } else {
 	                
@@ -599,7 +619,8 @@ Array
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
 	            if ($i == 0) {
 	                //$this->debug_library->debugOutput("getColumnCountForHeadingCells: i is ", "0");
-	                //$this->debug_library->debugOutput("CL J:", $columnLabelResults[$j][$columnLabels[$i]]);
+	                //$this->debug_library->debugOutput("CL J:", $columnLabels);
+	                //$this->debug_library->debugOutput("CL J Results:", $columnLabelResults);
 	
 	                //if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {

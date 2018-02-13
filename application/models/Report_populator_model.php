@@ -5,6 +5,7 @@ class Report_populator_model extends CI_Model {
 		$this->load->model('Report_instance');
 		$this->load->library('Array_library');
 		$this->load->model('Requested_report_model');
+		$this->load->library('Debug_library');
 	}
 	
 	public function getReport(Requested_report_model $requestedReport) {
@@ -21,7 +22,9 @@ class Report_populator_model extends CI_Model {
 		 * of objects.
 		 *  
 		 */
+		
 		$reportToDisplay->loadReportResults();
+		$this->debug_library->debugOutput("reportOutput from Populator:", $reportToDisplay->getResultOutputArray());  
 		
 		return $reportToDisplay;
 

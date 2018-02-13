@@ -34,8 +34,14 @@ function updateCheckboxEnabledStatus() {
 	
 	console.log("Geelong checked = " + document.getElementById("Geelong").checked);
 	console.log("Colac checked = " + document.getElementById("Colac").checked);
+	console.log("Report Selection Value = " + reportSelectionValue);
+	
+	//Re-enable the two radio buttons
+	setRadioButtonStatus("Geelong", true);
+	setRadioButtonStatus("Colac", true);
+	
 	if (document.getElementById("Geelong").checked) {
-		if (reportSelectionValue == '03' || reportSelectionValue == '04' || reportSelectionValue == '05') {
+		if (reportSelectionValue == 3 || reportSelectionValue == 4 || reportSelectionValue == 5) {
 			console.log('geelong 345');
 			//Disable Umpire, Age Group and League selections
 			setCheckboxStatus("BFL", false, true);
@@ -67,7 +73,7 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("AgeGroupSelectAll", false, true);
 			setCheckboxStatus("UmpireDisciplineSelectAll", false, true);
 			
-		} else if (reportSelectionValue == '06') {
+		} else if (reportSelectionValue == 6) {
 			console.log('geelong 6');
 			//Enable the Umpire Discipline and Age Group selections
 			setCheckboxStatus("BFL", false, true);
@@ -120,7 +126,7 @@ function updateCheckboxEnabledStatus() {
 			setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
 		
 			
-		} else if (reportSelectionValue == '07') {
+		} else if (reportSelectionValue == 7) {
 			console.log('geelong 7');
 			//Disable the Umpire Discipline selections
 			
@@ -171,10 +177,12 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Reserves", false, false);
 			}
 			
+			/*
 			setCheckboxStatus("LeagueSelectAll", true, false);
 			setCheckboxStatus("AgeGroupSelectAll", true, false);
 			setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
-			
+			*/
+		
 		} else {
 			console.log('geelong other');
 			//Enable the Umpire Discipline, Age Group, and League selections
@@ -222,15 +230,15 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("Reserves", false, false);
 			}
 			
-			/*
+			
 			setCheckboxStatus("LeagueSelectAll", true, false);
 			setCheckboxStatus("AgeGroupSelectAll", true, false);
 			setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
-			*/
+			
 		}
 
 		} else if (document.getElementById("Colac").checked) {
-			if (reportSelectionValue == '03' || reportSelectionValue == '04' || reportSelectionValue == '05') {
+			if (reportSelectionValue == 3 || reportSelectionValue == 4 || reportSelectionValue == 5) {
 				console.log('colac 345');
 				//Disable Umpire, Age Group and League selections
 				setCheckboxStatus("BFL", false, false);
@@ -264,7 +272,7 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("UmpireDisciplineSelectAll", false, true);
 				
 				
-			} else if (reportSelectionValue == '06') {
+			} else if (reportSelectionValue == 6) {
 				console.log('colac 6');
 				//Enable the Umpire Discipline and Age Group selections
 				setCheckboxStatus("BFL", false, false);
@@ -307,7 +315,7 @@ function updateCheckboxEnabledStatus() {
 				setCheckboxStatus("AgeGroupSelectAll", true, false);
 				setCheckboxStatus("UmpireDisciplineSelectAll", true, false);
 			
-			} else if (reportSelectionValue == '07') {
+			} else if (reportSelectionValue == 7) {
 				console.log('colac 7');
 				//Enable the Umpire Discipline and Age Group selections
 				setCheckboxStatus("BFL", false, false);
@@ -389,6 +397,46 @@ function updateCheckboxEnabledStatus() {
 			
 		}
 	
+	//Perform this logic regardless of the league selected
+	if (reportSelectionValue == 8) {
+		console.log('either 8');
+		//Disable the Umpire Discipline selections
+		
+		//Disable Umpire, Age Group and League selections
+		setCheckboxStatus("BFL", false, true);
+		setCheckboxStatus("GFL", false, true);
+		setCheckboxStatus("GDFL", false, true);
+		setCheckboxStatus("GJFL", false, true);
+		setCheckboxStatus("CDFNL", false, true);
+		setCheckboxStatus("Women", false, true);
+		
+		setCheckboxStatus("Seniors", false, true);
+		setCheckboxStatus("Reserves", false, true);
+		setCheckboxStatus("Colts", false, true);
+		setCheckboxStatus("Under 16", false, true);
+		setCheckboxStatus("Under 14", false, true);
+		setCheckboxStatus("Under 12", false, true);
+		setCheckboxStatus("Junior Girls", false, true);
+		setCheckboxStatus("Youth Girls", false, true);
+		setCheckboxStatus("Under 19 Girls", false, true);
+		setCheckboxStatus("Under 15 Girls", false, true);
+		setCheckboxStatus("Under 12 Girls", false, true);
+		setCheckboxStatus("Under 17.5", false, false);
+		setCheckboxStatus("Under 14.5", false, false);
+		
+		setCheckboxStatus("Field", false, true);
+		setCheckboxStatus("Boundary", false, true);
+		setCheckboxStatus("Goal", false, true);
+		
+		setCheckboxStatus("LeagueSelectAll", false, true);
+		setCheckboxStatus("AgeGroupSelectAll", false, true);
+		setCheckboxStatus("UmpireDisciplineSelectAll", false, true);
+		
+		setRadioButtonStatus("Geelong", false);
+		setRadioButtonStatus("Colac", false);
+	}
+		
+	
 	//Update the hidden values
 	convertedStringLeague = convertValueArrayToString(document.getElementsByName("chkLeague[]"));
     convertedStringUmpireDiscipline = convertValueArrayToString(document.getElementsByName("chkUmpireDiscipline[]"));
@@ -421,6 +469,16 @@ function setCheckboxStatus(checkboxID, enabledStatus, checkedStatus) {
 	}
 
 	
+}
+
+function setRadioButtonStatus(radioButonID, enabledStatus) {
+	if (enabledStatus) {
+		//Enabled, set colour to something else 
+		document.getElementById(radioButonID).parentNode.style.background='#FFFFFF';
+	} else {
+		//Disabled, set colour to grey
+		document.getElementById(radioButonID).parentNode.style.background='#d9d9d9';
+	}
 }
 
 

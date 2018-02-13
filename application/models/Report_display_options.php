@@ -1,6 +1,6 @@
 <?php
 
-class Report_display_options {
+class Report_display_options extends CI_Model {
 	
 	private $columnGroup;
 	private $rowGroup;
@@ -17,17 +17,21 @@ class Report_display_options {
 	private $lastGameDate; //The last date that a game has been played from the data in the system
 	
 	public function __construct() {
-		
+	    parent::__construct();
+	    $this->load->model('report_param/Report_parameter');
 	}
 	
 	public function createReportDisplayOptions(Report_instance $pReportInstance) {
 	    
-	    $this->setNoDataValue($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'No Value To Display'));
-	    $this->setFirstColumnFormat($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'First Column Format'));
-	    $this->setColourCells($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'Colour Cells'));
-	    $this->setPDFResolution($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'PDF Resolution'));
-	    $this->setPDFPaperSize($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'PDF Paper Size'));
-	    $this->setPDFOrientation($pReportInstance->reportParamLoader->lookupParameterValue($pReportInstance->reportParameterArray, 'PDF Orientation'));
+	    //TODO: Refactor this object or this function as it seems to be duplicating the Report_Parameter object
+	    $reportParameter = new Report_parameter();
+	    $reportParameter = $pReportInstance->reportParamLoader->getReportParameter();
+	    $this->setNoDataValue($reportParameter->getNoValueDisplay());
+	    $this->setFirstColumnFormat($reportParameter->getFirstColumnFormat());
+	    $this->setColourCells($reportParameter->getColourCells());
+	    $this->setPDFResolution($reportParameter->getPDFResolution());
+	    $this->setPDFPaperSize($reportParameter->getPDFPaperSize());
+	    $this->setPDFOrientation($reportParameter->getPDFOrientation());
 	    
 	}
 	

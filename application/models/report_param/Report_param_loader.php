@@ -19,7 +19,7 @@ class Report_param_loader extends CI_Model {
     private $reportParameter;
     private $reportGroupingStructureArray;
     
-    public function getReportParameterArray() {
+    public function getReportParameter() {
         return $this->reportParameter;
     }
     
