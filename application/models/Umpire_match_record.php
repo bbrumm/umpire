@@ -1,5 +1,5 @@
 <?php
-class UmpireMatchRecord extends CI_Model
+class Umpire_match_record extends CI_Model
 {
     function __construct() {
         parent::__construct();

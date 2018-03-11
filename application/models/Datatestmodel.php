@@ -15,7 +15,7 @@ class Datatestmodel extends CI_Model
         $this->load->library('Array_library');
         
         
-        $this->load->model("UmpireMatchRecord");
+        $this->load->model("Umpire_match_record");
     }
     
     public function runAllTests() {
