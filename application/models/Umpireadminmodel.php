@@ -93,11 +93,56 @@ class Umpireadminmodel extends CI_Model {
         //TODO: Add check to see if this query ran successfully.
         
         $this->logUmpireGamesHistory($umpireArray);
+        
+        //Update the dw_dim_umpire table
+        $this->updateDimUmpire();
+        
+        //Also update the dw_mv_report_08 table
+        $this->updateMVReport8Table();
 
         return "OK done";
 
     }
     
+    private function updateDimUmpire() {
+        $queryString = "TRUNCATE TABLE dw_dim_umpire;";
+        $query = $this->db->query($queryString);
+        
+        $queryString = "INSERT INTO dw_dim_umpire (first_name, last_name, last_first_name, umpire_type, games_prior, games_other_leagues)
+            SELECT DISTINCT
+            u.first_name,
+            u.last_name,
+            CONCAT(u.last_name, ', ', u.first_name) AS last_first_name,
+            ut.umpire_type_name AS umpire_type,
+            u.games_prior,
+            u.games_other_leagues
+            FROM umpire u
+            INNER JOIN umpire_name_type unt ON u.id = unt.umpire_id
+            INNER JOIN umpire_type ut ON unt.umpire_type_id = ut.ID;";
+        $query = $this->db->query($queryString);
+        
+    }
+    
+    private function updateMVReport8Table() {
+        $queryString = "DELETE FROM dw_mv_report_08
+            WHERE season_year IN ('Games Prior', 'Games Other Leagues');";
+        $query = $this->db->query($queryString);
+        
+        $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count)
+            SELECT
+            'Games Prior',
+            u.last_first_name,
+            u.games_prior
+            FROM dw_dim_umpire u
+            UNION ALL
+            SELECT
+            'Games Other Leagues',
+            u.last_first_name,
+            u.games_other_leagues
+            FROM dw_dim_umpire u;";
+        $query = $this->db->query($queryString);
+        
+    }
     
     
     private function haveUmpireGamesNumbersChanged(Umpire $pUmpire) {

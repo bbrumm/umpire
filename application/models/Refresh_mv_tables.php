@@ -434,9 +434,15 @@ class Refresh_mv_tables extends CI_Model
             GROUP BY ti.date_year, u.first_name, u.last_name
             UNION ALL
             SELECT
-            'Other Years',
+            'Games Prior',
             u.last_first_name,
-            0
+            u.games_prior
+            FROM dw_dim_umpire u
+            UNION ALL
+            SELECT
+            'Games Other Leagues',
+            u.last_first_name,
+            u.games_other_leagues
             FROM dw_dim_umpire u;";
         $query = $this->db->query($queryString);
     }
