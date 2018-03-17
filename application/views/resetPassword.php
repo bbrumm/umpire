@@ -10,8 +10,9 @@
 	if ($activationIDMatches == true) {
 	   //TODO: Look up how to disable "variable not declared" for CodeIgniter
     	echo form_open('ResetPasswordEntry/submitNewPassword'); 
-    	echo "activation ID: ". $activationID ."<br />";
+    	/*echo "activation ID: ". $activationID ."<br />";
     	echo "username: ". $username ."<br />";
+    	*/
     	echo "<input type='hidden' name='username' value='". $username ."' />";
     	echo "<input type='hidden' name='activationID' value='". $activationID."' />";
     	if (isset($statusMessage)) {
