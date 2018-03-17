@@ -7,7 +7,16 @@
 	<h2>Almost Done!</h2>
 	<div class="loginFieldRow">
 		<div>You should now receive an email to confirm your password reset.<br />
-		Click on the link in the email to complete the password reset.</div>
+		Click on the link in the email to enter your new password and complete the password reset.</div>
 	</div>
+	<br />
+	<?php 
+	/*
+	echo "status: ". $sendStatus ."<br />";
+	echo "message: ". $sendStatusMessage ."<br />";
+	echo "URL: <a href='". $passwordResetURL ."'>". $passwordResetURL."</a><br />";
+	*/
+	
+	?>
  </body>
 </html>

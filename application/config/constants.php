@@ -95,3 +95,24 @@ define('PARAM_REGION', 1);
 define('PARAM_LEAGUE', 2);
 define('PARAM_UMPIRE_DISCIPLINE', 3);
 define('PARAM_AGE_GROUP', 4);
+
+
+define('EMAIL_FROM', 'xxxx@gmail.com');      // e.g. email@example.com
+define('EMAIL_BCC', 'xxxx@gmail.com');      // e.g. email@example.com
+define('FROM_NAME', 'Umpire Reporting');    // Your system name
+define('EMAIL_PASS', 'Your email password'); // Your email password
+/*
+define('PROTOCOL', 'smtp');                // mail, sendmail, smtp
+define('SMTP_HOST', 'smtp.gmail.com');      // your smtp host e.g. smtp.gmail.com
+define('SMTP_PORT', '25');                  // your smtp port e.g. 25, 587
+define('SMTP_USER', 'Your smtp user');      // your smtp user
+define('SMTP_PASS', 'Your smtp password');  // your smtp password
+*/
+define('PROTOCOL', 'sendmail');                // mail, sendmail, smtp
+define('SMTP_HOST', '');      // your smtp host e.g. smtp.gmail.com
+define('SMTP_PORT', '');                  // your smtp port e.g. 25, 587
+define('SMTP_USER', '');      // your smtp user
+define('SMTP_PASS', '');  // your smtp password
+
+define('MAIL_PATH', '/usr/sbin/sendmail');
+

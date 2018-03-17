@@ -5,7 +5,11 @@
  </head>
  <body>
 	<h2>Password Reset</h2>
-	<?php echo form_open('ForgotPassword/submitChangePasswordForm'); ?>
+	<?php echo form_open('ForgotPassword/submitChangePasswordForm');
+	if (isset($sendStatus)) {
+	    echo "<div class='validationError'>". $sendStatusMessage ."</div><br />";
+	}
+	?>
 	
 	<div class="loginFieldRow">
 		<span class="loginLabel"><label for="username">Username:</label></span>
@@ -19,6 +23,7 @@
 		<i>This will be used to send a confirmation email.</i>
 	</div>
     <br/>
+    <!-- 
 	<div class="loginFieldRow">
 		<span class="loginLabel"><label for="password">New Password:</label></span>
 		<span class="loginControl"><input type="password" size="20" id="password" name="password" class="customTextBox"/></span>
@@ -29,6 +34,7 @@
 		<span class="loginControl"><input type="password" size="20" id="password" name="password" class="customTextBox"/></span>
     </div>
 	<br/>
+	-->
 	<div class="reportSelectorRow">
 	<br />
 		<input type="submit" value="Change Password" class="btn" />
@@ -36,8 +42,6 @@
 		<div>Once you click "Change Password", you will receive an email to confirm your password reset.<br />
 		Click on the link in the email to complete the password reset.</div>
 	</div>
-
 <?php echo form_close(); ?>
-
  </body>
 </html>

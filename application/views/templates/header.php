@@ -9,6 +9,7 @@ $this->load->model('User');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
 $data['reportSelection'] = $this->config->item('reportSelection');
+$data['reportSelectionAcc'] = $this->config->item('reportSelectionAcc');
 $data['useradmin'] = $this->config->item('useradmin');
 
 if (isset($PDFLayout)) {
@@ -21,14 +22,15 @@ if (isset($PDFLayout)) {
     $showHeader = TRUE;
 }
 
-echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
+//echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
 //Localhost version of the JQuery script
-//echo "<script src='". asset_url() . "jquery.min.js'></script>";
+echo "<script src='". asset_url() . "jquery.min.js'></script>";
 
 if ($showHeader) {
     echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
 }
 echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
+echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelectionAcc'] ."'></script>";
 /*
 echo "ASSET URL (". asset_url() .")<BR />";
 echo "BASE URL (". base_url() .")<BR />";
@@ -77,6 +79,7 @@ if ($showHeader) {
     		$menuUserAdmin = "<div class='menuBarLink'>User Admin</div>";
     		$menuUmpireAdmin = "<div class='menuBarLink'>Umpire Admin</div>";
     		$menuDataTest = "<div class='menuBarLink'>Data Test</div>";
+    		$menuUpdateProfile = "<div class='menuBarLink'>Update Profile</div>";
     		$menuLogout = "<div class='menuBarLink'>Logout</div>";
     		/*
     		echo "<pre>";
@@ -97,6 +100,7 @@ if ($showHeader) {
     		    echo anchor("datatest", $menuDataTest);
     		}
     		
+    		echo anchor("UpdateProfile", $menuUpdateProfile);
     		echo anchor("home/logout", $menuLogout);
 
     }

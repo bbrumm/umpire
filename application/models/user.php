@@ -11,6 +11,9 @@ class User extends CI_Model
     private $roleName;
     private $subRoleName;
     private $permissionArray;
+    private $passwordResetURL;
+    private $emailAddress;
+    private $activationID;
     
     function __construct() {
         parent::__construct();
@@ -50,13 +53,29 @@ class User extends CI_Model
         return $this->permissionArray;
     }
     
+    public function getPasswordResetURL() {
+        return $this->passwordResetURL;
+    }
+    
+    public function getEmailAddress() {
+        return $this->emailAddress;
+    }
+    
+    public function getActivationID() {
+        return $this->activationID;
+    }
+    
     //SET Functions
     public function setId($pValue) {
         $this->id = $pValue;
     }
 
     public function setUsername($pValue) {
-        $this->username = $pValue;
+        if(strlen($pValue) <= 255) {
+            $this->username = $pValue;
+        } else {
+            throw new Exception('Username is too long.'); 
+        }
     }
 
     public function setPassword($pValue) {
@@ -83,6 +102,26 @@ class User extends CI_Model
         $this->permissionArray = $pValue;
     }
     
+    public function setPasswordResetURL($pValue) {
+        $this->passwordResetURL = $pValue;
+    }
+    
+    public function setEmailAddress($pValue) {
+        if(strlen($pValue) <= 255) {
+            $this->emailAddress = $pValue;
+        } else {
+            throw new Exception('Email address is too long.');
+        }
+    }
+    
+    public function setActivationID($pValue) {
+        if(strlen($pValue) <= 200) {
+            $this->activationID = $pValue;
+        } else {
+            throw new Exception('Activation ID is too long.');
+        }
+    }
+    
     function login($username, $password) {
         $this->db->select('id, user_name, user_password');
         $this->db->from('umpire_users');
@@ -100,7 +139,7 @@ class User extends CI_Model
     }
     
     public function getUserFromUsername($username) {
-        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, r.role_name, s.sub_role_name
+        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, u.user_email, r.role_name, s.sub_role_name
             FROM umpire_users u 
             INNER JOIN role_sub_role rsr ON u.role_sub_role_id = rsr.id 
             INNER JOIN role r ON rsr.role_id = r.id 
@@ -118,6 +157,7 @@ class User extends CI_Model
             $this->setLastName($row->last_name);
             $this->setRoleName($row->role_name);
             $this->setSubRoleName($row->sub_role_name);
+            $this->setEmailAddress($row->user_email);
             
             //Get permissions for this user, assign each record to an object and store in the permissionArray
             $this->setPermissionArrayForUser();
@@ -197,6 +237,102 @@ class User extends CI_Model
     public function userHasSpecificPermission($permissionName, $selectionName) {
        return $this->findPermissionInArray($permissionName, $selectionName);
     }
+    
+    public function checkUserExistsForReset() {
+        $this->db->select('id');
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->where('user_email', $this->getEmailAddress());
+        $query = $this->db->get('umpire_users');
+        
+        if ($query->num_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    
+    public function logPasswordResetRequest($pRequestData) {
+        $data = array(
+            'request_datetime' => $pRequestData['request_datetime'],
+            'activation_id' => $pRequestData['activation_id'],
+            'ip_address' => $pRequestData['client_ip'],
+            'user_name' => $pRequestData['username_entered'],
+            'email_address' => $pRequestData['email_address_entered'] 
+        );
+        
+        $queryStatus = $this->db->insert('password_reset_request', $data);
+            
+        if ($queryStatus == 1) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    
+    public function storeActivationID($pActivationID) {
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->where('user_email', $this->getEmailAddress());
+        $this->db->update('umpire_users', array('activation_id'=>$pActivationID));
+        
+    }
+    
+    public function createUserFromActivationID() {
+        $this->db->select('user_name');
+        $this->db->where('activation_id', $this->getActivationID());
+        $query = $this->db->get('umpire_users');
+        
+        $resultArray = $query->result();
+        
+        if ($query->num_rows() > 0){
+            $this->setUsername($resultArray[0]->user_name);
+            return true;
+        } else {
+            return false;
+        }  
+        
+    }
+    
+    public function updatePassword() {
+        $this->logPasswordReset();
+        
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->update('umpire_users', array('user_password'=>$this->getPassword()));
+    }
+    
+    private function logPasswordReset() {
+        $this->db->select('user_password');
+        $this->db->where('user_name', $this->getUsername());
+        $query = $this->db->get('umpire_users');
+        
+        $resultArray = $query->result();
+        
+        $oldPassword = $resultArray[0]->user_password;
+       
+        $data = array(
+            'user_name' => $this->getUsername(),
+            'new_password' => $this->getPassword(),
+            'old_password' => $oldPassword,
+            'reset_datetime' => date('Y-m-d H:i:s', time())
+        );
+        
+        $queryStatus = $this->db->insert('password_reset_log', $data);
+    }
+    
+    public function validatePassword($pNewPassword, $pConfirmPassword) {
+        if ($pNewPassword == $pConfirmPassword && strlen($pNewPassword) >= 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function updateEmailAddress() {
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->update('umpire_users', array('user_email'=>$this->getEmailAddress()));
+    }
+    
     
 }
 ?>
