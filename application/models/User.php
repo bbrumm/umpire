@@ -14,6 +14,7 @@ class User extends CI_Model
     private $passwordResetURL;
     private $emailAddress;
     private $activationID;
+    private $active;
     
     function __construct() {
         parent::__construct();
@@ -64,6 +65,12 @@ class User extends CI_Model
     public function getActivationID() {
         return $this->activationID;
     }
+    
+    public function getActive() {
+        return $this->active;
+    }
+    
+    
     
     //SET Functions
     public function setId($pValue) {
@@ -122,6 +129,22 @@ class User extends CI_Model
         }
     }
     
+    public function setActive($pValue) {
+        if ($pValue == 1 || $pValue == 0) {
+            $this->active = $pValue;
+        } else {
+            throw new Exception("User active value must be either 1 or 0.");
+        }
+    }
+    
+    public function isActive() {
+        if ($this->getActive() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     function login($username, $password) {
         $this->db->select('id, user_name, user_password');
         $this->db->from('umpire_users');
@@ -138,12 +161,25 @@ class User extends CI_Model
         }
     }
     
+    public function checkUserActive($pUsername) {
+        $this->db->select('id');
+        $this->db->from('umpire_users');
+        $this->db->where('user_name', $pUsername);
+        $this->db->where('active', '1');
+        
+        $query = $this->db->get();
+        
+        if ($query->num_rows() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public function getUserFromUsername($username) {
-        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, u.user_email, r.role_name, s.sub_role_name
+        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, u.user_email, r.role_name
             FROM umpire_users u 
-            INNER JOIN role_sub_role rsr ON u.role_sub_role_id = rsr.id 
-            INNER JOIN role r ON rsr.role_id = r.id 
-            INNER JOIN sub_role s ON s.id = rsr.sub_role_id 
+            INNER JOIN role r ON u.role_id = r.id
             WHERE u.user_name = '$username' 
             LIMIT 1;";
         
@@ -156,7 +192,6 @@ class User extends CI_Model
             $this->setFirstName($row->first_name);
             $this->setLastName($row->last_name);
             $this->setRoleName($row->role_name);
-            $this->setSubRoleName($row->sub_role_name);
             $this->setEmailAddress($row->user_email);
             
             //Get permissions for this user, assign each record to an object and store in the permissionArray
@@ -178,25 +213,33 @@ class User extends CI_Model
             	WHERE user_id = ". $this->getId() ." 
             ) OR ps.id IN ( 
             	SELECT rps.permission_selection_id 
-            	FROM role_permission_selection rps 
-            	INNER JOIN role_sub_role rsr ON rps.role_sub_role_id = rsr.id 
-            	INNER JOIN umpire_users u ON rsr.id = u.role_sub_role_id 
-            	WHERE u.id = ". $this->getId() ."));";
+            	FROM role_permission_selection rps  
+            	INNER JOIN umpire_users u ON rps.role_id = u.role_id 
+            	WHERE u.id = ". $this->getId() ."
+                AND u.role_id != 4));";
         
         $query = $this->db->query($queryString);
         $resultArray = $query->result_array();
         
         
-        for($i=0; $i<count($resultArray); $i++) {
-            $userRolePermission = new User_role_permission();
-            $userRolePermission->setId($resultArray[$i]['id']);
-            $userRolePermission->setPermissionId($resultArray[$i]['permission_id']);
-            $userRolePermission->setPermissionName($resultArray[$i]['permission_name']);
-            $userRolePermission->setSelectionName($resultArray[$i]['selection_name']);
-            $permissionArray[] = $userRolePermission;
-        }
+        //echo "setPermissionArrayForUser: " . count($resultArray);
         
-        $this->setPermissionArray($permissionArray);
+        $countNumberOfPermissions = count($resultArray);
+        
+        if ($countNumberOfPermissions > 0) {
+        
+            for($i=0; $i<$countNumberOfPermissions; $i++) {
+                $userRolePermission = new User_role_permission();
+                $userRolePermission->setId($resultArray[$i]['id']);
+                $userRolePermission->setPermissionId($resultArray[$i]['permission_id']);
+                $userRolePermission->setPermissionName($resultArray[$i]['permission_name']);
+                $userRolePermission->setSelectionName($resultArray[$i]['selection_name']);
+                $permissionArray[] = $userRolePermission;
+            }
+            
+            
+            $this->setPermissionArray($permissionArray);
+        }
            
     }
     
