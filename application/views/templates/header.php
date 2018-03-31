@@ -25,21 +25,21 @@ if (isset($PDFLayout)) {
 
 //echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
 //Localhost version of the JQuery script
-echo "<script src='". asset_url() . "jquery.min.js'></script>";
+echo "<script src='". asset_url() . "jquery.min.js'></script>\n";
 
 if ($showHeader) {
-    echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
+    echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>\n";
 }
 //echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
-echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelectionNew'] ."'></script>";
+echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelectionNew'] ."'></script>\n";
 //echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelectionAcc'] ."'></script>";
 /*
 echo "ASSET URL (". asset_url() .")<BR />";
 echo "BASE URL (". base_url() .")<BR />";
 echo "SITE URL (". site_url() .")<BR />";
 */
-echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['useradmin'] ."'></script>";
-echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />";
+echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['useradmin'] ."'></script>\n";
+echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . $data['css'] ."' />\n";
 
 if ($showHeader) {
 

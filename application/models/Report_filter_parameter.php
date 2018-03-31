@@ -18,8 +18,8 @@ class Report_filter_parameter extends CI_Model {
         } elseif ($pFilterIsRegion) {
             //$this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameter);
             //This Region value can sometimes be an array, or a single value.
-            $this->filterSQLValues = "'" . $pFilterParameter . "'";
-            $this->filterDisplayValues = $pFilterParameter;
+            $this->filterSQLValues = "'" . $pFilterParameter[0] . "'";
+            $this->filterDisplayValues = $pFilterParameter[0];
         } else {
             $this->filterSQLValues = $this->implodeWithApostrophe($pFilterParameter);
             $this->filterDisplayValues = $this->implodeWithoutApostrophe($pFilterParameter);
