@@ -22,6 +22,8 @@ class Home extends CI_Controller {
             $data['reportSelectionParameters'] = $this->getAllReportSelectionParameters();
             $data['reportList'] = $this->getListOfReports();
             $data['seasonList'] = $this->getListOfSeasons();
+            $data['validCombinations'] = $this->getListOfValidCombinations();
+            
             $this->load->helper('form');
             $this->load->view('report_home', $data);
             $this->load->view('templates/footer');
@@ -73,8 +75,16 @@ class Home extends CI_Controller {
         return $allReportSelectionParameters;
     }
     
+    
+    
     private function getListOfReports() {
-        $queryString = "SELECT report_id, report_name
+        $queryString = "SELECT
+            report_id,
+            report_name,
+            region_enabled,
+            league_enabled,
+            age_group_enabled,
+            umpire_type_enabled
             FROM t_report
             ORDER BY report_name ASC;";
         
@@ -84,6 +94,10 @@ class Home extends CI_Controller {
             $reportSelection = new Report_selection();
             $reportSelection->setReportID($row->report_id);
             $reportSelection->setReportName($row->report_name);
+            $reportSelection->setRegionEnabled($row->region_enabled);
+            $reportSelection->setLeagueEnabled($row->league_enabled);
+            $reportSelection->setAgeGroupEnabled($row->age_group_enabled);
+            $reportSelection->setUmpireTypeEnabled($row->umpire_type_enabled);
             
             $allReports[] = $reportSelection;
         }
@@ -104,6 +118,24 @@ class Home extends CI_Controller {
             $allSeasons[] = $season;
         }
         return $allSeasons;
+    }
+    
+    private function getListOfValidCombinations() {
+        $queryString = "SELECT 
+            v.id,
+            pvr.parameter_value_name AS region,
+            pvl.parameter_value_name AS league,
+            pva.parameter_value_name AS age_group
+            FROM valid_selection_combinations v
+            INNER JOIN report_selection_parameter_values pvr ON pvr.parameter_value_id = v.pv_region_id
+            INNER JOIN report_selection_parameter_values pvl ON pvl.parameter_value_id = v.pv_league_id
+            INNER JOIN report_selection_parameter_values pva ON pva.parameter_value_id = v.pv_age_group_id;";
+        
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+        return $queryResultArray;
+        
+        
     }
 }
 ?>

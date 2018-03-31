@@ -178,6 +178,8 @@ panelBelow {
 	 vertical-align:bottom;
 	 padding: 0px 0px 10px 0px;
      /*background-color:#D4A190;*/
+ 	background-color:#FFFFFF;
+ 	
 }
   
 th, td 
@@ -293,6 +295,7 @@ td {
 .columnHeadingNormal {
 	font-weight: bold;
 	border: 1px solid black;
+	background-color:#FFFFFF;
 }
 
 .cellNormal {

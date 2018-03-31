@@ -309,8 +309,11 @@ WHERE m.field_umpire_1 IS NOT NULL";
                 //Loop through each column
                 $localFocusQueryString .= " l." . $tablesAndColsArray[$key][$i];
                 $remoteFocusQueryString .= " r." . $tablesAndColsArray[$key][$i];
-                $whereClause .= "IFNULL(l." . $tablesAndColsArray[$key][$i] . ",'') = IFNULL(r." . $tablesAndColsArray[$key][$i] . ",'')";
-                
+                //Exclude some columns for some tables from the WHERE clause (e.g. umpire.id),
+                //because the data can match but the ID could be different, which is OK
+                if (!($key == 'umpire' && $tablesAndColsArray[$key][$i] == 'id')) {
+                    $whereClause .= "IFNULL(l." . $tablesAndColsArray[$key][$i] . ",'') = IFNULL(r." . $tablesAndColsArray[$key][$i] . ",'')";
+                }
                 if ($i < count($tablesAndColsArray[$key]) - 1) {
                     //Not yet last value, add comma
                     $localFocusQueryString .= ",";

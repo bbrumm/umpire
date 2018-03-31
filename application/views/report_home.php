@@ -14,7 +14,7 @@ $countReportParameters = count($reportSelectionParameters);
 
 ?>
 <script type="text/javascript">
-	window.onload = updateCheckboxEnabledStatus;
+	//window.onload = updateCheckboxEnabledStatus;
 </script>
  <div class="reportSelectorRow">
 	<span class="reportSelectorLabel">Season:</span>
@@ -35,7 +35,8 @@ $countReportParameters = count($reportSelectionParameters);
 	</span>
 	<span class="reportSelectorLabel">Report:</span>
 	<span class="reportSelectorControl">
-		<select name="reportName" id="reportName" onchange="updateCheckboxEnabledStatus()">
+		<!-- <select name="reportName" id="reportName" onchange="updateCheckboxEnabledStatus()"> -->
+		<select name="reportName" id="reportName" onchange="updatePageFromCheckboxSelection()">
 		<?php 
 		foreach ($reportList as $reportSelectionItem) {
 		    echo "<option value='". $reportSelectionItem->getReportID()."'>". $reportSelectionItem->getReportName() ."</option>";
@@ -65,8 +66,10 @@ for ($i=0; $i < $countReportParameters; $i++) {
 
 		if ($currentReportSelectionParameter->getAllowMultipleSelections() == 1) {
 		    echo "<div class='optionsSelectAllRow'>";
+		    //echo "<input type='checkbox' id='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll' " .
+		    //"onClick='toggle(this, \"chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]\")'></input>";
 		    echo "<input type='checkbox' id='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll' " .
-		    "onClick='toggle(this, \"chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]\")'></input>";
+		  		    "onClick='selectAll(this, \"chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."[]\")'></input>";
 		    echo "<label class='reportControlLabel' for='". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."SelectAll'>Select All</label>";
 		    echo "</div>";
 		}
@@ -78,13 +81,13 @@ for ($i=0; $i < $countReportParameters; $i++) {
 		         echo "<input type='radio' id='". $currentReportSelectableReportOption->getOptionValue() ."' " .
 		         "name='rd". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."' " .
 		         "value='". $currentReportSelectableReportOption->getOptionValue() ."' " .
-		         "onClick='updatePageFromCheckboxSelection(this)'";
+		         "onClick='updatePageFromCheckboxSelection()'";
 		         
-		         /*if ($j==0) {
-		             //Mark the first radio as selected
+		         if ($currentReportSelectableReportOption->getOptionValue() == "Geelong") {
+		             //Mark Geelong as selected
 		             echo " checked";
 		         }
-		         */
+		         
 		         echo ">";
 		         echo "<label class='reportControlLabel' for='". $currentReportSelectableReportOption->getOptionValue() ."'>". $currentReportSelectableReportOption->getOptionValue() ."</label>";
 		         
@@ -131,6 +134,30 @@ They are needed for reports where the drop-downs are disabled, as the next page 
 		alert("ready");
     	updateCheckboxEnabledStatus();
     });*/
-	window.onLoad = updateCheckboxEnabledStatus();
+	//window.onLoad = updateCheckboxEnabledStatus();
 </script>
+
+<?php 
+//This code will allow the array reportList to be accessible to JavaScript for report param selection.
+
+echo '<script type="text/javascript">';
+echo "var php_variables = " . json_encode($javascriptVariables) . "\n";
+//echo "var reportList = " . json_encode(serialize($reportList)) . "\n";
+$reportArray = array();
+foreach ($reportList as $reportItem) {
+    $reportID = $reportItem->getReportID();
+    $reportArray[$reportID]['id'] = $reportID;
+    $reportArray[$reportID]['report_name'] = $reportItem->getReportName();
+    $reportArray[$reportID]['region_enabled'] = $reportItem->getRegionEnabled();
+    $reportArray[$reportID]['league_enabled'] = $reportItem->getLeagueEnabled();
+    $reportArray[$reportID]['age_group_enabled'] = $reportItem->getAgeGroupEnabled();
+    $reportArray[$reportID]['umpire_type_enabled'] = $reportItem->getUmpireTypeEnabled();
+}
+
+echo "var reportList = " . json_encode($reportArray) . "\n";
+echo "var validCombinations = " . json_encode($validCombinations) . "\n";
+echo "window.onLoad = updatePageFromCheckboxSelection();";
+echo '</script>';
+?>
+
 <?php echo form_close(); ?>

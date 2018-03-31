@@ -96,8 +96,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
          */
         
         
-        /*
-         * TODO:
+        /*        
          * Check which permissions are selected from the form (post is included)
          * Check which permissions exist in the database but not sent from the form
          * Insert these if they don't exist into user_permission_selection
@@ -138,6 +137,22 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $userAdmin->updateUserRoles($userRoleDifferences);
         
         //TODO: Update active/not active status
+        $userActiveFromDB = $userAdmin->getAllUserActiveFromDB();
+        $userActiveFromForm= $userAdmin->translateUserFormActive($_POST);
+        
+        //$this->debug_library->debugOutput("saveUserPrivileges Active DB:", $userActiveFromDB);
+        //$this->debug_library->debugOutput("saveUserPrivileges Active Form:", $userActiveFromForm);
+        
+        //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
+        $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);
+        
+        //$this->debug_library->debugOutput("saveUserPrivileges Active Differences:", $userActiveDifferences);
+        
+        //Update user roles
+        $userAdmin->updateUserActive($userActiveDifferences);
+        
+        
+        
         
         $userAddedMessage = "User privileges updated.";
         //$this->debug_library->debugOutput("userAddedMessage", $userAddedMessage);
@@ -150,6 +165,11 @@ The [#] represents the permission_selection.id value. This can be used to insert
         return array_merge(array_diff_assoc($A, $intersect), array_diff_assoc($B, $intersect));
     }
     
+    
+    private function arrayDiffKey($A, $B) {
+        $intersect = array_intersect_key($A, $B);
+        return array_merge(array_diff_key($A, $intersect), array_diff_key($B, $intersect));
+    }
     
     
     

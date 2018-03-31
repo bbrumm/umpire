@@ -161,6 +161,39 @@ class Useradminmodel extends CI_Model {
         
     }
     
+    public function getAllUserActiveFromDB() {
+        /*
+         This should return data in this format:
+             Array (
+                 [username] => on
+                 [username] => on
+                 [username] => on
+         */
+        
+        $queryString = "SELECT user_name, active
+            FROM umpire_users
+            WHERE user_name NOT IN ('bbrumm');";
+        
+        $resultArray = $this->getArrayFromQuery($queryString);
+        
+        //Translate the data into the format mentioned above
+        return $this->translateActiveArray($resultArray);
+        
+        
+    }
+    
+    public function translateUserFormActive($postArray) {
+        $translatedArray = "";
+        foreach ($postArray['userRole'] as $userName=>$userRole) {
+            if(isset($postArray['userActive'][$userName])) {
+                $translatedArray[$userName] = '1';
+            } else {
+                $translatedArray[$userName] = '0';
+            }
+        }
+        return $translatedArray;
+    }
+    
     private function translatePermissionArray($resultArray) {
         $translatedArray = "";
         foreach ($resultArray as $rowItem) {
@@ -174,6 +207,15 @@ class Useradminmodel extends CI_Model {
         $translatedArray = "";
         foreach ($resultArray as $rowItem) {
             $translatedArray[$rowItem['user_name']] = $rowItem['role_id'];
+        }
+        return $translatedArray;
+        
+    }
+    
+    private function translateActiveArray($resultArray) {
+        $translatedArray = "";
+        foreach ($resultArray as $rowItem) {
+            $translatedArray[$rowItem['user_name']] = $rowItem['active'];
         }
         return $translatedArray;
         
@@ -222,9 +264,13 @@ class Useradminmodel extends CI_Model {
     public function updateUserRoles($userRoleArray) {
         foreach ($userRoleArray as $username=>$newRoleID) {
             $this->updateUserRole($username, $newRoleID);
-            
         }
-        
+    }
+    
+    public function updateUserActive($userActiveArray) {
+        foreach ($userActiveArray as $username=>$setValue) {
+            $this->updateSingleUserActive($username, $setValue);
+        }
     }
     
     private function updateUserRole($username, $newRoleID) {
@@ -240,6 +286,21 @@ class Useradminmodel extends CI_Model {
         
         //TODO: Replace magic number with global constant that represents UPDATE
         $this->logRoleChange($username, $newRoleID, 2);
+    }
+    
+    private function updateSingleUserActive($username, $setValue) {
+        $queryString = "UPDATE umpire_users
+            SET active = ?
+            WHERE user_name = ?";
+        
+        $query = $this->db->query($queryString, array(
+            $setValue, $username
+        ));
+        
+        //$this->debug_library->debugOutput("Updated user role", $username);
+        
+        //TODO: Replace magic number with global constant that represents UPDATE
+        $this->logActiveChange($username, $setValue, 2);
     }
     
     private function removeUserPrivilege($username, $permission_selection_id) {
@@ -306,6 +367,22 @@ class Useradminmodel extends CI_Model {
         
         $query = $this->db->query($queryString, array(
             $username, $newRoleID, 2, $currentUsername
+        ));
+        
+        //$this->debug_library->debugOutput("Logged change", $newRoleID);
+        
+    }
+    
+    private function logActiveChange($username, $newActiveValue) {
+        $session_data = $this->session->userdata('logged_in');
+        $currentUsername = $session_data['username'];
+        
+        $queryString = "INSERT INTO log_active_changes
+            (username_changed, new_active, role_action, username_changed_by, changed_datetime)
+            VALUES (?, ?, ?, ?, NOW());";
+        
+        $query = $this->db->query($queryString, array(
+            $username, $newActiveValue, 2, $currentUsername
         ));
         
         //$this->debug_library->debugOutput("Logged change", $newRoleID);

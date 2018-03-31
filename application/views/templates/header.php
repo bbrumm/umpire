@@ -8,7 +8,8 @@ $this->load->helper('url');
 $this->load->model('User');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
-$data['reportSelection'] = $this->config->item('reportSelection');
+//$data['reportSelection'] = $this->config->item('reportSelection');
+$data['reportSelectionNew'] = $this->config->item('reportSelectionNew');
 $data['reportSelectionAcc'] = $this->config->item('reportSelectionAcc');
 $data['useradmin'] = $this->config->item('useradmin');
 
@@ -29,8 +30,9 @@ echo "<script src='". asset_url() . "jquery.min.js'></script>";
 if ($showHeader) {
     echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>";
 }
-echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
-echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelectionAcc'] ."'></script>";
+//echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelection'] ."'></script>";
+echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelectionNew'] ."'></script>";
+//echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['reportSelectionAcc'] ."'></script>";
 /*
 echo "ASSET URL (". asset_url() .")<BR />";
 echo "BASE URL (". base_url() .")<BR />";

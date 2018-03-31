@@ -3,6 +3,26 @@
  */
 
 
+
+/*
+  New logic from database:
+  Look up the permissions tables for the current user
+  Load them into memory when the page loads (so we don't need to check the database each time a checkbox is changed)
+  If they have the permissions (e.g. view report, or select report option), then show the control as enabled
+  If they don't have permissions, show it as grey and disabled (same as current formatting)
+  If a selection determines that this selection is not valid (e.g. region Geelong and league CDFNL) then show it as grey
+  
+  The JavaScript code would need to:
+  - Set the enabled status in an array for each control 
+  - update the array in memory of all of the statuses each time a selection is made
+  - Then update the controls on the page 
+ 
+ - The logic of what controls are selected in what situations should be stored in the database
+ 
+ 
+ */
+
+
 function updateHiddenValues() {
 	
 	document.getElementById('umpireTypeHidden').value = document.getElementById('umpireType').value;

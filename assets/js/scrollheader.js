@@ -37,6 +37,7 @@ $(function(){
                 clonedHeaderRow.css('top', '0px');
                 clonedHeaderRow.css('left', $this.css('margin-left'));
                 clonedHeaderRow.css('display', 'none');
+                clonedHeaderRow.css('background-color', '#FFFFFF');
 
                 originalHeaderRow.addClass('tableFloatingHeaderOriginal');
 

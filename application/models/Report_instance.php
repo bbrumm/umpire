@@ -409,11 +409,7 @@ Array
 
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryForReport = $separateReport->getReportDataQuery($this);
-        
-        //echo "Factory Query: ". $separateReport->getReportDataQuery($this) ." <BR />";
-        
-        //$query = $this->db->query($queryForReport);
-        
+
         //Run query and store result in array
         $query = $this->db->query($queryForReport);
         

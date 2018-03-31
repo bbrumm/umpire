@@ -507,6 +507,7 @@ $config['proxy_ips'] = '';
 $config['css'] = 'css/style.css';
 $config['js_fixed'] = 'js/scrollheader.js';
 $config['reportSelection'] = 'js/reportSelection.js';
+$config['reportSelectionNew'] = 'js/reportSelectionNew.js';
 $config['reportSelectionAcc'] = 'js/reportSelectionAcc.js';
 $config['useradmin'] = 'js/useradmin.js';
 
