@@ -108,6 +108,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 		    "name='chk". str_replace(' ', '', $currentReportSelectionParameter->getParameterName()) ."Hidden' " .
 		    "value='' />";
 		
+
 		echo "</div>";
 		?>
 		</div>
@@ -141,8 +142,6 @@ They are needed for reports where the drop-downs are disabled, as the next page 
 //This code will allow the array reportList to be accessible to JavaScript for report param selection.
 
 echo '<script type="text/javascript">';
-echo "var php_variables = " . json_encode($javascriptVariables) . "\n";
-//echo "var reportList = " . json_encode(serialize($reportList)) . "\n";
 $reportArray = array();
 foreach ($reportList as $reportItem) {
     $reportID = $reportItem->getReportID();
