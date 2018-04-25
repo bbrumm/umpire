@@ -16,9 +16,13 @@ class Report_filter_parameter extends CI_Model {
             $this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameter);
             $this->filterDisplayValues = $this->strReplaceWithoutApostrophe($pFilterParameter);
         } elseif ($pFilterIsRegion) {
-            //$this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameter);
+            
             //This Region value can sometimes be an array, or a single value.
-            $this->filterSQLValues = "'" . $pFilterParameter[0] . "'";
+            //TODO: Commented out the first line and uncommented the first line, 
+            //because selecting a single Region causes the query to return nothing for report 1.
+            //Come back here if there are still errors.
+            //$this->filterSQLValues = "'" . $pFilterParameter[0] . "'";
+            $this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameter);
             $this->filterDisplayValues = $pFilterParameter[0];
         } else {
             $this->filterSQLValues = $this->implodeWithApostrophe($pFilterParameter);

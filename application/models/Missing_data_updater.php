@@ -325,8 +325,8 @@ class Missing_data_updater extends CI_Model {
     }
     
     private function insertNewClub($newClubName) {
-        $queryString = "INSERT INTO club (club_name, abbreviation)
-            VALUES (?, NULL);";
+        $queryString = "INSERT INTO club (club_name)
+            VALUES (?);";
         
         $query = $this->db->query($queryString, array($newClubName));
         $this->debug_library->debugOutput("insertNewClub", $newClubName);

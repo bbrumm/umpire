@@ -235,7 +235,7 @@ LEFT JOIN (
 		SUM(CASE r.umpire_type WHEN 'Boundary' THEN r.match_count ELSE 0 END) AS sum_boundary,
 		SUM(CASE r.umpire_type WHEN 'Goal' THEN r.match_count ELSE 0 END) AS sum_goal
 		FROM dw_mv_report_01 r
-		WHERE season_year = 2017
+		WHERE season_year = 2018
 		GROUP BY r.club_name, r.region_name, r.last_first_name, r.umpire_type
     ) AS rg
 	GROUP BY rg.club_name, rg.region_name, rg.first_name, rg.last_name
