@@ -433,13 +433,13 @@ class Refresh_mv_tables extends CI_Model
             WHERE ti.date_year = $pSeasonYear
             GROUP BY ti.date_year, u.first_name, u.last_name
             UNION ALL
-            SELECT
+            SELECT DISTINCT
             'Games Prior',
             u.last_first_name,
             u.games_prior
             FROM dw_dim_umpire u
             UNION ALL
-            SELECT
+            SELECT DISTINCT
             'Games Other Leagues',
             u.last_first_name,
             u.games_other_leagues

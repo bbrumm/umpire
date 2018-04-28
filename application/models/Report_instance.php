@@ -545,7 +545,7 @@ Array
 	            } elseif ($this->requestedReport->getReportNumber() == 8) {
 	                //$this->debug_library->debugOutput("pFieldForRowLabel:",  $pFieldForRowLabel);
 	                //$this->debug_library->debugOutput("columnField:",  $columnField);
-	                $this->debug_library->debugOutput("resultRow:",  $resultRow);
+	                //$this->debug_library->debugOutput("resultRow:",  $resultRow);
 	                //$rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[0]];
 	                
 	                
