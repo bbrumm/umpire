@@ -65,7 +65,7 @@ class Refresh_mv_tables extends CI_Model
     
     private function refreshMVTable5($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_05", 0);
-        $this->updateTableMV4($pSeasonYear);
+        $this->updateTableMV5($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_05", 1);
         $this->updateKeyStatus("dw_mv_report_05", 1);
     }
