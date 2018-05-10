@@ -9,6 +9,7 @@ class Run_etl_stored_proc extends CI_Model
     }
     
     public function runETLProcedure($season, $importedFileID) {
+        
         $queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
         $query = $this->db->query($queryString);
         

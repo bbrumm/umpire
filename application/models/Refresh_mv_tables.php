@@ -425,7 +425,7 @@ class Refresh_mv_tables extends CI_Model
             SELECT
             ti.date_year,
             u.last_first_name,
-            COUNT(m.match_id) AS match_count
+            COUNT(DISTINCT m.match_id) AS match_count
             FROM dw_fact_match m
             INNER JOIN dw_dim_league l ON m.league_key = l.league_key
             INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
