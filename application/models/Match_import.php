@@ -20,16 +20,11 @@ class Match_import extends CI_Model
     	$objPHPExcel = PHPExcel_IOFactory::load($dataFile);
     	$sheet = $objPHPExcel->getActiveSheet();
     	$lastRow = $sheet->getHighestRow();
-    	/*TODO: Put in a permanent fix to dynamically map the column headings to DB tables.
+    	/*
+    	TODO: Put in a permanent fix to dynamically map the column headings to DB tables.
     	Column headings can vary depending on data in the source system (e.g. sometimes there are 4 boundary umpires, or 5, or 6)
-    	
     	*/
-    	/*$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time', 
-    	    'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3', 
-    	    'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4', 
-    	    'boundary_umpire_5', 'boundary_umpire_6', 'goal_umpire_1', 'goal_umpire_2');
-    	   $data = $sheet->rangeToArray('A2:S'.$lastRow, $columns);
-    	    */
+    	
     	$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time',
     	    'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3',
     	    'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4',
@@ -53,10 +48,32 @@ class Match_import extends CI_Model
         $season = new Season();
         $season->setSeasonID($this->findSeasonToUpdate());
         //echo "Run ETL file " . $season->getSeasonID() . ", " . $importedFileID . "<BR />";
+        
         $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
+        
+        //$etlScript = base_url() . "/cron/etl.php";
+        //$str = shell_exec($etlScript.' 2>&1 > out.log');
+        
     }
-  
-  
+    
+    public function logErrorMessage($pMessage) {
+        $queryString = "INSERT INTO test_error_log (logged_date, message) VALUES (NOW(), '". $pMessage ."');";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result_array();
+    }
+    
+    public function updateProgressValueInDB($progressPct) {
+        $queryString = "UPDATE test_progress SET progress_value = ". $progressPct .";";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result_array();
+    }
+    
+    public function getProgressValueInDB() {
+        $queryString = "SELECT progress_value FROM test_progress;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result_array();
+        return $resultArray[0]['progress_value'];
+    }
   
     public function findSeasonToUpdate() {
         $queryString = "SELECT MAX(season.ID) AS season_id " .
@@ -90,7 +107,8 @@ class Match_import extends CI_Model
         $data = array(
             'filename' => $filename,
             'imported_datetime' => date('Y-m-d H:i:s', time()),
-            'imported_user_id' => $username
+            'imported_user_id' => $username,
+            'etl_status' => 2 //2 = not yet started
         );
     
         $queryStatus = $this->db->insert('imported_files', $data);
@@ -146,7 +164,7 @@ class Match_import extends CI_Model
       
         $resultArray = $this->splitArrayBasedOnType($resultArray);
       
-        $this->debug_library->debugOutput("resultArray (in findMissingDataOnImport):", $resultArray);
+        //$this->debug_library->debugOutput("resultArray (in findMissingDataOnImport):", $resultArray);
       
         return $resultArray;
     }
@@ -156,7 +174,7 @@ class Match_import extends CI_Model
         $resultArray = array(); 
       
         //Split the results into separate arrays, based on the record type
-        $this->debug_library->debugOutput("pResultArray (in splitArrayBasedOnType):", $pResultArray);
+        //$this->debug_library->debugOutput("pResultArray (in splitArrayBasedOnType):", $pResultArray);
       
         foreach ($pResultArray as $currentRowItem) {
             $resultArray[$currentRowItem['record_type']][] = $currentRowItem;

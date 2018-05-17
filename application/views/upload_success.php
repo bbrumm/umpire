@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 function updateCompetition(competitionID) {
 	//TODO: Pass the name of the button that was clicked, then extact the number from the end of the button to find the ID of the competition.
@@ -49,12 +50,70 @@ function updateCompetition(competitionID) {
 	}	
 }
 
+
+function updateProgressBar() {
+	var xhr;
+	if (window.XMLHttpRequest) { // Mozilla, Safari, ... 
+		xhr = new XMLHttpRequest(); 
+	} else if (window.ActiveXObject) { 
+		// IE 8 and older 
+		xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xhr.open("GET", "<?php echo base_url(); ?>" + "index.php/ajax_post_controller/updateProgressBar", true);
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); 
+	xhr.send();
+	
+	//Call the display_data function when the ready state changes (onreadystatechange)
+	xhr.onreadystatechange = display_data;
+
+	function display_data() {
+		var pctComplete = xhr.responseText;
+
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			if (pctComplete == 100) {
+			document.getElementById("progressbar").innerHTML = "Done";
+			window.clearInterval(timer);
+            timer = window.setInterval(completed, 1000);
+			
+    		} else {
+    			document.getElementById("progressbar").innerHTML = "Loading... ("+ pctComplete +"% complete)";
+    		}
+		}
+	}
+
+	function completed() {
+      $("#message").html("Completed");
+      window.clearInterval(timer);
+	}
+}
+
+
+function startTestDataImport() {
+	// Trigger the process in web server.
+    console.log ("test5 start data import");
+  $.ajax({url: "<?php echo base_url(); ?>" + "index.php/ajax_post_controller/startDataImport"});
+  // Refresh the progress bar every 1 second.
+  timer = window.setInterval(updateProgressBar, 1000);
+}
+
+
+
+//When the document is ready
+//$(document).ready(startDataImport);	
+
+
 </script>
 
 <?php
 echo "<div class='uploadSuccessMessage'>Upload completed!</div>";
 echo "<div class='centerText'>Return to the Home page to generate reports.</div><BR />";
 
+/*
+echo "<div class='centerText' id='progressbar'>Status message...</div>";
+echo "<input type='button' name='btnTestMessage' onClick='updateProgressBar()' value='Test Message'/>";
+echo "<input type='button' name='btnStart' onClick='startTestDataImport()' value='Test Data Import'/>";
+*/
 function outputSelectionRow($pMissingData, $pIterationNumber, $pPossibleSelections, $pLabel, $pCboBoxName, $pValueFieldName) {
     
     echo "<div class='divSubTableRow'>";
@@ -201,3 +260,4 @@ if (!empty($missing_data)) {
 }
 ?>
 <BR />
+

@@ -48,10 +48,7 @@ class Ajax_Post_Controller extends CI_Controller
         // Either you can print value or you can send value to database
         $missingDataUpdater = new Missing_data_updater();
         $missingDataUpdater->updateSingleCompetition($data);
-        
-        //echo "updateCompetition test";
-        
-        //echo json_encode($data);
+
         
     }
     
@@ -74,6 +71,48 @@ class Ajax_Post_Controller extends CI_Controller
         //echo "updateUmpireGames test";
         $umpireAdminModel = new Umpireadminmodel();
         $umpireAdminModel->updateUmpireGameValues($params);
+        
+    }
+    
+    public function startDataImport() {
+        //This is where I trigger the data import
+        
+        include "etltest.php";
+        
+        runETL();
+        //TODO: Here, convert this to a function call inside etltest.php. But will this run in parallel?
+        
+    }
+    
+    
+    
+    
+    
+    public function getTestProgressValue() {
+        $matchImport = new Match_import();
+        return $matchImport->getProgressValueInDB();
+    }
+    
+    
+    
+    public function updateProgressBar() {
+        //Same code as checker?
+        /*
+         This is where I could check if the data import is complete
+         Perhaps this is where the timer could go?
+         I think this is where I need to output data using json_encode, in order to get the view page to read it
+         Also use the loop and sleep function from process.php
+         In the loop:
+         - Create a table that lists the order of the tables impacted in hte import log
+         - Query this table here against the latest import log to see how many tables have been processed
+         - Loop through and work out a percent complete based on number of tables processed
+         - Json_encode the percent
+         */
+        
+        //The echo statement here is stored in the responseText from the Ajax request
+        echo $this->getTestProgressValue();
+        
+        
         
     }
     

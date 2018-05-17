@@ -22,10 +22,12 @@ echo "</pre>";
 <h3>Latest File Import Statistics</h3>
 <table>
 <thead>
+<tr>
 <th>Date and Time</th>
 <th>Operation Name</th>
 <th>Table Name</th>
 <th>Row Count</th>
+</tr>
 </thead>
 <?php 
 foreach ($umpireTestResultsArray['tableOperations'] as $key => $val) {
@@ -38,11 +40,12 @@ foreach ($umpireTestResultsArray['tableOperations'] as $key => $val) {
 }
 ?>
 </table>
-<BR />
+<br />
 <h3>Umpire Match Count - Report 01 - Missing Data</h3>
 
 <table>
 <thead>
+<tr>
 <th>Umpire</th>
 <th>Club</th>
 <th>Region</th>
@@ -52,6 +55,7 @@ foreach ($umpireTestResultsArray['tableOperations'] as $key => $val) {
 <th>Matches - Boundary (MV)</th>
 <th>Matches - Goal (Match Import)</th>
 <th>Matches - Goal (MV)</th>
+</tr>
 </thead>
 <?php 
 foreach ($umpireTestResultsArray['report01'] as $key => $val) {
@@ -65,6 +69,30 @@ foreach ($umpireTestResultsArray['report01'] as $key => $val) {
     echo "<td>". $val['mv_sum_boundary'] ."</td>";
     echo "<td>". $val['mi_sum_goal'] ."</td>";
     echo "<td>". $val['mv_sum_goal'] ."</td>";
+    echo "</tr>";
+}
+?>
+</table>
+
+<br />
+<h3>Umpire Match Count - Report 08 - Data Differences</h3>
+
+<table>
+<thead>
+<tr>
+<th>Last Name</th>
+<th>First Name</th>
+<th>Prior Games - Umpire</th>
+<th>Prior Games - Baseline</th>
+</tr>
+</thead>
+<?php 
+foreach ($umpireTestResultsArray['report08'] as $key => $val) {
+    echo "<tr>";
+    echo "<td>". $val['last_name'] ."</td>";
+    echo "<td>". $val['first_name'] ."</td>";
+    echo "<td>". $val['umpire_prior'] ."</td>";
+    echo "<td>". $val['baseline_prior'] ."</td>";
     echo "</tr>";
 }
 ?>

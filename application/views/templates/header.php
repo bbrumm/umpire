@@ -54,6 +54,19 @@ if ($showHeader) {
 <?php 
 }
 ?>
+
+ <style>
+    #progress {
+      width: 500px;
+      border: 1px solid #aaa;
+      height: 20px;
+    }
+    #progress .bar {
+      background-color: #ccc;
+      height: 20px;
+    }
+  </style>
+
     
 	</head>
 <body>

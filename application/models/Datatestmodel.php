@@ -38,6 +38,7 @@ class Datatestmodel extends CI_Model
         $this->debugMode = $this->config->item('debug_mode');
         $outputArray['tableOperations'] = $this->checkImportedTableOperations();
         $outputArray['report01'] = $this->runTestsForReport01();
+        $outputArray['report08'] = $this->checkUmpireGamesAgainstBaseline();
         
         return $outputArray;
          
@@ -283,6 +284,26 @@ ORDER BY umpire_name, club_name";
          echo "</pre>";
          }
          */
+        return $queryResultArray;
+    }
+    
+    private function checkUmpireGamesAgainstBaseline() {
+        $queryResultArray = array();
+        
+        $queryString = "SELECT
+            u.last_name,
+            u.first_name,
+            u.games_prior AS umpire_prior,
+            b.games_pre_2014 + b.games_2014 AS baseline_prior
+            FROM umpire u
+            INNER JOIN umpire_match_baseline b ON u.first_name = b.first_name AND u.last_name = b.last_name
+            WHERE u.games_prior <> b.games_pre_2014 + b.games_2014
+            ORDER BY u.last_name, u.first_name;";
+        
+        //Run query and store result in array
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+
         return $queryResultArray;
     }
     

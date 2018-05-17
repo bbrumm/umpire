@@ -16,6 +16,7 @@ class Report6 extends Report_data_query {
             AND age_group IN (". $pReportInstance->filterParameterAgeGroup->getFilterSQLValues() .")
             AND region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .")
             AND umpire_type IN (". $pReportInstance->filterParameterUmpireType->getFilterSQLValues() .")
+            AND short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .")
             ORDER BY first_umpire, second_umpire;";
         return $queryString;
     }
@@ -27,6 +28,7 @@ class Report6 extends Report_data_query {
             AND age_group IN (". $pReportInstance->filterParameterAgeGroup->getFilterSQLValues() .")
             AND region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .")
             AND umpire_type IN (". $pReportInstance->filterParameterUmpireType->getFilterSQLValues() .")
+            AND short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .")
             ORDER BY second_umpire;";
         return $queryString;
     }

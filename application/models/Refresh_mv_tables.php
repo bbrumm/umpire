@@ -76,8 +76,30 @@ class Refresh_mv_tables extends CI_Model
         $this->logTableOperation($importedFileID, "dw_rpt06_staging", 1);
         $this->updateKeyStatus("dw_rpt06_staging", 1);
         
+        //TODO: Move all of these function calls into a single function, and call the new function. Lots of repetition here.
+        //TODO: Change this to call separate stored procedures. Even though the large stored proc took a long time to run,
+        //having a short stored proc would make it easier to rerun the steps if the import times out on the production server
+        //I should store the stored proc names and their run order in a database table, and loop through the list.
+        
+        //Run each of the umpire types into the staging 2 table
         $this->updateKeyStatus("dw_rpt06_stg2", 0);
-        $this->updateTableMV6StagingPart2($pSeasonYear);
+        $this->updateTableMV6StagingPart2($pSeasonYear, "Field");
+        $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
+        $this->updateKeyStatus("dw_rpt06_stg2", 1);
+        
+        $this->updateKeyStatus("dw_rpt06_stg2", 0);
+        $this->updateTableMV6StagingPart2($pSeasonYear, "Goal");
+        $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
+        $this->updateKeyStatus("dw_rpt06_stg2", 1);
+        
+        $this->updateKeyStatus("dw_rpt06_stg2", 0);
+        $this->updateTableMV6StagingPart2($pSeasonYear, "Boundary");
+        $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
+        $this->updateKeyStatus("dw_rpt06_stg2", 1);
+        
+        //Now, insert into the staging table the opposite combination
+        $this->updateKeyStatus("dw_rpt06_stg2", 0);
+        $this->updateTableMV6StagingPart2Opposite();
         $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
         $this->updateKeyStatus("dw_rpt06_stg2", 1);
         
@@ -336,7 +358,7 @@ class Refresh_mv_tables extends CI_Model
     }
     
     private function updateTableMV6Staging($pSeasonYear) {
-        $queryString = "INSERT INTO dw_rpt06_staging (umpire_key, umpire_type, last_first_name, match_id, date_year, league_key, age_group, region_name)
+        $queryString = "INSERT INTO dw_rpt06_staging (umpire_key, umpire_type, last_first_name, match_id, date_year, league_key, age_group, region_name, short_league_name)
             SELECT DISTINCT
             u.umpire_key,
             u.umpire_type,
@@ -345,7 +367,8 @@ class Refresh_mv_tables extends CI_Model
             dti.date_year,
             m.league_key,
             a.age_group,
-            l.region_name
+            l.region_name,
+            l.short_league_name
             FROM dw_fact_match m
             INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
             INNER JOIN dw_dim_time dti ON m.time_key = dti.time_key
@@ -355,12 +378,13 @@ class Refresh_mv_tables extends CI_Model
         $query = $this->db->query($queryString);
     }
 
-    private function updateTableMV6StagingPart2($pSeasonYear) {
-        $queryString = "INSERT INTO dw_rpt06_stg2 (umpire_type, age_group, region_name, first_umpire, second_umpire, date_year, match_id)
+    private function updateTableMV6StagingPart2($pSeasonYear, $pUmpireType) {
+        $queryString = "INSERT INTO dw_rpt06_stg2 (umpire_type, age_group, region_name, short_league_name, first_umpire, second_umpire, date_year, match_id)
             SELECT DISTINCT
             s.umpire_type,
             s.age_group,
             s.region_name,
+            s.short_league_name,
             s.last_first_name,
             s2.last_first_name,
             s.date_year,
@@ -369,22 +393,43 @@ class Refresh_mv_tables extends CI_Model
             INNER JOIN dw_rpt06_staging s2 ON s.match_id = s2.match_id
                 AND s.umpire_type = s2.umpire_type
                 AND s.umpire_key <> s2.umpire_key
-                AND s.league_key = s2.league_key;";
+                AND s.league_key = s2.league_key
+            WHERE s.umpire_type = '". $pUmpireType ."'
+            AND s.last_first_name > s2.last_first_name;";
         $query = $this->db->query($queryString);
+    }
+    
+    private function updateTableMV6StagingPart2Opposite() {
+        //Note: The first and second umpire fields are deliberately swapped.
+        //This is because the original query only inserts a single combination, and this query inserts the second combination.
+        $queryString = "INSERT INTO dw_rpt06_stg2 (umpire_type, age_group, region_name, short_league_name, first_umpire, second_umpire, date_year, match_id)
+            SELECT 
+            s.umpire_type,
+            s.age_group,
+            s.region_name,
+            s.short_league_name,
+            s.second_umpire,
+            s.first_umpire,
+            s.date_year,
+            s.match_id
+            FROM dw_rpt06_stg2 s";
+        $query = $this->db->query($queryString);
+        
     }
 
     private function updateTableMV6($pSeasonYear) {
-        $queryString = "INSERT INTO dw_mv_report_06 (umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count)
+        $queryString = "INSERT INTO dw_mv_report_06 (umpire_type, age_group, region_name, short_league_name, first_umpire, second_umpire, season_year, match_count)
         SELECT
         s.umpire_type,
         s.age_group,
         s.region_name,
+        s.short_league_name,
         s.first_umpire,
         s.second_umpire,
         s.date_year,
         COUNT(DISTINCT s.match_id) AS match_count
         FROM dw_rpt06_stg2 s
-        GROUP BY s.umpire_type, s.age_group, s.region_name, s.first_umpire, s.second_umpire, s.date_year;";
+        GROUP BY s.umpire_type, s.age_group, s.region_name, s.short_league_name, s.first_umpire, s.second_umpire, s.date_year;";
         $query = $this->db->query($queryString);
     }
 
