@@ -39,6 +39,7 @@ class Datatestmodel extends CI_Model
         $outputArray['tableOperations'] = $this->checkImportedTableOperations();
         $outputArray['report01'] = $this->runTestsForReport01();
         $outputArray['report08'] = $this->checkUmpireGamesAgainstBaseline();
+        $outputArray['reportToBaseline'] = $this->checkAllUmpireGamesAgainstBaseline();
         
         return $outputArray;
          
@@ -304,6 +305,62 @@ ORDER BY umpire_name, club_name";
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
 
+        return $queryResultArray;
+    }
+    
+    private function checkAllUmpireGamesAgainstBaseline() {
+        $queryResultArray = array();
+        
+        $queryString = "SELECT
+full_name,
+report_pre2015,
+baseline_pre2015,
+report_2015,
+baseline_2015,
+report_2016,
+baseline_2016,
+report_2017,
+baseline_2017,
+report_pre2015 +  report_2015 +  report_2016 + report_2017 AS report_total,
+baseline_careerend2017,
+report_pre2015 +  report_2015 +  report_2016 + report_2017 - baseline_careerend2017 AS report_baseline_diff
+FROM (
+	SELECT DISTINCT
+	full_name,
+	IFNULL((SELECT s1.match_count
+	FROM dw_mv_report_08 s1
+	WHERE s1.season_year = 'Games Prior'
+	AND s1.full_name = m.full_name),0) AS report_pre2015,
+	IFNULL((SELECT s1.match_count
+	FROM dw_mv_report_08 s1
+	WHERE s1.season_year = '2015'
+	AND s1.full_name = m.full_name),0) AS report_2015,
+	IFNULL((SELECT s1.match_count
+	FROM dw_mv_report_08 s1
+	WHERE s1.season_year = '2016'
+	AND s1.full_name = m.full_name),0) AS report_2016,
+	IFNULL((SELECT s1.match_count
+	FROM dw_mv_report_08 s1
+	WHERE s1.season_year = '2017'
+	AND s1.full_name = m.full_name),0) AS report_2017,
+	b.games_pre_2014 + b.games_2014 AS baseline_pre2015,
+	b.games_2015 AS baseline_2015,
+	b.games_2016 AS baseline_2016,
+	b.games_2017 AS baseline_2017,
+	b.games_career_end2017 AS baseline_careerend2017
+	FROM dw_mv_report_08 m
+	INNER JOIN umpire_match_baseline b ON m.full_name = CONCAT(b.last_name, ', ',  b.first_name)
+	WHERE 1=1
+    /*AND m.full_name = 'Moerenhout, Sam'*/
+    /*AND m.full_name = 'Hitchcock, Daniel'*/
+) AS sub
+WHERE report_pre2015 +  report_2015 +  report_2016 + report_2017 - baseline_careerend2017 <> 0
+;";
+        
+        //Run query and store result in array
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+        
         return $queryResultArray;
     }
     

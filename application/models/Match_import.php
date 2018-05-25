@@ -20,15 +20,8 @@ class Match_import extends CI_Model
     	$objPHPExcel = PHPExcel_IOFactory::load($dataFile);
     	$sheet = $objPHPExcel->getActiveSheet();
     	$lastRow = $sheet->getHighestRow();
-    	/*
-    	TODO: Put in a permanent fix to dynamically map the column headings to DB tables.
-    	Column headings can vary depending on data in the source system (e.g. sometimes there are 4 boundary umpires, or 5, or 6)
-    	*/
-    	
-    	$columns = array('season', 'round', 'date', 'competition_name', 'ground', 'time',
-    	    'home_team', 'away_team', 'field_umpire_1', 'field_umpire_2', 'field_umpire_3',
-    	    'boundary_umpire_1', 'boundary_umpire_2', 'boundary_umpire_3', 'boundary_umpire_4',
-    	    'boundary_umpire_5', 'goal_umpire_1', 'goal_umpire_2');
+
+    	$columns = $this->findColumnsFromSpreadshet($sheet);
     	
     	$data = $sheet->rangeToArray('A2:R'.$lastRow, $columns);
     	
@@ -43,17 +36,51 @@ class Match_import extends CI_Model
     	}
 	
     }
+    
+    private function findColumnsFromSpreadshet($pSheet) {
+        $sheetColumnHeaderArray = $pSheet->rangeToArray('A1:R1');
+        $columnHeaderToTableMatchArray = array(
+            'Season'=>'season',
+            'Round'=>'round',
+            'Date'=>'date',
+            'Competition Name'=>'competition_name',
+            'Ground'=>'ground',
+            'Time'=>'time',
+            'Home Team'=>'home_team',
+            'Away Team'=>'away_team',
+            'Field Umpire 1'=>'field_umpire_1',
+            'Field Umpire 2'=>'field_umpire_2',
+            'Field Umpire 3'=>'field_umpire_3',
+            'Boundary Umpire 1'=>'boundary_umpire_1',
+            'Boundary Umpire 2'=>'boundary_umpire_2',
+            'Boundary Umpire 3'=>'boundary_umpire_3',
+            'Boundary Umpire 4'=>'boundary_umpire_4',
+            'Boundary Umpire 5'=>'boundary_umpire_5',
+            'Goal Umpire 1'=>'goal_umpire_1',
+            'Goal Umpire 2'=>'goal_umpire_2'
+        );
+        
+        $columns = array();
+        
+        foreach ($sheetColumnHeaderArray[0] as $columnHeader) {
+            /*
+            This looks up the table's column name from the columnHeaderTableMatchArray above,
+            and if it finds a match, adds the column name into the columns array
+            */
+            $this->debug_library->debugOutput("column header in for:", $columnHeader);
+            if (array_key_exists($columnHeader, $columnHeaderToTableMatchArray)) {
+                $columns[] = $columnHeaderToTableMatchArray[$columnHeader];
+            }
+        }
+        
+        return $columns;
+        
+    }
   
     private function prepareNormalisedTables($importedFileID) {
         $season = new Season();
         $season->setSeasonID($this->findSeasonToUpdate());
-        //echo "Run ETL file " . $season->getSeasonID() . ", " . $importedFileID . "<BR />";
-        
         $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
-        
-        //$etlScript = base_url() . "/cron/etl.php";
-        //$str = shell_exec($etlScript.' 2>&1 > out.log');
-        
     }
     
     public function logErrorMessage($pMessage) {
@@ -164,18 +191,11 @@ class Match_import extends CI_Model
       
         $resultArray = $this->splitArrayBasedOnType($resultArray);
       
-        //$this->debug_library->debugOutput("resultArray (in findMissingDataOnImport):", $resultArray);
-      
         return $resultArray;
     }
     
     private function splitArrayBasedOnType(array $pResultArray) {
-        //$resultArray = "";
         $resultArray = array(); 
-      
-        //Split the results into separate arrays, based on the record type
-        //$this->debug_library->debugOutput("pResultArray (in splitArrayBasedOnType):", $pResultArray);
-      
         foreach ($pResultArray as $currentRowItem) {
             $resultArray[$currentRowItem['record_type']][] = $currentRowItem;
         }

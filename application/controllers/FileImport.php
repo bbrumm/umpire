@@ -13,8 +13,6 @@ class FileImport extends CI_Controller {
 		$this->load->model('Missing_data_updater');
 		$this->load->helper('form');
 		include 'application/helpers/phpexcel/Classes/PHPExcel.php';
-		
-		
 	}
 	
 	public function index() {
@@ -27,8 +25,6 @@ class FileImport extends CI_Controller {
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
 	    $this->load->library('upload', $config);
-	    
-	    //echo "Upload Path(". $config['upload_path'] .")";
 	     
         $uploadPassed = $this->upload->do_upload();
 
