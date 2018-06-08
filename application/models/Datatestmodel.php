@@ -39,7 +39,9 @@ class Datatestmodel extends CI_Model
         $outputArray['tableOperations'] = $this->checkImportedTableOperations();
         $outputArray['report01'] = $this->runTestsForReport01();
         $outputArray['report08'] = $this->checkUmpireGamesAgainstBaseline();
+        
         $outputArray['reportToBaseline'] = $this->checkAllUmpireGamesAgainstBaseline();
+        $outputArray['umpireNamesInTables'] = $this->checkUmpireNamesInTables();
         
         return $outputArray;
          
@@ -356,6 +358,66 @@ FROM (
 ) AS sub
 WHERE report_pre2015 +  report_2015 +  report_2016 + report_2017 - baseline_careerend2017 <> 0
 ;";
+        
+        //Run query and store result in array
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+        
+        return $queryResultArray;
+    }
+    
+    private function checkUmpireNamesInTables() {
+        $queryResultArray = array();
+        
+        $queryString = "SELECT
+last_name,
+first_name,
+chk_umpire,
+chk_dim_umpire,
+chk_umpire_baseline,
+chk_umpire_rpt08
+FROM (
+	SELECT
+	sub.last_name,
+	sub.first_name,
+	(SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END
+	FROM umpire u
+	WHERE u.last_name COLLATE utf8_bin = sub.last_name
+	AND u.first_name COLLATE utf8_bin = sub.first_name) AS chk_umpire,
+	(SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END
+	FROM dw_dim_umpire u
+	WHERE u.last_name COLLATE utf8_bin = sub.last_name
+	AND u.first_name COLLATE utf8_bin = sub.first_name) AS chk_dim_umpire,
+	(SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END
+	FROM umpire_match_baseline u
+	WHERE u.last_name COLLATE utf8_bin = sub.last_name
+	AND u.first_name COLLATE utf8_bin = sub.first_name) AS chk_umpire_baseline,
+	(SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END
+	FROM dw_mv_report_08 u
+	WHERE u.last_name COLLATE utf8_bin = sub.last_name
+	AND u.first_name COLLATE utf8_bin = sub.first_name
+	) AS chk_umpire_rpt08
+	FROM (
+		SELECT last_name COLLATE utf8_bin AS last_name, first_name COLLATE utf8_bin AS first_name
+		FROM umpire
+		UNION
+		SELECT last_name COLLATE utf8_bin AS last_name, first_name COLLATE utf8_bin AS first_name
+		FROM dw_dim_umpire
+		UNION
+		SELECT last_name COLLATE utf8_bin AS last_name, first_name COLLATE utf8_bin AS first_name
+		FROM umpire_match_baseline
+		UNION
+		SELECT last_name COLLATE utf8_bin AS last_name, first_name COLLATE utf8_bin AS first_name
+		FROM dw_mv_report_08
+	) AS sub
+) AS subout
+WHERE (
+chk_umpire = 'No'
+OR chk_dim_umpire = 'No'
+OR chk_umpire_baseline = 'No'
+OR chk_umpire_rpt08 = 'No'
+)
+ORDER BY last_name, first_name;";
         
         //Run query and store result in array
         $query = $this->db->query($queryString);

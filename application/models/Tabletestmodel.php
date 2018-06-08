@@ -72,7 +72,14 @@ WHERE m.field_umpire_1 IS NOT NULL";
             )
             AND t.table_schema = 'databas6'
             AND t.engine != 'FEDERATED'
-            AND t.table_name NOT IN ('tables_to_validate');";
+            AND t.table_name NOT IN (
+            'tables_to_validate',
+            'log_active_changes',
+            'log_privilege_changes',
+            'log_role_changes'
+            'password_reset_log',
+            'password_reset_request'
+            );";
         } else {
         $queryString = "SELECT t.table_name,
             t.engine,

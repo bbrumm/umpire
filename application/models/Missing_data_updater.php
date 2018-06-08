@@ -117,9 +117,9 @@ class Missing_data_updater extends CI_Model {
         if (array_key_exists('competition', $_POST)) {
             $this->updateCompetitionTable($_POST['competition']);
         }
-        
-        $this->updateTeamAndClubTables($_POST);
-    
+        if (array_key_exists('rdTeam', $_POST)) {
+            $this->updateTeamAndClubTables($_POST);
+        }
     
         $season = new Season();
         $season->setSeasonID($this->Match_import->findSeasonToUpdate());

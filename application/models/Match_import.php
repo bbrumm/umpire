@@ -20,10 +20,13 @@ class Match_import extends CI_Model
     	$objPHPExcel = PHPExcel_IOFactory::load($dataFile);
     	$sheet = $objPHPExcel->getActiveSheet();
     	$lastRow = $sheet->getHighestRow();
+    	$lastColumn = $sheet->getHighestColumn();
+    	
+    	//$this->debug_library->debugOutput("last column:", $lastColumn);
 
     	$columns = $this->findColumnsFromSpreadshet($sheet);
     	
-    	$data = $sheet->rangeToArray('A2:R'.$lastRow, $columns);
+    	$data = $sheet->rangeToArray('A2:'. $lastColumn .$lastRow, $columns);
     	
     	$rows = $data;
     	$queryStatus = $this->db->insert_batch('match_import', $data);
@@ -67,7 +70,6 @@ class Match_import extends CI_Model
             This looks up the table's column name from the columnHeaderTableMatchArray above,
             and if it finds a match, adds the column name into the columns array
             */
-            $this->debug_library->debugOutput("column header in for:", $columnHeader);
             if (array_key_exists($columnHeader, $columnHeaderToTableMatchArray)) {
                 $columns[] = $columnHeaderToTableMatchArray[$columnHeader];
             }

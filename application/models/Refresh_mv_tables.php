@@ -129,9 +129,9 @@ class Refresh_mv_tables extends CI_Model
     
     private function updateKeyStatus($pTable, $pStatus) {
         if ($pStatus == 0) {
-            $this->db->query("ALTER TABLE dw_mv_report_01 DISABLE KEYS;");
+            $this->db->query("ALTER TABLE $pTable DISABLE KEYS;");
         } elseif ($pStatus == 1) {
-            $this->db->query("ALTER TABLE dw_mv_report_01 ENABLE KEYS;");
+            $this->db->query("ALTER TABLE $pTable ENABLE KEYS;");
         } else {
             throw new Exception("Invalid status for disabling a key.");
         }
@@ -469,11 +469,13 @@ class Refresh_mv_tables extends CI_Model
         //Use the baseline data if the imported year is not 2018
         //This is because annual report/baseline data is more correct than the master spreadsheets
         if ($pSeasonYear == 2018) {
-            $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count)
+            $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count, last_name, first_name)
                 SELECT
                 ti.date_year,
                 u.last_first_name,
-                COUNT(DISTINCT m.match_id) AS match_count
+                COUNT(DISTINCT m.match_id) AS match_count,
+                u.last_name,
+                u.first_name
                 FROM dw_fact_match m
                 INNER JOIN dw_dim_league l ON m.league_key = l.league_key
                 INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
@@ -484,32 +486,42 @@ class Refresh_mv_tables extends CI_Model
                 SELECT DISTINCT
                 'Games Prior',
                 u.last_first_name,
-                u.games_prior
+                u.games_prior,
+                u.last_name,
+                u.first_name
                 FROM dw_dim_umpire u
                 UNION ALL
                 SELECT DISTINCT
                 'Games Other Leagues',
                 u.last_first_name,
-                u.games_other_leagues
+                u.games_other_leagues,
+                u.last_name,
+                u.first_name
                 FROM dw_dim_umpire u;";
         } else {
-            $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count)
+            $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count, last_name, first_name)
             SELECT
             '$pSeasonYear',
             CONCAT(b.last_name, ', ', b.first_name),
-            b.games_$pSeasonYear
+            b.games_$pSeasonYear,
+            u.last_name,
+            u.first_name
             FROM umpire_match_baseline b
             UNION ALL
             SELECT DISTINCT
             'Games Prior',
             u.last_first_name,
-            u.games_prior
+            u.games_prior,
+            u.last_name,
+            u.first_name
             FROM dw_dim_umpire u
             UNION ALL
             SELECT DISTINCT
             'Games Other Leagues',
             u.last_first_name,
-            u.games_other_leagues
+            u.games_other_leagues,
+            u.last_name,
+            u.first_name
             FROM dw_dim_umpire u;";
         }
         $query = $this->db->query($queryString);

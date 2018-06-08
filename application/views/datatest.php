@@ -121,23 +121,6 @@ foreach ($umpireTestResultsArray['report08'] as $key => $val) {
 </tr>
 </thead>
 <?php 
-/*
-
-full_name,
-report_pre2015,
-baseline_pre2015,
-report_2015,
-baseline_2015,
-report_2016,
-baseline_2016,
-report_2017,
-baseline_2017,
-report_total,
-baseline_careerend2017,
-report_baseline_diff
-
- */
-
 
 foreach ($umpireTestResultsArray['reportToBaseline'] as $key => $val) {
     echo "<tr>";
@@ -153,6 +136,43 @@ foreach ($umpireTestResultsArray['reportToBaseline'] as $key => $val) {
     echo "<td>". $val['report_total'] ."</td>";
     echo "<td>". $val['baseline_careerend2017'] ."</td>";
     echo "<td>". $val['report_baseline_diff'] ."</td>";
+    echo "</tr>";
+}
+
+?>
+</table>
+
+
+<br />
+<h3>Umpire Names in Each Table</h3>
+
+<table>
+<thead>
+<tr>
+<th>Last Name</th>
+<th>First Name</th>
+<th>umpire</th>
+<th>dw_dim_umpire</th>
+<th>umpire_baseline</th>
+<th>dw_mv_report_08</th>
+</tr>
+</thead>
+<?php
+$classIssue = " style='background:#FFAAAA'";
+$classNoIssue = "";
+foreach ($umpireTestResultsArray['umpireNamesInTables'] as $key => $val) {
+    
+    echo "<tr>";
+    echo "<td>". $val['last_name'] ."</td>";
+    echo "<td>". $val['first_name'] ."</td>";
+    $classToUse = ($val['chk_umpire'] == "No") ? $classIssue : $classNoIssue;
+    echo "<td". $classToUse .">". $val['chk_umpire'] ."</td>";
+    $classToUse = ($val['chk_dim_umpire'] == "No") ? $classIssue : $classNoIssue;
+    echo "<td". $classToUse .">". $val['chk_dim_umpire'] ."</td>";
+    $classToUse = ($val['chk_umpire_baseline'] == "No") ? $classIssue : $classNoIssue;
+    echo "<td". $classToUse .">". $val['chk_umpire_baseline'] ."</td>";
+    $classToUse = ($val['chk_umpire_rpt08'] == "No") ? $classIssue : $classNoIssue;
+    echo "<td". $classToUse .">". $val['chk_umpire_rpt08'] ."</td>";
     echo "</tr>";
 }
 ?>
