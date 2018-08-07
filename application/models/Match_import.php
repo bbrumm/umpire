@@ -22,11 +22,13 @@ class Match_import extends CI_Model
     	$lastRow = $sheet->getHighestRow();
     	$lastColumn = $sheet->getHighestColumn();
     	
-    	//$this->debug_library->debugOutput("last column:", $lastColumn);
+    	$this->debug_library->debugOutput("last column:", $lastColumn);
+    	$this->debug_library->debugOutput("last row:", $lastRow);
 
     	$columns = $this->findColumnsFromSpreadshet($sheet);
     	
-    	$data = $sheet->rangeToArray('A2:'. $lastColumn .$lastRow, $columns);
+    	$data = $sheeflt->rangeToArray('A2:'. $lastColumn .$lastRow, $columns);
+    	
     	
     	$rows = $data;
     	$queryStatus = $this->db->insert_batch('match_import', $data);

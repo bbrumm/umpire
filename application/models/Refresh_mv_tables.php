@@ -188,10 +188,10 @@ class Refresh_mv_tables extends CI_Model
             UNION ALL
             SELECT
             u.last_first_name,
-            '2 Umpires' AS short_league_name,
+            l.short_league_name,
             a.age_group,
             a.sort_order,
-            10 AS league_sort_order,
+            l.league_sort_order,
             1 AS two_ump_flag,
             l.region_name,
             u.umpire_type,

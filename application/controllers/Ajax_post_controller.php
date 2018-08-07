@@ -77,7 +77,7 @@ class Ajax_Post_Controller extends CI_Controller
     public function startDataImport() {
         //This is where I trigger the data import
         
-        include "etltest.php";
+        include "etltestrun.php";
         
         runETL();
         //TODO: Here, convert this to a function call inside etltest.php. But will this run in parallel?

@@ -552,6 +552,28 @@ Array
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
 	                //echo "pivotArray key (". $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField].") set to (". $resultRow[$columnField].")<BR />";
+	              
+	            } elseif ($this->requestedReport->getReportNumber() == 2) {
+	                //$this->debug_library->debugOutput("result row 1:",  $resultRow);
+	                
+	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
+	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
+	                
+	                if ($resultRow['two_ump_flag'] == 1) {
+	                    $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['short_league_name'] = '2 Umpires';
+	                    
+	                    
+	                    //$pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
+	                //} else {
+	                   // $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['2 Umpires'] = $resultRow['match_count'];
+	                    
+	                    
+	                //    $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['2 Umpires'] = $resultRow[$columnField];
+	                }
+	                
+	                
+	                
+	                
 	                
 	            } else {
 	                
@@ -576,7 +598,7 @@ Array
 	        
 	        $counterForRow++;
 	    }
-	    //$this->debug_library->debugOutput("pivotedArray:", $pivotedArray);
+	    $this->debug_library->debugOutput("pivotedArray:", $pivotedArray);
 	    return $pivotedArray;
 	}
 	
