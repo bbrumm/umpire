@@ -27,7 +27,7 @@ class Match_import extends CI_Model
 
     	$columns = $this->findColumnsFromSpreadshet($sheet);
     	
-    	$data = $sheeflt->rangeToArray('A2:'. $lastColumn .$lastRow, $columns);
+    	$data = $sheet->rangeToArray('A2:'. $lastColumn .$lastRow, $columns);
     	
     	
     	$rows = $data;
