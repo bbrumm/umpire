@@ -224,21 +224,22 @@ foreach ($umpireTestResultsArray['data_differences'] as $key => $val) {
     
     //Output Local-Focused Records
     echo "<br /><h2>". $key ."</h2> <br />";
-    echo "<h3>Local Records not found or different in Remote Table</h3>";
+    //echo "<h3>Local Records not found or different in Remote Table</h3>";
     
-    if (count($umpireTestResultsArray['data_differences'][$key]['local']) > 0) {
+    //if (count($umpireTestResultsArray['data_differences'][$key]['local']) > 0) {
+    if (count($umpireTestResultsArray['data_differences'][$key]) > 0) {
         echo "<table>";
         echo "<thead><tr>";
         //Loop through each of the available columns, using the first row of data, and output a header.
-        foreach ($umpireTestResultsArray['data_differences'][$key]['local'][0] AS $keyColumnName => $keyFirstRowValue) {
+        foreach ($umpireTestResultsArray['data_differences'][$key][0] AS $keyColumnName => $keyFirstRowValue) {
             echo "<th>". $keyColumnName."</th>";
         }
         echo "</tr></thead>";
         
-        for ($i=0; $i < count($umpireTestResultsArray['data_differences'][$key]['local']); $i++) {
+        for ($i=0; $i < count($umpireTestResultsArray['data_differences'][$key]); $i++) {
             echo "<tr>";
-            foreach ($umpireTestResultsArray['data_differences'][$key]['local'][0] AS $keyColumnName => $keyFirstRowValue) {
-                echo "<td>". $umpireTestResultsArray['data_differences'][$key]['local'][$i][$keyColumnName] ."</td>";
+            foreach ($umpireTestResultsArray['data_differences'][$key][0] AS $keyColumnName => $keyFirstRowValue) {
+                echo "<td>". $umpireTestResultsArray['data_differences'][$key][$i][$keyColumnName] ."</td>";
             }
             echo "</tr>";
         }
@@ -246,12 +247,12 @@ foreach ($umpireTestResultsArray['data_differences'] as $key => $val) {
     
     } else {
         //No results found. Show message
-        echo "All data matches.<br />";
+        echo "<p align='center'>All data matches.</p><br />";
     }
     
     
     //Output Remote-Focused Records
-    echo "<h3>Remote Records not found or different in Local Table</h3>";
+   /* echo "<h3>Remote Records not found or different in Local Table</h3>";
     
     if (count($umpireTestResultsArray['data_differences'][$key]['remote']) > 0) {
         echo "<table>";
@@ -274,6 +275,7 @@ foreach ($umpireTestResultsArray['data_differences'] as $key => $val) {
         //No results found. Show message
         echo "All data matches.<br />";
     }
+    */
 }
 ?>
 

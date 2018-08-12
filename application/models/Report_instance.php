@@ -91,6 +91,7 @@ class Report_instance extends CI_Model {
 	        $columnNumber = 0;
 	        $totalGeelong = 0;
 	        $totalForRow = 0;
+	        $twoUmpGamesForRow = 0;
 	        
 	        if ($this->requestedReport->getReportNumber() == 5) {
 	            $resultOutputArray[$currentResultArrayRow][0] = $currentRowItem[0]['umpire_type'];
@@ -178,6 +179,13 @@ Array
 	                       if ($columnHeadingSet['short_league_name'] != '2 Umpires') {
 	                           $totalForRow = $totalForRow + $columnItem['match_count'];
 	                       }
+	                       //Set the "2 Umpires" match count to the total so far of rows marked as two_ump_flag=1
+	                       if ($columnHeadingSet['short_league_name'] == '2 Umpires') {
+	                           $twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem['match_count'];
+	                           $this->debug_library->debugOutput("twoUmpGamesForRow:", $twoUmpGamesForRow);
+	                           $resultOutputArray[$currentResultArrayRow][$columnNumber] = $twoUmpGamesForRow;
+	                       }
+	                       
 	                       $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
 	                   } elseif($this->requestedReport->getReportNumber() == 3) {
 	                        if ($columnHeadingSet['short_league_name'] == 'Total') {
@@ -228,6 +236,7 @@ Array
 	            $this->requestedReport->getReportNumber() == 5) {
 	            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $totalForRow;
 	        }
+	        
 	        if ($this->requestedReport->getReportNumber() == 8) {
 	            //$this->debug_library->debugOutput("columnitem array:", $columnItem);
 	            $resultOutputArray[$currentResultArrayRow][6] = $totalGeelong;
@@ -409,6 +418,8 @@ Array
 
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryForReport = $separateReport->getReportDataQuery($this);
+        
+        $this->debug_library->debugOutput("queryForReport:",  $queryForReport);
 
         //Run query and store result in array
         $query = $this->db->query($queryForReport);
