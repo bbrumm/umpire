@@ -1,6 +1,6 @@
 <?php
-require_once 'application/tests/Report_instance_test.php';
-require_once 'application/tests/Report_controller_test.php';
+require_once 'Report_instance_test.php';
+require_once 'Report_controller_test.php';
 
 /**
  * Static test suite.
