@@ -1,4 +1,5 @@
 <?php
+require_once 'TestCase.php';
 require_once 'Report_instance_test.php';
 require_once 'Report_controller_test.php';
 
