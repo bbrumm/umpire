@@ -25,7 +25,9 @@ class Match_import extends CI_Model
     	$this->debug_library->debugOutput("last column:", $lastColumn);
     	$this->debug_library->debugOutput("last row:", $lastRow);
 
-    	$columns = $this->findColumnsFromSpreadshet($sheet);
+    	$columns = $this->findColumnsFromSpreadshet($sheet, $lastColumn);
+    	
+    	$this->debug_library->debugOutput("columns:", $columns);
     	
     	$data = $sheet->rangeToArray('A2:'. $lastColumn .$lastRow, $columns);
     	
@@ -42,8 +44,8 @@ class Match_import extends CI_Model
 	
     }
     
-    private function findColumnsFromSpreadshet($pSheet) {
-        $sheetColumnHeaderArray = $pSheet->rangeToArray('A1:R1');
+    private function findColumnsFromSpreadshet($pSheet, $pLastColumn) {
+        $sheetColumnHeaderArray = $pSheet->rangeToArray("A1:". $pLastColumn ."1");
         $columnHeaderToTableMatchArray = array(
             'Season'=>'season',
             'Round'=>'round',
