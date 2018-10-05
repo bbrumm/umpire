@@ -1,5 +1,57 @@
 # Change Log for ci-phpunit-test
 
+## v0.16.1 (2018/04/22)
+
+### Fixed
+
+* Fix bug that installer replaces file path in `tests/Bootstrap.php` with wrong code which causes Parse error. See [#247](https://github.com/kenjis/ci-phpunit-test/pull/247).
+* Fix bug that `$this->request()` can't be called more than once in a test method. See [#248](https://github.com/kenjis/ci-phpunit-test/pull/248).
+
+### Others
+
+* Compatible with CodeIgniter 3.1.8
+
+## v0.16.0 (2018/03/21)
+
+### Upgrade Note
+
+* Now ci-phpunit-test detects all warnings and notices during `$this->request()` execution, and throws exceptions. If you want to disable the checking, you must add `protected $strictRequestErrorCheck = false;` in your test classes. See [#235](https://github.com/kenjis/ci-phpunit-test/pull/235).
+* If you use `$this->newModel()`, `$this->newLibrary()`, `$this->newController()` in your test cases, please install `tests/UnitTestCase.php` manually, and change the base classname of the test cases to `UnitTestCase` class. See [#233](https://github.com/kenjis/ci-phpunit-test/pull/233).
+* Now ci-phpunit-test replaces `CI_Output`. If you use `MY_Output`, it might delete ci-phpunit-test override for testing. See [How to Write Tests](https://github.com/kenjis/ci-phpunit-test/blob/master/docs/HowToWriteTests.md#my_output) for the details.
+
+### Changed
+
+* Now ci-phpunit-test detects all warnings and notices during `$this->request()` execution, and throws exceptions.
+* `$this->newModel()`, `$this->newLibrary()`, `$this->newController()` moved to `UnitTestCase` class.
+* Now ci-phpunit-test replaces `CI_Output`.
+
+### Added
+
+* Now you can pass more than 5 arguments to `$this->verifyInvoked*()`. See [#192](https://github.com/kenjis/ci-phpunit-test/pull/192).
+* Now you can assert whether a response cookie is just present or not. See [#205](https://github.com/kenjis/ci-phpunit-test/pull/205).
+* Now you can move tests folder if you define `TESTPATH` in `application/tests/Bootstrap.php`.
+* Now you can specify custom `application`  and `public` directory when you install via Composer. See [README](https://github.com/kenjis/ci-phpunit-test#installation-via-composer).
+
+### Fixed
+
+* Fix bug that `set_status_header()` in controller constructor gets overwritten. See [#194](https://github.com/kenjis/ci-phpunit-test/issues/194).
+* Fix bug that `MY_Config` is not loaded in `$this->request()`. See [#196](https://github.com/kenjis/ci-phpunit-test/issues/196).
+
+### Others
+
+* Compatible with CodeIgniter 3.1.7
+* Compatible with PHP 7.2
+
+## v0.15.0 (2017/04/23)
+
+### Added
+
+* Now you can create a mock which has a stubbed method that returns the mock itself with using `$this->getDouble()`. See [#170](https://github.com/kenjis/ci-phpunit-test/pull/170).
+
+### Others
+
+* Compatible with CodeIgniter 3.1.4
+
 ## v0.14.0 (2017/02/09)
 
 ### Upgrade Note for PHPUnit 6.0 users

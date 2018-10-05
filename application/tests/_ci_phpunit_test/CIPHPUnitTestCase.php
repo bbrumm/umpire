@@ -32,10 +32,19 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 	protected $backupGlobalsBlacklist = ['RTR'];
 
 	/**
+	 * Detect warnings and notices in a request output
+	 *
+	 * @var bool
+	 */
+	protected $strictRequestErrorCheck = true;
+
+	protected $restoreErrorHandler = false;
+
+	/**
 	 * @var CI_Controller CodeIgniter instance
 	 */
 	protected $CI;
-	
+
 	protected $class_map = [
 		'request'    => 'CIPHPUnitTestRequest',
 		'double'     => 'CIPHPUnitTestDouble',
@@ -45,6 +54,11 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 	public function setCI(CI_Controller $CI)
 	{
 		$this->CI = $CI;
+	}
+
+	public function getStrictRequestErrorCheck()
+	{
+		return $this->strictRequestErrorCheck;
 	}
 
 	public function __get($name)
@@ -66,7 +80,7 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 			'index.php',
 		];
 		$_SERVER['argc'] = 1;
-		
+
 		// Reset current directroy
 		chdir(FCPATH);
 	}
@@ -81,63 +95,10 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 		$this->CI =& get_instance();
 	}
 
-	/**
-	 * Create a controller instance
-	 *
-	 * @param string $classname
-	 * @return CI_Controller
-	 */
-	public function newController($classname)
-	{
-		reset_instance();
-		$controller = new $classname;
-		$this->CI =& get_instance();
-		return $controller;
-	}
-
-	/**
-	 * Create a model instance
-	 *
-	 * @param string $classname
-	 * @return CI_Model
-	 */
-	public function newModel($classname)
-	{
-		$this->resetInstance();
-		$this->CI->load->model($classname);
-
-		// Is the model in a sub-folder?
-		if (($last_slash = strrpos($classname, '/')) !== FALSE)
-		{
-			$classname = substr($classname, ++$last_slash);
-		}
-
-		return $this->CI->$classname;
-	}
-
-	/**
-	 * Create a library instance
-	 *
-	 * @param string $classname
-	 * @return object
-	 */
-	public function newLibrary($classname)
-	{
-		$this->resetInstance();
-		$this->CI->load->library($classname);
-
-		// Is the library in a sub-folder?
-		if (($last_slash = strrpos($classname, '/')) !== FALSE)
-		{
-			$classname = substr($classname, ++$last_slash);
-		}
-		$classname = strtolower($classname);
-
-		return $this->CI->$classname;
-	}
-
 	protected function tearDown()
 	{
+		$this->disableStrictErrorCheck();
+
 		if (class_exists('MonkeyPatch', false))
 		{
 			if (MonkeyPatchManager::isEnabled('FunctionPatcher'))
@@ -181,6 +142,35 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 	public function request($http_method, $argv, $params = [])
 	{
 		return $this->request->request($http_method, $argv, $params);
+	}
+
+	/**
+	 * Disable strict error check
+	 */
+	public function disableStrictErrorCheck()
+	{
+		if ($this->restoreErrorHandler) {
+			restore_error_handler();
+			$this->restoreErrorHandler = false;
+		}
+	}
+
+	/**
+	 * Enable strict error check
+	 */
+	public function enableStrictErrorCheck()
+	{
+		if ($this->restoreErrorHandler) {
+			throw new LogicException('Already strict error check mode');
+		}
+
+		set_error_handler(
+			function ($errno, $errstr, $errfile, $errline) {
+				throw new RuntimeException($errstr . ' on line ' . $errline . ' in file ' . $errfile);
+			}
+		);
+
+		$this->restoreErrorHandler = true;
 	}
 
 	/**
@@ -302,7 +292,7 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Asserts HTTP response code
-	 * 
+	 *
 	 * @param int $code
 	 */
 	public function assertResponseCode($code)
@@ -319,7 +309,7 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Asserts HTTP response header
-	 * 
+	 *
 	 * @param string $name  header name
 	 * @param string $value header value
 	 */
@@ -342,7 +332,7 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Asserts HTTP response cookie
-	 * 
+	 *
 	 * @param string       $name            cookie name
 	 * @param string|array $value           cookie value|array of cookie params
 	 * @param bool         $allow_duplicate whether to allow duplicated cookies
@@ -382,6 +372,16 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 			return;
 		}
 
+		// In case of $this->anything()
+		if (
+			$value instanceof PHPUnit_Framework_Constraint_IsAnything
+			|| $value instanceof PHPUnit\Framework\Constraint\IsAnything
+		)
+		{
+			$this->assertTrue(true);
+			return;
+		}
+
 		foreach ($value as $key => $val)
 		{
 			$this->assertEquals(
@@ -394,7 +394,7 @@ class CIPHPUnitTestCase extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Asserts Redirect
-	 * 
+	 *
 	 * @param string $uri  URI to redirect
 	 * @param int    $code response code
 	 */

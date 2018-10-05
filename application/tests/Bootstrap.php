@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -53,7 +53,7 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-// This is needed for @runInSeparateProcess
+// This `if` statemant is needed for @runInSeparateProcess
 if (! defined('ENVIRONMENT'))
 {
 	define('ENVIRONMENT', 'testing');
@@ -213,7 +213,6 @@ switch (ENVIRONMENT)
 			'/\\',
 			DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
 		).DIRECTORY_SEPARATOR;
-
 	}
 
 	// Is the system path correct?
@@ -231,6 +230,9 @@ switch (ENVIRONMENT)
  */
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
+
+	// Path to the test directory containing all the test files.
+	define('TESTPATH', __dir__.DIRECTORY_SEPARATOR);  // Should be the folder this `Bootstrap.php` file is in.
 
 	// Path to the system directory
 	define('BASEPATH', $system_path);
@@ -324,18 +326,18 @@ require __DIR__ . '/_ci_phpunit_test/patcher/bootstrap.php';
 MonkeyPatchManager::init([
 	// PHP Parser: PREFER_PHP7, PREFER_PHP5, ONLY_PHP7, ONLY_PHP5
 	'php_parser' => 'PREFER_PHP5',
-	'cache_dir' => APPPATH . 'tests/_ci_phpunit_test/tmp/cache',
+	'cache_dir' => TESTPATH . '_ci_phpunit_test/tmp/cache',
 	// Directories to patch source files
 	'include_paths' => [
 		APPPATH,
 		BASEPATH,
-		APPPATH . 'tests/_ci_phpunit_test/replacing/',
+		TESTPATH . '_ci_phpunit_test/replacing/',
 	],
 	// Excluding directories to patch
 	// If you want to patch files inside paths below, you must add the directory starting with '-'
 	'exclude_paths' => [
-		APPPATH . 'tests/',
-		'-' . APPPATH . 'tests/_ci_phpunit_test/replacing/',
+		TESTPATH,
+		'-' . TESTPATH . '_ci_phpunit_test/replacing/',
 	],
 	// All patchers you use.
 	'patcher_list' => [
@@ -357,11 +359,16 @@ MonkeyPatchManager::init([
  *  Added for ci-phpunit-test
  * -------------------------------------------------------------------
  */
-require __DIR__ . '/_ci_phpunit_test/CIPHPUnitTest.php';
-CIPHPUnitTest::init();
+
+// If you want to change the path of tests directory, set TESTPATH
 /*
- * Or you can set directories for autoloading
- */
+define('TESTPATH', APPPATH.'tests'.DIRECTORY_SEPARATOR);
+*/
+
+require __DIR__ . '/_ci_phpunit_test/CIPHPUnitTest.php';
+
+CIPHPUnitTest::init();
+// Or you can set directories for autoloading
 /*
 CIPHPUnitTest::init([
 	// Directories for autoloading

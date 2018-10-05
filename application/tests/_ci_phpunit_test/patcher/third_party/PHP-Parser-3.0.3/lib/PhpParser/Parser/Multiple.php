@@ -51,8 +51,4 @@ class Multiple implements Parser {
         } catch (Error $error) {}
         return [$stmts, $error];
     }
-    
-    public function getErrors() {
-        
-    }
 }

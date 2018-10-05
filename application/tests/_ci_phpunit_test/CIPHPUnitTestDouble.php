@@ -57,7 +57,10 @@ class CIPHPUnitTestDouble
 
 		foreach ($params as $method => $return)
 		{
-			if (is_object($return) && $return instanceof Closure) {
+			if (is_object($return) && $return instanceof PHPUnit_Framework_MockObject_Stub) {
+				$mock->expects($this->testCase->any())->method($method)
+					->will($return);
+			} elseif (is_object($return) && $return instanceof Closure) {
 				$mock->expects($this->testCase->any())->method($method)
 					->willReturnCallback($return);
 			} else {
@@ -74,41 +77,11 @@ class CIPHPUnitTestDouble
 		$invocation = $mock->expects($expects)
 			->method($method);
 
-		$count = count($params);
-
-		switch ($count) {
-			case 0:
-				break;
-			case 1:
-				$invocation->$with(
-					$params[0]
-				);
-				break;
-			case 2:
-				$invocation->$with(
-					$params[0], $params[1]
-				);
-				break;
-			case 3:
-				$invocation->$with(
-					$params[0], $params[1], $params[2]
-				);
-				break;
-			case 4:
-				$invocation->$with(
-					$params[0], $params[1], $params[2], $params[3]
-				);
-				break;
-			case 5:
-				$invocation->$with(
-					$params[0], $params[1], $params[2], $params[3], $params[4]
-				);
-				break;
-			default:
-				throw new RuntimeException(
-					'Sorry, ' . $count . ' params not implemented yet'
-				);
+		if ($params === null) {
+			return;
 		}
+
+		call_user_func_array([$invocation, $with], $params);
 	}
 
 	/**
