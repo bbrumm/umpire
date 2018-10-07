@@ -4,7 +4,7 @@
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^6",
-		"kenjis/ci-phpunit-test": "0.16.*"
+		"kenjis/ci-phpunit-test": "0.16.*",
 		"satooshi/php-coveralls": "dev-master"
 	}
 }
