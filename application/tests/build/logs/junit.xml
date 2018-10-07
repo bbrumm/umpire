@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="CodeIgniter Application Test Suite" tests="3" assertions="3" errors="0" failures="1" skipped="0" time="0.143886">
-    <testsuite name="Welcome_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Welcome_test.php" tests="3" assertions="3" errors="0" failures="1" skipped="0" time="0.143886">
-      <testcase name="test_index" class="Welcome_test" classname="Welcome_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Welcome_test.php" line="13" assertions="1" time="0.125922">
-        <failure type="PHPUnit\Framework\ExpectationFailedException">Welcome_test::test_index
-Failed asserting that 'Unable to load the requested file: welcome_message.php' contains "&lt;title&gt;Welcome to CodeIgniter&lt;/title&gt;".
-
-/Applications/MAMP/htdocs/umpire/application/tests/controllers/Welcome_test.php:16
-/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:61
-</failure>
-      </testcase>
-      <testcase name="test_method_404" class="Welcome_test" classname="Welcome_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Welcome_test.php" line="19" assertions="1" time="0.014177"/>
-      <testcase name="test_APPPATH" class="Welcome_test" classname="Welcome_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Welcome_test.php" line="25" assertions="1" time="0.003787"/>
+  <testsuite name="CodeIgniter Application Test Suite" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.008639">
+    <testsuite name="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.008639">
+      <testcase name="test_firstDummy" class="DummyTest" classname="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" line="9" assertions="1" time="0.008639"/>
     </testsuite>
   </testsuite>
 </testsuites>
