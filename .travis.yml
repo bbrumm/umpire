@@ -6,4 +6,4 @@ before_script:
   - composer install
   - cd application/tests
     
-script: ./vendor/bin/phpunit --testsuite alltests
+script: ../../vendor/phpunit/phpunit/phpunit
