@@ -18,7 +18,5 @@ after_success:
   - cd ../../
   - ls -l
   - find ../../ -name clover.xml
-  - find . -name clover.xml
-  - ls -l build
-  - ls -l vendor/phpunit/phpunit
+  - ls -l ../../build/logs/
   - php vendor/bin/php-coveralls -v
