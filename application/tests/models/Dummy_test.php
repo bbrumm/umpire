@@ -7,8 +7,9 @@ class DummyTest extends TestCase {
 
     }
     public function test_firstDummy() {
-    	$this->assertEquals(1, 1);
+    	$this->assertEquals(1, 1); 
     }
+
 
 
 }
