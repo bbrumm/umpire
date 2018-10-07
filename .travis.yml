@@ -19,4 +19,4 @@ after_success:
   - ls -l
   - find ../../ -name clover.xml
   - ls -l ../../build/logs/
-  - php vendor/bin/php-coveralls -v
+  - php vendor/bin/php-coveralls -v --coverage_clover ../../build/logs/clover.xml
