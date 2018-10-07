@@ -4,5 +4,6 @@ php:
   
 before_script:
   - composer install
+  - cd application/tests
     
-script: ./vendor/bin/phpunit application/tests/phpunit.xml --testname alltests
+script: ./vendor/bin/phpunit --testsuite alltests
