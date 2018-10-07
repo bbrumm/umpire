@@ -13,3 +13,5 @@ before_script:
   - cd application/tests
     
 script: ../../vendor/phpunit/phpunit/phpunit
+
+after_success: "coveralls"
