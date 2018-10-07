@@ -16,8 +16,9 @@ script: ../../vendor/phpunit/phpunit/phpunit --coverage-clover ../../build/logs/
 
 after_success:
   - cd ../../
+  - ls -l
+  - find ../../ -name clover.xml
+  - find . -name clover.xml
   - ls -l build
-  - ls -l build/logs
   - ls -l vendor/phpunit/phpunit
-  - ls -l vendor/phpunit/phpunit/build/logs
   - php vendor/bin/php-coveralls -v
