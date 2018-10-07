@@ -13,3 +13,6 @@ before_script:
   - cd application/tests
     
 script: ../../vendor/phpunit/phpunit/phpunit
+
+after_script:
+ - php ../../vendor/bin/coveralls -v
