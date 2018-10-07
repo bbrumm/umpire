@@ -5,4 +5,4 @@ php:
 before_script:
   - composer install
     
-script: ./vendor/bin/phpunit application/tests/phpunit.xml --testname alltests
+script: ./vendor/bin/phpunit application/tests/phpunit.xml --testsuite alltests
