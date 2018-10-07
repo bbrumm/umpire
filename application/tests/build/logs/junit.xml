@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="CodeIgniter Application Test Suite" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.008639">
-    <testsuite name="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.008639">
-      <testcase name="test_firstDummy" class="DummyTest" classname="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" line="9" assertions="1" time="0.008639"/>
+  <testsuite name="alltests" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.054245">
+    <testsuite name="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.054245">
+      <testcase name="test_firstDummy" class="DummyTest" classname="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" line="9" assertions="1" time="0.054245"/>
     </testsuite>
   </testsuite>
 </testsuites>
