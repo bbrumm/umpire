@@ -1,8 +1,7 @@
 language: php
 php:
   - 7.2.8
- 
- 
+
 services:
   - mysql
 
@@ -10,7 +9,7 @@ before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS databas6;'
 
 before_script:
-  - composer install
+  - composer update
   - cd application/tests
     
 script: ../../vendor/phpunit/phpunit/phpunit --coverage-clover build/logs/clover.xml
