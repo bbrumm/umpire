@@ -9,9 +9,9 @@ class Report_parameter_test extends TestCase {
         $this->obj = $this->CI->Report_parameter;
     }
     
-    public function test_sample {
-    $actual = 2;
-    $expected = 2;
-    $this->assertEquals($expected, $actual);
-
+    public function test_sample() {
+      $actual = 2;
+      $expected = 2;
+      $this->assertEquals($expected, $actual);
+    }
 }
