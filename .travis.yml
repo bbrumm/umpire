@@ -1,28 +1,22 @@
 language: php
 php:
-  - 7.2.8
-
+- 7.2.8
 services:
-  - mysql
-
+- mysql
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS databas6;'
-
+- mysql -e 'CREATE DATABASE IF NOT EXISTS databas6;'
 before_script:
-  - composer update
-  - cd application/tests
-    
-script: ../../vendor/phpunit/phpunit/phpunit --coverage-clover build/logs/clover.xml
-
+- composer update
+- cd application/tests
+script: "../../vendor/phpunit/phpunit/phpunit --coverage-clover build/logs/clover.xml"
 after_success:
-  - cd ../../
-  - ls -l
-  - find ../../ -name clover.xml
-  - ls -l ../../build/logs/
-  - php vendor/bin/php-coveralls -v --coverage_clover build/logs/clover.xml
-  
+- cd ../../
+- ls -l
+- find ../../ -name clover.xml
+- ls -l ../../build/logs/
+- php vendor/bin/php-coveralls -v --coverage_clover build/logs/clover.xml
 deploy:
   provider: heroku
   app: fathomless-meadow-31769
   api_key:
-    secure: "59fa07da-26af-44c4-91ab-24b2a509a2f0"
+    secure: tVm1PzeJhQm3Lg6bWqfAARXLemZ/52s9le4b3LnagZMqPa7HVH2bh68pDfAxb0tnU676g13H4Cq7aI7ORbaL6atB0vux+YhMgXujgmabfiurzuPLwQ9Kx/wezVjmlHFkjMiQ9sEpvL5VEFywbGStYHP1EoFuCmOxhGUUYGaCCZ01qDi8LtA5ufy/mz2YO4jba2WbAjrekStpaGFWzpXWcm7RFo4Tj5vfr7H8NuEK2ecZUP3YxgSQulteYqigJwVPZTYG5SY03FoFMQCBn98+0GVh+CMiILJmfGayP2NAv371/ZCD9Ogevo1b/rZQLlXC73WF4eyAYX6Bk8kGjzuP7E30E6eTVPhFGnFwZyl8gYhSCEpz780dKnq6O37Ba74Q3Hc3TxaMkjzkB6OooLwxPrCJvC2egJL6fco/r35X1+hcHG9X2y4sdtWgKfcmdYwPBbmIjCe4qWoSx2cyC2jM2D0DSNGAH8NV6Z7M+knge99OYawPHdSTa3R56kW2nP2BLxiiHEwU6ixO+JuwmE0FeJLcMpD21LnACQqnE3d53tMQ7DeVRI89Ps/PNrNo+H4wSqqK38IdZ2MuPFRMZDu6Q3+qrQnaYyCH0jUJCGsd/I6oN5J0GmUVtPsLmQZgtQXqRpyo4ApWGxwl4qyVygZnZJ6RMrY8rw5di82bMiHVcu0=
