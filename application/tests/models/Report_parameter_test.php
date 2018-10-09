@@ -18,4 +18,14 @@ class Report_parameter_test extends TestCase {
       $actual = $this->obj->getReportID();
       $this->assertEquals($expected, $actual);
     }
+  
+  public function test_ReportTitle() {
+      $expected = "Test Title";
+      //$reportParameter = new ReportParameter();
+      //$reportParameter->setReportID($expected);
+      //$actual = $reportParameter->getReportID();
+      $this->obj->setReportTitle($expected);
+      $actual = $this->obj->getReportTitle();
+      $this->assertEquals($expected, $actual);
+    }
 }
