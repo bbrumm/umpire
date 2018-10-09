@@ -23,5 +23,6 @@ after_success:
   
 deploy:
   provider: heroku
+  app: fathomless-meadow-31769
   api_key:
     secure: "59fa07da-26af-44c4-91ab-24b2a509a2f0"
