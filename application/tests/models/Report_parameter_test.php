@@ -8,7 +8,7 @@ class Report_parameter_test extends TestCase {
         $this->CI->load->model('report_param/Report_parameter');
         $this->obj = $this->CI->Report_parameter;
     }
-    
+    /*
     public function test_ReportID() {
       $expected = 1;
       //$reportParameter = new ReportParameter();
@@ -18,7 +18,7 @@ class Report_parameter_test extends TestCase {
       $actual = $this->obj->getReportID();
       $this->assertEquals($expected, $actual);
     }
-  
+  */
   public function test_ReportTitle() {
       $expected = "Test Title";
       //$reportParameter = new ReportParameter();
