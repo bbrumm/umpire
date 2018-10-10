@@ -73,11 +73,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+/*
+This account (root on 127.0.0.1 using port 3306) is used by the PHPUNIT process on my local machine (MAMP on MacBook Air)
+as well as Travis CI when running the build process. They need to be the same.
+The default account on Travis CI is root with a blank password.
+*/
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '127.0.0.1',
 	'username' => 'root',
-	'password' => 'root',
+	'password' => '',
 	'port' => '3306',
 	'database' => 'databas6',
 	'dbdriver' => 'mysqli',
