@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="alltests" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.075734">
-    <testsuite name="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.075734">
-      <testcase name="test_firstDummy" class="DummyTest" classname="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" line="9" assertions="1" time="0.075734"/>
+  <testsuite name="alltests" tests="10" assertions="10" errors="0" failures="0" skipped="0" time="0.052269">
+    <testsuite name="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.009815">
+      <testcase name="test_firstDummy" class="DummyTest" classname="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" line="9" assertions="1" time="0.009815"/>
+    </testsuite>
+    <testsuite name="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.005340">
+      <testcase name="testDummy" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="10" assertions="1" time="0.005340"/>
+    </testsuite>
+    <testsuite name="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" tests="8" assertions="8" errors="0" failures="0" skipped="0" time="0.037113">
+      <testcase name="test_ReportTitle" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="20" assertions="1" time="0.004160"/>
+      <testcase name="test_ValueFieldID" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="27" assertions="1" time="0.004433"/>
+      <testcase name="test_NoValueDisplay" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="34" assertions="1" time="0.004168"/>
+      <testcase name="test_FirstColumnFormat" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="41" assertions="1" time="0.004736"/>
+      <testcase name="test_ColourCells" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="48" assertions="1" time="0.006419"/>
+      <testcase name="test_PDFOrientation" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="55" assertions="1" time="0.004696"/>
+      <testcase name="test_PDFPaperSize" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="62" assertions="1" time="0.004269"/>
+      <testcase name="test_PDFResolution" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="69" assertions="1" time="0.004232"/>
     </testsuite>
   </testsuite>
 </testsuites>

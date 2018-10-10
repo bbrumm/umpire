@@ -398,20 +398,9 @@ Array
 	}
 	
 	private function setReportTitle($pSeasonYear) {
-	    //return str_replace("%seasonYear", $pSeasonYear, $this->reportParamLoader->lookupParameterValue($this->reportParameterArray, 'Display Title'));
 	    return str_replace("%seasonYear", $pSeasonYear, $this->reportParameter->getReportTitle());
 	}
 	
-	
-	//Find the table to select the data for the report. This tablename is stored in the database
-	/*public function lookupReportTableName() {
-	    //RPTOLD $tableNameQuery = "SELECT table_name FROM report_table WHERE report_name = ". $this->requestedReport->getReportNumber() .";";
-	    $tableNameQuery = "SELECT table_name FROM report_table WHERE report_name = ". $this->requestedReport->getReportNumber() .";";
-	    $query = $this->db->query($tableNameQuery);
-	    $tableNameResultArray = $query->result_array();
-	    return $tableNameResultArray[0]['table_name'];
-	}
-	*/
 	
 	public function loadReportResults() {
         //$queryForReport = $this->buildSelectQueryForReportUsingDW();

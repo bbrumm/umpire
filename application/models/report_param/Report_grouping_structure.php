@@ -6,9 +6,26 @@ Defines how the reports are grouped and displayed, in terms of the columns and r
 */
 class Report_grouping_structure
 {
-    function __construct()
+    public function __construct()
     {
         //parent::__construct();
+    }
+
+    public static function createNewReportGroupingStructure($pReportGroupingStructureID, $pGroupingType, 
+        $pFieldName, $pFieldGroupOrder, $pMergeField, 
+        $pGroupHeading, $pGroupSizeText) {
+
+        $obj = new Report_grouping_structure();
+
+        $obj->setReportGroupingStructureID($pReportGroupingStructureID);
+        $obj->setGroupingType($pGroupingType);
+        $obj->setFieldName($pFieldName);
+        $obj->setFieldGroupOrder($pFieldGroupOrder);
+        $obj->setMergeField($pMergeField);
+        $obj->setGroupHeading($pGroupHeading);
+        $obj->setGroupSizeText($pGroupSizeText);
+
+        return $obj;
     }
 
     private $reportGroupingStructureID;
@@ -53,34 +70,34 @@ class Report_grouping_structure
         
 
     //Set Functions
-    public function setReportGroupingStructureID($pValue) {
+    private function setReportGroupingStructureID($pValue) {
         $this->reportGroupingStructureID = $pValue;
     }
     
-    public function setReportID($pValue) {
+    private function setReportID($pValue) {
         $this->reportID = $pValue;
     }
     
-    public function setGroupingType($pValue) {
+    private function setGroupingType($pValue) {
         $this->groupingType = $pValue;
     }
 
-    public function setFieldName($pValue) {
+    private function setFieldName($pValue) {
         $this->fieldName= $pValue;
     }
 
-    public function setFieldGroupOrder($pValue) {
+    private function setFieldGroupOrder($pValue) {
         $this->fieldGroupOrder = $pValue;
     }
     
-    public function setMergeField($pValue) {
+    private function setMergeField($pValue) {
         $this->mergeField = $pValue;
     }
     
-    public function setGroupHeading($pValue) {
+    private function setGroupHeading($pValue) {
         $this->groupHeading = $pValue;
     }
-    public function setGroupSizeText($pValue) {
+    private function setGroupSizeText($pValue) {
         $this->groupSizeText = $pValue;
     }
     

@@ -39,32 +39,19 @@ class Report_param_loader extends CI_Model {
     public function loadAllReportParametersForReport(Requested_report_model $pRequestedReport) {
         //Load all report parameters
         $queryDataReportParameters = $this->queryReportParameters($pRequestedReport);
-
-        $queryResultArray = $queryDataReportParameters->result_array();
-            
-            
-        $reportParameter = new Report_parameter();
+        $queryResultArray = $queryDataReportParameters->result_array();  
         
-        
-        $reportParameter->setReportTitle($queryResultArray[0]['report_title']);
-        $reportParameter->setValueFieldID($queryResultArray[0]['value_field_id']);
-        $reportParameter->setNoValueDisplay($queryResultArray[0]['no_value_display']);
-        $reportParameter->setFirstColumnFormat($queryResultArray[0]['first_column_format']);
-        $reportParameter->setColourCells($queryResultArray[0]['colour_cells']);
-        $reportParameter->setPDFOrientation($queryResultArray[0]['orientation']);
-        $reportParameter->setPDFPaperSize($queryResultArray[0]['paper_size']);
-        $reportParameter->setPDFResolution($queryResultArray[0]['resolution']);
+        $reportParameter = Report_parameter::createNewReportParameter(
+            $queryResultArray[0]['report_title'],
+            $queryResultArray[0]['value_field_id'].
+            $queryResultArray[0]['no_value_display'].
+            $queryResultArray[0]['first_column_format'],
+            $queryResultArray[0]['colour_cells'],
+            $queryResultArray[0]['orientation'],
+            $queryResultArray[0]['paper_size'],
+            $queryResultArray[0]['resolution']
+        );
             
-        /*    
-        foreach ($queryDataReportParameters->result() as $row) {
-            $reportParameter = new Report_parameter();
-            $reportParameter->setParameterName($row->parameter_name);
-            $reportParameter->setParameterType($row->parameter_type);
-            $reportParameter->setParameterValue($row->parameter_value);
-            
-            $reportParameterArray[] = $reportParameter;
-        }
-        */
         $this->setReportParameter($reportParameter);
     }
     
@@ -77,14 +64,15 @@ class Report_param_loader extends CI_Model {
         
         //Create report param and report grouping objects for this report
         foreach ($queryDataReportGroupingStructures->result() as $row) {
-            $reportGroupingStructure = new Report_grouping_structure();
-            $reportGroupingStructure->setReportGroupingStructureID($row->report_grouping_structure_id);
-            $reportGroupingStructure->setGroupingType($row->grouping_type);
-            $reportGroupingStructure->setFieldName($row->field_name);
-            $reportGroupingStructure->setFieldGroupOrder($row->field_group_order);
-            $reportGroupingStructure->setMergeField($row->merge_field);
-            $reportGroupingStructure->setGroupHeading($row->group_heading);
-            $reportGroupingStructure->setGroupSizeText($row->group_size_text);
+            $reportGroupingStructure = Report_grouping_structure::createNewReportGroupingStructure(
+                $row->report_grouping_structure_id,
+                $row->grouping_type,
+                $row->field_name,
+                $row->field_group_order,
+                $row->merge_field,
+                $row->group_heading,
+                $row->group_size_text
+            );
             
             $reportGroupingStructureArray[] = $reportGroupingStructure;
         }
@@ -99,26 +87,6 @@ class Report_param_loader extends CI_Model {
     }
     
     private function queryReportParameters(Requested_report_model $pRequestedReport) {
-        
-        /*
-        $queryString = "SELECT rp.report_parameter_id,rp.parameter_name, " .
-            "rp.parameter_type, rpm.parameter_value " .
-            "FROM report_table rt " .
-            "INNER JOIN report_parameter_map rpm ON rpm.report_id = rt.report_name " .
-            "INNER JOIN report_parameter rp ON rpm.report_parameter_id = rp.report_parameter_id " .
-            "WHERE rt.report_name = ". $pRequestedReport->getReportNumber() ." " .
-            "AND rp.parameter_type = 'Text' " .
-            "UNION ALL " .
-            "SELECT rp.report_parameter_id,rp.parameter_name, " .
-            "rp.parameter_type, fl.field_name " .
-            "FROM report_table rt " .
-            "INNER JOIN report_parameter_map rpm ON rpm.report_id = rt.report_name " .
-            "INNER JOIN report_parameter rp ON rpm.report_parameter_id = rp.report_parameter_id " .
-            "INNER JOIN field_list fl ON rpm.parameter_value = fl.field_id " .
-            "WHERE rt.report_name = ". $pRequestedReport->getReportNumber() ." " .
-            "AND rp.parameter_type = 'Field' " .
-            "ORDER BY report_parameter_id";
-        */
         $queryString = "SELECT
             t.report_name,
             t.report_title,
@@ -132,7 +100,6 @@ class Report_param_loader extends CI_Model {
             FROM t_report t
             INNER JOIN t_pdf_settings p ON t.pdf_settings_id = p.pdf_settings_id
             WHERE t.report_id = ". $pRequestedReport->getReportNumber() .";";
-        
         
         $query = $this->db->query($queryString);
         
@@ -162,21 +129,6 @@ class Report_param_loader extends CI_Model {
         }
 
     }
-    
-    public function lookupParameterValue($reportParameterArray, $parameterName) {
-        $parameterValue = "";
-         
-        for($i=0; $i<count($reportParameterArray); $i++) {
-            $reportParameter = new Report_parameter();
-            $reportParameter = $reportParameterArray[$i];
-             
-            if($reportParameter->getParameterName() == $parameterName) {
-                $parameterValue = $reportParameter->getParameterValue();
-                break;
-            }
-        }
-        return $parameterValue;
-    }
-       
+        
 }
 ?>

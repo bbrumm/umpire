@@ -7,13 +7,26 @@ It contains information such as the report title, the value to display, and the 
 
 class Report_parameter 
 {
-    function __construct()
-    {
-        //parent::__construct()
-        //$this->load->model('report_param/ReportGroupingStructure');
+    public function __construct() {
     }
 
-    private $reportID;
+    public static function createNewReportParameter($pReportTitle, $pValueFieldID, $pNoValueDisplay, 
+        $pFirstColumnFormat, $pColourCells, $pPDFOrientation, 
+        $pPDFPaperSize, $pPDFResolution) {
+        $obj = new Report_parameter();
+
+        $obj->setReportTitle($pReportTitle);
+        $obj->setValueFieldID($pValueFieldID);
+        $obj->setNoValueDisplay($pNoValueDisplay);
+        $obj->setFirstColumnFormat($pFirstColumnFormat);
+        $obj->setColourCells($pColourCells);
+        $obj->setPDFOrientation($pPDFOrientation);
+        $obj->setPDFPaperSize($pPDFPaperSize);
+        $obj->setPDFResolution($pPDFResolution);
+
+        return $obj;
+    }
+
     private $reportTitle;
     private $valueFieldID;
     private $noValueDisplay;
@@ -25,10 +38,6 @@ class Report_parameter
     
 
     //Get Functions
-    public function getReportID() {
-        return $this->reportID;
-    }
-    
     public function getReportTitle() {
         return $this->reportTitle;
     }
@@ -63,35 +72,35 @@ class Report_parameter
     }
 
     //Set Functions
-    public function setReportTitle($pValue) {
+    private function setReportTitle($pValue) {
         $this->reportTitle = $pValue;
     }
     
-    public function setValueFieldID($pValue) {
+    private function setValueFieldID($pValue) {
         $this->valueFieldID = $pValue;
     }
     
-    public function setNoValueDisplay($pValue) {
+    private function setNoValueDisplay($pValue) {
         $this->noValueDisplay = $pValue;
     }
 
-    public function setFirstColumnFormat($pValue) {
+    private function setFirstColumnFormat($pValue) {
         $this->firstColumnFormat= $pValue;
     }
 
-    public function setColourCells($pValue) {
+    private function setColourCells($pValue) {
         $this->colourCells = $pValue;
     }
     
-    public function setPDFOrientation($pValue) {
+    private function setPDFOrientation($pValue) {
         $this->pdfOrientation = $pValue;
     }
     
-    public function setPDFPaperSize($pValue) {
+    private function setPDFPaperSize($pValue) {
         $this->pdfPaperSize = $pValue;
     }
     
-    public function setPDFResolution($pValue) {
+    private function setPDFResolution($pValue) {
         $this->pdfResolution = $pValue;
     }
 }
