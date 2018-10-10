@@ -6,5 +6,8 @@ class Report_param_loader_test extends TestCase {
     $this->CI->load->model('report_param/Report_parameter');
     $this->obj = $this->CI->Report_param_loader;
   }
+  
+  public function testDummy() {
+    $this->assertEquals(1, 1);
 
 }
