@@ -59,7 +59,7 @@ public function test_LookupParameterValue_ParamNameNull() {
   $this->assertEquals($expected, $actual);
 }
 
-public function test_LookupParameterValue_ParamNameNotFound() {
+public function test_LookupParameterValue_ParamArrayNull() {
   $expected = "";
   $inputParamName = "Mystery";
   $reportParamArray = null;
