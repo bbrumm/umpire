@@ -1,6 +1,6 @@
 language: php
 php:
-- 7.2.8
+- 7.2
 services:
 - mysql
 before_install:
