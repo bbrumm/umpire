@@ -54,7 +54,10 @@ class Report_param_loader extends CI_Model {
             
         $this->setReportParameter($reportParameter);
     }
-    
+
+    /**
+    * @property string $config
+    */
     public function loadAllGroupingStructuresForReport(Requested_report_model $pRequestedReport) {
         $debugMode = $this->config->item('debug_mode');
         
@@ -131,4 +134,3 @@ class Report_param_loader extends CI_Model {
     }
         
 }
-?>

@@ -102,5 +102,3 @@ class Report_grouping_structure
     }
     
 }
-
-?>

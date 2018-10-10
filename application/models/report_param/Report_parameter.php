@@ -105,4 +105,3 @@ class Report_parameter
     }
 }
 
-?>
