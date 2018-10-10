@@ -25,7 +25,7 @@ public function test_LookupParameterValue_EmptyParamName() {
   $reportParameter2 = new Report_parameter();
   $reportParameter2->setName("Second param");
   $reportParameter2->setValue("Yellow");
-  $reportParamArray = array[$reportParameter1, $reportParameter2];
+  $reportParamArray = array($reportParameter1, $reportParameter2);
   $actual = $this->obj->lookupParametervalue($reportParamArray, inputParamName );
   $this->assertEquals($expected, $actual);
 }
@@ -39,7 +39,7 @@ public function test_LookupParameterValue_ParamNameNotFound() {
   $reportParameter2 = new Report_parameter();
   $reportParameter2->setName("Second param");
   $reportParameter2->setValue("Yellow");
-  $reportParamArray = array[$reportParameter1, $reportParameter2];
+  $reportParamArray = array($reportParameter1, $reportParameter2);
   $actual = $this->obj->lookupParametervalue($reportParamArray, inputParamName );
   $this->assertEquals($expected, $actual);
 }
@@ -54,7 +54,7 @@ public function test_LookupParameterValue_ParamNameNull() {
   $reportParameter2 = new Report_parameter();
   $reportParameter2->setName("Second param");
   $reportParameter2->setValue("Yellow");
-  $reportParamArray = array[$reportParameter1, $reportParameter2];
+  $reportParamArray = array($reportParameter1, $reportParameter2);
   $actual = $this->obj->lookupParametervalue($reportParamArray, inputParamName );
   $this->assertEquals($expected, $actual);
 }
@@ -76,7 +76,7 @@ public function test_LookupParameterValue_ParamValueNull() {
   $reportParameter2 = new Report_parameter();
   $reportParameter2->setName("Second param");
   $reportParameter2->setValue("Yellow");
-  $reportParamArray = array[$reportParameter1, $reportParameter2];
+  $reportParamArray = array($reportParameter1, $reportParameter2);
   $actual = $this->obj->lookupParametervalue($reportParamArray, inputParamName );
   $this->assertEquals($expected, $actual);
 }
@@ -90,7 +90,7 @@ public function test_LookupParameterValue_ParamValueEmptyString() {
   $reportParameter2 = new Report_parameter();
   $reportParameter2->setName("Second param");
   $reportParameter2->setValue("Yellow");
-  $reportParamArray = array[$reportParameter1, $reportParameter2];
+  $reportParamArray = array($reportParameter1, $reportParameter2);
   $actual = $this->obj->lookupParametervalue($reportParamArray, inputParamName );
   $this->assertEquals($expected, $actual);
 }
@@ -105,7 +105,7 @@ public function test_LookupParameterValue_ParamValueOK() {
   $reportParameter2 = new Report_parameter();
   $reportParameter2->setName("Second param");
   $reportParameter2->setValue("Yellow");
-  $reportParamArray = array[$reportParameter1, $reportParameter2];
+  $reportParamArray = array($reportParameter1, $reportParameter2);
   $actual = $this->obj->lookupParametervalue($reportParamArray, inputParamName );
   $this->assertEquals($expected, $actual);
 }
@@ -120,7 +120,7 @@ public function test_LookupParameterValue_ParamValueTwice() {
   $reportParameter2 = new Report_parameter();
   $reportParameter2->setName("Second param");
   $reportParameter2->setValue("Yellow");
-  $reportParamArray = array[$reportParameter1, $reportParameter2];
+  $reportParamArray = array($reportParameter1, $reportParameter2);
   $actual = $this->obj->lookupParametervalue($reportParamArray, inputParamName );
   $this->assertEquals($expected, $actual);
 }
