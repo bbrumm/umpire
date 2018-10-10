@@ -8,9 +8,8 @@ class Report_param_loader_test extends TestCase {
 
   public function test_LookupParameterValue_EmptyArray() {
     $expected = "";
-    $inputArray = new Array();
     $inputArray = "";
-    $actual = $this->obj->lookupParametervalue($inputArray, "value to search");
+    $actual = $this->obj->lookupParameterValue($inputArray, "value to search");
     $this->assertEquals($expected, $actual);
   }
 }
