@@ -9,5 +9,5 @@ class Report_param_loader_test extends TestCase {
   
   public function testDummy() {
     $this->assertEquals(1, 1);
-
+  }
 }
