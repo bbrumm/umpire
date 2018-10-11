@@ -19,11 +19,6 @@ class Report_factory_test extends TestCase {
 	  $this->assertInstanceOf('Report1', $expected);
   }
 	
-  public function test_Report1() {
-    $expected = $this->obj->createReport(1);
-    $this->assertInstanceOf('Report1', $expected);
-  }
-	
   public function test_Report2() {
     $expected = $this->obj->createReport(2);
     $this->assertInstanceOf('Report2', $expected);
