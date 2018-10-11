@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://www.umpirereporting.com/';
-$config['base_url'] = 'https://fathomless-meadow-31769.herokuapp.com/'
+$config['base_url'] = 'https://fathomless-meadow-31769.herokuapp.com/';
 
 /*
 |--------------------------------------------------------------------------
