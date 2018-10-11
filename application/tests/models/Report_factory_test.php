@@ -55,8 +55,28 @@ class Report_factory_test extends TestCase {
   }
 
   public function test_Report9() {
-    $this->expectException()
+    $this->expectException(InvalidArgumentException::class);
     $expected = $this->obj->createReport(9);
+  }
+
+  public function test_ReportDecimal() {
+    $this->expectException(InvalidArgumentException::class);
+    $expected = $this->obj->createReport(3.2);
+  }
+
+  public function test_ReportZero() {
+    $this->expectException(InvalidArgumentException::class);
+    $expected = $this->obj->createReport(0);
+  }
+
+  public function test_ReportText() {
+    $this->expectException(InvalidArgumentException::class);
+    $expected = $this->obj->createReport("Name");
+  }
+
+  public function test_ReportNull() {
+    $this->expectException(InvalidArgumentException::class);
+    $expected = $this->obj->createReport(null);
   }
 
 
