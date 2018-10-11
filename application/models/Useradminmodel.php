@@ -228,12 +228,6 @@ class Useradminmodel extends CI_Model {
             //Check if the username exists in the second array, otherwise we'll get an Undefined Index error.
             if(array_key_exists($username, $array2)) {
                 $arrayDifferences[$username] = array_diff_key($array1[$username], $array2[$username]);
-                
-                
-                //$this->debug_library->debugOutput("array1 $username:", $array1[$username]);
-                //$this->debug_library->debugOutput("array2 $username:", $array2[$username]);
-                
-                //$this->debug_library->debugOutput("findRecursiveArrayDiff:", $arrayDifferences[$username]);
             }
         }
         return $arrayDifferences;
@@ -245,9 +239,7 @@ class Useradminmodel extends CI_Model {
             foreach($userPermissionArray as $permission_selection_id=>$setValue) {
                 $this->removeUserPrivilege($username, $permission_selection_id);
             }
-            
         }
-        
     }
     
     public function addPrivileges($permissionArray) {
@@ -256,9 +248,7 @@ class Useradminmodel extends CI_Model {
             foreach($userPermissionArray as $permission_selection_id=>$setValue) {
                 $this->addUserPrivilege($username, $permission_selection_id);
             }
-            
         }
-        
     }
     
     public function updateUserRoles($userRoleArray) {
@@ -281,9 +271,6 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString, array(
             $newRoleID, $username
         ));
-        
-        //$this->debug_library->debugOutput("Updated user role", $username);
-        
         //TODO: Replace magic number with global constant that represents UPDATE
         $this->logRoleChange($username, $newRoleID, 2);
     }
@@ -296,9 +283,6 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString, array(
             $setValue, $username
         ));
-        
-        //$this->debug_library->debugOutput("Updated user role", $username);
-        
         //TODO: Replace magic number with global constant that represents UPDATE
         $this->logActiveChange($username, $setValue, 2);
     }
@@ -314,9 +298,6 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString, array(
             $username, $permission_selection_id
         ));
-        
-        //$this->debug_library->debugOutput("Deleted user permission selection", $permission_selection_id);
-        
         //TODO: Replace magic number 3 with global constant that represents DELETE
         $this->logPrivilegeChange($username, $permission_selection_id, 3);
         
@@ -326,7 +307,6 @@ class Useradminmodel extends CI_Model {
         $session_data = $this->session->userdata('logged_in');
         $currentUsername = $session_data['username'];
         
-        
         $queryString = "INSERT INTO log_privilege_changes
             (username_changed, privilege_changed, privilege_action, username_changed_by, changed_datetime)
             VALUES (?, ?, ?, ?, NOW());";
@@ -334,9 +314,6 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString, array(
             $username, $permission_selection_id, $operation_ref, $currentUsername
         ));
-        
-        //$this->debug_library->debugOutput("Logged change", $permission_selection_id);
-        
     }
     
     private function addUserPrivilege($username, $permission_selection_id) {
@@ -349,9 +326,6 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString, array(
             $permission_selection_id, $username
         ));
-        
-        //$this->debug_library->debugOutput("Added user permission selection", $permission_selection_id);
-        
         //TODO: Replace magic number 1 with global constant that represents INSERT
         $this->logPrivilegeChange($username, $permission_selection_id, 1);
         
@@ -368,9 +342,6 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString, array(
             $username, $newRoleID, 2, $currentUsername
         ));
-        
-        //$this->debug_library->debugOutput("Logged change", $newRoleID);
-        
     }
     
     private function logActiveChange($username, $newActiveValue) {
@@ -384,11 +355,6 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString, array(
             $username, $newActiveValue, 2, $currentUsername
         ));
-        
-        //$this->debug_library->debugOutput("Logged change", $newRoleID);
-        
     }
-    
-
 }
 ?>

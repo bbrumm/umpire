@@ -63,12 +63,10 @@ class Home extends CI_Controller {
         
         $query = $this->db->query($queryString);
         foreach ($query->result() as $row) {
-            $reportSelectionParameter = new Report_selection_parameter();
-            $reportSelectionParameter->setParameterID($row->parameter_id);
-            $reportSelectionParameter->setParameterName($row->parameter_name);
-            $reportSelectionParameter->setParameterDisplayOrder($row->parameter_display_order);
-            $reportSelectionParameter->setAllowMultipleSelections($row->allow_multiple_selections);
-            $reportSelectionParameter->loadSelectableReportOptions();
+            $reportSelectionParameter = Report_selection_parameter::createReportSelectionParameter(
+                $row->parameter_id, $row->parameter_name, 
+                $row->parameter_display_order, $row->allow_multiple_selections);
+            );
             
             $allReportSelectionParameters[] = $reportSelectionParameter;
         }

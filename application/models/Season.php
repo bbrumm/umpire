@@ -28,9 +28,13 @@ class Season
     
     public function setSeasonYear($pValue) {
         if(is_numeric($pValue)) {
-            $this->seasonYear= $pValue;
+            if($pValue >= 2000 && $pValue <= 2100) {
+                $this->seasonYear= $pValue;
+            } else {
+                throw new Exception('Season Year must be between 2000 and 2100. Value provided was ' . $pValue);
+            }
         } else {
-            throw new Exception('Season Year must be numeric.');
+            throw new Exception('Season Year must be numeric. Value provided was ' . $pValue);
         }
     }
     

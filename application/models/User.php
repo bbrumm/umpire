@@ -221,9 +221,6 @@ class User extends CI_Model
         $query = $this->db->query($queryString);
         $resultArray = $query->result_array();
         
-        
-        //echo "setPermissionArrayForUser: " . count($resultArray);
-        
         $countNumberOfPermissions = count($resultArray);
         
         if ($countNumberOfPermissions > 0) {

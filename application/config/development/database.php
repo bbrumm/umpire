@@ -78,6 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => 'root',
+	'port' => '3306',
 	'database' => 'databas6',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

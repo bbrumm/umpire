@@ -38,6 +38,8 @@ class Report_factory {
             case 8:
                 $report = new Report8();
                 break;
+            default:
+                throw new Exception ("Specified report number does not match a required report. Value provided was " . $pReportNumber);
         }
         
         return $report;

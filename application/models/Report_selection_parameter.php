@@ -13,6 +13,19 @@ class Report_selection_parameter extends CI_Model
         $this->load->model('Selectable_report_option');
         //$this->load->config('constants');
     }
+
+    public function createReportSelectionParameter($pParameterID, $pParameterName, 
+        $pParameterDisplayOrder, $pAllowMultipleSelections) {
+
+        $obj = new Report_selection_parameter();
+        $obj->setParameterID($pParameterID);
+        $obj->setSelectableReportOptions($this->loadSelectableReportOptions());
+        $obj->setParameterName($pParameterName);
+        $obj->setParameterDisplayOrder($pParameterDisplayOrder);
+        $obj->setAllowMultipleSelections($pAllowMultipleSelections);
+
+        return $obj;
+    }
     
     private $parameterID;
     private $selectableReportOptions;
@@ -44,7 +57,7 @@ class Report_selection_parameter extends CI_Model
     
 
     //Set Functions
-    public function setParameterID($pValue) {
+    private function setParameterID($pValue) {
         $this->parameterID = $pValue;
     }
     
@@ -52,15 +65,15 @@ class Report_selection_parameter extends CI_Model
         $this->selectableReportOptions = $pValue;
     }
     
-    public function setParameterName($pValue) {
+    private function setParameterName($pValue) {
         $this->parameterName = $pValue;
     }
     
-    public function setParameterDisplayOrder($pValue) {
+    private function setParameterDisplayOrder($pValue) {
         $this->parameterDisplayOrder = $pValue;
     }
     
-    public function setAllowMultipleSelections($pValue) {
+    private function setAllowMultipleSelections($pValue) {
         $this->allowMultipleSelections = $pValue;
     }
     
