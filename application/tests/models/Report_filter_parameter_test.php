@@ -11,7 +11,7 @@ $expected = "'First','Second','Third'";
 $inputFilterParam = array('First', 'Second', 'Third');
 $inputPDFMode = true;
 $inputRegion = false;
-$this->obj->createFilterParameter$inputFilterParam, $inputPDFMode, $inputRegion );
+$this->obj->createFilterParameter($inputFilterParam, $inputPDFMode, $inputRegion);
 $actual = $this->obj->getFilterSQLValues();
 $this->assertEquals($expected, $actual);
 }
@@ -21,7 +21,7 @@ $expected = "First,Second,Third";
 $inputFilterParam = array('First', 'Second', 'Third');
 $inputPDFMode = true;
 $inputRegion = false;
-$this->obj->createFilterParameter$inputFilterParam, $inputPDFMode, $inputRegion );
+$this->obj->createFilterParameter($inputFilterParam, $inputPDFMode, $inputRegion);
 $actual = $this->obj->getFilterDisplayValues();
 $this->assertEquals($expected, $actual);
 }
