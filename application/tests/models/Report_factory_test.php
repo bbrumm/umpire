@@ -18,4 +18,46 @@ class Report_factory_test extends TestCase {
 	  $expected = $this->obj->createReport(1);
 	  $this->assertInstanceOf('Report1', $expected);
   }
+	
+  public function test_Report1() {
+    $expected = $this->obj->createReport(1);
+    $this->assertInstanceOf('Report1', $expected);
+  }
+	
+  public function test_Report2() {
+    $expected = $this->obj->createReport(2);
+    $this->assertInstanceOf('Report2', $expected);
+  }
+	
+  public function test_Report3() {
+    $expected = $this->obj->createReport(3);
+    $this->assertInstanceOf('Report3', $expected);
+  }
+	
+  public function test_Report4() {
+    $expected = $this->obj->createReport(4);
+    $this->assertInstanceOf('Report4', $expected);
+  }
+	
+  public function test_Report5() {
+    $expected = $this->obj->createReport(5);
+    $this->assertInstanceOf('Report5', $expected);
+  }
+	
+  public function test_Report6() {
+    $expected = $this->obj->createReport(6);
+    $this->assertInstanceOf('Report6', $expected);
+  }
+	
+  public function test_Report7() {
+    $expected = $this->obj->createReport(7);
+    $this->assertInstanceOf('Report7', $expected);
+  }
+	
+  public function test_Report8() {
+    $expected = $this->obj->createReport(8);
+    $this->assertInstanceOf('Report8', $expected);
+  }
+
+
 }
