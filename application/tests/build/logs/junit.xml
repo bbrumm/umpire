@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="alltests" tests="24" assertions="24" errors="0" failures="0" skipped="0" time="0.136476">
-    <testsuite name="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.011124">
-      <testcase name="test_firstDummy" class="DummyTest" classname="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" line="9" assertions="1" time="0.011124"/>
+  <testsuite name="alltests" tests="24" assertions="24" errors="0" failures="0" skipped="0" time="0.355967">
+    <testsuite name="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.099607">
+      <testcase name="test_firstDummy" class="DummyTest" classname="DummyTest" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Dummy_test.php" line="9" assertions="1" time="0.099607"/>
     </testsuite>
-    <testsuite name="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" tests="13" assertions="13" errors="0" failures="0" skipped="0" time="0.072920">
-      <testcase name="test_Report1" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="17" assertions="1" time="0.010271"/>
-      <testcase name="test_Report2" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="22" assertions="1" time="0.004491"/>
-      <testcase name="test_Report3" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="27" assertions="1" time="0.004774"/>
-      <testcase name="test_Report4" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="32" assertions="1" time="0.004619"/>
-      <testcase name="test_Report5" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="37" assertions="1" time="0.006272"/>
-      <testcase name="test_Report6" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="42" assertions="1" time="0.005547"/>
-      <testcase name="test_Report7" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="47" assertions="1" time="0.004518"/>
-      <testcase name="test_Report8" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="52" assertions="1" time="0.004425"/>
-      <testcase name="test_Report9" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="57" assertions="1" time="0.005017"/>
-      <testcase name="test_ReportDecimal" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="62" assertions="1" time="0.004405"/>
-      <testcase name="test_ReportZero" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="67" assertions="1" time="0.004566"/>
-      <testcase name="test_ReportText" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="72" assertions="1" time="0.009018"/>
-      <testcase name="test_ReportNull" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="77" assertions="1" time="0.004997"/>
+    <testsuite name="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" tests="13" assertions="13" errors="0" failures="0" skipped="0" time="0.164080">
+      <testcase name="test_Report1" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="17" assertions="1" time="0.051154"/>
+      <testcase name="test_Report2" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="22" assertions="1" time="0.008109"/>
+      <testcase name="test_Report3" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="27" assertions="1" time="0.010736"/>
+      <testcase name="test_Report4" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="32" assertions="1" time="0.007870"/>
+      <testcase name="test_Report5" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="37" assertions="1" time="0.008527"/>
+      <testcase name="test_Report6" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="42" assertions="1" time="0.007955"/>
+      <testcase name="test_Report7" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="47" assertions="1" time="0.009443"/>
+      <testcase name="test_Report8" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="52" assertions="1" time="0.008438"/>
+      <testcase name="test_Report9" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="57" assertions="1" time="0.018981"/>
+      <testcase name="test_ReportDecimal" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="62" assertions="1" time="0.007914"/>
+      <testcase name="test_ReportZero" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="67" assertions="1" time="0.008371"/>
+      <testcase name="test_ReportText" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="72" assertions="1" time="0.008281"/>
+      <testcase name="test_ReportNull" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="77" assertions="1" time="0.008300"/>
     </testsuite>
-    <testsuite name="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.006129">
-      <testcase name="test_dummy" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="9" assertions="1" time="0.006129"/>
+    <testsuite name="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.014258">
+      <testcase name="test_dummy" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="9" assertions="1" time="0.014258"/>
     </testsuite>
-    <testsuite name="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.005212">
-      <testcase name="testDummy" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="10" assertions="1" time="0.005212"/>
+    <testsuite name="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.017681">
+      <testcase name="testDummy" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="10" assertions="1" time="0.017681"/>
     </testsuite>
-    <testsuite name="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" tests="8" assertions="8" errors="0" failures="0" skipped="0" time="0.041090">
-      <testcase name="test_ReportTitle" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="20" assertions="1" time="0.004215"/>
-      <testcase name="test_ValueFieldID" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="27" assertions="1" time="0.004494"/>
-      <testcase name="test_NoValueDisplay" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="34" assertions="1" time="0.004229"/>
-      <testcase name="test_FirstColumnFormat" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="41" assertions="1" time="0.007247"/>
-      <testcase name="test_ColourCells" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="48" assertions="1" time="0.004457"/>
-      <testcase name="test_PDFOrientation" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="55" assertions="1" time="0.005340"/>
-      <testcase name="test_PDFPaperSize" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="62" assertions="1" time="0.004207"/>
-      <testcase name="test_PDFResolution" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="69" assertions="1" time="0.006901"/>
+    <testsuite name="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" tests="8" assertions="8" errors="0" failures="0" skipped="0" time="0.060341">
+      <testcase name="test_ReportTitle" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="20" assertions="1" time="0.010358"/>
+      <testcase name="test_ValueFieldID" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="27" assertions="1" time="0.008396"/>
+      <testcase name="test_NoValueDisplay" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="34" assertions="1" time="0.008899"/>
+      <testcase name="test_FirstColumnFormat" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="41" assertions="1" time="0.007654"/>
+      <testcase name="test_ColourCells" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="48" assertions="1" time="0.008193"/>
+      <testcase name="test_PDFOrientation" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="55" assertions="1" time="0.007068"/>
+      <testcase name="test_PDFPaperSize" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="62" assertions="1" time="0.005373"/>
+      <testcase name="test_PDFResolution" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="69" assertions="1" time="0.004400"/>
     </testsuite>
   </testsuite>
 </testsuites>
