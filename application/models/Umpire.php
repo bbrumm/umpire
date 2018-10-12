@@ -86,7 +86,7 @@ class Umpire extends CI_Model
         if (is_numeric($pInputValue)) {
             return true;
         } else {
-            throw new Exception('Games value must be numeric.');
+            throw new InvalidArgumentException('Games value must be numeric.');
         }
         
     }
