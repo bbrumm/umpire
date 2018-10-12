@@ -268,15 +268,17 @@ $this->assertEquals($expected, $this->obj->isActive());
 }
 
 public function test_ActiveEmpty() {
-$this->expectException(InvalidArgumentException::class);
+$expected = false;
 $inputValue = "";
 $this->obj->setActive($inputValue);
+  $this->assertEquals($expected, $this->obj->isActive());
 }
 
 public function test_ActiveNull() {
-$this->expectException(InvalidArgumentException::class);
+$expected = false;
 $inputValue = null;
 $this->obj->setActive($inputValue);
+  $this->assertEquals($expected, $this->obj->isActive());
 }
 
 public function test_Active0String() {
