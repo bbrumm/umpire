@@ -253,6 +253,91 @@ $this->obj->setActivationID($expected);
 $this->assertEquals($expected, $this->obj->getActivationID());
 }
 
+public function test_Active0() {
+$expected = false;
+$inputValue = 0;
+$this->obj->setActive($inputValue);
+$this->assertEquals($expected, $this->obj->isActive());
+}
+
+public function test_Active1() {
+$expected = true;
+$inputValue = 1;
+$this->obj->setActive($inputValue);
+$this->assertEquals($expected, $this->obj->isActive());
+}
+
+public function test_ActiveEmpty() {
+$this->expectException(InvalidArgumentException::class);
+$inputValue = "";
+$this->obj->setActive($inputValue);
+}
+
+public function test_ActiveNull() {
+$this->expectException(InvalidArgumentException::class);
+$inputValue = null;
+$this->obj->setActive($inputValue);
+}
+
+public function test_Active0String() {
+$expected = false;
+$inputValue = "0";
+$this->obj->setActive($inputValue);
+$this->assertEquals($expected, $this->obj->isActive());
+}
+
+public function test_Active1String() {
+$expected = true;
+$inputValue = "1";
+$this->obj->setActive($inputValue);
+$this->assertEquals($expected, $this->obj->isActive());
+}
+
+public function test_Active2() {
+$this->expectException(InvalidArgumentException::class);
+$inputValue = 2;
+$this->obj->setActive($inputValue);
+}
+
+public function test_ActiveTextValue() {
+$this->expectException(InvalidArgumentException::class);
+$inputValue = "something";
+$this->obj->setActive($inputValue);
+}
+
+
+public function testValidatePassword() {
+$expected = true;
+$firstPassword = "somepassword";
+$secondPassword = "somepassword";
+$actual = $this->obj->validatePassword($firstPassword, $secondPassword);
+$this->assertEquals($expected, $actual);
+}
+
+public function testValidatePasswordNoMatch() {
+$expected = false;
+$firstPassword = "somepassword";
+$secondPassword = "someotherpassword";
+$actual = $this->obj->validatePassword($firstPassword, $secondPassword);
+$this->assertEquals($expected, $actual);
+}
+
+public function testValidatePasswordNoMatchAndShort() {
+$expected = false;
+$firstPassword = "some";
+$secondPassword = "pass";
+$actual = $this->obj->validatePassword($firstPassword, $secondPassword);
+$this->assertEquals($expected, $actual);
+}
+
+public function testValidatePasswordShortMatch() {
+$expected = false;
+$firstPassword = "some";
+$secondPassword = "some";
+$actual = $this->obj->validatePassword($firstPassword, $secondPassword);
+$this->assertEquals($expected, $actual);
+}
+  
 
 
 }
