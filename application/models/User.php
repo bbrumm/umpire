@@ -81,7 +81,7 @@ class User extends CI_Model
         if(strlen($pValue) <= 255) {
             $this->username = $pValue;
         } else {
-            throw new Exception('Username is too long.'); 
+            throw new InvalidArgumentException('Username is too long.'); 
         }
     }
 
@@ -117,7 +117,7 @@ class User extends CI_Model
         if(strlen($pValue) <= 255) {
             $this->emailAddress = $pValue;
         } else {
-            throw new Exception('Email address is too long.');
+            throw new InvalidArgumentException('Email address is too long.');
         }
     }
     
@@ -125,7 +125,7 @@ class User extends CI_Model
         if(strlen($pValue) <= 200) {
             $this->activationID = $pValue;
         } else {
-            throw new Exception('Activation ID is too long.');
+            throw new InvalidArgumentException('Activation ID is too long.');
         }
     }
     
@@ -133,7 +133,7 @@ class User extends CI_Model
         if ($pValue == 1 || $pValue == 0) {
             $this->active = $pValue;
         } else {
-            throw new Exception("User active value must be either 1 or 0.");
+            throw new InvalidArgumentException("User active value must be either 1 or 0.");
         }
     }
     
