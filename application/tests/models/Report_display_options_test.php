@@ -25,7 +25,7 @@ $this->assertEquals($expected, $this->obj->getFieldToDisplay());
 }
 
 public function test_NoDataValue() {
-$expected = 14
+$expected = 4;
 $this->obj->setNoDataValue($expected);
 $this->assertEquals($expected, $this->obj->getNoDataValue());
 }
