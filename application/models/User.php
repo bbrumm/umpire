@@ -66,12 +66,6 @@ class User extends CI_Model
         return $this->activationID;
     }
     
-    public function getActive() {
-        return $this->active;
-    }
-    
-    
-    
     //SET Functions
     public function setId($pValue) {
         $this->id = $pValue;
@@ -138,11 +132,7 @@ class User extends CI_Model
     }
     
     public function isActive() {
-        if ($this->getActive() == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($this->active == 1);
     }
     
     function login($username, $password) {
@@ -169,11 +159,7 @@ class User extends CI_Model
         
         $query = $this->db->get();
         
-        if ($query->num_rows() == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($query->num_rows() == 1);
     }
     
     public function getUserFromUsername($username) {
@@ -303,12 +289,7 @@ class User extends CI_Model
         
         $queryStatus = $this->db->insert('password_reset_request', $data);
             
-        if ($queryStatus == 1) {
-            return true;
-        } else {
-            return false;
-        }
-        
+        return ($queryStatus == 1);
     }
     
     public function storeActivationID($pActivationID) {
