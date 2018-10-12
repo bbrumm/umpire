@@ -302,9 +302,10 @@ $this->obj->setActive($inputValue);
 }
 
 public function test_ActiveTextValue() {
-$this->expectException(InvalidArgumentException::class);
+$expected = false;
 $inputValue = "something";
 $this->obj->setActive($inputValue);
+$this->assertEquals($expected, $this->obj->isActive());
 }
 
 
