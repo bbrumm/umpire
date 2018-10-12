@@ -41,10 +41,6 @@ class Report_grouping_structure
     public function getReportGroupingStructureID() {
         return $this->reportGroupingStructureID;
     }
-    
-    public function getReportID() {
-        return $this->reportID;
-    }
 
     public function getGroupingType() {
         return $this->groupingType;
@@ -72,10 +68,6 @@ class Report_grouping_structure
     //Set Functions
     private function setReportGroupingStructureID($pValue) {
         $this->reportGroupingStructureID = $pValue;
-    }
-    
-    private function setReportID($pValue) {
-        $this->reportID = $pValue;
     }
     
     private function setGroupingType($pValue) {
