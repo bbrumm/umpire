@@ -43,8 +43,8 @@ class Report_param_loader extends CI_Model {
         
         $reportParameter = Report_parameter::createNewReportParameter(
             $queryResultArray[0]['report_title'],
-            $queryResultArray[0]['value_field_id'].
-            $queryResultArray[0]['no_value_display'].
+            $queryResultArray[0]['value_field_id'],
+            $queryResultArray[0]['no_value_display'],
             $queryResultArray[0]['first_column_format'],
             $queryResultArray[0]['colour_cells'],
             $queryResultArray[0]['orientation'],

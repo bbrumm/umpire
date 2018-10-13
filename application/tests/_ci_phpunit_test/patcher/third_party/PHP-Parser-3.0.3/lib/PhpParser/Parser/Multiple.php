@@ -51,4 +51,14 @@ class Multiple implements Parser {
         } catch (Error $error) {}
         return [$stmts, $error];
     }
+    /**
+     * {@inheritDoc}
+     * @see \PhpParser\Parser::getErrors()
+     */
+    public function getErrors()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

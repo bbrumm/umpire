@@ -80,7 +80,7 @@ class Report_instance extends CI_Model {
 	    $columnLabelResultArray = $this->getColumnLabelResultArray();
 	    $resultArray = $this->getResultArray();
 	    
-	    $resultOutputArray = "";
+	    $resultOutputArray = [];
 	    
 	    $countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
@@ -341,8 +341,9 @@ Array
 	
 	
 	private function translateRptGrStructureToSimpleArray($pReportGroupingStructureArray) {
-	    $simpleColumnFieldArray = "";
-	    for ($i=0; $i < count($pReportGroupingStructureArray); $i++) {
+	    $simpleColumnFieldArray =[];
+	    $countReportGroupingStructureArray = count($pReportGroupingStructureArray);
+	    for ($i=0; $i < $countReportGroupingStructureArray; $i++) {
 	        if ($pReportGroupingStructureArray[$i]->getGroupingType() == 'Column') {
 	            $simpleColumnFieldArray[] = $pReportGroupingStructureArray[$i]->getFieldName();
 	        }

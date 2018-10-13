@@ -10,8 +10,8 @@ class Report_filter_parameter extends CI_Model {
     }
     
     public function createFilterParameter($pFilterParameter, $pdfMode, $pFilterIsRegion = false) {
-        $this->debug_library->debugOutput("pFilterParameters in createFilterParameter: ", $pFilterParameter);
-        
+        //$this->debug_library->debugOutput("pFilterParameters in createFilterParameter: ", $pFilterParameter);
+        //$this->debug_library->debugOutput("pFilterParameters isRegion: ", $pFilterIsRegion);
         if ($pdfMode) {
             $this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameter);
             $this->filterDisplayValues = $this->strReplaceWithoutApostrophe($pFilterParameter);
@@ -31,8 +31,17 @@ class Report_filter_parameter extends CI_Model {
             $this->filterSQLValues = $this->strReplaceWithApostrophe($pFilterParameterRegion);
             $this->filterDisplayValues = $pFilterParameterRegion;
         } else {
-            $this->filterSQLValues = $this->implodeWithApostrophe($pFilterParameter);
-            $this->filterDisplayValues = $this->implodeWithoutApostrophe($pFilterParameter);
+            if(is_array($pFilterParameter)) {
+            //$this->debug_library->debugOutput("pFilterParameters ready to implode: ", $pFilterParameter);
+                if (count($pFilterParameter) > 0) {
+                    $this->filterSQLValues = $this->implodeWithApostrophe($pFilterParameter);
+                    $this->filterDisplayValues = $this->implodeWithoutApostrophe($pFilterParameter);
+                } else {
+                    throw new InvalidArgumentException("The provided filterParameter array is empty.");
+                }
+            } else {
+                throw new InvalidArgumentException("The provided filterParameter value is expected to be an array, but a string was provided: ". $pFilterParameter);
+            }
         }
     }
     

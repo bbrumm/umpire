@@ -12,14 +12,15 @@ class Report_selection_parameter extends CI_Model
         parent::__construct();
         $this->load->model('Selectable_report_option');
         //$this->load->config('constants');
+        $this->load->library('Debug_library');
     }
 
-    public function createReportSelectionParameter($pParameterID, $pParameterName, 
+    public static function createReportSelectionParameter($pParameterID, $pParameterName, 
         $pParameterDisplayOrder, $pAllowMultipleSelections) {
 
         $obj = new Report_selection_parameter();
         $obj->setParameterID($pParameterID);
-        $obj->setSelectableReportOptions($this->loadSelectableReportOptions());
+        //$obj->setSelectableReportOptions($obj->loadSelectableReportOptions());
         $obj->setParameterName($pParameterName);
         $obj->setParameterDisplayOrder($pParameterDisplayOrder);
         $obj->setAllowMultipleSelections($pAllowMultipleSelections);
@@ -77,18 +78,24 @@ class Report_selection_parameter extends CI_Model
         $this->allowMultipleSelections = $pValue;
     }
     
+    public function initialiseSelectableReportOptions() {
+        $this->loadSelectableReportOptions();
+        //$this->debug_library->debugOutput("initialiseSelectableReportOptions : ", $this->getSelectableReportOptions());
+    }
     
-    
-    public function loadSelectableReportOptions() {
+    private function loadSelectableReportOptions() {
         $parameterID = $this->getParameterID();
         
         $queryString = "SELECT parameter_value_name, parameter_display_order " .
             "FROM report_selection_parameter_values " .
             "WHERE parameter_id = $parameterID " .
             "ORDER BY parameter_display_order;";
+        //$this->debug_library->debugOutput("loadSelectableReportOptions query: ", $queryString);
             
         $query = $this->db->query($queryString);
+        
         foreach ($query->result() as $row) {
+            //$this->debug_library->debugOutput("loadSelectableReportOptions row: ", "x");
             $selectableReportOption = new Selectable_report_option();
             $selectableReportOption->setOptionName($row->parameter_value_name);
             $selectableReportOption->setOptionValue($row->parameter_value_name);
@@ -96,6 +103,7 @@ class Report_selection_parameter extends CI_Model
             $selectableReportOptionsForParameter[] = $selectableReportOption;
         }
         $this->setSelectableReportOptions($selectableReportOptionsForParameter);
+        //$this->debug_library->debugOutput("loadSelectableReportOptions param: ", $this->getSelectableReportOptions());
     }
 }
 ?>
