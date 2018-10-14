@@ -43,6 +43,18 @@ class Array_library {
     public function compareStringValues($a, $b) {
 	    return strcmp($a, $b);
 	}
+	
+	public function findRecursiveArrayDiff($array1, $array2) {
+	    //This function assumes that both arrays have the same keys, which works for the user permissions, but may not work elsewhere.
+	    $arrayDifferences = "";
+	    foreach ($array1 as $username=>$userPermissionArray) {
+	        //Check if the username exists in the second array, otherwise we'll get an Undefined Index error.
+	        if(array_key_exists($username, $array2)) {
+	            $arrayDifferences[$username] = array_diff_key($array1[$username], $array2[$username]);
+	        }
+	    }
+	    return $arrayDifferences;
+	}
 
 }
 ?>

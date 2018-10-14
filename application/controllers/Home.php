@@ -90,13 +90,9 @@ class Home extends CI_Controller {
         $query = $this->db->query($queryString);
         
         foreach ($query->result() as $row) {
-            $reportSelection = new Report_selection();
-            $reportSelection->setReportID($row->report_id);
-            $reportSelection->setReportName($row->report_name);
-            $reportSelection->setRegionEnabled($row->region_enabled);
-            $reportSelection->setLeagueEnabled($row->league_enabled);
-            $reportSelection->setAgeGroupEnabled($row->age_group_enabled);
-            $reportSelection->setUmpireTypeEnabled($row->umpire_type_enabled);
+            $reportSelection = Report_selection::createNewReportSelection(
+                $row->report_id, $row->report_name, $row->region_enabled,
+                $row->league_enabled, $row->age_group_enabled, $row->umpire_type_enabled);
             
             $allReports[] = $reportSelection;
         }

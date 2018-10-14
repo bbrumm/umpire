@@ -18,6 +18,29 @@ class Report_selection extends CI_Model {
         
     }
     
+    public static function createNewReportSelection($pReportID, $pReportName,
+        $pRegionEnabled, $pLeagueEnabled, $pAgeGroupEnabled, $pUmpireTypeEnabled) {
+        
+        $obj = new Report_selection();
+        $obj->setReportID($pReportID);
+        $obj->setReportName($pReportName);
+        $obj->setRegionEnabled($pRegionEnabled);
+        $obj->setLeagueEnabled($pLeagueEnabled);
+        $obj->setAgeGroupEnabled($pAgeGroupEnabled);
+        $obj->setUmpireTypeEnabled($pUmpireTypeEnabled);
+        
+        return $obj;
+    }
+    
+    public static function createNewReportSelectionIDName($pReportID, $pReportName) {
+        $obj = new Report_selection();
+        $obj->setReportID($pReportID);
+        $obj->setReportName($pReportName);
+        
+        return $obj;
+    }
+
+    
     public function getReportID() {
         return $this->reportID;
     }
@@ -42,47 +65,47 @@ class Report_selection extends CI_Model {
         return $this->umpireTypeEnabled;
     }
     
-    public function setReportID($pValue) {
+    private function setReportID($pValue) {
         if(is_numeric($pValue)) {
             $this->reportID = $pValue;
         } else {
-            throw new Exception('ReportID must be numeric.');
+            throw new InvalidArgumentException('ReportID must be numeric.');
         }
     }
     
-    public function setReportName($pValue) {
+    private function setReportName($pValue) {
         $this->reportName = $pValue;
     }
     
-    public function setRegionEnabled($pValue) {
-        if($pValue == 0 || $pValue == 1) {
+    private function setRegionEnabled($pValue) {
+        if(($pValue == 0 || $pValue == 1) && is_numeric($pValue)) {
             $this->regionEnabled = $pValue;
         } else {
-            throw new Exception('RegionEnabled must be 1 or 0.');
+            throw new InvalidArgumentException('RegionEnabled must be 1 or 0.');
         }
     }
     
-    public function setLeagueEnabled($pValue) {
-        if($pValue == 0 || $pValue == 1) {
+    private function setLeagueEnabled($pValue) {
+        if(($pValue == 0 || $pValue == 1) && is_numeric($pValue)) {
             $this->leagueEnabled = $pValue;
         } else {
-            throw new Exception('LeagueEnabled must be 1 or 0.');
+            throw new InvalidArgumentException('LeagueEnabled must be 1 or 0.');
         }
     }
     
-    public function setAgeGroupEnabled($pValue) {
-        if($pValue == 0 || $pValue == 1) {
+    private function setAgeGroupEnabled($pValue) {
+        if(($pValue == 0 || $pValue == 1) && is_numeric($pValue)) {
             $this->ageGroupEnabled = $pValue;
         } else {
-            throw new Exception('AgeGroupEnabled must be 1 or 0.');
+            throw new InvalidArgumentException('AgeGroupEnabled must be 1 or 0.');
         }
     }
     
-    public function setUmpireTypeEnabled($pValue) {
-        if($pValue == 0 || $pValue == 1) {
+    private function setUmpireTypeEnabled($pValue) {
+        if(($pValue == 0 || $pValue == 1) && is_numeric($pValue)) {
             $this->umpireTypeEnabled= $pValue;
         } else {
-            throw new Exception('UmpireTypeEnabled must be 1 or 0.');
+            throw new InvalidArgumentException('UmpireTypeEnabled must be 1 or 0.');
         }
     }
     

@@ -21,15 +21,11 @@ class Useradminmodel extends CI_Model {
         $userArray = '';
 
         for($i=0; $i<count($queryResultArray); $i++) {
-            $newUser = new User();
-            
-            $newUser->setId($queryResultArray[$i]['id']);
-            $newUser->setUsername($queryResultArray[$i]['user_name']);
-            $newUser->setFirstName($queryResultArray[$i]['first_name']);
-            $newUser->setLastName($queryResultArray[$i]['last_name']);
-            $newUser->setRoleName($queryResultArray[$i]['role_name']);
-            $newUser->setActive($queryResultArray[$i]['active']);
-            $newUser->setPermissionArrayForUser();
+            $newUser = User::createUserFromNameAndRole(
+                $queryResultArray[$i]['id'], $queryResultArray[$i]['user_name'], 
+                $queryResultArray[$i]['first_name'], $queryResultArray[$i]['last_name'], 
+                $queryResultArray[$i]['role_name'], $queryResultArray[$i]['active']);
+
             $userArray[] = $newUser;
         }
         return $userArray;
@@ -221,17 +217,7 @@ class Useradminmodel extends CI_Model {
         
     }
     
-    public function findRecursiveArrayDiff($array1, $array2) {
-        //This function assumes that both arrays have the same keys, which works for the user permissions, but may not work elsewhere.
-        $arrayDifferences = "";
-        foreach ($array1 as $username=>$userPermissionArray) {
-            //Check if the username exists in the second array, otherwise we'll get an Undefined Index error.
-            if(array_key_exists($username, $array2)) {
-                $arrayDifferences[$username] = array_diff_key($array1[$username], $array2[$username]);
-            }
-        }
-        return $arrayDifferences;
-    }
+    
     
     public function removePrivileges($permissionArray) {
         foreach ($permissionArray as $username=>$userPermissionArray) {

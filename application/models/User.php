@@ -21,6 +21,22 @@ class User extends CI_Model
         $this->load->model('useradmin/User_role_permission');
     }
     
+    public static function createUserFromNameAndRole($pID, $pUsername,
+        $pFirstName, $pLastName, $pRoleName, $pActive) {
+        
+        $obj = new User();
+        $obj->setId($pID);
+        $obj->setUsername($pUsername);
+        $obj->setFirstName($pFirstName);
+        $obj->setLastName($pLastName);
+        $obj->setRoleName($pRoleName);
+        $obj->setActive($pActive);
+        $obj->setPermissionArrayForUser();
+        
+        return $obj;
+    }
+    
+    
 
     public function getId() {
         return $this->id;
@@ -99,7 +115,7 @@ class User extends CI_Model
         $this->subRoleName = $pValue;
     }
     
-    public function setPermissionArray($pValue) {
+    private function setPermissionArray($pValue) {
         $this->permissionArray = $pValue;
     }
     
@@ -189,7 +205,7 @@ class User extends CI_Model
         }
     }
     
-    public function setPermissionArrayForUser() {
+    private function setPermissionArrayForUser() {
         $queryString = "SELECT ps.id, ps.permission_id, p.permission_name, ps.selection_name 
             FROM permission_selection ps 
             INNER JOIN permission p ON ps.permission_id = p.id 

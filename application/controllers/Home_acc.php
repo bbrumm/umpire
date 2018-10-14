@@ -80,10 +80,9 @@ class Home_acc extends CI_Controller {
         $query = $this->db->query($queryString);
         
         foreach ($query->result() as $row) {
-            $reportSelection = new Report_selection();
-            $reportSelection->setReportID($row->report_id);
-            $reportSelection->setReportName($row->report_name);
-            
+            $reportSelection = Report_selection::createNewReportSelectionIDName(
+                $row->report_id, $row->report_name);
+
             $allReports[] = $reportSelection;
         }
         return $allReports;

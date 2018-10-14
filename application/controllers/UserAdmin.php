@@ -14,6 +14,7 @@ class UserAdmin extends CI_Controller
         $this->load->helper(array('form', 'url'));
         $this->load->model('Useradminmodel');
         $this->load->library('Debug_library');
+        $this->load->library('Array_library');
     }
 
     function index() {
@@ -77,6 +78,8 @@ class UserAdmin extends CI_Controller
     
     public function saveUserPrivileges() {
         $userAdmin = new Useradminmodel();
+        $arrayLibrary = new Array_library();
+        
         //$this->debug_library->debugOutput($this->testArrayCheck());
         //$this->debug_library->debugOutput("POST from saveUserPrivileges:", $_POST);
         
@@ -110,8 +113,8 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $userPermissionsFromDB = $userAdmin->getAllUserPermissionsFromDB();
         $userPermissionsFromForm = $_POST['userPrivilege'];
         
-        $permissionsInDBNotForm = $userAdmin->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
-        $permissionsInFormNotDB = $userAdmin->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
+        $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
+        $permissionsInFormNotDB = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
         
         //$this->debug_library->debugOutput("saveUserPrivileges DB not Form:", $permissionsInDBNotForm);
         //$this->debug_library->debugOutput("saveUserPrivileges Form not DB:", $permissionsInFormNotDB);
