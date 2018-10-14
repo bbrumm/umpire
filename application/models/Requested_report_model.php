@@ -113,7 +113,7 @@ class Requested_report_model extends CI_Model {
         $this->league = $pValue;
     }
     
-    private function setPDFMode($pValue) {
+    public function setPDFMode($pValue) {
         if(is_bool($pValue)) {
             $this->pdfMode = $pValue;
         } else {

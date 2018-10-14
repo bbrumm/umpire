@@ -14,6 +14,7 @@ class Report_param_loader extends CI_Model {
         parent::__construct();
         $this->load->model('report_param/Report_grouping_structure');
         $this->load->model('report_param/Report_parameter');
+        $this->load->model('Database_store');
     }
     
     private $reportParameter;
@@ -36,28 +37,10 @@ class Report_param_loader extends CI_Model {
     }
     
     
-    public function loadAllReportParametersForReport(Requested_report_model $pRequestedReport) {
-        //Load all report parameters
-        $queryDataReportParameters = $this->queryReportParameters($pRequestedReport);
-        $queryResultArray = $queryDataReportParameters->result_array();  
-        
-        $reportParameter = Report_parameter::createNewReportParameter(
-            $queryResultArray[0]['report_title'],
-            $queryResultArray[0]['value_field_id'],
-            $queryResultArray[0]['no_value_display'],
-            $queryResultArray[0]['first_column_format'],
-            $queryResultArray[0]['colour_cells'],
-            $queryResultArray[0]['orientation'],
-            $queryResultArray[0]['paper_size'],
-            $queryResultArray[0]['resolution']
-        );
-            
-        $this->setReportParameter($reportParameter);
+    public function loadAllReportParametersForReport(Requested_report_model $pRequestedReport, IData_store $pDataStore) {
+        $this->setReportParameter($pDataStore->loadAllReportParameters($pRequestedReport->getReportNumber()));
     }
 
-    /**
-    * @property string $config
-    */
     public function loadAllGroupingStructuresForReport(Requested_report_model $pRequestedReport) {
         $debugMode = $this->config->item('debug_mode');
         

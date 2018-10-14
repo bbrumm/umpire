@@ -85,9 +85,7 @@ class Report_instance extends CI_Model {
 	    $countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
         
-        //$this->debug_library->debugOutput("countItemsInColumnHeadingSet:", $countItemsInColumnHeadingSet);
-        
-	    foreach ($resultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
+        foreach ($resultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
 	        $columnNumber = 0;
 	        $totalGeelong = 0;
 	        $totalForRow = 0;
@@ -99,44 +97,36 @@ class Report_instance extends CI_Model {
 	            $resultOutputArray[$currentResultArrayRow][0] = $rowKey;
 	        }
 	        
-	        //$this->debug_library->debugOutput("columnLabelResultArray:", $columnLabelResultArray);
-	        //$this->debug_library->debugOutput("resultOutputArray key:", $resultOutputArray[$currentResultArrayRow][0]);
-	        
 	        /*
 	         * columnLabelResultArray example:
-Array
-(
-    [0] => Array
-        (
-            [short_league_name] => GFL
-            [umpire_count] => 2 Umpires
-        )
-
-    [1] => Array
-        (
-            [short_league_name] => GFL
-            [umpire_count] => 3 Umpires
-        )
-
-    [2] => Array
-        (
-            [short_league_name] => BFL
-            [umpire_count] => 2 Umpires
-        )
+            Array
+            (
+                [0] => Array
+                    (
+                        [short_league_name] => GFL
+                        [umpire_count] => 2 Umpires
+                    )
+            
+                [1] => Array
+                    (
+                        [short_league_name] => GFL
+                        [umpire_count] => 3 Umpires
+                    )
+            
+                [2] => Array
+                    (
+                        [short_league_name] => BFL
+                        [umpire_count] => 2 Umpires
+                    )
 	         * 
 	         * 
 	         * 
 	         */
 	        foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
 	            $columnNumber++;
-	            
 	            //Loops through each value of $columnLabelResultArray.
 	            //This comes from the results found in the separate_reports.ReportX.getReportColumnQuery() function.
 	            //E.g. if Report 8's column query returns 4 rows, then this columnHeadingSet has 4 records in it
-	            
-	            //$this->debug_library->debugOutput("currentRowItem:", $currentRowItem);
-	            
-	            
 	            foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
     	            //Loop through each row and column intersection in the result array
     	        
@@ -147,33 +137,18 @@ Array
 	                }
 	                
 	                if ($this->requestedReport->getReportNumber() == 8) {
-	                    /*if ($columnNumber == 1) {
-	                        //Add extra column for report 8. Column heading is called Other Games, the heading does not come from column data.
-	                        //$this->debug_library->debugOutput("COLUMN NUMBER:", $columnNumber);
-	                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Other Games';
-	                        $columnNumber++;
-	                    }
-    	                */
-    	                
-    	                if ($columnNumber == 6) {
+	                    if ($columnNumber == 6) {
     	                    //Add extra column for report 8, after column 5 (array index 5 which is column 6).
     	                    //Column heading is called Total Geelong, the heading does not come from column data.
-    	                    //$this->debug_library->debugOutput("COLUMN NUMBER:", $columnNumber);
     	                    $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Geelong';
-    	                    //$columnNumber++;
     	                }
     	                if ($columnNumber == 8) {
-    	                    //$this->debug_library->debugOutput("COLUMN NUMBER:", $columnNumber);
     	                    $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Overall';
-    	                    //$columnNumber++;
     	                }
 	                }
 	                
     	            //Match the column headings to the values in the array
-	                //$this->debug_library->debugOutput("isFieldMatchingColumnA:", $columnItem);
-	                //$this->debug_library->debugOutput("isFieldMatchingColumnB:", $columnHeadingSet);
-	                
-	               if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet)) {
+	                if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet)) {
 	                   if($this->requestedReport->getReportNumber() == 2) { 
 	                       //Add up total values for report 2, only if the "short_league_name" equivalent value is not "2 Umpires"
 	                       if ($columnHeadingSet['short_league_name'] != '2 Umpires') {
@@ -276,10 +251,6 @@ Array
 	    switch (count($this->getReportColumnFields())) {
 	        
 	        case 1:
-	            //$this->debug_library->debugOutput("getReportColumnFields:", $this->getReportColumnFields());
-	            //$this->debug_library->debugOutput("pColItem check:", $pColumnItem[$this->getReportColumnFields()[0]]);
-	            //$this->debug_library->debugOutput("pColHeadingSet check:", $pColumnHeadingSet);
-	            
 	            if($this->getReportTitle() == 8) {
 	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet['season_year']) {
 	                    return true;
@@ -293,13 +264,6 @@ Array
 	            }
 	            break;
 	        case 2:
-	            
-	            //$this->debug_library->debugOutput("getReportColumnFields:", count($this->getReportColumnFields()));
-	            /*
-	            $this->debug_library->debugOutput("getReportColumnFields:", $this->getReportColumnFields());
-	            $this->debug_library->debugOutput("pColumnItem:", $pColumnItem);
-	            $this->debug_library->debugOutput("pColumnHeadingSet:", $pColumnHeadingSet);
-	            */
 	            if ($this->requestedReport->getReportNumber() == 5) {
 	                if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
 	                    return true;
@@ -323,8 +287,6 @@ Array
 	            } else {
 	                return false;
 	            }
-	            
-	            
 	            break;
 	        case 3:
 	            if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]] &&
@@ -363,7 +325,9 @@ Array
     	    $umpireDisciplineValue = implode(',', $pRequestedReport->getUmpireType());
 	    }
 	    
-	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport);
+	    $pDatabaseStore = new Database_store();
+	    
+	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport, $pDatabaseStore);
 	    $this->reportParameter = $this->reportParamLoader->getReportParameter();
 	    $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
 	    
@@ -417,16 +381,11 @@ Array
         //Set result array (function includes logic for different reports
         $this->setResultArray($queryResultArray);
         
-        //$this->debug_library->debugOutput("loadReportResults.queryResultArray:",  $queryResultArray);
-        
         //Pivot the array so it can be displayed
         $this->setColumnLabelResultArray($queryResultArray);
         
         //TODO: This function is causing the output values to be misaligned.
         $this->setResultOutputArray();
-        
-        //$this->debug_library->debugOutput("loadReportResults.getResultOutputArray:",  $this->getResultOutputArray());
-
 	}
 
 	private function extractGroupFromGroupingStructure($pReportGroupingStructureArray, $pGroupingType) {
@@ -492,9 +451,6 @@ Array
 	     * 
 	     */
 	    
-	    
-	    //$this->debug_library->debugOutput("pFieldForRowLabel:", $pFieldForRowLabel);
-	    
 	    $countRowGroups = count($pFieldForRowLabel);
 	    
 	    $pivotedArray = array();
@@ -519,7 +475,6 @@ Array
 	            }
 	        }
 	            
-	        
 	        $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]];
 	        if (array_key_exists(1, $pFieldForRowLabel)) {
 	            $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]];
@@ -536,59 +491,22 @@ Array
 	                $pivotedArray[$rowArrayKey][$counterForRow]['total_match_count'] = $resultRow['total_match_count'];
 	                $pivotedArray[$rowArrayKey][$counterForRow]['match_pct'] = $resultRow['match_pct'];
 	            } elseif ($this->requestedReport->getReportNumber() == 8) {
-	                //$this->debug_library->debugOutput("pFieldForRowLabel:",  $pFieldForRowLabel);
-	                //$this->debug_library->debugOutput("columnField:",  $columnField);
-	                //$this->debug_library->debugOutput("resultRow:",  $resultRow);
-	                //$rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[0]];
-	                
-	                
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
-	                //echo "pivotArray key (". $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField].") set to (". $resultRow[$columnField].")<BR />";
-	              
 	            } elseif ($this->requestedReport->getReportNumber() == 2) {
-	                //$this->debug_library->debugOutput("result row 1:",  $resultRow);
-	                
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
-	                
 	                if ($resultRow['two_ump_flag'] == 1) {
 	                    $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['short_league_name'] = '2 Umpires';
-	                    
-	                    
-	                    //$pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
-	                //} else {
-	                   // $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['2 Umpires'] = $resultRow['match_count'];
-	                    
-	                    
-	                //    $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['2 Umpires'] = $resultRow[$columnField];
 	                }
-	                
-	                
-	                
-	                
-	                
 	            } else {
-	                
-	                //$this->debug_library->debugOutput("pivot before:",  $pivotedArray[$resultRow[$pFieldForRowLabel[0]]]);
-	                
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
-	                
-	                
-	                //$this->debug_library->debugOutput("pivot value updated:", $resultRow[$columnField]);
-	                //$this->debug_library->debugOutput("pivot after:",  $pivotedArray[$resultRow[$pFieldForRowLabel[0]]]);
 	            }
-	            
 	            if ($this->requestedReport->getReportNumber() == 3) {
 	                $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['team_list'] = $resultRow['team_list'];
 	            }
-	            
-	            
 	        }
-	        
-	        
-	        
 	        $counterForRow++;
 	    }
 	    $this->debug_library->debugOutput("pivotedArray:", $pivotedArray);
@@ -604,14 +522,8 @@ Array
 	     */
 	     
 	    $columnLabelResults = $this->columnLabelResultArray;
-	     
-	    //$this->debug_library->debugOutput("CLR:", $columnLabelResults);
-	     
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
 	    $columnCountLabels = [];
-	     
-	    //$this->debug_library->debugOutput("CL:", $columnLabels);
-	     
 	    //Loop through the possible labels
 	    for ($i=0; $i < count($columnLabels); $i++) {
 	        if ($i == 0) {
@@ -629,19 +541,13 @@ Array
 	        //Loop through columnLabelResults
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
 	            if ($i == 0) {
-	                //$this->debug_library->debugOutput("getColumnCountForHeadingCells: i is ", "0");
-	                //$this->debug_library->debugOutput("CL J:", $columnLabels);
-	                //$this->debug_library->debugOutput("CL J Results:", $columnLabelResults);
-	
-	                //if ($this->in_array_r($columnLabelResults[$j][$columnLabels[$i]->getFieldName()], $columnCountLabels[$i]) == TRUE) {
 	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {
 	                    //Value found in array. Increment counter value
 	                    //Find the array that stores this value
 	                    $currentArrayKey = $this->findKeyFromValue(
 	                        $columnCountLabels[$i], $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
 	                    $columnCountLabels[$i][$currentArrayKey]["count"]++;
-	
-	                } else {
+	               } else {
 	                    //Value not found. Add to array.
 	                    $columnCountLabels[$i][$arrayKeyNumber]["label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	                    $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
@@ -652,14 +558,11 @@ Array
 	            if ($i == 1) {
                     if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {
                         //Value found in array. Increment counter value
-                        //$this->debug_library->debugOutput("- Value found:", $columnLabelResults[$j][$columnLabels[$i]]);
                         //Check if the value on the first row matches
                         if ($this->isFirstRowMatching($columnLabels, $columnLabelResults, $i, $j)) {
-                            //echo "-- Match";
                             $currentArrayKey = $this->findKeyFromValue($columnCountLabels[$i],
                                 $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
                                 $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
-                            //echo "-- Increment array key [". $i ."][". $currentArrayKey ."]<BR/>";
                             $columnCountLabels[$i][$currentArrayKey]["count"]++;
                         } else {
                             $columnCountLabels[$i][$arrayKeyNumber]["label"] =
@@ -682,7 +585,6 @@ Array
                     }
 	            }
 	            if ($i == 2) {
-	                //$this->debug_library->debugOutput("getColumnCountForHeadingCells: i is ", "2");
 	                //Set all count values to 1 for this level, as it is not likely that the third row will need to be merged/have a higher than 1 colspan.
 	                $columnCountLabels[$i][$j]["label"] =
 	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
