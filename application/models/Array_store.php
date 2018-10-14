@@ -149,5 +149,17 @@ class Array_store extends CI_Model implements IData_store {
         
     }
     
+    public function userLogin($pUsername, $pPassword) { }
+public function checkUserActive($pUsername) { }
+public function getUserFromUsername($pUsername) { }
+public function setPermissionArrayForUser() { }
+public function checkUserExistsForReset() { }
+public function logPasswordResetRequest($pRequestData) { }
+public function storeActivationID($pActivationID) { }
+public function createUserFromActivationID() { }
+public function updatePassword() { }
+public function logPasswordReset() { }
+public function updateEmailAddress() { }
+    
     
 }
