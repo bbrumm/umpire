@@ -1,50 +1,45 @@
 <?php
-class Report1_test extends TestCase {
+class Report3_test extends TestCase {
     public function setUp() {
         $this->resetInstance();
         //$this->CI->load->model('separate_reports/Report1');
         $this->CI->load->model('Report_instance');
-        $this->obj = $this->CI->Report_factory->createReport(1);
+        $this->obj = $this->CI->Report_factory->createReport(3);
     }
     
     public function test_GetDataQuery() {
         $reportInstance = new Report_instance();
-        $inputFilterUmpire = array("First", "Second", "Third");
-        $inputFilterAge = array("Four");
         $inputFilterShortLeague = array("Five", "Six");
-        $inputFilterRegion = array("Seven");
         $inputSeasonYear = 2018;
         $inputPDFMode = false;
         $inputRegion = false;
-        $reportInstance->filterParameterUmpireType->createFilterParameter($inputFilterUmpire, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
         $reportInstance->requestedReport->setSeason($inputSeasonYear);
         
-        $expected = "SELECT last_first_name, short_league_name, club_name, age_group, SUM(match_count) AS match_count FROM dw_mv_report_01 ".
-            "WHERE age_group IN ('Four') AND short_league_name IN ('Five','Six') AND region_name IN ('Seven') AND umpire_type IN ('First','Second','Third') ".
-            "AND season_year = 2018 GROUP BY last_first_name, short_league_name, club_name ORDER BY last_first_name, short_league_name, club_name;";
+        $expected = "SELECT weekend_date, CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group, short_league_name, ".
+        "GROUP_CONCAT(team_names) AS team_list, (SELECT COUNT(DISTINCT match_id) FROM staging_no_umpires s2 ".
+        "WHERE s2.age_group = s.age_group AND s2.umpire_type = s.umpire_type AND s2.weekend_date = s.weekend_date AND short_league_name IN ('Five','Six') ) AS match_count ".
+        "FROM staging_no_umpires s WHERE short_league_name IN ('Five','Six') AND season_year = 2018 ".
+        "AND CONCAT(age_group, ' ', umpire_type) IN ( 'Seniors Boundary', 'Seniors Goal', 'Reserve Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field' ) ".
+        "GROUP BY weekend_date, age_group, umpire_type, short_league_name ORDER BY weekend_date, age_group, umpire_type, short_league_name;";
         $actual = $this->obj->getReportDataQuery($reportInstance);
         $this->assertEquals($expected, $actual);
     }
     
     public function test_GetReportColumnQuery() {
         $reportInstance = new Report_instance();
-        $inputFilterUmpire = array("First", "Second", "Third");
         $inputFilterAge = array("Four");
         $inputFilterShortLeague = array("Five", "Six");
-        $inputFilterRegion = array("Seven");
         $inputPDFMode = false;
         $inputRegion = false;
-        $reportInstance->filterParameterUmpireType->createFilterParameter($inputFilterUmpire, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
         
-        $expected = "SELECT DISTINCT short_league_name, club_name FROM dw_mv_report_01 ".
-            "WHERE age_group IN ('Four') AND short_league_name IN ('Five','Six') AND region_name IN ('Seven') ".
-            "AND umpire_type IN ('First','Second','Third') ORDER BY short_league_name, club_name;";
+        $expected = "SELECT DISTINCT CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group, short_league_name FROM ".
+        "( SELECT s.age_group, s.umpire_type, s.short_league_name, s.region_name, s.age_sort_order FROM staging_all_ump_age_league s ".
+        "UNION ALL SELECT s.age_group, s.umpire_type, 'Total', 'Total', s.age_sort_order FROM staging_all_ump_age_league s ) sub ".
+        "WHERE CONCAT(age_group, ' ', umpire_type) IN ('Seniors Boundary' , 'Seniors Goal', 'Reserves Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field') ".
+        "AND age_group IN ('Four') AND region_name IN ('Total', ) ORDER BY age_sort_order, umpire_type, short_league_name;";
         $actual = $this->obj->getReportColumnQuery($reportInstance);
         $this->assertEquals($expected, $actual);
     }
@@ -59,10 +54,7 @@ class Report1_test extends TestCase {
         $inputSeasonYear = null;
         $inputPDFMode = false;
         $inputRegion = false;
-        $reportInstance->filterParameterUmpireType->createFilterParameter($inputFilterUmpire, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
         $reportInstance->requestedReport->setSeason(null);
         
         $actual = $this->obj->getReportDataQuery($reportInstance);
@@ -78,10 +70,7 @@ class Report1_test extends TestCase {
         $inputSeasonYear = "";
         $inputPDFMode = false;
         $inputRegion = false;
-        $reportInstance->filterParameterUmpireType->createFilterParameter($inputFilterUmpire, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
         $reportInstance->requestedReport->setSeason(null);
         
         $actual = $this->obj->getReportDataQuery($reportInstance);
@@ -96,13 +85,10 @@ class Report1_test extends TestCase {
         $inputFilterRegion = null;
         $inputPDFMode = false;
         $inputRegion = false;
-        $reportInstance->filterParameterUmpireType->createFilterParameter($inputFilterUmpire, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
-
+        
         $actual = $this->obj->getReportColumnQuery($reportInstance);
-
+        
     }
     
     public function test_GetReportColumnQueryEmptyParam() {
@@ -114,10 +100,7 @@ class Report1_test extends TestCase {
         $inputFilterRegion = [];
         $inputPDFMode = false;
         $inputRegion = false;
-        $reportInstance->filterParameterUmpireType->createFilterParameter($inputFilterUmpire, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
-        $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
         
         $actual = $this->obj->getReportColumnQuery($reportInstance);
         

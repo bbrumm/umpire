@@ -1,10 +1,10 @@
 <?php
-class Report1_test extends TestCase {
+class Report7_test extends TestCase {
     public function setUp() {
         $this->resetInstance();
         //$this->CI->load->model('separate_reports/Report1');
         $this->CI->load->model('Report_instance');
-        $this->obj = $this->CI->Report_factory->createReport(1);
+        $this->obj = $this->CI->Report_factory->createReport(7);
     }
     
     public function test_GetDataQuery() {
@@ -22,9 +22,9 @@ class Report1_test extends TestCase {
         $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
         $reportInstance->requestedReport->setSeason($inputSeasonYear);
         
-        $expected = "SELECT last_first_name, short_league_name, club_name, age_group, SUM(match_count) AS match_count FROM dw_mv_report_01 ".
-            "WHERE age_group IN ('Four') AND short_league_name IN ('Five','Six') AND region_name IN ('Seven') AND umpire_type IN ('First','Second','Third') ".
-            "AND season_year = 2018 GROUP BY last_first_name, short_league_name, club_name ORDER BY last_first_name, short_league_name, club_name;";
+        $expected = "SELECT umpire_type, age_group, short_league_name, umpire_count, match_count FROM dw_mv_report_07 ".
+        "WHERE season_year IN (2018) AND age_group IN ('Four') AND region_name IN ('Seven') AND umpire_type IN ('Field') ".
+        "ORDER BY age_sort_order, league_sort_order, umpire_type, umpire_count;";
         $actual = $this->obj->getReportDataQuery($reportInstance);
         $this->assertEquals($expected, $actual);
     }
@@ -42,9 +42,10 @@ class Report1_test extends TestCase {
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
         
-        $expected = "SELECT DISTINCT short_league_name, club_name FROM dw_mv_report_01 ".
-            "WHERE age_group IN ('Four') AND short_league_name IN ('Five','Six') AND region_name IN ('Seven') ".
-            "AND umpire_type IN ('First','Second','Third') ORDER BY short_league_name, club_name;";
+        $expected = "SELECT DISTINCT short_league_name, umpire_count FROM ( SELECT DISTINCT short_league_name, league_sort_order, '2 Umpires' AS umpire_count ".
+        "FROM dw_mv_report_07 WHERE season_year IN () AND age_group IN ('Four') AND region_name IN ('Seven') AND umpire_type IN ('Field') UNION ALL ".
+        "SELECT DISTINCT short_league_name, league_sort_order, '3 Umpires' FROM dw_mv_report_07 WHERE season_year IN () AND age_group IN ('Four') ".
+        "AND region_name IN ('Seven') AND umpire_type IN ('Field') ) AS sub ORDER BY league_sort_order, umpire_count;";
         $actual = $this->obj->getReportColumnQuery($reportInstance);
         $this->assertEquals($expected, $actual);
     }
@@ -100,9 +101,9 @@ class Report1_test extends TestCase {
         $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
-
+        
         $actual = $this->obj->getReportColumnQuery($reportInstance);
-
+        
     }
     
     public function test_GetReportColumnQueryEmptyParam() {
