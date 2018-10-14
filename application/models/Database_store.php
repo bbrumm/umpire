@@ -192,4 +192,186 @@ class Database_store extends CI_Model implements IData_store {
     }
     
     
+    public function userLogin($pUsername, $pPassword) {
+  $this->db->select('id, user_name, user_password');
+  $this->db->from('umpire_users');
+  $this->db->where('user_name', $pUsername); 
+  this->db->where('user_password', MD5($pPassword));
+  $this->db->limit(1);
+    
+  $query = $this->db->get();
+    
+  if ($query->num_rows() == 1) {
+    return $query->result();
+  } else {
+    return false;
+  }
+
+}
+
+public function checkUserActive($pUsername) {
+        $this->db->select('id');
+        $this->db->from('umpire_users');
+        $this->db->where('user_name', $pUsername);
+        $this->db->where('active', '1');
+        
+        $query = $this->db->get();
+        
+        return ($query->num_rows() == 1);
+    }
+
+
+public function getUserFromUsername($pUsername) {
+        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, u.user_email, r.role_name
+            FROM umpire_users u 
+            INNER JOIN role r ON u.role_id = r.id
+            WHERE u.user_name = '$pUsername' 
+            LIMIT 1;";
+        
+        $query = $this->db->query($queryString);
+        
+        if ($query->num_rows() == 1) {
+            $row = $query->row();
+            $user = User::createFromNameAndEmailDatabaseRow($row)
+/*
+
+            $this->setId($row->id);
+            $this->setUsername($row->user_name);
+            $this->setFirstName($row->first_name);
+            $this->setLastName($row->last_name);
+            $this->setRoleName($row->role_name);
+            $this->setEmailAddress($row->user_email);
+            
+*/
+            //Get permissions for this user, assign each record to an object and store in the permissionArray
+            $user->setPermissionArrayForUser();
+            
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
+
+public function setPermissionArrayForUser() {
+        $queryString = "SELECT ps.id, ps.permission_id, p.permission_name, ps.selection_name 
+            FROM permission_selection ps 
+            INNER JOIN permission p ON ps.permission_id = p.id 
+            WHERE (ps.id IN ( 
+            	SELECT ups.permission_selection_id 
+            	FROM user_permission_selection ups 
+            	WHERE user_id = ". $this->getId() ." 
+            ) OR ps.id IN ( 
+            	SELECT rps.permission_selection_id 
+            	FROM role_permission_selection rps  
+            	INNER JOIN umpire_users u ON rps.role_id = u.role_id 
+            	WHERE u.id = ". $this->getId() ."
+                AND u.role_id != 4));";
+        
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result_array();
+        
+        $countNumberOfPermissions = count($resultArray);
+        
+        if ($countNumberOfPermissions > 0) {
+        
+            for($i=0; $i<$countNumberOfPermissions; $i++) {
+                $userRolePermission = new User_role_permission();
+                //TODO: change this to a custom constructor
+                $userRolePermission->setId($resultArray[$i]['id']);
+                $userRolePermission->setPermissionId($resultArray[$i]['permission_id']);
+                $userRolePermission->setPermissionName($resultArray[$i]['permission_name']);
+                $userRolePermission->setSelectionName($resultArray[$i]['selection_name']);
+                $permissionArray[] = $userRolePermission;
+            }
+            
+            
+            $this->setPermissionArray($permissionArray);
+        }
+           
+    }
+
+}
+
+public function checkUserExistsForReset() {
+        $this->db->select('id');
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->where('user_email', $this->getEmailAddress());
+        $query = $this->db->get('umpire_users');
+        
+        return ($query->num_rows() > 0);
+        
+    }
+
+public function logPasswordResetRequest($pRequestData) {
+        $data = array(
+            'request_datetime' => $pRequestData['request_datetime'],
+            'activation_id' => $pRequestData['activation_id'],
+            'ip_address' => $pRequestData['client_ip'],
+            'user_name' => $pRequestData['username_entered'],
+            'email_address' => $pRequestData['email_address_entered'] 
+        );
+        
+        $queryStatus = $this->db->insert('password_reset_request', $data);
+            
+        return ($queryStatus == 1);
+    }
+
+
+public function storeActivationID($pActivationID) {
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->where('user_email', $this->getEmailAddress());
+        $this->db->update('umpire_users', array('activation_id'=>$pActivationID));
+        
+    }
+
+
+public function createUserFromActivationID() {
+        $this->db->select('user_name');
+        $this->db->where('activation_id', $this->getActivationID());
+        $query = $this->db->get('umpire_users');
+        
+        $resultArray = $query->result();
+        
+        if ($query->num_rows() > 0){
+            $this->setUsername($resultArray[0]->user_name);
+            return true;
+        } else {
+            return false;
+        }  
+        
+    }
+
+
+public function updatePassword() {
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->update('umpire_users', array('user_password'=>$this->getPassword()));
+    }
+
+ public function logPasswordReset() {
+        $this->db->select('user_password');
+        $this->db->where('user_name', $this->getUsername());
+        $query = $this->db->get('umpire_users');
+        
+        $resultArray = $query->result();
+        
+        $oldPassword = $resultArray[0]->user_password;
+       
+        $data = array(
+            'user_name' => $this->getUsername(),
+            'new_password' => $this->getPassword(),
+            'old_password' => $oldPassword,
+            'reset_datetime' => date('Y-m-d H:i:s', time())
+        );
+        
+        $queryStatus = $this->db->insert('password_reset_log', $data);
+    }
+
+
+public function updateEmailAddress() {
+        $this->db->where('user_name', $this->getUsername());
+        $this->db->update('umpire_users', array('user_email'=>$this->getEmailAddress()));
+    }
+    
+    
 }
