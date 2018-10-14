@@ -232,7 +232,9 @@ public function getUserFromUsername($pUsername) {
         
         if ($query->num_rows() == 1) {
             $row = $query->row();
-            $user = User::createFromNameAndEmailDatabaseRow($row)
+            //TODO: Uncomment this after method is created
+            //$user = User::createFromNameAndEmailDatabaseRow($row)
+                $user = new User();
 /*
 
             $this->setId($row->id);
