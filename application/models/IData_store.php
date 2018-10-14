@@ -33,4 +33,27 @@ interface IData_store {
     
     public function runETLProcedure($pSeason, $pImportedFileID);
     
+    //User
+    public function userLogin($pUsername, $pPassword);
+
+public function checkUserActive($pUsername);
+
+public function getUserFromUsername($pUsername);
+
+public function setPermissionArrayForUser();
+
+public function checkUserExistsForReset();
+
+public function logPasswordResetRequest($pRequestData);
+
+public function storeActivationID($pActivationID);
+
+public function createUserFromActivationID();
+
+public function updatePassword();
+
+public function logPasswordReset();
+
+public function updateEmailAddress();
+    
 }
