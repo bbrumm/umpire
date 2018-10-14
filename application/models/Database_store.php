@@ -293,7 +293,7 @@ public function setPermissionArrayForUser() {
            
     }
 
-}
+
 
 public function checkUserExistsForReset() {
         $this->db->select('id');
