@@ -7,125 +7,47 @@ class Missing_data_updater extends CI_Model {
         $this->load->library('Debug_library');
         $this->load->library('Array_library');
         $this->load->model('Match_import');
+        $this->load->model('Database_store');
     }
     
-    public function loadPossibleLeaguesForComp() {
-        $queryString = "SELECT 
-            l.id,
-            l.league_name,
-            l.short_league_name,
-            l.age_group_division_id,
-            agd.division_id,
-            d.division_name,
-            ag.age_group,
-            l.region_id,
-            r.region_name
-            FROM league l
-            INNER JOIN age_group_division agd ON l.age_group_division_id = agd.ID
-            INNER JOIN division d ON agd.division_id = d.id
-            INNER JOIN age_group ag ON agd.age_group_id = ag.id
-            INNER JOIN region r ON l.region_id = r.id;";
-        
-        $query = $this->db->query($queryString);
-        
-        if (mysqli_more_results($this->db->conn_id)) {
-            mysqli_next_result($this->db->conn_id);
-        }
-        $resultArray = $query->result_array();
-        $query->free_result();
-        return $resultArray;
+    public function loadPossibleLeaguesForComp(IData_store $pDataStore) {
+        return $pDataStore->loadPossibleLeaguesForComp();
     }
     
-    public function loadPossibleClubsForTeam() {
-        $queryString = "SELECT DISTINCT id, club_name
-            FROM club
-            ORDER BY club_name ASC;";
-        
-        $query = $this->db->query($queryString);
-        
-        if (mysqli_more_results($this->db->conn_id)) {
-            mysqli_next_result($this->db->conn_id);
-        }
-        $resultArray = $query->result_array();
-        $query->free_result();
-        return $resultArray;
+    public function loadPossibleClubsForTeam(IData_store $pDataStore) {
+        return $pDataStore->loadPossibleClubsForTeam();
     }
     
-    public function loadPossibleRegions() {
-        $queryString = "SELECT DISTINCT id, region_name
-            FROM region
-            ORDER BY id ASC;";
-        
-        $query = $this->db->query($queryString);
-        
-        if (mysqli_more_results($this->db->conn_id)) {
-            mysqli_next_result($this->db->conn_id);
-        }
-        $resultArray = $query->result_array();
-        $query->free_result();
-        return $resultArray;
+    public function loadPossibleRegions(IData_store $pDataStore) {
+        return $pDataStore->loadPossibleRegions();
     }
     
-    public function loadPossibleAgeGroups() {
-        $queryString = "SELECT id, age_group
-            FROM age_group
-            ORDER BY display_order ASC;";
-        
-        $query = $this->db->query($queryString);
-        
-        if (mysqli_more_results($this->db->conn_id)) {
-            mysqli_next_result($this->db->conn_id);
-        }
-        $resultArray = $query->result_array();
-        $query->free_result();
-        return $resultArray;
+    public function loadPossibleAgeGroups(IData_store $pDataStore) {
+        return $pDataStore->loadPossibleAgeGroups();
     }
     
-    public function loadPossibleShortLeagueNames() {
-        $queryString = "SELECT id, short_league_name
-            FROM short_league_name
-            ORDER BY display_order ASC;";
-        
-        $query = $this->db->query($queryString);
-        
-        if (mysqli_more_results($this->db->conn_id)) {
-            mysqli_next_result($this->db->conn_id);
-        }
-        $resultArray = $query->result_array();
-        $query->free_result();
-        return $resultArray;
+    public function loadPossibleShortLeagueNames(IData_store $pDataStore) {
+        return $pDataStore->loadPossibleShortLeagueNames();
     }
     
-    public function loadPossibleDivisions() {
-        $queryString = "SELECT id, division_name
-            FROM division
-            ORDER BY id ASC;";
-        
-        $query = $this->db->query($queryString);
-        
-        if (mysqli_more_results($this->db->conn_id)) {
-            mysqli_next_result($this->db->conn_id);
-        }
-        $resultArray = $query->result_array();
-        $query->free_result();
-        return $resultArray;
+    public function loadPossibleDivisions(IData_store $pDataStore) {
+        return $pDataStore->loadPossibleDivisions();
     }
     
-    public function updateDataAndRunETLProcedure() {
-        $this->debug_library->debugOutput("POST from updateDataAndRunETLProcedure", $_POST);
+    public function updateDataAndRunETLProcedure(IData_store $pDataStore, $pPostArray) {
+        //$this->debug_library->debugOutput("POST from updateDataAndRunETLProcedure", $pPostArray);
         
-        if (array_key_exists('competition', $_POST)) {
-            $this->updateCompetitionTable($_POST['competition']);
+        if (array_key_exists('competition', $pPostArray)) {
+            $this->updateCompetitionTable($pDataStore, $pPostArray['competition']);
         }
-        if (array_key_exists('rdTeam', $_POST)) {
-            $this->updateTeamAndClubTables($_POST);
+        if (array_key_exists('rdTeam', $pPostArray)) {
+            $this->updateTeamAndClubTables($pDataStore, $pPostArray);
         }
     
-        $season = new Season();
-        $season->setSeasonID($this->Match_import->findSeasonToUpdate());
-        $importedFileID = $this->Match_import->findLatestImportedFile();
+        $season = Season::createSeasonFromID($this->Match_import->findSeasonToUpdate($pDataStore));
+        $importedFileID = $this->Match_import->findLatestImportedFile($pDataStore);
         
-        $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
+        $this->Run_etl_stored_proc->runETLProcedure($pDataStore, $season, $importedFileID);
     }
     
     private function updateCompetitionTable(array $selectedData) {
@@ -300,7 +222,7 @@ class Missing_data_updater extends CI_Model {
     }
     
     
-    private function updateTeamAndClubTables(array $pPostData) {
+    private function updateTeamAndClubTables(IData_store $pDataStore, array $pPostData) {
         $this->debug_library->debugOutput("updateTeamAndClubTables POST", $pPostData);
         
         foreach ($pPostData['rdTeam'] as $teamID => $radioSelection) {
@@ -308,15 +230,15 @@ class Missing_data_updater extends CI_Model {
                 case 'new':
                     $newClubName = $pPostData['txtTeam'][$teamID];
                     //Insert into CLUB table
-                    $clubID = $this->insertNewClub($newClubName);
+                    $clubID = $this->insertNewClub($pDataStore, $newClubName);
                     //Update TEAM table
-                    $this->updateTeamTable($teamID, $clubID);
+                    $this->updateTeamTable($pDataStore, $teamID, $clubID);
                     
                     break;
                 case 'existing':
                     $club_id = $pPostData['cboTeam'][$teamID];
                     //Run UPDATE statement on TEAM table
-                    $this->updateTeamTable($teamID, $club_id);
+                    $this->updateTeamTable($pDataStore, $teamID, $club_id);
                     
                     break;
             }
@@ -324,20 +246,11 @@ class Missing_data_updater extends CI_Model {
         }
     }
     
-    private function insertNewClub($newClubName) {
-        $queryString = "INSERT INTO club (club_name)
-            VALUES (?);";
-        
-        $query = $this->db->query($queryString, array($newClubName));
-        $this->debug_library->debugOutput("insertNewClub", $newClubName);
-        return $this->db->insert_id();
+    private function insertNewClub(IData_store $pDataStore, $newClubName) {
+        return $pDataStore->insertNewClub($newClubName);
     }
     
-    private function updateTeamTable($pTeamID, $pClubID) {
-        $queryString = "UPDATE team
-            SET club_id = ?
-            WHERE id = ?;";
-        $this->debug_library->debugOutput("updateTeamTable", $pTeamID);
-        $query = $this->db->query($queryString, array($pClubID, $pTeamID));
+    private function updateTeamTable(IData_store $pDataStore, $pTeamID, $pClubID) {
+        $pDataStore->updateTeamTable($pTeamID, $pClubID);
     }
 }

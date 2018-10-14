@@ -11,6 +11,12 @@ class Season
     
     private $seasonID;
     private $seasonYear;
+    
+    public static function createSeasonFromID($pSeasonID) {
+        $instance = new Season();
+        $instance->setSeasonID($pSeasonID);
+        return $instance;
+    }
 
     //Get Functions
     public function getSeasonID() {
@@ -37,6 +43,8 @@ class Season
             throw new InvalidArgumentException('Season Year must be numeric. Value provided was ' . $pValue);
         }
     }
+    
+    
     
 }
 ?>

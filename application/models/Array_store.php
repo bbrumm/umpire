@@ -59,6 +59,95 @@ class Array_store extends CI_Model implements IData_store {
         }
     }
     
+    public function loadPossibleLeaguesForComp() {
+        $leaguesForComp = [];
+        $leaguesForComp[0] = array(3, 'AFL Barwon Blood Toyota Geelong FNL', 'GFL', 1, 4, 'None', 'Seniors', 1, 'Geelong');
+        $leaguesForComp[1] = array(4, 'AFL Barwon Buckleys Entertainment Centre Geelong FNL', 'GFL', 2, 4, 'None', 'Reserves', 1, 'Geelong');
+        $leaguesForComp[2] = array(5, 'AFL Barwon Dow Bellarine FNL', 'BFL', 1, 4, 'None', 'Seniors', 1, 'Geelong');
+        $leaguesForComp[3] = array(6, 'AFL Barwon Buckleys Entertainment Centre Bellarine FNL', 'BFL', 2, 4, 'None', 'Reserves', 1, 'Geelong');
+        $leaguesForComp[4] = array(7, 'AFL Barwon', 'GJFL', 3, 5, 'Grading', 'Colts', 1, 'Geelong');
+        $leaguesForComp[5] = array(8, 'AFL Barwon', 'GJFL', 4, 6, 'Practice', 'Colts', 1, 'Geelong');
+        $leaguesForComp[6] = array(9, 'GDFL Smiths Holden Cup', 'GDFL', 1, 4, 'None', 'Seniors', 1, 'Geelong');
+        $leaguesForComp[7] = array(10, 'GDFL Buckleys Cup', 'GDFL', 2, 4, 'None', 'Reserves', 1, 'Geelong');
+        $leaguesForComp[8] = array(11, 'AFL Barwon', 'GJFL', 5, 5, 'Grading', 'Under 16', 1, 'Geelong');
+        $leaguesForComp[9] = array(12, 'AFL Barwon', 'GJFL', 6, 5, 'Grading', 'Under 14', 1, 'Geelong');
+        
+        return $leaguesForComp;
+        
+    }
+    
+    public function loadPossibleClubsForTeam() {
+        $clubs = [];
+        $clubs[0] = array(0, 'North');
+        $clubs[1] = array(1, 'South');
+        $clubs[2] = array(2, 'East');
+        $clubs[3] = array(3, 'West');
+        
+        return $clubs;
+    }
+    
+    public function loadPossibleRegions() {
+        $regions = [];
+        $regions[0] = array(0, 'Aldo');
+        $regions[1] = array(1, 'Samba');
+        $regions[2] = array(2, 'Down');
+
+        return $regions;
+    }
+    
+    public function loadPossibleAgeGroups() {
+        $ages = [];
+        $ages[0] = array(0, 'Under 12');
+        $ages[1] = array(1, 'Under 14');
+        $ages[2] = array(2, 'Under 16');
+        $ages[3] = array(3, 'Under 18');
+        $ages[4] = array(4, 'Under 19');
+        
+        return $ages;
+    }
+    
+    public function loadPossibleShortLeagueNames() {
+        $leagues = [];
+        $leagues[0] = array(0, 'WAFL');
+        $leagues[1] = array(1, 'SANFL');
+        $leagues[2] = array(2, 'NEAFL');
+        $leagues[3] = array(3, 'VFL');
+
+        return $leagues;
+    }
+    
+    public function loadPossibleDivisions() {
+        $divisions = [];
+        $divisions[0] = array(0, 'Div 1');
+        $divisions[1] = array(1, 'Div 2');
+        $divisions[2] = array(2, 'Div 3');
+        
+        return $divisions;
+    }
+    
+    public function updateSingleCompetition() {
+        
+    }
+    
+    public function insertNewClub($pClubName) {
+        
+    }
+    
+    public function updateTeamTable($pTeamID, $pClubID) {
+        
+    }
+    
+    public function findSeasonToUpdate() {
+        
+    }
+    
+    public function findLatestImportedFile() {
+        
+    }
+    
+    public function runETLProcedure($pSeason, $pImportedFileID) {
+        
+    }
     
     
 }

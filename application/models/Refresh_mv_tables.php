@@ -16,7 +16,7 @@ class Refresh_mv_tables extends CI_Model
         $this->load->model('Season');
     }
     
-    public function refreshMVTables($season, $importedFileID) {
+    public function refreshMVTables(IData_Store $pDataStore, $season, $importedFileID) {
         /*
         $queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
         $query = $this->db->query($queryString);

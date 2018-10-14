@@ -7,10 +7,7 @@ class Report_param_loader_test extends TestCase {
     $this->CI->load->model('report_param/Report_grouping_structure');
     $this->obj = $this->CI->Report_param_loader;
   }
-  
-  public function testDummy() {
-    $this->assertEquals(1, 1);
-  }
+ 
   
   public function test_GetReportParameter() {
       $inputValue = Report_parameter::createNewReportParameter("title", 2, 0, "text", 1, "portrait", "a4", "200");
@@ -69,5 +66,13 @@ class Report_param_loader_test extends TestCase {
       $expected = 3;
       $actual = count($this->obj->getReportGroupingStructureArray());
       $this->assertEquals($expected, $actual);
+  }
+  
+  public function test_loadAllGroupingStructuresForReportNotFound() {
+      $this->expectException(Exception::class);
+      $requestedReportModel = Requested_report_model::createRequestedReportFromValues(18, 2016, "N", "A", "W", "L", true);
+      $arrayStore = new Array_store();
+      
+      $this->obj->loadAllGroupingStructuresForReport($requestedReportModel, $arrayStore);
   }
 }

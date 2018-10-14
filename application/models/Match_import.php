@@ -108,21 +108,12 @@ class Match_import extends CI_Model
         return $resultArray[0]['progress_value'];
     }
   
-    public function findSeasonToUpdate() {
-        $queryString = "SELECT MAX(season.ID) AS season_id " .
-          "FROM season " .
-          "INNER JOIN match_import ON season.season_year = match_import.season;";
-        $query = $this->db->query($queryString);
-        $resultArray = $query->result_array();
-        return $resultArray[0]['season_id'];
+    public function findSeasonToUpdate(IData_store $pDataStore) {
+        return $pDataStore->findSeasonToUpdate();
     }
     
     public function findLatestImportedFile() {
-        $queryString = "SELECT MAX(imported_file_id) AS imported_file_id
-            FROM table_operations";
-        $query = $this->db->query($queryString);
-        $resultArray = $query->result_array();
-        return $resultArray[0]['imported_file_id'];
+        return $pDataStore->findLatestImportedFile();
     }
     
     private function deleteFromSingleTable($tableName, $importedFileID, $logDeletedRow = TRUE) {

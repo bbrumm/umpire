@@ -8,13 +8,10 @@ class Run_etl_stored_proc extends CI_Model
         $this->load->model('Refresh_mv_tables');
     }
     
-    public function runETLProcedure($season, $importedFileID) {
-        
-        $queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
-        $query = $this->db->query($queryString);
-        
+    public function runETLProcedure(IData_store $pDataStore, $season, $importedFileID) {
+        $pDataStore->runETLProcedure();
         $mvRefresher = new Refresh_mv_tables();
-        $mvRefresher->refreshMVTables($season, $importedFileID);
+        $mvRefresher->refreshMVTables($pDataStore, $season, $importedFileID);
     }
     
 }
