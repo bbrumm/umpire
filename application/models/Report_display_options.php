@@ -21,18 +21,20 @@ class Report_display_options extends CI_Model {
 	    $this->load->model('report_param/Report_parameter');
 	}
 	
-	public function createReportDisplayOptions(Report_instance $pReportInstance) {
+	public static function createReportDisplayOptions(Report_instance $pReportInstance) {
 	    
 	    //TODO: Refactor this object or this function as it seems to be duplicating the Report_Parameter object
+	    $instance = new Report_display_options();
 	    $reportParameter = new Report_parameter();
 	    $reportParameter = $pReportInstance->reportParamLoader->getReportParameter();
-	    $this->setNoDataValue($reportParameter->getNoValueDisplay());
-	    $this->setFirstColumnFormat($reportParameter->getFirstColumnFormat());
-	    $this->setColourCells($reportParameter->getColourCells());
-	    $this->setPDFResolution($reportParameter->getPDFResolution());
-	    $this->setPDFPaperSize($reportParameter->getPDFPaperSize());
-	    $this->setPDFOrientation($reportParameter->getPDFOrientation());
+	    $instance->setNoDataValue($reportParameter->getNoValueDisplay());
+	    $instance->setFirstColumnFormat($reportParameter->getFirstColumnFormat());
+	    $instance->setColourCells($reportParameter->getColourCells());
+	    $instance->setPDFResolution($reportParameter->getPDFResolution());
+	    $instance->setPDFPaperSize($reportParameter->getPDFPaperSize());
+	    $instance->setPDFOrientation($reportParameter->getPDFOrientation());
 	    
+	    return $instance;
 	}
 	
 	

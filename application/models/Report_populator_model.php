@@ -24,7 +24,6 @@ class Report_populator_model extends CI_Model {
 		 */
 		
 		$reportToDisplay->loadReportResults();
-		$this->debug_library->debugOutput("reportOutput from Populator:", $reportToDisplay->getResultOutputArray());  
 		
 		return $reportToDisplay;
 

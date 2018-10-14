@@ -2,7 +2,6 @@
 class Report_selection_test extends TestCase {
     public function setUp() {
         $this->resetInstance();
-        //$this->CI->load->model('separate_reports/Report1');
         $this->CI->load->model('Report_selection');
     }
     
@@ -175,5 +174,84 @@ class Report_selection_test extends TestCase {
         
         $this->obj = Report_selection::createNewReportSelection($inputID, $inputName, $inputRegionEnabled,
             $inputLeagueEnabled, $inputAgeGroupEnabled, $inputUmpireTypeEnabled);
+    }
+    
+    public function test_CreateReportSelectionIDName() {
+        $inputID = 1;
+        $inputName = "Something";
+        
+        $this->obj = Report_selection::createNewReportSelectionIDName($inputID, $inputName);
+        $expected = 1;
+        $this->assertEquals($expected, $this->obj->getReportID());
+    }
+    
+    public function test_CreateReportSelectionName() {
+        $inputID = 1;
+        $inputName = "Something";
+        $inputRegionEnabled = 1;
+        $inputLeagueEnabled = 1;
+        $inputAgeGroupEnabled = 1;
+        $inputUmpireTypeEnabled = 1;
+        
+        $this->obj = Report_selection::createNewReportSelection($inputID, $inputName, $inputRegionEnabled,
+            $inputLeagueEnabled, $inputAgeGroupEnabled, $inputUmpireTypeEnabled);
+        $expected = "Something";
+        $this->assertEquals($expected, $this->obj->getReportName());
+    }
+    
+    public function test_CreateReportSelectionRegion() {
+        $inputID = 2;
+        $inputName = "Something";
+        $inputRegionEnabled = 1;
+        $inputLeagueEnabled = 0;
+        $inputAgeGroupEnabled = 0;
+        $inputUmpireTypeEnabled = 0;
+        
+        $this->obj = Report_selection::createNewReportSelection($inputID, $inputName, $inputRegionEnabled,
+            $inputLeagueEnabled, $inputAgeGroupEnabled, $inputUmpireTypeEnabled);
+        $expected = 1;
+        $this->assertEquals($expected, $this->obj->getRegionEnabled());
+    }
+    
+    public function test_CreateReportSelectionLeague() {
+        $inputID = 2;
+        $inputName = "Something";
+        $inputRegionEnabled = 0;
+        $inputLeagueEnabled = 1;
+        $inputAgeGroupEnabled = 0;
+        $inputUmpireTypeEnabled = 0;
+        
+        $this->obj = Report_selection::createNewReportSelection($inputID, $inputName, $inputRegionEnabled,
+            $inputLeagueEnabled, $inputAgeGroupEnabled, $inputUmpireTypeEnabled);
+        $expected = 1;
+        $this->assertEquals($expected, $this->obj->getLeagueEnabled());
+    }
+    
+    public function test_CreateReportSelectionAgeGroup() {
+        $inputID = 2;
+        $inputName = "Something";
+        $inputRegionEnabled = 0;
+        $inputLeagueEnabled = 0;
+        $inputAgeGroupEnabled = 1;
+        $inputUmpireTypeEnabled = 0;
+        
+        $this->obj = Report_selection::createNewReportSelection($inputID, $inputName, $inputRegionEnabled,
+            $inputLeagueEnabled, $inputAgeGroupEnabled, $inputUmpireTypeEnabled);
+        $expected = 1;
+        $this->assertEquals($expected, $this->obj->getAgeGroupEnabled());
+    }
+    
+    public function test_CreateReportSelectionUmpireType() {
+        $inputID = 2;
+        $inputName = "Something";
+        $inputRegionEnabled = 0;
+        $inputLeagueEnabled = 0;
+        $inputAgeGroupEnabled = 0;
+        $inputUmpireTypeEnabled = 1;
+        
+        $this->obj = Report_selection::createNewReportSelection($inputID, $inputName, $inputRegionEnabled,
+            $inputLeagueEnabled, $inputAgeGroupEnabled, $inputUmpireTypeEnabled);
+        $expected = 1;
+        $this->assertEquals($expected, $this->obj->getUmpireTypeEnabled());
     }
 }

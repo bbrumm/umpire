@@ -20,6 +20,21 @@ class Requested_report_model extends CI_Model {
            
     }
     
+    public static function createRequestedReportFromValues(
+        $pReportNumber, $pSeason, $pRegion, $pAgeGroup, $pUmpireType, $pLeague, $pPDFMode) {
+        
+        $instance = new Requested_report_model();
+        $instance->setReportNumber($pReportNumber);
+        $instance->setSeason($pSeason);
+        $instance->setRegion($pRegion);
+        $instance->setAgeGroup($pAgeGroup);
+        $instance->setUmpireType($pUmpireType);
+        $instance->setLeague($pLeague);
+        $instance->setPDFMode($pPDFMode);
+        
+        return $instance;
+    }
+    
     public static function withValues($pValues) {
         $instance = new self();
         $instance->fill($pValues);
@@ -66,11 +81,11 @@ class Requested_report_model extends CI_Model {
     }
     
     
-    public function setReportNumber($pValue) {
+    private function setReportNumber($pValue) {
         if(is_numeric($pValue)) {
             $this->reportNumber = $pValue;
         } else {
-            throw new Exception('ReportNumber must be numeric.');
+            throw new InvalidArgumentException('ReportNumber must be numeric.');
         }
     }
     
@@ -78,41 +93,33 @@ class Requested_report_model extends CI_Model {
         if(is_numeric($pValue)) {
             $this->season = $pValue;
         } else {
-            throw new Exception('Season must be numeric.');
+            throw new InvalidArgumentException('Season must be numeric.');
         }
     }
     
-    public function setRegion($pValue) {
+    private function setRegion($pValue) {
         $this->region = $pValue;
     }
     
-    public function setAgeGroup($pValue) {
+    private function setAgeGroup($pValue) {
         $this->ageGroup = $pValue;
     }
     
-    public function setUmpireType($pValue) {
+    private function setUmpireType($pValue) {
         $this->umpireType = $pValue;
     }
     
-    public function setLeague($pValue) {
+    private function setLeague($pValue) {
         $this->league = $pValue;
     }
     
-    public function setPDFMode($pValue) {
+    private function setPDFMode($pValue) {
         if(is_bool($pValue)) {
             $this->pdfMode = $pValue;
         } else {
-            throw new Exception('PDFMode must be a boolean.');
+            throw new InvalidArgumentException('PDFMode must be a boolean.');
         }
     }
     
-    //Determines if the Requested Report Model should use a value from the selectable field, or the hidden value
-    //(e.g. if the PDF report was generated)
-    public function findValueFromPostOrHidden($pPostArray, $pPostKey, $pPostKeyHidden) {
-        if (array_key_exists($pPostKey, $pPostArray)) {
-            return $_POST[$pPostKey];
-        } else {
-            return explode(",", $_POST[$pPostKeyHidden]);
-        }
-    }
+
 }

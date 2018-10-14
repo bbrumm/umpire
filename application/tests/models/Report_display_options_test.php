@@ -91,6 +91,22 @@ class Report_display_options_test extends TestCase {
         
         
     }
-
+    
+    //This is commented out as the underlying object needs to be refactored
+    /*
+    public function test_CreateReportDisplayOptions() {
+        $reportInstance = new Report_instance();
+        
+        $inputNoDataValue = 0;
+        $inputFirstColumnFormat = "text";
+        $inputColourCells = 1;
+        $inputPDFResolution = 200;
+        $inputPDFPaperSize = "a4";
+        $inputPDFOrientation = "portrait";
+        
+        $reportDisplayOptions = Report_display_options::createReportDisplayOptions($reportInstance);
+        $this->assertInstanceOf('Report_display_options', $reportDisplayOptions);
+    }
+    */
 
 }

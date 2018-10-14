@@ -13,15 +13,27 @@ class Report extends CI_Controller {
 	public function index() {
 	    $error = "";
 	    $reportPopulator = new Report_populator_model();
+	    
+	    $requestedReport = Requested_report_model::createRequestedReportFromValues(
+	        intval($_POST['reportName']),
+	        intval($_POST['season']),
+	        $this->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'),
+	        $this->findValueFromPostOrHidden($_POST, 'chkAgeGroup', 'chkAgeGroupHidden'),
+	        $this->findValueFromPostOrHidden($_POST, 'chkUmpireDiscipline', 'chkUmpireDisciplineHidden'),
+	        $this->findValueFromPostOrHidden($_POST, 'chkLeague', 'chkLeagueHidden'),
+	        false
+	        );
+	    /*
 	    $requestedReport = new Requested_report_model();
 	    $requestedReport->setReportNumber(intval($_POST['reportName']));
 	    $requestedReport->setSeason(intval($_POST['season']));
-	    //$requestedReport->setRegion($_POST['rdRegion']);
 
+        */
 	    /* Why are we treating these separately?
     	 * Maybe because when I submit the home page to the Report page, these chk keys exist.
     	 * When I 'submit' the Report page by clicking on Create PDF, they don't exist.
     	 */
+	    /*
 	    $requestedReport->setAgeGroup(
 	       $requestedReport->findValueFromPostOrHidden($_POST, 'chkAgeGroup', 'chkAgeGroupHidden')); 
 	    $requestedReport->setUmpireType(
@@ -30,7 +42,7 @@ class Report extends CI_Controller {
 	        $requestedReport->findValueFromPostOrHidden($_POST, 'chkLeague', 'chkLeagueHidden'));
 	    $requestedReport->setRegion(
 	        $requestedReport->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'));
-	    
+	    */
 	    $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
@@ -56,5 +68,15 @@ class Report extends CI_Controller {
 		$this->load->view('report/single_report_view', $data);
 		$this->load->view('templates/footer');
 		
+	}
+	
+	//Determines if the Requested Report Model should use a value from the selectable field, or the hidden value
+	//(e.g. if the PDF report was generated)
+	private function findValueFromPostOrHidden($pPostArray, $pPostKey, $pPostKeyHidden) {
+	    if (array_key_exists($pPostKey, $pPostArray)) {
+	        return $_POST[$pPostKey];
+	    } else {
+	        return explode(",", $_POST[$pPostKeyHidden]);
+	    }
 	}
 }

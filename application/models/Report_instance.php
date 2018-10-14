@@ -368,12 +368,8 @@ Array
 	    $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport);
 	    
 	    $reportGroupingStructureArray = $this->reportParamLoader->getReportGroupingStructureArray();
-	    
-	    //$this->debug_library->debugOutput("reportGroupingStructureArray:", $reportGroupingStructureArray);
-	    
-	    //Replace this with a single function in reportDisplayOptions to create new RDO object.
-	    $this->reportDisplayOptions->createReportDisplayOptions($this);
-	    
+
+	    $this->reportDisplayOptions = Report_display_options::createReportDisplayOptions($this);
 	    
 	    //ReportGroupingStructureArray comes from the database tables
 	    $this->reportColumnFields = $this->translateRptGrStructureToSimpleArray($reportGroupingStructureArray);
@@ -391,11 +387,7 @@ Array
 	    $this->filterParameterAgeGroup->createFilterParameter($this->requestedReport->getAgeGroup(), $this->requestedReport->getPDFMode());
 	    $this->filterParameterLeague->createFilterParameter($this->requestedReport->getLeague(), $this->requestedReport->getPDFMode());
 	    $this->filterParameterRegion->createFilterParameter($this->requestedReport->getRegion(), $this->requestedReport->getPDFMode(), true);
-	    
-	    
 		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason());
-		
-		//$this->reportTableName = $this->lookupReportTableName();
 	}
 	
 	private function setReportTitle($pSeasonYear) {
