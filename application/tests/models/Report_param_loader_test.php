@@ -39,6 +39,35 @@ class Report_param_loader_test extends TestCase {
       $expected = "Random Title";
       $actual = $this->obj->getReportParameter()->getReportTitle();
       $this->assertEquals($expected, $actual);
+  }
+  
+  public function test_loadAllParametersTestV2() {
+      $requestedReportModel = Requested_report_model::createRequestedReportFromValues(2, 2016, "N", "A", "W", "L", true);
+      $arrayStore = new Array_store();
       
+      $this->obj->loadAllReportParametersForReport($requestedReportModel, $arrayStore);
+      
+      $expected = "Another Title";
+      $actual = $this->obj->getReportParameter()->getReportTitle();
+      $this->assertEquals($expected, $actual);
+  }
+  
+  public function test_loadAllParametersTestNotFound() {
+      $this->expectException(Exception::class);
+      $requestedReportModel = Requested_report_model::createRequestedReportFromValues(15, 2016, "N", "A", "W", "L", true);
+      $arrayStore = new Array_store();
+      
+      $this->obj->loadAllReportParametersForReport($requestedReportModel, $arrayStore);
+  }
+  
+  public function test_loadAllGroupingStructuresForReport() {
+      $requestedReportModel = Requested_report_model::createRequestedReportFromValues(1, 2016, "N", "A", "W", "L", true);
+      $arrayStore = new Array_store();
+      
+      $this->obj->loadAllGroupingStructuresForReport($requestedReportModel, $arrayStore);
+      
+      $expected = 3;
+      $actual = count($this->obj->getReportGroupingStructureArray());
+      $this->assertEquals($expected, $actual);
   }
 }
