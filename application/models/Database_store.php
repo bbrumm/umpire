@@ -196,7 +196,7 @@ class Database_store extends CI_Model implements IData_store {
   $this->db->select('id, user_name, user_password');
   $this->db->from('umpire_users');
   $this->db->where('user_name', $pUsername); 
-  this->db->where('user_password', MD5($pPassword));
+  $this->db->where('user_password', MD5($pPassword));
   $this->db->limit(1);
     
   $query = $this->db->get();
