@@ -41,12 +41,6 @@ class Report_factory {
             default:
                 throw new InvalidArgumentException ("Specified report number does not match a required report. Value provided was " . $pReportNumber);
         }
-        
         return $report;
-        
     }
-    
-    
-    
-    
 }
