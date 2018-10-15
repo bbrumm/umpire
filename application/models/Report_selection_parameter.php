@@ -11,8 +11,8 @@ class Report_selection_parameter extends CI_Model
     {
         parent::__construct();
         $this->load->model('Selectable_report_option');
-        //$this->load->config('constants');
         $this->load->library('Debug_library');
+        $this->load->model('Database_store');
     }
 
     public static function createReportSelectionParameter($pParameterID, $pParameterName, 
@@ -78,32 +78,14 @@ class Report_selection_parameter extends CI_Model
         $this->allowMultipleSelections = $pValue;
     }
     
-    public function initialiseSelectableReportOptions() {
-        $this->loadSelectableReportOptions();
+    public function initialiseSelectableReportOptions(IData_store $pDataStore) {
+        $this->loadSelectableReportOptions($pDataStore);
         //$this->debug_library->debugOutput("initialiseSelectableReportOptions : ", $this->getSelectableReportOptions());
     }
     
-    private function loadSelectableReportOptions() {
+    private function loadSelectableReportOptions(IData_store $pDataStore) {
         $parameterID = $this->getParameterID();
-        
-        $queryString = "SELECT parameter_value_name, parameter_display_order " .
-            "FROM report_selection_parameter_values " .
-            "WHERE parameter_id = $parameterID " .
-            "ORDER BY parameter_display_order;";
-        //$this->debug_library->debugOutput("loadSelectableReportOptions query: ", $queryString);
-            
-        $query = $this->db->query($queryString);
-        
-        foreach ($query->result() as $row) {
-            //$this->debug_library->debugOutput("loadSelectableReportOptions row: ", "x");
-            $selectableReportOption = new Selectable_report_option();
-            $selectableReportOption->setOptionName($row->parameter_value_name);
-            $selectableReportOption->setOptionValue($row->parameter_value_name);
-            $selectableReportOption->setOptionDisplayOrder($row->parameter_display_order);
-            $selectableReportOptionsForParameter[] = $selectableReportOption;
-        }
-        $this->setSelectableReportOptions($selectableReportOptionsForParameter);
-        //$this->debug_library->debugOutput("loadSelectableReportOptions param: ", $this->getSelectableReportOptions());
+        $this->setSelectableReportOptions($pDataStore->loadSelectableReportOptions($parameterID));
     }
 }
 ?>
