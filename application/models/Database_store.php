@@ -3,7 +3,10 @@ require_once 'IData_store.php';
 class Database_store extends CI_Model implements IData_store {
     
     public function __construct() {
-        
+        $this->load->database();
+        $this->load->library('Debug_library');
+
+
     }
     
     public function loadAllReportParameters($pReportNumber) {
@@ -53,12 +56,15 @@ class Database_store extends CI_Model implements IData_store {
             "ORDER BY rgs.grouping_type, rgs.field_group_order;";
         
         $query = $this->db->query($queryString);
-        $queryResultArray = $query->result_array();
+        $queryResultArray = $query->result();
         $countResultsFound = count($queryResultArray);
         
         if ($countResultsFound > 0) {
             //Create report param and report grouping objects for this report
-            foreach ($queryResultArray->result() as $row) {
+            //$this->debug_library->debugOutput("queryResultArray:",  $queryResultArray);
+
+            foreach ($queryResultArray as $row) {
+
                 $reportGroupingStructure = Report_grouping_structure::createNewReportGroupingStructure(
                     $row->report_grouping_structure_id,
                     $row->grouping_type,
@@ -193,23 +199,23 @@ class Database_store extends CI_Model implements IData_store {
     
     
     public function userLogin($pUsername, $pPassword) {
-  $this->db->select('id, user_name, user_password');
-  $this->db->from('umpire_users');
-  $this->db->where('user_name', $pUsername); 
-  $this->db->where('user_password', MD5($pPassword));
-  $this->db->limit(1);
-    
-  $query = $this->db->get();
-    
-  if ($query->num_rows() == 1) {
-    return $query->result();
-  } else {
-    return false;
-  }
+      $this->db->select('id, user_name, user_password');
+      $this->db->from('umpire_users');
+      $this->db->where('user_name', $pUsername);
+      $this->db->where('user_password', MD5($pPassword));
+      $this->db->limit(1);
 
-}
+      $query = $this->db->get();
 
-public function checkUserActive($pUsername) {
+      if ($query->num_rows() == 1) {
+        return $query->result();
+      } else {
+        return false;
+      }
+
+    }
+
+    public function checkUserActive($pUsername) {
         $this->db->select('id');
         $this->db->from('umpire_users');
         $this->db->where('user_name', $pUsername);
@@ -221,7 +227,7 @@ public function checkUserActive($pUsername) {
     }
 
 
-public function getUserFromUsername($pUsername) {
+    public function getUserFromUsername($pUsername) {
         $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, u.user_email, r.role_name
             FROM umpire_users u 
             INNER JOIN role r ON u.role_id = r.id
@@ -232,22 +238,8 @@ public function getUserFromUsername($pUsername) {
         
         if ($query->num_rows() == 1) {
             $row = $query->row();
-            //TODO: Uncomment this after method is created
-            //$user = User::createFromNameAndEmailDatabaseRow($row)
-                $user = new User();
-/*
-
-            $this->setId($row->id);
-            $this->setUsername($row->user_name);
-            $this->setFirstName($row->first_name);
-            $this->setLastName($row->last_name);
-            $this->setRoleName($row->role_name);
-            $this->setEmailAddress($row->user_email);
-            
-*/
-            //Get permissions for this user, assign each record to an object and store in the permissionArray
-            $user->setPermissionArrayForUser();
-            
+            $user = User::createUserFromNameAndRole($row->ID, $row->user_name,
+                $row->first_name, $row->last_name, $row->role_name, 1, $row->user_email);
             return $user;
         } else {
             return false;
@@ -255,7 +247,7 @@ public function getUserFromUsername($pUsername) {
     }
 
 
-public function setPermissionArrayForUser() {
+    public function setPermissionArrayForUser() {
         $queryString = "SELECT ps.id, ps.permission_id, p.permission_name, ps.selection_name 
             FROM permission_selection ps 
             INNER JOIN permission p ON ps.permission_id = p.id 
@@ -295,7 +287,7 @@ public function setPermissionArrayForUser() {
 
 
 
-public function checkUserExistsForReset() {
+    public function checkUserExistsForReset() {
         $this->db->select('id');
         $this->db->where('user_name', $this->getUsername());
         $this->db->where('user_email', $this->getEmailAddress());
@@ -305,7 +297,7 @@ public function checkUserExistsForReset() {
         
     }
 
-public function logPasswordResetRequest($pRequestData) {
+    public function logPasswordResetRequest($pRequestData) {
         $data = array(
             'request_datetime' => $pRequestData['request_datetime'],
             'activation_id' => $pRequestData['activation_id'],
@@ -320,7 +312,7 @@ public function logPasswordResetRequest($pRequestData) {
     }
 
 
-public function storeActivationID($pActivationID) {
+    public function storeActivationID($pActivationID) {
         $this->db->where('user_name', $this->getUsername());
         $this->db->where('user_email', $this->getEmailAddress());
         $this->db->update('umpire_users', array('activation_id'=>$pActivationID));
@@ -328,7 +320,7 @@ public function storeActivationID($pActivationID) {
     }
 
 
-public function createUserFromActivationID() {
+    public function createUserFromActivationID() {
         $this->db->select('user_name');
         $this->db->where('activation_id', $this->getActivationID());
         $query = $this->db->get('umpire_users');
@@ -345,12 +337,12 @@ public function createUserFromActivationID() {
     }
 
 
-public function updatePassword() {
+    public function updatePassword() {
         $this->db->where('user_name', $this->getUsername());
         $this->db->update('umpire_users', array('user_password'=>$this->getPassword()));
     }
 
- public function logPasswordReset() {
+    public function logPasswordReset() {
         $this->db->select('user_password');
         $this->db->where('user_name', $this->getUsername());
         $query = $this->db->get('umpire_users');
@@ -370,15 +362,15 @@ public function updatePassword() {
     }
 
 
-public function updateEmailAddress() {
-        $this->db->where('user_name', $this->getUsername());
-        $this->db->update('umpire_users', array('user_email'=>$this->getEmailAddress()));
-    }
+    public function updateEmailAddress() {
+            $this->db->where('user_name', $this->getUsername());
+            $this->db->update('umpire_users', array('user_email'=>$this->getEmailAddress()));
+        }
     
     public function loadSelectableReportOptions($pParameterID) {
         $queryString = "SELECT parameter_value_name, parameter_display_order " .
             "FROM report_selection_parameter_values " .
-            "WHERE parameter_id = $parameterID " .
+            "WHERE parameter_id = $pParameterID " .
             "ORDER BY parameter_display_order;";
         
         $query = $this->db->query($queryString);

@@ -48,12 +48,15 @@ class Report7 extends CI_Model implements IReport {
         return $queryString;
     }
     
-    public function transformQueryResultsIntoOutputArray() {
+    public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields) {
         
     }
     
     public function formatOutputArrayForView() {
        
     }
-    
+
+    public function isFieldMatchingColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
+
+    }
 }

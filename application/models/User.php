@@ -22,7 +22,7 @@ class User extends CI_Model
     }
     
     public static function createUserFromNameAndRole($pID, $pUsername,
-        $pFirstName, $pLastName, $pRoleName, $pActive) {
+        $pFirstName, $pLastName, $pRoleName, $pActive, $pEmailAddress) {
         
         $obj = new User();
         $obj->setId($pID);
@@ -31,12 +31,11 @@ class User extends CI_Model
         $obj->setLastName($pLastName);
         $obj->setRoleName($pRoleName);
         $obj->setActive($pActive);
+        $obj->setEmailAddress($pEmailAddress);
         $obj->setPermissionArrayForUser();
         
         return $obj;
     }
-    
-    
 
     public function getId() {
         return $this->id;

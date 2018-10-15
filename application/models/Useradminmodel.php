@@ -24,7 +24,7 @@ class Useradminmodel extends CI_Model {
             $newUser = User::createUserFromNameAndRole(
                 $queryResultArray[$i]['id'], $queryResultArray[$i]['user_name'], 
                 $queryResultArray[$i]['first_name'], $queryResultArray[$i]['last_name'], 
-                $queryResultArray[$i]['role_name'], $queryResultArray[$i]['active']);
+                $queryResultArray[$i]['role_name'], $queryResultArray[$i]['active'], NULL);
 
             $userArray[] = $newUser;
         }

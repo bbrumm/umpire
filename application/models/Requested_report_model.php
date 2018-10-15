@@ -41,7 +41,7 @@ class Requested_report_model extends CI_Model {
         return $instance;
     }
     
-    protected function fill(array $pValues) {
+    private function fill(array $pValues) {
         // fill all properties from array
         $this->setAgeGroup($pValues['ageGroup']);
         $this->setUmpireType($pValues['umpireType']);
