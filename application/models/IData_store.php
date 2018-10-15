@@ -56,4 +56,6 @@ public function logPasswordReset();
 
 public function updateEmailAddress();
     
+    public function loadSelectableReportOptions();
+    
 }
