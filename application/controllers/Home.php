@@ -7,17 +7,16 @@ class Home extends CI_Controller {
     }
     
     function index() {
-         
         $this->load->model('Report_selection_parameter');
         $this->load->model('Report_selection');
         $this->load->model('Season');
         $this->load->model('User');
-         
+        $this->load->model('Database_store');
+
         if($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             $data['maxDateOutput'] = $this->getLatestImportDateOutput();
             $this->load->view('templates/header', $data);
-            
             
             $data['reportSelectionParameters'] = $this->getAllReportSelectionParameters();
             $data['reportList'] = $this->getListOfReports();
@@ -27,7 +26,6 @@ class Home extends CI_Controller {
             $this->load->helper('form');
             $this->load->view('report_home', $data);
             $this->load->view('templates/footer');
-         
         } else {
             //If no session, redirect to login page
             redirect('login', 'refresh');
@@ -57,6 +55,8 @@ class Home extends CI_Controller {
     }
     
     private function getAllReportSelectionParameters() {
+        $pDataStore = new Database_store();
+        
         $queryString = "SELECT parameter_id, parameter_name, parameter_display_order, allow_multiple_selections 
             FROM report_selection_parameters 
             ORDER BY parameter_display_order;";
@@ -67,15 +67,12 @@ class Home extends CI_Controller {
                 $row->parameter_id, $row->parameter_name, 
                 $row->parameter_display_order, $row->allow_multiple_selections
             );
-            $reportSelectionParameter->initialiseSelectableReportOptions();
-            
+            $reportSelectionParameter->initialiseSelectableReportOptions($pDataStore);
             $allReportSelectionParameters[] = $reportSelectionParameter;
         }
         return $allReportSelectionParameters;
     }
-    
-    
-    
+
     private function getListOfReports() {
         $queryString = "SELECT
             report_id,
@@ -129,8 +126,6 @@ class Home extends CI_Controller {
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray;
-        
-        
     }
 }
 ?>
