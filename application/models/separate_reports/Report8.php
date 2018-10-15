@@ -50,13 +50,13 @@ class Report8 extends CI_Model implements IReport {
         $currentResultArrayRow = 0;
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
-            //$totalGeelong = 0;
-            //$totalForRow = 0;
+            $totalGeelong = 0;
+            $totalForRow = 0;
             //$twoUmpGamesForRow = 0;
             //if ($this->requestedReport->getReportNumber() == 5) {
             //    $resultOutputArray[$currentResultArrayRow][0] = $currentRowItem[0]['umpire_type'];
             //} else {
-                $resultOutputArray[$currentResultArrayRow][0] = $rowKey;
+            $resultOutputArray[$currentResultArrayRow][0] = $rowKey;
             //}
             foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
                 $columnNumber++;
@@ -74,14 +74,14 @@ class Report8 extends CI_Model implements IReport {
                     */
                     
                     
-                        if ($columnNumber == 6) {
-                            //Add extra column for report 8, after column 5 (array index 5 which is column 6).
-                            //Column heading is called Total Geelong, the heading does not come from column data.
-                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Geelong';
-                        }
-                        if ($columnNumber == 8) {
-                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Overall';
-                        }
+                    if ($columnNumber == 6) {
+                        //Add extra column for report 8, after column 5 (array index 5 which is column 6).
+                        //Column heading is called Total Geelong, the heading does not come from column data.
+                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Geelong';
+                    }
+                    if ($columnNumber == 8) {
+                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Overall';
+                    }
                     
                     
                     //Match the column headings to the values in the array
@@ -138,8 +138,8 @@ class Report8 extends CI_Model implements IReport {
                         } else {
                         
                             $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
-                            */
-                        }
+                            
+                        }*/
                     } //end isFieldMatchingColumn
                 }
             }
@@ -152,8 +152,8 @@ class Report8 extends CI_Model implements IReport {
             if ($this->requestedReport->getReportNumber() == 8) {
             */
                 //$this->debug_library->debugOutput("columnitem array:", $columnItem);
-                $resultOutputArray[$currentResultArrayRow][6] = $totalGeelong;
-                $resultOutputArray[$currentResultArrayRow][8] = $totalForRow;
+            $resultOutputArray[$currentResultArrayRow][6] = $totalGeelong;
+            $resultOutputArray[$currentResultArrayRow][8] = $totalForRow;
             /*
              }
             */
@@ -161,6 +161,8 @@ class Report8 extends CI_Model implements IReport {
         }
         return $resultOutputArray;
     }
+    
+    
     /* Explanation:
          * - pColumnItem: An array that contains values from the report query that could go into a column.
          * Array
@@ -243,6 +245,8 @@ class Report8 extends CI_Model implements IReport {
                 break;
         }
     }
+    
+    
     public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
         $outputArray = [];
