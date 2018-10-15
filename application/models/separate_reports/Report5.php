@@ -216,11 +216,11 @@ class Report5 extends CI_Model implements IReport {
         //Set up table body
         $countRows = count($pResultOutputArray);
         
-            //TODO: Fix bug where report 5 is not getting the right number of columns.
-            //This happens because the COUNT here is only looking at data columns, not the row label columns,
-            //and in report 5, there are two of them.
-            $countColumns = count($loadedColumnGroupings) + 1;
-        }
+        //TODO: Fix bug where report 5 is not getting the right number of columns.
+        //This happens because the COUNT here is only looking at data columns, not the row label columns,
+        //and in report 5, there are two of them.
+        $countColumns = count($loadedColumnGroupings) + 1;
+        
         $cellClassToUse = "";
         for ($rowCounter=0; $rowCounter < $countRows; $rowCounter++) {
             $tableRowOutput = "<tr class='altRow'>";
