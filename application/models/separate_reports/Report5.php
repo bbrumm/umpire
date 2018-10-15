@@ -163,7 +163,10 @@ class Report5 extends CI_Model implements IReport {
             /*
             if ($this->requestedReport->getReportNumber() == 2 ||
                 $this->requestedReport->getReportNumber() == 5) {
+                */
                 $resultOutputArray[$currentResultArrayRow][$columnNumber] = $totalForRow;
+            
+            /*
             }
             if ($this->requestedReport->getReportNumber() == 8) {
                 //$this->debug_library->debugOutput("columnitem array:", $columnItem);
@@ -217,12 +220,13 @@ class Report5 extends CI_Model implements IReport {
                 }
                 break;
             case 2:
-                /*if ($this->requestedReport->getReportNumber() == 5) {
+                /*if ($this->requestedReport->getReportNumber() == 5) {*/
                     if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
                         return true;
                     } else {
                         return false;
                     }
+                /*
                 } elseif ($this->requestedReport->getReportNumber() == 8) {
                     if ($pColumnItem[$this->getReportColumnFields()[0]] == $pColumnHeadingSet[$this->getReportColumnFields()[0]]) {
                         return true;
@@ -336,16 +340,18 @@ class Report5 extends CI_Model implements IReport {
         $outputArray[0] = $thOutput;
         //Set up table body
         $countRows = count($pResultOutputArray);
-        /*
+        
         if ($reportID == 5) {
             //TODO: Fix bug where report 5 is not getting the right number of columns.
             //This happens because the COUNT here is only looking at data columns, not the row label columns,
             //and in report 5, there are two of them.
             $countColumns = count($loadedColumnGroupings) + 1;
+            /*
         } else {
-        */
+        
             $countColumns = count($pLoadedColumnGroupings);
-        //}
+            */
+        }
         /*
         if ($debugMode) {
             echo "<BR />loadedColumnGroupings DW:<pre>";
@@ -379,7 +385,7 @@ class Report5 extends CI_Model implements IReport {
                         }
                         $cellValue = $pResultOutputArray[$rowCounter][$columnCounter];
                         //TODO: Fix this and find the correct array reference
-                        /*
+                        
                         if ($reportID == 5) {
                             if ($columnCounter >= 2) {
                                 if ($loadedColumnGroupings[$columnCounter-2]["subtotal"] == "Pct") {
@@ -387,7 +393,7 @@ class Report5 extends CI_Model implements IReport {
                                 }
                             }
                         }
-                        */
+                        
                     }
                 } else {
                     $cellClassToUse = "cellNormal";
@@ -408,6 +414,8 @@ class Report5 extends CI_Model implements IReport {
         }
         return $outputArray;
     }
+        
+        
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
         $pivotedArray = array();
         $counterForRow = 0;
@@ -435,7 +443,7 @@ class Report5 extends CI_Model implements IReport {
                 $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]];
             }
             foreach ($pFieldsForColumnLabel as $columnField) {
-                /*
+                
                 if ($this->requestedReport->getReportNumber() == 5) {
                     $rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[1]];
                     //$this->debug_library->debugOutput("pFieldForRowLabel:",  $pFieldForRowLabel);
@@ -445,6 +453,7 @@ class Report5 extends CI_Model implements IReport {
                     $pivotedArray[$rowArrayKey][$counterForRow]['match_no_ump'] = $resultRow['match_no_ump'];
                     $pivotedArray[$rowArrayKey][$counterForRow]['total_match_count'] = $resultRow['total_match_count'];
                     $pivotedArray[$rowArrayKey][$counterForRow]['match_pct'] = $resultRow['match_pct'];
+                    /*
                 } elseif ($this->requestedReport->getReportNumber() == 8) {
                     $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
                     $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
@@ -455,10 +464,12 @@ class Report5 extends CI_Model implements IReport {
                         $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['short_league_name'] = '2 Umpires';
                     }
                 } else {
-                */
+                
                     $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow][$columnField] = $resultRow[$columnField];
                     $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['match_count'] = $resultRow['match_count'];
-                /*}
+                */
+                }
+                /*
                 if ($this->requestedReport->getReportNumber() == 3) {
                     $pivotedArray[$resultRow[$pFieldForRowLabel[0]]][$counterForRow]['team_list'] = $resultRow['team_list'];
                 }
