@@ -375,5 +375,24 @@ public function updateEmailAddress() {
         $this->db->update('umpire_users', array('user_email'=>$this->getEmailAddress()));
     }
     
+    public function loadSelectableReportOptions($pParameterID) {
+        $queryString = "SELECT parameter_value_name, parameter_display_order " .
+            "FROM report_selection_parameter_values " .
+            "WHERE parameter_id = $parameterID " .
+            "ORDER BY parameter_display_order;";
+        
+        $query = $this->db->query($queryString);
+        
+        foreach ($query->result() as $row) {
+            //TODO: change this to a custom constructor
+            $selectableReportOption = new Selectable_report_option();
+            $selectableReportOption->setOptionName($row->parameter_value_name);
+            $selectableReportOption->setOptionValue($row->parameter_value_name);
+            $selectableReportOption->setOptionDisplayOrder($row->parameter_display_order);
+            $selectableReportOptionsForParameter[] = $selectableReportOption;
+        }
+        return $selectableReportOptionsForParameter;
+    }
+    
     
 }
