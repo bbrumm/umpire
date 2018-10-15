@@ -66,9 +66,9 @@ class Report2 extends CI_Model implements IReport {
 	
 	public function transformQueryResultsIntoOutputArray() {
         
-    };
+    }
     
     public function formatOutputArrayForView() {
         
-    };
+    }
 }

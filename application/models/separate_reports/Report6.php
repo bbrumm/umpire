@@ -35,10 +35,10 @@ class Report6 extends CI_Model implements IReport {
     
     public function transformQueryResultsIntoOutputArray() {
         
-    };
+    }
     
     public function formatOutputArrayForView() {
         
-    };
+    }
     
 }
