@@ -1,19 +1,20 @@
 <?php
 
-class Match_import extends CI_Model 
-{   
+class Match_import extends CI_Model  {   
 
-    function __construct() {
+    public function __construct() {
           parent::__construct();
           $this->load->model('Table_operation');
           $this->load->model('Season');
           $this->load->library('Debug_library');
+	  $this->load->model('Database_store');
     }
   
     public function fileImport($data) {
         date_default_timezone_set("Australia/Melbourne");
+	$pDataStore = new Database_store();
     	//Remove data from previous load first
-        $this->deleteFromSingleTable('match_import', NULL, FALSE);
+        $this->clearMatchImportTable($pDataStore);
     
     	$importedFilename = $data['upload_data']['file_name'];
     	$dataFile = "application/import/". $importedFilename;
@@ -21,18 +22,8 @@ class Match_import extends CI_Model
     	$sheet = $objPHPExcel->getActiveSheet();
     	$lastRow = $sheet->getHighestRow();
     	$lastColumn = $sheet->getHighestColumn();
-    	
-    	$this->debug_library->debugOutput("last column:", $lastColumn);
-    	$this->debug_library->debugOutput("last row:", $lastRow);
-
     	$columns = $this->findColumnsFromSpreadshet($sheet, $lastColumn);
-    	
-    	$this->debug_library->debugOutput("columns:", $columns);
-    	
     	$data = $sheet->rangeToArray('A2:'. $lastColumn .$lastRow, $columns);
-    	
-    	
-    	$rows = $data;
     	$queryStatus = $this->db->insert_batch('match_import', $data);
     	if ($queryStatus) {
     	   //Now the data is imported, extract it into the normalised tables.
@@ -41,7 +32,6 @@ class Match_import extends CI_Model
     	} else {
     	    $error = $this->db->error();
     	}
-	
     }
     
     private function findColumnsFromSpreadshet($pSheet, $pLastColumn) {
@@ -68,7 +58,6 @@ class Match_import extends CI_Model
         );
         
         $columns = array();
-        
         foreach ($sheetColumnHeaderArray[0] as $columnHeader) {
             /*
             This looks up the table's column name from the columnHeaderTableMatchArray above,
@@ -78,9 +67,7 @@ class Match_import extends CI_Model
                 $columns[] = $columnHeaderToTableMatchArray[$columnHeader];
             }
         }
-        
         return $columns;
-        
     }
   
     private function prepareNormalisedTables($importedFileID) {
@@ -116,12 +103,9 @@ class Match_import extends CI_Model
         return $pDataStore->findLatestImportedFile();
     }
     
-    private function deleteFromSingleTable($tableName, $importedFileID, $logDeletedRow = TRUE) {
-        $queryString = "DELETE FROM ". $tableName;
+    private function clearMatchImportTable(IData_store $pDataStore) {
+        $queryString = "DELETE FROM match_import;";
         $this->db->query($queryString);
-        if ($logDeletedRow) {
-            $this->logTableOperation('DELETE', $tableName, $importedFileID, $this->db->affected_rows());
-        }
     }
     
     private function logImportedFile($filename) {
@@ -136,12 +120,10 @@ class Match_import extends CI_Model
         );
     
         $queryStatus = $this->db->insert('imported_files', $data);
-      
         return $this->db->insert_id();
     }
     
     private function logTableOperation($operationName, $tableName, $importedFileID, $rowCount) {
-      
         $operationID =  $this->findTableIDFromName('operation_ref', 'operation_name', $operationName);
         $processedTableID =  $this->findTableIDFromName('processed_table', 'table_name', $tableName);
       
@@ -158,7 +140,6 @@ class Match_import extends CI_Model
     
     private function findTableIDFromName($tableName, $tableField, $operationName) {
         $this->db->where($tableField, $operationName);
-      
         $query = $this->db->get($tableName);
       
         if($query->num_rows() == 1) {
@@ -185,9 +166,7 @@ class Match_import extends CI_Model
     
         $resultArray = $query->result_array();
         $query->free_result();
-      
         $resultArray = $this->splitArrayBasedOnType($resultArray);
-      
         return $resultArray;
     }
     
@@ -198,6 +177,5 @@ class Match_import extends CI_Model
         }
         return $resultArray;
     }
- 
 }
 ?>
