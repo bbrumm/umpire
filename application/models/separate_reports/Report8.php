@@ -1,7 +1,7 @@
 <?php
-include_once 'Report_data_query.php';
+require_once 'IReport.php';
 
-class Report8 extends Report_data_query {
+class Report8 extends CI_Model implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $queryString = "SELECT ".
@@ -20,5 +20,13 @@ class Report8 extends Report_data_query {
             "ORDER BY display_order;";
         return $queryString;
     }
+    
+    public function transformQueryResultsIntoOutputArray() {
+        
+    };
+    
+    public function formatOutputArrayForView() {
+        
+    };
     
 }
