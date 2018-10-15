@@ -68,10 +68,10 @@ class Report5 extends CI_Model implements IReport {
             //$totalGeelong = 0;
             //$totalForRow = 0;
             //$twoUmpGamesForRow = 0;
-            if ($this->requestedReport->getReportNumber() == 5) {
+            //if ($this->requestedReport->getReportNumber() == 5) {
                 $resultOutputArray[$currentResultArrayRow][0] = $currentRowItem[0]['umpire_type'];
-            } else {
-                $resultOutputArray[$currentResultArrayRow][0] = $rowKey;
+            //} else {
+                //$resultOutputArray[$currentResultArrayRow][0] = $rowKey;
             //}
             foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
                 $columnNumber++;
@@ -81,7 +81,7 @@ class Report5 extends CI_Model implements IReport {
                 foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
                     //Loop through each row and column intersection in the result array
                     
-                    if ($columnNumber == 1 && $this->requestedReport->getReportNumber() == 5) {
+                    if ($columnNumber == 1) {
                         //Add extra column for report 5
                         $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['age_group'];
                         $columnNumber++;
@@ -124,7 +124,7 @@ class Report5 extends CI_Model implements IReport {
                             }
                         } else
                         */
-                        if ($this->requestedReport->getReportNumber() == 5) {
+                        //if ($this->requestedReport->getReportNumber() == 5) {
                             //TODO: Clean this code up
                             if ($columnHeadingSet['subtotal'] == 'Games') {
                                 $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_no_ump'];
@@ -155,7 +155,7 @@ class Report5 extends CI_Model implements IReport {
                         
                             $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
                             */
-                        }
+                        //}
                     } //end isFieldMatchingColumn
                 }
             }
@@ -178,6 +178,10 @@ class Report5 extends CI_Model implements IReport {
         }
         return $resultOutputArray;
     }
+        
+        
+        
+        
     /* Explanation:
          * - pColumnItem: An array that contains values from the report query that could go into a column.
          * Array
