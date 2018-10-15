@@ -1,7 +1,7 @@
 <?php
-include_once 'Report_data_query.php';
+require_once 'IReport.php';
 
-class Report2 extends Report_data_query {
+class Report2 extends CI_Model implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $queryString = "SELECT ".
@@ -63,4 +63,12 @@ class Report2 extends Report_data_query {
         
         return $queryString;
     }
+	
+	public function transformQueryResultsIntoOutputArray() {
+        
+    };
+    
+    public function formatOutputArrayForView() {
+        
+    };
 }
