@@ -1,7 +1,7 @@
 <?php
-include_once 'Report_data_query.php';
+require_once 'IReport.php';
 
-class Report3 extends Report_data_query {
+class Report3 extends CI_Model implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         //This has remained as a query on staging tables instead of moving to a MV table, because of the subquery using parameters from the UI selection.
@@ -64,5 +64,13 @@ class Report3 extends Report_data_query {
             "ORDER BY age_sort_order, umpire_type, short_league_name;";
         return $queryString;
     }
+    
+    public function transformQueryResultsIntoOutputArray() {
+        
+    };
+    
+    public function formatOutputArrayForView() {
+        
+    };
     
 }
