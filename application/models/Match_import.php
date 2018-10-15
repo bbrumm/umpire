@@ -71,8 +71,7 @@ class Match_import extends CI_Model  {
     }
   
     private function prepareNormalisedTables($importedFileID) {
-        $season = new Season();
-        $season->setSeasonID($this->findSeasonToUpdate());
+        $season = Season::createSeasonFromID($this->findSeasonToUpdate());
         $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
     }
     
