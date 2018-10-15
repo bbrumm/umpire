@@ -1,7 +1,7 @@
 <?php
-include_once 'Report_data_query.php';
+require_once 'IReport.php';
 
-class Report4 extends Report_data_query {
+class Report4 extends CI_Model implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $queryString = "SELECT ".
@@ -27,5 +27,13 @@ class Report4 extends Report_data_query {
             "ORDER BY s.umpire_type, s.age_sort_order, s.league_sort_order;";
         return $queryString;
     }
+    
+    public function transformQueryResultsIntoOutputArray() {
+        
+    };
+    
+    public function formatOutputArrayForView() {
+        
+    };
     
 }
