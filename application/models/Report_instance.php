@@ -20,6 +20,9 @@ class Report_instance extends CI_Model {
 	public $filterParameterLeague;
 	public $filterParameterRegion;
 
+	private $separateReport;
+	private $formattedOutputArray;
+
 	public function __construct() {
 	    $this->load->model('Report_display_options');
 	    $this->reportDisplayOptions = new Report_display_options();
@@ -177,6 +180,8 @@ class Report_instance extends CI_Model {
         
         //TODO: This function is causing the output values to be misaligned.
         $this->setResultOutputArray($separateReport);
+
+        $this->separateReport = $separateReport;
 	}
 
 	private function extractGroupFromGroupingStructure($pReportGroupingStructureArray, $pGroupingType) {
@@ -233,6 +238,18 @@ class Report_instance extends CI_Model {
             $resultArray, $columnLabelResultArray, $this->getReportColumnFields());
 
 
+    }
+
+    public function getFormattedResultsForOutput() {
+	    $this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
+            $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());
+        //$this->debug_library->debugOutput("formattedOutputArray:", $this->formattedOutputArray);
+	    return $this->formattedOutputArray;
+    }
+
+    public function getRowCount() {
+        //$this->debug_library->debugOutput("getRowCount:", $this->formattedOutputArray);
+	    return count($this->formattedOutputArray);
     }
 
 	

@@ -8,7 +8,8 @@ interface IReport {
     
     public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields);
     
-    public function formatOutputArrayForView();
+    public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
+                                             $pReportDisplayOptions, $pColumnCountForHeadingCells);
 
     public function isFieldMatchingColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
     

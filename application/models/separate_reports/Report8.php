@@ -24,8 +24,9 @@ class Report8 extends CI_Model implements IReport {
     public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields) {
         
     }
-    
-    public function formatOutputArrayForView() {
+
+    public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
+                                             $pReportDisplayOptions, $pColumnCountForHeadingCells) {
         
     }
 

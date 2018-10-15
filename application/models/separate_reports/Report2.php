@@ -68,7 +68,8 @@ class Report2 extends CI_Model implements IReport {
         
     }
     
-    public function formatOutputArrayForView() {
+    public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
+                                             $pReportDisplayOptions, $pColumnCountForHeadingCells) {
         
     }
 

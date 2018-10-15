@@ -2,8 +2,11 @@
 require_once 'IReport.php';
 
 class Report1 extends CI_Model implements IReport {
+
+    //private $debugLibrary;
     
     public function __construct() {
+        $this->load->library('Debug_library');
     }
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
@@ -273,8 +276,172 @@ class Report1 extends CI_Model implements IReport {
     }
 
 
-    public function formatOutputArrayForView() {
-        
+    public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
+                                             $pReportDisplayOptions, $pColumnCountForHeadingCells) {
+        $outputArray = [];
+        //Set up header
+        $countItemsInColumnHeadingSet = count($pLoadedColumnGroupings[0]);
+        $columnCountForHeadingCells = $pColumnCountForHeadingCells;
+        $columnLabels = $pReportDisplayOptions->getColumnGroup();
+        $thOutput = "<thead>";
+
+        for ($i=0; $i < $countItemsInColumnHeadingSet; $i++) {
+            $thOutput .= "<tr class='header'>";
+
+            $thClassNameToUse = "";
+
+            if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
+                $thClassNameToUse = "columnHeadingNormal cellNameSize";
+            } elseif ($pReportDisplayOptions->getFirstColumnFormat() == "date") {
+                $thClassNameToUse = "columnHeadingNormal cellDateSize";
+            } else {
+                $thClassNameToUse = "columnHeadingNormal cellNameSize";
+            }
+
+            $arrReportRowGroup = $pReportDisplayOptions->getRowGroup(); //Array of ReportGroupingStructure objects
+            //$this->debug_library->debugOutput("arrReportRowGroup count:", count($arrReportRowGroup));
+            $arrReportColumnGroup = $pReportDisplayOptions->getColumnGroup();
+            for ($r = 0; $r < count($arrReportRowGroup); $r++) {
+                $thOutput .= "<th class='" . $thClassNameToUse . "'>";
+                if ($i == 0) {
+
+                    $thOutput .= $arrReportRowGroup[$r]->getGroupHeading();
+                    $thOutput .= "<BR /><span class='columnSizeText'>" . $arrReportRowGroup[$r]->getGroupSizeText() . "</span>";
+                }
+                $thOutput .= "</th>";
+                //echo $thOutput;
+            }
+
+            $countLoadedColumnGroupings = count($columnCountForHeadingCells[$i]);
+            /*if ($debugMode) {
+                echo "<BR />countLoadedColumnGroupings DW:" . $countLoadedColumnGroupings;
+            }*/
+
+            for ($j = 0; $j < $countLoadedColumnGroupings; $j++) {
+                //Check if cell should be merged
+                if ($j == 0) {
+                    $proceed = true;
+                }
+                if ($proceed) {
+                    //print cell with colspan value
+                    //if ($debugMode) {
+                    //echo $columnLabels[$i]->getFieldName() . "rotate cell 1<BR />";
+                    //}
+                    //if ($columnLabels[$i]->getFieldName() == 'club_name' || $reportID == 6) {
+                    if ($columnLabels[$i]->getFieldName() == 'club_name') {
+                        //Some reports have their headers displayed differently
+                        $colspanForCell = 1;
+                        /*
+                        if ($PDFLayout) {
+                            $cellClass = "rotated_cell_pdf";
+                            $divClass = "rotated_text_pdf";
+
+                        } else {
+                        */
+                        //if ($debugMode) {
+                        //    echo "<BR />rotate cell YES<BR />";
+                        //}
+                        $cellClass = "rotated_cell";
+                        $divClass = "rotated_text";
+                        //}
+                    } else {
+                        //if ($debugMode) {
+                        //echo "dont rotate cell 2<BR />";
+                        //}
+                        //Increase the colspan if this column group is to be merged
+                        if ($arrReportColumnGroup[$i]->getMergeField() == 1) {
+                            $colspanForCell = $columnCountForHeadingCells[$i][$j]["count"];
+                        } else {
+                            $colspanForCell = 1;
+                        }
+                        $cellClass = "columnHeadingNormal";
+                        $divClass = "normalHeadingText";
+                    }
+                    $thOutput .= "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>" . $columnCountForHeadingCells[$i][$j]["label"] . "</div></th>";
+                }
+            }
+        }
+
+        $thOutput .= "</thead>";
+        $outputArray[0] = $thOutput;
+
+        //Set up table body
+        $countRows = count($pResultOutputArray);
+        /*
+        if ($reportID == 5) {
+            //TODO: Fix bug where report 5 is not getting the right number of columns.
+            //This happens because the COUNT here is only looking at data columns, not the row label columns,
+            //and in report 5, there are two of them.
+            $countColumns = count($loadedColumnGroupings) + 1;
+        } else {
+        */
+            $countColumns = count($pLoadedColumnGroupings);
+        //}
+
+        /*
+        if ($debugMode) {
+            echo "<BR />loadedColumnGroupings DW:<pre>";
+            print_r($loadedColumnGroupings);
+            echo "</pre><BR />";
+        }
+        */
+        $cellClassToUse = "";
+
+        for ($rowCounter=0; $rowCounter < $countRows; $rowCounter++) {
+            $tableRowOutput = "<tr class='altRow'>";
+            for ($columnCounter=0; $columnCounter <= $countColumns; $columnCounter++) {
+                if(array_key_exists($columnCounter, $pResultOutputArray[$rowCounter])) {
+                    if ($columnCounter == 0) { //First column
+                        if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
+                            $cellValue = $pResultOutputArray[$rowCounter][$columnCounter];
+                            $cellClassToUse = "cellText cellNormal";
+                        } elseif ($pReportDisplayOptions->getFirstColumnFormat() == "date") {
+                            $weekDate = date_create($pResultOutputArray[$rowCounter][$columnCounter]);
+                            $cellValue = date_format($weekDate, 'd/m/Y');
+                            $cellClassToUse = "cellNumber cellNormal";
+                        }
+                    } else {
+                        if ($pReportDisplayOptions->getColourCells() == 1) {
+                            $cellClassToUse = getCellClassNameFromOutputValue($pResultOutputArray[$rowCounter][$columnCounter], TRUE);
+                        //} elseif ($reportID == 2 && $loadedColumnGroupings[$columnCounter-1]['age_group'] == 'Total') {
+                        //    $cellClassToUse = "cellNumber cellTextTotal";
+                        } elseif(is_numeric($pResultOutputArray[$rowCounter][$columnCounter])) {
+                            $cellClassToUse = "cellNumber cellNormal";
+                        } else {
+                            $cellClassToUse = "cellText cellNormal";
+                        }
+                        $cellValue = $pResultOutputArray[$rowCounter][$columnCounter];
+
+                        //TODO: Fix this and find the correct array reference
+                        /*
+                        if ($reportID == 5) {
+                            if ($columnCounter >= 2) {
+                                if ($loadedColumnGroupings[$columnCounter-2]["subtotal"] == "Pct") {
+                                    $cellValue .= "%";
+                                }
+                            }
+                        }
+                        */
+                    }
+                } else {
+                    $cellClassToUse = "cellNormal";
+                    $cellValue = "";
+                }
+                /*
+                if ($reportID == 6 && $columnCounter > 0) {
+                    if ($resultOutputArray[$rowCounter][0] == $loadedColumnGroupings[$columnCounter-1]["second_umpire"]) {
+                        //echo "ROW resultOutputArray $rowCounter matches COL loadedColumnGroupings $columnCounter <BR />";
+                        $cellClassToUse .= " cellRowMatchesColumn";
+                    }
+                }
+                */
+                $tableRowOutput .= "<td class='$cellClassToUse'>$cellValue</td>";
+            }
+            $tableRowOutput .=  "</tr>";
+            $outputArray[$rowCounter+1] = $tableRowOutput;
+        }
+        return $outputArray;
+
     }
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
@@ -337,7 +504,7 @@ class Report1 extends CI_Model implements IReport {
             }
             $counterForRow++;
         }
-        $this->debug_library->debugOutput("pivotedArray:", $pivotedArray);
+        //$this->debug_library->debugOutput("pivotedArray:", $pivotedArray);
         return $pivotedArray;
     }
     
