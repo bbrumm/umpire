@@ -1,7 +1,7 @@
 <?php
 require_once 'IReport.php';
 
-class Report1 extends CI_Model implements IReport {
+class Report1 extends Parent_report implements IReport {
 
     //private $debugLibrary;
     
