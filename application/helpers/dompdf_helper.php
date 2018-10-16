@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 function pdf_create($html, $filename='', $stream=TRUE, $pReportDisplayOptions) 
 {
-    require_once("dompdf/dompdf_config.inc.php");
+    require_once("../../vendors/dompdf/dompdf_config.inc.php");
     $dompdf = new DOMPDF();
     //Testing layout to fit on one page
     $dompdf->set_option('dpi', $pReportDisplayOptions->getPDFResolution());
