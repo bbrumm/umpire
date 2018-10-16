@@ -13,7 +13,7 @@ class FileImport extends CI_Controller {
 		$this->load->model('Missing_data_updater');
 		$this->load->model('Database_store');
 		$this->load->helper('form');
-		include 'application/helpers/phpexcel/Classes/PHPExcel.php';
+		include 'vendor/phpexcel/Classes/PHPExcel.php';
 	}
 	
 	public function index() {
