@@ -1,7 +1,7 @@
 <?php
 require_once 'IReport.php';
 
-class Report3 extends CI_Model implements IReport {
+class Report3 extends Parent_report implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         //This has remained as a query on staging tables instead of moving to a MV table, because of the subquery using parameters from the UI selection.
