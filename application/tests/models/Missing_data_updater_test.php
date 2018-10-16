@@ -72,5 +72,26 @@ class Missing_data_updater_test extends TestCase {
         $this->assertEquals($expectedSize, $actualSize);
         $this->assertEquals($expectedFirstValue, $actualFirstValue);
     }
+
+    public function test_UpdateSingleCompetition() {
+        $arrayStore = new Array_store();
+        $inputArray = array(
+            "competition_id"=>2
+        );
+        $expected = $this->obj->updateSingleCompetition($arrayStore, $inputArray);
+        $actual = true;
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_InsertNewLeague() {
+        $arrayStore = new Array_store();
+        $inputArray = array(
+            "short_league_name" => "abc",
+            "age_group" => "Under 15"
+        );
+        $expected = $this->obj->insertNewLeague($arrayStore, $inputArray);
+        $actual = "abc";
+        $this->assertEquals($expected, $actual);
+    }
     
 }

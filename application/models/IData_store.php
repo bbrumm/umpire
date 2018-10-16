@@ -20,11 +20,22 @@ interface IData_store {
     
     public function loadPossibleDivisions();
     
-    public function updateSingleCompetition();
+    public function updateSingleCompetition($pLeagueIDToUse, $competitionData);
     
     public function insertNewClub($pClubName);
     
     public function updateTeamTable($pTeamID, $pClubID);
+
+    public function findSingleLeagueIDFromParameters($competitionData);
+
+    public function insertNewLeague($competitionData);
+
+    public function checkAndInsertAgeGroupDivision($competitionData);
+
+    public function insertAgeGroupDivision($competitionData);
+
+    public function updateTeamAndClubTables(IData_store $pDataStore, array $pPostData);
+
     
     //Match_import
     public function findSeasonToUpdate();
@@ -36,25 +47,25 @@ interface IData_store {
     //User
     public function userLogin($pUsername, $pPassword);
 
-public function checkUserActive($pUsername);
+    public function checkUserActive($pUsername);
 
-public function getUserFromUsername($pUsername);
+    public function getUserFromUsername($pUsername);
 
-public function setPermissionArrayForUser();
+    public function setPermissionArrayForUser();
 
-public function checkUserExistsForReset();
+    public function checkUserExistsForReset();
 
-public function logPasswordResetRequest($pRequestData);
+    public function logPasswordResetRequest($pRequestData);
 
-public function storeActivationID($pActivationID);
+    public function storeActivationID($pActivationID);
 
-public function createUserFromActivationID();
+    public function createUserFromActivationID();
 
-public function updatePassword();
+    public function updatePassword();
 
-public function logPasswordReset();
+    public function logPasswordReset();
 
-public function updateEmailAddress();
+    public function updateEmailAddress();
     
     public function loadSelectableReportOptions($pParameterID);
     

@@ -4,7 +4,7 @@ class Array_store extends CI_Model implements IData_store {
     
     
     public function __construct() {
-        
+        $this->load->library('Array_library');
     }
     
     public function loadAllReportParameters($pReportNumber) {
@@ -125,28 +125,67 @@ class Array_store extends CI_Model implements IData_store {
         return $divisions;
     }
     
-    public function updateSingleCompetition() {
-        
+    public function updateSingleCompetition($pLeagueIDToUse, $competitionData) {
+        //TODO write code
+        $competitionArray = array (
+            array(1, 3),
+            array(2, 5),
+            array(3, 4),
+            array(4, 9)
+        );
+        $competitionArray[] = array(5, $competitionData["competition_id"]);
+        return true;
     }
     
     public function insertNewClub($pClubName) {
-        
+        //TODO write code
     }
     
     public function updateTeamTable($pTeamID, $pClubID) {
-        
+        //TODO write code
+    }
+
+    public function findSingleLeagueIDFromParameters($competitionData) {
+        return 2;
+    }
+
+    public function insertNewLeague($competitionData) {
+        $leagueArray = array ('a', 'b', 'c', 'd', 'e');
+        $leagueArray[] = $competitionData['short_league_name'];
+        return $leagueArray[5];
+    }
+
+    public function checkAndInsertAgeGroupDivision($competitionData) {
+        $arrayLibrary = new Array_library();
+        $agdArray = array (
+            'Under 14',
+            'Under 16',
+            'Under 18'
+        );
+        $countOfIDInArray = $arrayLibrary->in_array_r($competitionData["age_group"], $agdArray);
+        if ($countOfIDInArray == 0) {
+            $agdArray[] = $competitionData["age_group"];
+        }
+    }
+
+    public function insertAgeGroupDivision($competitionData) {
+
+    }
+
+    public function updateTeamAndClubTables(IData_store $pDataStore, array $pPostData) {
+
     }
     
     public function findSeasonToUpdate() {
-        
+        //TODO write code
     }
     
     public function findLatestImportedFile() {
-        
+        //TODO write code
     }
     
     public function runETLProcedure($pSeason, $pImportedFileID) {
-        
+        //TODO write code
     }
     
     public function userLogin($pUsername, $pPassword) { }
@@ -160,7 +199,7 @@ class Array_store extends CI_Model implements IData_store {
     public function updatePassword() { }
     public function logPasswordReset() { }
     public function updateEmailAddress() { }
-    
+
     public function loadSelectableReportOptions($pParameterID) { }
     
     
