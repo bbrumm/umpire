@@ -153,7 +153,7 @@ class Report1 extends Parent_report implements IReport {
         for ($i=0; $i < $countItemsInColumnHeadingSet; $i++) {
             $thOutput .= "<tr class='header'>";
 
-            $thClassNameToUse = "";
+            //$thClassNameToUse = "";
 
             if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
                 $thClassNameToUse = "columnHeadingNormal cellNameSize";
