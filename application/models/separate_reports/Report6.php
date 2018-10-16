@@ -1,7 +1,7 @@
 <?php
 require_once 'IReport.php';
 
-class Report6 extends CI_Model implements IReport {
+class Report6 extends Parent_report implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $queryString = "SELECT ".
