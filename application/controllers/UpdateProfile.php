@@ -67,6 +67,8 @@ if (! defined('BASEPATH'))
         }
         
         public function updateEmail() {
+            $userMaintenance = new User_maintenance_model();
+            $dbStore = new Database_store();
             $userName = $_POST['username'];
             
             $newEmail= $this->security->xss_clean($this->input->post('email_address'));
@@ -75,7 +77,7 @@ if (! defined('BASEPATH'))
             
             $umpireUser->setUsername($userName);
             $umpireUser->setEmailAddress($newEmail);
-            $umpireUser->updateEmailAddress();
+            $userMaintenance->updateEmailAddress($dbStore, $umpireUser);
             $statusMessage = "Email address updated successfully.";
             $this->loadPage($statusMessage, TRUE);
             

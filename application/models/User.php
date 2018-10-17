@@ -150,10 +150,7 @@ class User extends CI_Model
         return ($this->active == 1);
     }
 
-    public function updateEmailAddress() {
-        $this->db->where('user_name', $this->getUsername());
-        $this->db->update('umpire_users', array('user_email'=>$this->getEmailAddress()));
-    }
+
 
 }
 ?>
