@@ -15,12 +15,20 @@ class User_role_permission extends CI_Model
 
     public static function createFromRow($pRow) {
         $instance = new User_role_permission();
-        $instance->setId($pRow['id']);
-        $instance->setPermissionId($pRow['permission_id']);
-        $instance->setPermissionName($pRow['permission_name']);
-        $instance->setSelectionName($pRow['selection_name']);
+        if($pRow['id'] != null &&
+            $pRow['permission_id'] != null &&
+            $pRow['permission_name'] != null &&
+            $pRow['selection_name'] != null) {
 
-        return $instance;
+            $instance->setId($pRow['id']);
+            $instance->setPermissionId($pRow['permission_id']);
+            $instance->setPermissionName($pRow['permission_name']);
+            $instance->setSelectionName($pRow['selection_name']);
+
+            return $instance;
+        } else {
+            throw new InvalidArgumentException("Data used for creating user_role_permission is null.");
+        }
 
     }
 
