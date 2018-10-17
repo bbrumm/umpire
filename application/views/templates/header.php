@@ -6,12 +6,15 @@
 include_once("analyticstracking.php");
 $this->load->helper('url');   
 $this->load->model('User');
+$this->load->model('useradmin/User_permission_loader_model');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
 //$data['reportSelection'] = $this->config->item('reportSelection');
 $data['reportSelectionNew'] = $this->config->item('reportSelectionNew');
 $data['reportSelectionAcc'] = $this->config->item('reportSelectionAcc');
 $data['useradmin'] = $this->config->item('useradmin');
+$userPermissionLoader = new User_permission_loader_model();
+
 
 if (isset($PDFLayout)) {
     if ($PDFLayout == TRUE) {
@@ -102,16 +105,16 @@ if ($showHeader) {
     		echo "</pre>";
     		*/
     		echo anchor("home", $menuHome);
-    		if($currentUser->userHasImportFilePermission()) {
+    		if($userPermissionLoader->userHasImportFilePermission($currentUser)) {
     		  echo anchor("ImportFileSelector", $menuImportFile);
     		}
     		
-    		if($currentUser->userCanSeeUserAdminPage()) {
+    		if($userPermissionLoader->userCanSeeUserAdminPage($currentUser)) {
     		    echo anchor("UserAdmin", $menuUserAdmin);
     		    echo anchor("UmpireAdmin", $menuUmpireAdmin);
     		}
     		
-    		if ($currentUser->userCanSeeDataTestPage()) {
+    		if ($userPermissionLoader->userCanSeeDataTestPage($currentUser)) {
     		    echo anchor("datatest", $menuDataTest);
     		}
     		
@@ -124,7 +127,7 @@ if ($showHeader) {
     	//Show extra items if we are on the report page
     
     	//echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
-        if ($currentUser->userCanCreatePDF()) {
+        if ($userPermissionLoader->userCanCreatePDF($currentUser)) {
             echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
         	echo "<div class='menuBarLink'>Create PDF</div></a>";
         }

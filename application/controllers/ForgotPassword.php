@@ -7,6 +7,9 @@ class ForgotPassword extends CI_Controller {
         parent::__construct();
         $this->load->model('user');
         $this->load->helper('string');
+        $this->load->model('useradmin/User_maintenance_model');
+        $this->load->model('useradmin/User_permission_loader_model');
+        $this->load->model('Database_store');
         
     }
     
@@ -59,6 +62,9 @@ class ForgotPassword extends CI_Controller {
         $umpireUser = new User();
         $umpireUser->setUsername($pUserName);
         $umpireUser->setEmailAddress($pEmailAddress);
+        $userMaintenance = new User_maintenance_model();
+        $userPermissionLoader = new User_permission_loader_model();
+        $dbStore = new Database_store();
         
         $data['activation_id'] = random_string('alnum',15);
         $data['request_datetime'] = date('Y-m-d H:i:s');
@@ -66,18 +72,18 @@ class ForgotPassword extends CI_Controller {
         $data['username_entered'] = $umpireUser->getUsername();
         $data['email_address_entered'] = $umpireUser->getEmailAddress();
 
-        $logRequest = $umpireUser->logPasswordResetRequest($data);
+        $logRequest = $userMaintenance->logPasswordResetRequest($dbStore, $data);
         
         //Check user data entered: user exists, email matches user
-        if($umpireUser->checkUserExistsForReset()) {
+        if($userMaintenance->checkUserExistsForReset($dbStore, $umpireUser)) {
             
             $encoded_email = urlencode($pEmailAddress);
             
             if($logRequest) {
-                $umpireUser->getUserFromUsername($pUserName);
+                $userPermissionLoader->getUserFromUsername($dbStore, $pUserName);
                 $umpireUser->setPasswordResetURL(base_url() . "index.php/ResetPasswordEntry/load/" . $data['activation_id']);
-                
-                $umpireUser->storeActivationID($data['activation_id']);
+
+                $userMaintenance->storeActivationID($dbStore, $umpireUser, $data['activation_id']);
                 
                 $sendStatus = $this->sendPasswordResetEmail($umpireUser);
                 

@@ -13,6 +13,17 @@ class User_role_permission extends CI_Model
     private $permissionName;
     private $selectionName;
 
+    public static function createFromRow($pRow) {
+        $instance = new User_role_permission();
+        $instance->setId($pRow['id']);
+        $instance->setPermissionId($pRow['permission_id']);
+        $instance->setPermissionName($pRow['permission_name']);
+        $instance->setSelectionName($pRow['selection_name']);
+
+        return $instance;
+
+    }
+
     public function getId() {
         return $this->id;
     }

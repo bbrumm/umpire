@@ -7,9 +7,13 @@ class Useradminmodel extends CI_Model {
         parent::__construct();
         $this->load->model("User");
         $this->load->library('Debug_library');
+        $this->load->model("useradmin/User_permission_loader_model");
+        $this->load->model("Database_store");
     }
     
     public function getAllUsers() {
+        $userPermissionLoader = User_permission_loader_model();
+        $dbStore = new Database_store();
         $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, r.role_name, u.active 
             FROM umpire_users u  
             INNER JOIN role r ON u.role_id = r.id  
@@ -25,7 +29,7 @@ class Useradminmodel extends CI_Model {
                 $queryResultArray[$i]['id'], $queryResultArray[$i]['user_name'], 
                 $queryResultArray[$i]['first_name'], $queryResultArray[$i]['last_name'], 
                 $queryResultArray[$i]['role_name'], $queryResultArray[$i]['active'], NULL);
-
+            $userPermissionLoader->setPermissionArray($dbStore, $newUser);
             $userArray[] = $newUser;
         }
         return $userArray;

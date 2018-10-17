@@ -305,7 +305,7 @@ class Database_store extends CI_Model implements IData_store {
     }
     
     
-    public function userLogin($pUsername, $pPassword) {
+    public function findMatchingUserFromUsernameAndPassword($pUsername, $pPassword) {
       $this->db->select('id, user_name, user_password');
       $this->db->from('umpire_users');
       $this->db->where('user_name', $pUsername);
@@ -333,7 +333,7 @@ class Database_store extends CI_Model implements IData_store {
         return ($query->num_rows() == 1);
     }
 
-
+    //TODO refactor this so that permissions are set for the user, because they should be whenever createUserFromNameAndRole
     public function getUserFromUsername($pUsername) {
         $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, u.user_email, r.role_name
             FROM umpire_users u 
@@ -342,6 +342,8 @@ class Database_store extends CI_Model implements IData_store {
             LIMIT 1;";
         
         $query = $this->db->query($queryString);
+
+        return $query->num_rows();
         
         if ($query->num_rows() == 1) {
             $row = $query->row();
@@ -354,7 +356,7 @@ class Database_store extends CI_Model implements IData_store {
     }
 
 
-    public function setPermissionArrayForUser() {
+    public function findPermissionsForUser(User $pUser) {
         $queryString = "SELECT ps.id, ps.permission_id, p.permission_name, ps.selection_name 
             FROM permission_selection ps 
             INNER JOIN permission p ON ps.permission_id = p.id 
@@ -372,24 +374,7 @@ class Database_store extends CI_Model implements IData_store {
         $query = $this->db->query($queryString);
         $resultArray = $query->result_array();
         
-        $countNumberOfPermissions = count($resultArray);
-        
-        if ($countNumberOfPermissions > 0) {
-        
-            for($i=0; $i<$countNumberOfPermissions; $i++) {
-                $userRolePermission = new User_role_permission();
-                //TODO: change this to a custom constructor
-                $userRolePermission->setId($resultArray[$i]['id']);
-                $userRolePermission->setPermissionId($resultArray[$i]['permission_id']);
-                $userRolePermission->setPermissionName($resultArray[$i]['permission_name']);
-                $userRolePermission->setSelectionName($resultArray[$i]['selection_name']);
-                $permissionArray[] = $userRolePermission;
-            }
-            
-            
-            $this->setPermissionArray($permissionArray);
-        }
-           
+        return count($resultArray);
     }
 
 
@@ -414,33 +399,29 @@ class Database_store extends CI_Model implements IData_store {
         );
         
         $queryStatus = $this->db->insert('password_reset_request', $data);
-            
+
         return ($queryStatus == 1);
     }
+
 
 
     public function storeActivationID($pActivationID) {
         $this->db->where('user_name', $this->getUsername());
         $this->db->where('user_email', $this->getEmailAddress());
         $this->db->update('umpire_users', array('activation_id'=>$pActivationID));
-        
     }
 
 
-    public function createUserFromActivationID() {
+    public function createUserFromActivationID($pActivationID) {
         $this->db->select('user_name');
-        $this->db->where('activation_id', $this->getActivationID());
+        $this->db->where('activation_id', $pActivationID);
         $query = $this->db->get('umpire_users');
         
         $resultArray = $query->result();
-        
-        if ($query->num_rows() > 0){
-            $this->setUsername($resultArray[0]->user_name);
-            return true;
-        } else {
-            return false;
-        }  
-        
+        $user = new User();
+        $user->setUsername($resultArray[0]->user_name);
+
+        return $user;
     }
 
 
@@ -449,24 +430,21 @@ class Database_store extends CI_Model implements IData_store {
         $this->db->update('umpire_users', array('user_password'=>$this->getPassword()));
     }
 
-    public function logPasswordReset() {
+    public function findOldPassword(User $pUser) {
         $this->db->select('user_password');
         $this->db->where('user_name', $this->getUsername());
         $query = $this->db->get('umpire_users');
-        
+
         $resultArray = $query->result();
-        
-        $oldPassword = $resultArray[0]->user_password;
-       
-        $data = array(
-            'user_name' => $this->getUsername(),
-            'new_password' => $this->getPassword(),
-            'old_password' => $oldPassword,
-            'reset_datetime' => date('Y-m-d H:i:s', time())
-        );
-        
-        $queryStatus = $this->db->insert('password_reset_log', $data);
+
+        return $resultArray[0]->user_password;
     }
+
+    public function logPasswordReset($pData) {
+        $queryStatus = $this->db->insert('password_reset_log', $pData);
+    }
+
+
 
 
     public function updateEmailAddress() {
@@ -492,6 +470,24 @@ class Database_store extends CI_Model implements IData_store {
         }
         return $selectableReportOptionsForParameter;
     }
+
+    public function findUserFromUsernameAndPassword($username, $password) {
+        $this->db->where('user_name', $username);
+        $this->db->where('user_password', $password);
+
+        // Run the query
+        $query = $this->db->get('umpire_users');
+
+        $resultArray = $query->result();
+
+        $user = new User();
+        $user->setId($resultArray[0]['id']);
+        $user->setUsername($resultArray[0]['username']);
+        $user->setEmailAddress($resultArray[0]['email_address']);
+
+    }
+
+
 
 
     

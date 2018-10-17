@@ -12,6 +12,9 @@ if (! defined('BASEPATH'))
             $this->load->helper('url_helper');
             $this->load->helper(array('form', 'url'));
             $this->load->model('User');
+            $this->load->model('useradmin/User_maintenance_model');
+            $this->load->model('useradmin/User_permission_loader_model');
+            $this->load->model('Database_store');
             $this->load->library('Debug_library');
         }
         
@@ -39,19 +42,21 @@ if (! defined('BASEPATH'))
         public function updatePassword() {
             //TODO: Refactor this with the ResetPasswordEntry controller as it's very similar code
             $userName = $_POST['username'];
+            $userMaintenance = new User_maintenance_model();
+            $dbStore = new Database_store();
             
             $newPassword= $this->security->xss_clean($this->input->post('password'));
             $confirmNewPassword= $this->security->xss_clean($this->input->post('confirmPassword'));
             
             $umpireUser = new User();
             
-            $validPassword = $umpireUser->validatePassword($newPassword, $confirmNewPassword);
+            $validPassword = $userMaintenance->validatePassword($newPassword, $confirmNewPassword);
             
             if ($validPassword) {
                 
                 $umpireUser->setUsername($userName);
                 $umpireUser->setPassword(MD5($newPassword));
-                $umpireUser->updatePassword();
+                $userMaintenance->updatePassword($dbStore, $umpireUser);
                 $statusMessage = "Password reset successfully.";
                 $this->loadPage($statusMessage, TRUE);
             } else {
@@ -78,9 +83,12 @@ if (! defined('BASEPATH'))
         }
         
         private function lookupUserData(User $pUser) {
-            $dataLoaded = $pUser->getUserFromUsername($pUser->getUsername());
+            $userPermissionLoader = new User_permission_loader_model();
+            $dbStore = new Database_store();
+
+            $foundUser = $userPermissionLoader->getUserFromUsername($dbStore, $pUser->getUsername());
             
-            return $pUser;
+            return $foundUser;
         }
         
         

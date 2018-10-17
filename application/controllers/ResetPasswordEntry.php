@@ -10,16 +10,19 @@ class ResetPasswordEntry extends CI_Controller {
         $this->load->helper(array('form', 'url'));
         $this->load->helper('string');
         $this->load->model('user');
+        $this->load->model('useradmin/User_maintenance_model');
+        $this->load->model('Database_store');
     }
     
     function load($pActivationID) {
-        $umpireUser = new User();
+        $userMaintenance = new User_maintenance_model();
+        $umpireUser = $userMaintenance->createUserFromActivationID($pActivationID);
         $umpireUser->setActivationID($pActivationID);
-        $data['activationIDMatches'] = $umpireUser->createUserFromActivationID();
+        //TODO check that this works and refactor. Repeated in function below.
+        $data['activationIDMatches'] = isset($umpireUser);
         $data['activationID'] = $umpireUser->getActivationID();
         $data['username'] = $umpireUser->getUsername();
-        
-        
+
         $this->load->view('templates/header');
         $this->load->view('resetPassword', $data);
         $this->load->view('templates/footer');
@@ -44,10 +47,11 @@ class ResetPasswordEntry extends CI_Controller {
     
     private function showPasswordResetEntryPage($pStatusMessage) {
         $data['statusMessage'] = $pStatusMessage;
-        
-        $umpireUser = new User();
+        $userMaintenance = new User_maintenance_model();
+        //TODO check that this works and refactor. Repeated in function above
+        $umpireUser = $userMaintenance->createUserFromActivationID();
         $umpireUser->setActivationID($_POST['activationID']);
-        $data['activationIDMatches'] = $umpireUser->createUserFromActivationID();
+        $data['activationIDMatches'] = isset($umpireUser);
         $data['activationID'] = $umpireUser->getActivationID();
         $data['username'] = $umpireUser->getUsername();
         
@@ -58,19 +62,21 @@ class ResetPasswordEntry extends CI_Controller {
     
     public function submitNewPassword() {
         $userName = $_POST['username'];
+        $userMaintenance = new User_maintenance_model();
+        $dbStore = new Database_store();
         
         $newPassword= $this->security->xss_clean($this->input->post('password'));
         $confirmNewPassword= $this->security->xss_clean($this->input->post('confirmPassword'));
         
         $umpireUser = new User();
         
-        $validPassword = $umpireUser->validatePassword($newPassword, $confirmNewPassword);
+        $validPassword = $userMaintenance->validatePassword($newPassword, $confirmNewPassword);
         
         if ($validPassword) {
             
             $umpireUser->setUsername($userName);
             $umpireUser->setPassword(MD5($newPassword));
-            $umpireUser->updatePassword();
+            $userMaintenance->updatePassword($dbStore, $umpireUser);
             $this->showPasswordResetDonePage();
         } else {
             $statusMessage = "Passwords do not match or are less than 6 characters. ".

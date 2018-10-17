@@ -5,6 +5,9 @@ class VerifyLogin extends CI_Controller {
      function __construct() {
          parent::__construct();
          $this->load->model('user','',TRUE);
+         $this->load->model('useradmin/User_authentication_model');
+         $this->load->model('Database_store');
+
      }
     
      function index() {
@@ -29,12 +32,14 @@ class VerifyLogin extends CI_Controller {
      function check_database($password) {
          //Field validation succeeded.  Validate against database
          $username = $this->input->post('username');
+         $userAuth = new User_authentication_model();
+         $dbStore = new Database_store();
     
          //Check if user is active first
-         if($this->user->checkUserActive($username)) {
+         if($userAuth->checkUserActive($dbStore, $username)) {
              
              //query the database
-             $result = $this->user->login($username, $password);
+             $result = $userAuth->login($dbStore, $username, $password);
              if($result) {
                  $sess_array = array();
                  foreach($result as $row) {

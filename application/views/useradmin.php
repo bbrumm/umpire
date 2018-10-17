@@ -6,7 +6,9 @@
  <body>
 	<h2>User Administration</h2>
 	<br />
-	<?php 
+	<?php
+    $this->load->model('useradmin/User_permission_loader_model');
+    $userPermissionLoader = new User_permission_loader_model();
 	if (isset($userAddedMessage)) {
 	    echo "<BR /><div class='successMessage'>" . $userAddedMessage . "</div>";
 	}
@@ -106,7 +108,8 @@ for($i=0; $i<count($userArray); $i++) {
             	    if ($permissionSelectionArray[$k]['category'] == 'Report') {
             	        echo "<input type='checkbox' name='userPrivilege[". $userIteration->getUsername() . "][". $permissionSelectionArray[$k]['id']."]'";
                 	    //If the checkbox is checked, it gets passed via POST. If not, then it does not get sent to POST at all.
-            	        if ($userIteration->userHasSpecificPermission("VIEW_REPORT", $permissionSelectionArray[$k]['selection_name'])) {
+                        //TODO change these into more specific functions
+            	        if ($userPermissionLoader->userHasSpecificPermission($userIteration, "VIEW_REPORT", $permissionSelectionArray[$k]['selection_name'])) {
                 	        echo "checked";
                 	    }
                 	    echo "></input><label>". $permissionSelectionArray[$k]['selection_name']."</label> <br />";
@@ -122,7 +125,7 @@ for($i=0; $i<count($userArray); $i++) {
             	for($k=0; $k<count($permissionSelectionArray); $k++) {
             	    if ($permissionSelectionArray[$k]['category'] == 'Region') {
                 	    echo "<input type='checkbox' name='userPrivilege[". $userIteration->getUsername() . "][". $permissionSelectionArray[$k]['id']."]'";
-                	    if ($userIteration->userHasSpecificPermission("SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
+                	    if ($userPermissionLoader->userHasSpecificPermission($userIteration, "SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
                 	        echo "checked";
                 	    }
                 	    echo "></input><label>". $permissionSelectionArray[$k]['selection_name']."</label> <br />";
@@ -138,7 +141,7 @@ for($i=0; $i<count($userArray); $i++) {
             	for($k=0; $k<count($permissionSelectionArray); $k++) {
             	    if ($permissionSelectionArray[$k]['category'] == 'Umpire Type') {
                 	    echo "<input type='checkbox' name='userPrivilege[". $userIteration->getUsername() . "][". $permissionSelectionArray[$k]['id']."]'";
-                	    if ($userIteration->userHasSpecificPermission("SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
+                	    if ($userPermissionLoader->userHasSpecificPermission($userIteration, "SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
                 	        echo "checked";
                 	    }
                 	    echo "></input><label>". $permissionSelectionArray[$k]['selection_name']."</label> <br />";
@@ -154,7 +157,7 @@ for($i=0; $i<count($userArray); $i++) {
             	for($k=0; $k<count($permissionSelectionArray); $k++) {
             	    if ($permissionSelectionArray[$k]['category'] == 'Age Group') {
                 	    echo "<input type='checkbox' name='userPrivilege[". $userIteration->getUsername() . "][". $permissionSelectionArray[$k]['id']."]'";
-                	    if ($userIteration->userHasSpecificPermission("SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
+                	    if ($userPermissionLoader->userHasSpecificPermission($userIteration, "SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
                 	        echo "checked";
                 	    }
                 	    echo "></input><label>". $permissionSelectionArray[$k]['selection_name']."</label> <br />";
@@ -170,7 +173,7 @@ for($i=0; $i<count($userArray); $i++) {
             	for($k=0; $k<count($permissionSelectionArray); $k++) {
             	    if ($permissionSelectionArray[$k]['category'] == 'League') {
                 	    echo "<input type='checkbox' name='userPrivilege[". $userIteration->getUsername() . "][". $permissionSelectionArray[$k]['id']."]'";
-                	    if ($userIteration->userHasSpecificPermission("SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
+                	    if ($userPermissionLoader->userHasSpecificPermission($userIteration, "SELECT_REPORT_OPTION", $permissionSelectionArray[$k]['selection_name'])) {
                 	        echo "checked";
                 	    }
                 	    echo "></input><label>". $permissionSelectionArray[$k]['selection_name']."</label> <br />";

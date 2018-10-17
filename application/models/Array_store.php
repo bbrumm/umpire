@@ -136,14 +136,33 @@ class Array_store extends CI_Model implements IData_store {
         $competitionArray[] = array(5, $competitionData["competition_id"]);
         return true;
     }
-    
+
     public function insertNewClub($pClubName) {
-        //TODO write code
+        $clubArray = array ('a', 'b', 'c', 'd');
+        $clubArray[] = $pClubName;
+        return clubArray[4];
+
+
     }
-    
+
     public function updateTeamTable($pTeamID, $pClubID) {
         //TODO write code
+        $teamArray = array(
+            array(1, 2),
+            array(2, 5),
+            array(3, 7)
+        );
+
+        foreach($teamArray as $key=>$value) {
+            if ($value[0] == $pTeamID && $value[1] == $pClubID) {
+                $teamArray[$key][1] = $pClubID;
+                $updatedKey = $key;
+            }
+        }
+        return (isset($updatedKey));
+
     }
+
 
     public function findSingleLeagueIDFromParameters($competitionData) {
         return 2;
@@ -188,19 +207,23 @@ class Array_store extends CI_Model implements IData_store {
         //TODO write code
     }
     
-    public function userLogin($pUsername, $pPassword) { }
+    public function findMatchingUserFromUsernameAndPassword($pUsername, $pPassword) { }
     public function checkUserActive($pUsername) { }
     public function getUserFromUsername($pUsername) { }
     public function setPermissionArrayForUser() { }
+    public function findPermissionsForUser(User $pUser) { }
     public function checkUserExistsForReset() { }
     public function logPasswordResetRequest($pRequestData) { }
     public function storeActivationID($pActivationID) { }
-    public function createUserFromActivationID() { }
+    public function createUserFromActivationID($pActivationID) { }
     public function updatePassword() { }
-    public function logPasswordReset() { }
+    public function logPasswordReset($pData) { }
     public function updateEmailAddress() { }
+    public function findUserFromUsernameAndPassword($username, $password) { }
 
     public function loadSelectableReportOptions($pParameterID) { }
+
+
     
     
 }

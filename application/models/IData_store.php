@@ -45,13 +45,13 @@ interface IData_store {
     public function runETLProcedure($pSeason, $pImportedFileID);
     
     //User
-    public function userLogin($pUsername, $pPassword);
+    public function findMatchingUserFromUsernameAndPassword($pUsername, $pPassword);
 
     public function checkUserActive($pUsername);
 
     public function getUserFromUsername($pUsername);
 
-    public function setPermissionArrayForUser();
+    public function findPermissionsForUser(User $pUser);
 
     public function checkUserExistsForReset();
 
@@ -59,14 +59,16 @@ interface IData_store {
 
     public function storeActivationID($pActivationID);
 
-    public function createUserFromActivationID();
+    public function createUserFromActivationID($pActivationID);
 
     public function updatePassword();
 
-    public function logPasswordReset();
+    public function logPasswordReset($pData);
 
     public function updateEmailAddress();
     
     public function loadSelectableReportOptions($pParameterID);
+
+    public function findUserFromUsernameAndPassword($username, $password);
     
 }
