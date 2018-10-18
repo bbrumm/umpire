@@ -379,10 +379,10 @@ class Database_store extends CI_Model implements IData_store {
 
 
 
-    public function checkUserExistsForReset() {
+    public function checkUserExistsForReset(User $pUser) {
         $this->db->select('id');
-        $this->db->where('user_name', $this->getUsername());
-        $this->db->where('user_email', $this->getEmailAddress());
+        $this->db->where('user_name', $pUser->getUsername());
+        $this->db->where('user_email', $pUser->getEmailAddress());
         $query = $this->db->get('umpire_users');
         
         return ($query->num_rows() > 0);
