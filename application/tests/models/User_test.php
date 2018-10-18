@@ -330,6 +330,82 @@ class User_test extends TestCase
         $this->assertEquals(($active == 1), $user->isActive());
         $this->assertEquals($emailAddress, $user->getEmailAddress());
     }
+    
+    public function test_CreateUserFromNameAndPW() {
+        $username = "test1";
+        $firstname = "john";
+        $lastname = "smith";
+        $password = "mypass";
 
+        $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
+
+        $this->assertTypeOf('User', $user);
+        $this->assertEquals($username, $user->getUsername());
+        $this->assertEquals($firstname , $user->getFirstname());
+        $this->assertEquals($lastname , $user->getLastname());
+        $this->assertEquals($password , $user->getPassword());
+
+    }
+
+    public function test_CreateUserFromNameAndPW_MissingUsername() {
+        $username = null;
+        $firstname = "john";
+        $lastname = "smith";
+        $password = "mypass";
+
+        $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
+
+        $this->assertTypeOf('User', $user);
+        $this->assertEquals($username, $user->getUsername());
+        $this->assertEquals($firstname , $user->getFirstname());
+        $this->assertEquals($lastname , $user->getLastname());
+        $this->assertEquals($password , $user->getPassword());
+
+    }
+
+    public function test_CreateUserFromNameAndPW_MissingFirstname() {
+        $username = "test3";
+        $firstname = null;
+        $lastname = "smith";
+        $password = "mypass";
+
+        $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
+
+        $this->assertTypeOf('User', $user);
+        $this->assertEquals($username, $user->getUsername());
+        $this->assertEquals($firstname , $user->getFirstname());
+        $this->assertEquals($lastname , $user->getLastname());
+        $this->assertEquals($password , $user->getPassword());
+
+    }
+
+    public function test_SetPermissionArray() {
+        $testArray = array('one', 'two', 'three');
+
+        $username = "test1";
+        $firstname = "john";
+        $lastname = "smith";
+        $password = "mypass";
+
+        $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
+        $user->setPermissionArray($testArray);
+
+        $this->assertEquals($testArray, $user->getPermissionArray());
+    }
+
+
+    public function test_SetPermissionArray_Empty() {
+        $testArray = [];
+
+        $username = "test1";
+        $firstname = "john";
+        $lastname = "smith";
+        $password = "mypass";
+
+        $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
+        $user->setPermissionArray($testArray);
+
+        $this->assertEquals($testArray, $user->getPermissionArray());
+    }
 
 }
