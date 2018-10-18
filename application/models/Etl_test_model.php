@@ -11,9 +11,7 @@ class Etl_test_model extends CI_Model
         $this->load->database();
         $this->load->library('Debug_library');
         $this->load->library('Array_library');
-        
-        
-        $this->load->model("Umpire_match_record");
+
     }
     
     public function runTestQuery() {

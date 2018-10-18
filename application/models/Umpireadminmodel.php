@@ -33,8 +33,6 @@ class Umpireadminmodel extends CI_Model {
     }
     
     public function updateUmpireGameValues($pPostArray) {
-        //$this->debug_library->debugOutput("build: pPostArray", $pPostArray);
-        
         $existingUmpireValues = $this->getAllUmpiresAndValues();
         
         $queryString = "UPDATE umpire SET ";
@@ -146,15 +144,8 @@ class Umpireadminmodel extends CI_Model {
     
     
     private function haveUmpireGamesNumbersChanged(Umpire $pUmpire) {
-        if ($pUmpire->getGamesPlayedPrior() <> $pUmpire->getOldGamesPlayedPrior() ||
-            $pUmpire->getGamesPlayedOtherLeagues() <> $pUmpire->getOldGamesPlayedOtherLeagues()) {
-            //Either of the values are different.
-            return true;
-        } else {
-            //Both are the same. No change was made.
-            return false;
-        }
-        
+        return ($pUmpire->getGamesPlayedPrior() <> $pUmpire->getOldGamesPlayedPrior() ||
+            $pUmpire->getGamesPlayedOtherLeagues() <> $pUmpire->getOldGamesPlayedOtherLeagues());
     }
 
     private function logUmpireGamesHistory($pUmpireArray) {
@@ -212,4 +203,3 @@ class Umpireadminmodel extends CI_Model {
     }
     
 }
-?>

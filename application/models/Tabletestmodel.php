@@ -15,9 +15,7 @@ class Tabletestmodel extends CI_Model
         $this->load->database();
         $this->load->library('Debug_library');
         $this->load->library('Array_library');
-       
-        
-        $this->load->model("Umpire_match_record");
+
         $this->startTime = time();
         echo "Time startTime: " . $this->startTime . "<br />";
         

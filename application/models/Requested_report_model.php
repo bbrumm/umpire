@@ -35,23 +35,6 @@ class Requested_report_model extends CI_Model {
         return $instance;
     }
     
-    public static function withValues($pValues) {
-        $instance = new self();
-        $instance->fill($pValues);
-        return $instance;
-    }
-    
-    private function fill(array $pValues) {
-        // fill all properties from array
-        $this->setAgeGroup($pValues['ageGroup']);
-        $this->setUmpireType($pValues['umpireType']);
-        $this->setSeason($pValues['season']);
-        $this->setLeague($pValues['league']);
-        $this->setRegion($pValues['region']);
-        $this->setReportNumber($pValues['reportNumber']);
-        $this->setPDFMode($pValues['pdfMode']);
-    }
-    
     public function getReportNumber() {
         return $this->reportNumber;
     }

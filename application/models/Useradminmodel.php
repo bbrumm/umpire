@@ -23,8 +23,9 @@ class Useradminmodel extends CI_Model {
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
         $userArray = '';
+        $arrayCount = count($queryResultArray);
 
-        for($i=0; $i<count($queryResultArray); $i++) {
+        for($i=0; $i<$arrayCount; $i++) {
             $newUser = User::createUserFromNameAndRole(
                 $queryResultArray[$i]['id'], $queryResultArray[$i]['user_name'], 
                 $queryResultArray[$i]['first_name'], $queryResultArray[$i]['last_name'], 
@@ -77,21 +78,8 @@ class Useradminmodel extends CI_Model {
         return $this->getArrayFromQuery($queryString);
     }
     
-    private function createUserFromAddNew($pUserName, $pFirstName, $pLastName, $pPassword) {
-        $newUser = new User();
-        
-        $newUser->setUsername($pUserName);
-        $newUser->setFirstName($pFirstName);
-        $newUser->setLastName($pLastName);
-        $newUser->setPassword($pPassword);
-        
-        return $newUser;
-        
-    }
-    
     public function addNewUser($pSubmittedData) {
-        $newUser = new User();
-        $newUser = $this->createUserFromAddNew(
+        $newUser = User::createUserFromNameAndPW(
                 $pSubmittedData['username'], $pSubmittedData['firstname'], $pSubmittedData['lastname'], MD5($pSubmittedData['password']));
         return $this->insertUserIntoDatabase($newUser);
     }
@@ -262,7 +250,7 @@ class Useradminmodel extends CI_Model {
             $newRoleID, $username
         ));
         //TODO: Replace magic number with global constant that represents UPDATE
-        $this->logRoleChange($username, $newRoleID, 2);
+        $this->logRoleChange($username, $newRoleID);
     }
     
     private function updateSingleUserActive($username, $setValue) {
@@ -274,7 +262,7 @@ class Useradminmodel extends CI_Model {
             $setValue, $username
         ));
         //TODO: Replace magic number with global constant that represents UPDATE
-        $this->logActiveChange($username, $setValue, 2);
+        $this->logActiveChange($username, $setValue);
     }
     
     private function removeUserPrivilege($username, $permission_selection_id) {
@@ -347,4 +335,3 @@ class Useradminmodel extends CI_Model {
         ));
     }
 }
-?>
