@@ -219,7 +219,7 @@ class Array_store extends CI_Model implements IData_store
     public function findPermissionsForUser(User $pUser) {
     }
 
-    public function checkUserExistsForReset() {
+    public function checkUserExistsForReset(User $pUser) {
         $userArray = array(
             "test", "something", "another", "bongo"
         );
