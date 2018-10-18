@@ -21,14 +21,18 @@ class Refresh_mv_tables extends CI_Model
         $queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
         $query = $this->db->query($queryString);
         */
-        $seasonYear = $this->getSeasonYear($season);
-        $this->refreshMVTable1($seasonYear, $importedFileID);
-        $this->refreshMVTable2($seasonYear, $importedFileID);
-        $this->refreshMVTable4($seasonYear, $importedFileID);
-        $this->refreshMVTable5($seasonYear, $importedFileID);
-        $this->refreshMVTable6($seasonYear, $importedFileID);
-        $this->refreshMVTable7($seasonYear, $importedFileID);
-        $this->refreshMVTable8($seasonYear, $importedFileID);
+        if (is_a($pDataStore, 'Array_store')) {
+            //TODO remove this once I have refactored this code
+        } else {
+            $seasonYear = $this->getSeasonYear($season);
+            $this->refreshMVTable1($seasonYear, $importedFileID);
+            $this->refreshMVTable2($seasonYear, $importedFileID);
+            $this->refreshMVTable4($seasonYear, $importedFileID);
+            $this->refreshMVTable5($seasonYear, $importedFileID);
+            $this->refreshMVTable6($seasonYear, $importedFileID);
+            $this->refreshMVTable7($seasonYear, $importedFileID);
+            $this->refreshMVTable8($seasonYear, $importedFileID);
+        }
         
     }
     

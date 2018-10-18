@@ -1,12 +1,14 @@
 <?php
-class Missing_data_updater_test extends TestCase {
+
+class Missing_data_updater_test extends TestCase
+{
     public function setUp() {
         $this->resetInstance();
         $this->CI->load->model('Missing_data_updater');
         $this->obj = $this->CI->Missing_data_updater;
     }
-    
-    
+
+
     public function test_GetPossibleLeaguesForComp() {
         $arrayStore = new Array_store();
         $leagesForComp = $this->obj->loadPossibleLeaguesForComp($arrayStore);
@@ -17,7 +19,7 @@ class Missing_data_updater_test extends TestCase {
         $this->assertEquals($expectedSize, $actualSize);
         $this->assertEquals($expectedFirstValue, $actualFirstValue);
     }
-    
+
     public function test_GetClubsForTeam() {
         $arrayStore = new Array_store();
         $clubs = $this->obj->loadPossibleClubsForTeam($arrayStore);
@@ -28,7 +30,7 @@ class Missing_data_updater_test extends TestCase {
         $this->assertEquals($expectedSize, $actualSize);
         $this->assertEquals($expectedFirstValue, $actualFirstValue);
     }
-    
+
     public function test_GetRegions() {
         $arrayStore = new Array_store();
         $regions = $this->obj->loadPossibleRegions($arrayStore);
@@ -39,7 +41,7 @@ class Missing_data_updater_test extends TestCase {
         $this->assertEquals($expectedSize, $actualSize);
         $this->assertEquals($expectedFirstValue, $actualFirstValue);
     }
-    
+
     public function test_GetAgeGroups() {
         $arrayStore = new Array_store();
         $ages = $this->obj->loadPossibleAgeGroups($arrayStore);
@@ -50,7 +52,7 @@ class Missing_data_updater_test extends TestCase {
         $this->assertEquals($expectedSize, $actualSize);
         $this->assertEquals($expectedFirstValue, $actualFirstValue);
     }
-    
+
     public function test_GetShortLeagueNames() {
         $arrayStore = new Array_store();
         $leagues = $this->obj->loadPossibleShortLeagueNames($arrayStore);
@@ -61,7 +63,7 @@ class Missing_data_updater_test extends TestCase {
         $this->assertEquals($expectedSize, $actualSize);
         $this->assertEquals($expectedFirstValue, $actualFirstValue);
     }
-    
+
     public function test_GetDivisions() {
         $arrayStore = new Array_store();
         $divisions = $this->obj->loadPossibleDivisions($arrayStore);
@@ -76,7 +78,7 @@ class Missing_data_updater_test extends TestCase {
     public function test_UpdateSingleCompetition() {
         $arrayStore = new Array_store();
         $inputArray = array(
-            "competition_id"=>2
+            "competition_id" => 2
         );
         $expected = $this->obj->updateSingleCompetition($arrayStore, $inputArray);
         $actual = true;
@@ -93,5 +95,137 @@ class Missing_data_updater_test extends TestCase {
         $actual = "abc";
         $this->assertEquals($expected, $actual);
     }
-    
+
+
+    public function test_updateTeamAndClubData_OneTeamInsert() {
+        $arrayStore = new Array_store();
+
+        $postArray = array(
+            'competition' => array('Some new competition'),
+            'rdTeam' => array(
+                'new'
+            ),
+            'txtTeam' => array(
+                'Adelaide'
+            ),
+            'cboTeam' => array(
+                'ABC'
+            )
+        );
+
+        $expected = true;
+        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+
+        $this->assertEquals($expected, $actual);
+
+    }
+
+    public function test_updateTeamAndClubData_TwoTeamsInsert() {
+        $arrayStore = new Array_store();
+
+        $postArray = array(
+            'competition' => array('Some new competition'),
+            'rdTeam' => array(
+                'new', 'new'
+            ),
+            'txtTeam' => array(
+                'Adelaide', 'Brisbane'
+            ),
+            'cboTeam' => array(
+            'AA', 'BB'
+            )
+        );
+
+        $expected = true;
+        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+
+        $this->assertEquals($expected, $actual);
+
+    }
+
+
+    public function test_updateTeamAndClubData_OneTeamUpdate() {
+        $arrayStore = new Array_store();
+
+        $postArray = array(
+            'competition' => array('Some new competition'),
+            'rdTeam' => array(
+                'existing'
+            ),
+            'txtTeam' => array(
+                'Brisbane'
+            ),
+            'cboTeam' => array(
+                'BB'
+            )
+        );
+
+        $expected = true;
+        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+
+        $this->assertEquals($expected, $actual);
+
+    }
+
+    public function test_updateTeamAndClubData_TwoTeamsUpdate() {
+        $arrayStore = new Array_store();
+
+        $postArray = array(
+            'competition' => array('Some new competition'),
+            'rdTeam' => array(
+                'existing', 'existing'
+            ),
+            'txtTeam' => array(
+                'Adelaide', 'Brisbane'
+            ),
+            'cboTeam' => array(
+                'AA', 'BB'
+            )
+        );
+
+        $expected = true;
+        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+
+        $this->assertEquals($expected, $actual);
+
+    }
+
+    public function test_updateTeamAndClubData_MissingValues() {
+        $arrayStore = new Array_store();
+
+        $postArray = array(
+            'competition' => array('Some new competition'),
+        );
+
+        $expected = true;
+        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+
+        $this->assertEquals($expected, $actual);
+
+    }
+
+
+    public function test_updateTeamAndClubData_NoCompetition() {
+        $arrayStore = new Array_store();
+
+        $postArray = array(
+            'rdTeam' => array(
+                'existing', 'existing'
+            ),
+            'txtTeam' => array(
+                'Adelaide', 'Brisbane'
+            ),
+            'cboTeam' => array(
+                'AA', 'BB'
+            )
+
+        );
+
+        $expected = true;
+        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+
+        $this->assertEquals($expected, $actual);
+
+    }
+
 }

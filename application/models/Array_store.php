@@ -140,7 +140,7 @@ class Array_store extends CI_Model implements IData_store {
     public function insertNewClub($pClubName) {
         $clubArray = array ('a', 'b', 'c', 'd');
         $clubArray[] = $pClubName;
-        return clubArray[4];
+        return $clubArray[4];
 
 
     }

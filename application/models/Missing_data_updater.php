@@ -8,6 +8,7 @@ class Missing_data_updater extends CI_Model {
         $this->load->library('Array_library');
         $this->load->model('Match_import');
         $this->load->model('Database_store');
+        $this->load->model('Run_etl_stored_proc');
     }
     
     public function loadPossibleLeaguesForComp(IData_store $pDataStore) {
@@ -48,9 +49,11 @@ class Missing_data_updater extends CI_Model {
         $importedFileID = $this->Match_import->findLatestImportedFile($pDataStore);
         
         $this->Run_etl_stored_proc->runETLProcedure($pDataStore, $season, $importedFileID);
+        return true;
     }
+
     
-    private function updateCompetitionTable(array $selectedData) {
+    private function updateCompetitionTable($pDataStore, array $selectedData) {
         //TOOD: Change this to look up the competition/league tables for the user-selected data
         /*This function needs to loop through each competition on the previous page.
          * For each competition, it needs to find a league that matches the user selected data.
@@ -59,7 +62,7 @@ class Missing_data_updater extends CI_Model {
          * 
          */
         
-        $this->debug_library->debugOutput("updateCompetitionTable selectedData", $selectedData);
+        //$this->debug_library->debugOutput("updateCompetitionTable selectedData", $selectedData);
         
         
         /*
@@ -140,7 +143,7 @@ class Missing_data_updater extends CI_Model {
     
     
     private function updateTeamAndClubTables(IData_store $pDataStore, array $pPostData) {
-        $this->debug_library->debugOutput("updateTeamAndClubTables POST", $pPostData);
+        //$this->debug_library->debugOutput("updateTeamAndClubTables POST", $pPostData);
         
         foreach ($pPostData['rdTeam'] as $teamID => $radioSelection) {
             switch ($radioSelection) {

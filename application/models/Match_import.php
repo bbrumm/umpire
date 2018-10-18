@@ -98,7 +98,7 @@ class Match_import extends CI_Model  {
         return $pDataStore->findSeasonToUpdate();
     }
     
-    public function findLatestImportedFile() {
+    public function findLatestImportedFile($pDataStore) {
         return $pDataStore->findLatestImportedFile();
     }
     
