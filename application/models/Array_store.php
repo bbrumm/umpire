@@ -226,7 +226,7 @@ class Array_store extends CI_Model implements IData_store
         $userFound = false;
         $arrayCount = count($userArray);
         for ($i=0; $i<$arrayCount; $i++) {
-            if ($userArray[$i] == $pUser->getUsername() {
+            if ($userArray[$i] == $pUser->getUsername()) {
                 $userFound = true;
             }
         }
