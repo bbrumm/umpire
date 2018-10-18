@@ -339,7 +339,7 @@ class User_test extends TestCase
 
         $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
 
-        $this->assertTypeOf('User', $user);
+        $this->assertInstanceOf('User', $user);
         $this->assertEquals($username, $user->getUsername());
         $this->assertEquals($firstname , $user->getFirstname());
         $this->assertEquals($lastname , $user->getLastname());
@@ -355,7 +355,7 @@ class User_test extends TestCase
 
         $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
 
-        $this->assertTypeOf('User', $user);
+        $this->assertInstanceOf('User', $user);
         $this->assertEquals($username, $user->getUsername());
         $this->assertEquals($firstname , $user->getFirstname());
         $this->assertEquals($lastname , $user->getLastname());
@@ -371,7 +371,7 @@ class User_test extends TestCase
 
         $user = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
 
-        $this->assertTypeOf('User', $user);
+        $this->assertInstanceOf('User', $user);
         $this->assertEquals($username, $user->getUsername());
         $this->assertEquals($firstname , $user->getFirstname());
         $this->assertEquals($lastname , $user->getLastname());
