@@ -39,5 +39,16 @@ class User_maintenance_model_test extends TestCase
         $actual = $this->obj->validatePassword($firstPassword, $secondPassword);
         $this->assertEquals($expected, $actual);
     }
+    
+    public function test_CheckUserExistsForReset() {
+        $arrayStore = new Array_store;
+        $this->obj = new User_maintenance_model();
+        $user = createUserFromNameAndPW("test", "john", "smith", "mypass");
+        $expected = true;
+        $actual = $this->obj->checkUserExistsForReset($arrayStore, $user);
+        $this->assertEquals($expected, $actual);
+
+}
+
 
 }
