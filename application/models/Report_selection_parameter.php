@@ -88,4 +88,3 @@ class Report_selection_parameter extends CI_Model
         $this->setSelectableReportOptions($pDataStore->loadSelectableReportOptions($parameterID));
     }
 }
-?>

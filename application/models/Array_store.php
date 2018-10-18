@@ -1,12 +1,14 @@
 <?php
 require_once 'IData_store.php';
-class Array_store extends CI_Model implements IData_store {
-    
-    
+
+class Array_store extends CI_Model implements IData_store
+{
+
+
     public function __construct() {
         $this->load->library('Array_library');
     }
-    
+
     public function loadAllReportParameters($pReportNumber) {
         $reportParameterArray = [];
         $reportParameterArray[1] = Report_parameter::createNewReportParameter(
@@ -19,21 +21,21 @@ class Array_store extends CI_Model implements IData_store {
             'Report 4', 4, 0, 'text', false, 'landscape', 'a3', 200);
         $reportParameterArray[5] = Report_parameter::createNewReportParameter(
             'Siuerbibdfkvj', 5, 0, 'text', true, 'landscape', 'a4', 300);
-        
-        if(array_key_exists($pReportNumber, $reportParameterArray)) {
+
+        if (array_key_exists($pReportNumber, $reportParameterArray)) {
             return $reportParameterArray[$pReportNumber];
         } else {
             throw new Exception("Testing: No results found in the report table for this report number: " . $pReportNumber);
         }
     }
-    
+
     public function loadAllGroupingStructures($pReportNumber) {
         $groupingStructureArray = [];
         $groupingStructureArray[0] = array(1, 1, 'Column', 'short_league_name', 1, 1, null, null);
         $groupingStructureArray[1] = array(1, 2, 'Column', 'club_name', 2, 0, null, null);
         $groupingStructureArray[2] = array(1, 3, 'Row', 'last_first_name', 1, 0, 'Name', 'Umpire_Name_First_Last');
         $groupingStructureArray[3] = array(2, 2, 'Column', 'age_group', 2, 0, null, null);
-        
+
         $countArraySize = count($groupingStructureArray);
         $groupingStructureArrayForReport = [];
         for ($i = 0; $i < $countArraySize; $i++) {
@@ -46,11 +48,11 @@ class Array_store extends CI_Model implements IData_store {
                     $groupingStructureArray[$i][5],
                     $groupingStructureArray[$i][6],
                     $groupingStructureArray[$i][7]
-                    );
+                );
                 $groupingStructureArrayForReport[] = $reportGroupingStructure;
             }
         }
-        
+
         $countMatchingArraySize = count($groupingStructureArrayForReport);
         if ($countMatchingArraySize > 0) {
             return $groupingStructureArrayForReport;
@@ -58,7 +60,7 @@ class Array_store extends CI_Model implements IData_store {
             throw new Exception("Testing: No results found in the report_grouping_structure table for this report number: " . $pReportNumber);
         }
     }
-    
+
     public function loadPossibleLeaguesForComp() {
         $leaguesForComp = [];
         $leaguesForComp[0] = array(3, 'AFL Barwon Blood Toyota Geelong FNL', 'GFL', 1, 4, 'None', 'Seniors', 1, 'Geelong');
@@ -71,21 +73,21 @@ class Array_store extends CI_Model implements IData_store {
         $leaguesForComp[7] = array(10, 'GDFL Buckleys Cup', 'GDFL', 2, 4, 'None', 'Reserves', 1, 'Geelong');
         $leaguesForComp[8] = array(11, 'AFL Barwon', 'GJFL', 5, 5, 'Grading', 'Under 16', 1, 'Geelong');
         $leaguesForComp[9] = array(12, 'AFL Barwon', 'GJFL', 6, 5, 'Grading', 'Under 14', 1, 'Geelong');
-        
+
         return $leaguesForComp;
-        
+
     }
-    
+
     public function loadPossibleClubsForTeam() {
         $clubs = [];
         $clubs[0] = array(0, 'North');
         $clubs[1] = array(1, 'South');
         $clubs[2] = array(2, 'East');
         $clubs[3] = array(3, 'West');
-        
+
         return $clubs;
     }
-    
+
     public function loadPossibleRegions() {
         $regions = [];
         $regions[0] = array(0, 'Aldo');
@@ -94,7 +96,7 @@ class Array_store extends CI_Model implements IData_store {
 
         return $regions;
     }
-    
+
     public function loadPossibleAgeGroups() {
         $ages = [];
         $ages[0] = array(0, 'Under 12');
@@ -102,10 +104,10 @@ class Array_store extends CI_Model implements IData_store {
         $ages[2] = array(2, 'Under 16');
         $ages[3] = array(3, 'Under 18');
         $ages[4] = array(4, 'Under 19');
-        
+
         return $ages;
     }
-    
+
     public function loadPossibleShortLeagueNames() {
         $leagues = [];
         $leagues[0] = array(0, 'WAFL');
@@ -115,19 +117,19 @@ class Array_store extends CI_Model implements IData_store {
 
         return $leagues;
     }
-    
+
     public function loadPossibleDivisions() {
         $divisions = [];
         $divisions[0] = array(0, 'Div 1');
         $divisions[1] = array(1, 'Div 2');
         $divisions[2] = array(2, 'Div 3');
-        
+
         return $divisions;
     }
-    
+
     public function updateSingleCompetition($pLeagueIDToUse, $competitionData) {
         //TODO write code
-        $competitionArray = array (
+        $competitionArray = array(
             array(1, 3),
             array(2, 5),
             array(3, 4),
@@ -138,7 +140,7 @@ class Array_store extends CI_Model implements IData_store {
     }
 
     public function insertNewClub($pClubName) {
-        $clubArray = array ('a', 'b', 'c', 'd');
+        $clubArray = array('a', 'b', 'c', 'd');
         $clubArray[] = $pClubName;
         return $clubArray[4];
 
@@ -153,7 +155,7 @@ class Array_store extends CI_Model implements IData_store {
             array(3, 7)
         );
 
-        foreach($teamArray as $key=>$value) {
+        foreach ($teamArray as $key => $value) {
             if ($value[0] == $pTeamID && $value[1] == $pClubID) {
                 $teamArray[$key][1] = $pClubID;
                 $updatedKey = $key;
@@ -169,14 +171,14 @@ class Array_store extends CI_Model implements IData_store {
     }
 
     public function insertNewLeague($competitionData) {
-        $leagueArray = array ('a', 'b', 'c', 'd', 'e');
+        $leagueArray = array('a', 'b', 'c', 'd', 'e');
         $leagueArray[] = $competitionData['short_league_name'];
         return $leagueArray[5];
     }
 
     public function checkAndInsertAgeGroupDivision($competitionData) {
         $arrayLibrary = new Array_library();
-        $agdArray = array (
+        $agdArray = array(
             'Under 14',
             'Under 16',
             'Under 18'
@@ -194,36 +196,113 @@ class Array_store extends CI_Model implements IData_store {
     public function updateTeamAndClubTables(IData_store $pDataStore, array $pPostData) {
 
     }
-    
+
     public function findSeasonToUpdate() {
         //TODO write code
     }
-    
+
     public function findLatestImportedFile() {
         //TODO write code
     }
-    
+
     public function runETLProcedure($pSeason, $pImportedFileID) {
         //TODO write code
     }
-    
-    public function findMatchingUserFromUsernameAndPassword($pUsername, $pPassword) { }
-    public function checkUserActive($pUsername) { }
-    public function getUserFromUsername($pUsername) { }
-    public function setPermissionArrayForUser() { }
-    public function findPermissionsForUser(User $pUser) { }
-    public function checkUserExistsForReset() { }
-    public function logPasswordResetRequest($pRequestData) { }
-    public function storeActivationID($pActivationID) { }
-    public function createUserFromActivationID($pActivationID) { }
-    public function updatePassword() { }
-    public function logPasswordReset($pData) { }
-    public function updateEmailAddress() { }
-    public function findUserFromUsernameAndPassword($username, $password) { }
-
-    public function loadSelectableReportOptions($pParameterID) { }
 
 
-    
-    
+    public function getUserFromUsername($pUsername) {
+    }
+
+    public function setPermissionArrayForUser() {
+    }
+
+    public function findPermissionsForUser(User $pUser) {
+    }
+
+    public function checkUserExistsForReset() {
+    }
+
+    public function logPasswordResetRequest($pRequestData) {
+    }
+
+    public function storeActivationID($pActivationID) {
+    }
+
+    public function createUserFromActivationID($pActivationID) {
+    }
+
+    public function updatePassword() {
+    }
+
+    public function logPasswordReset($pData) {
+    }
+
+    public function updateEmailAddress() {
+    }
+
+    public function findUserFromUsernameAndPassword($username, $password) {
+    }
+
+    public function loadSelectableReportOptions($pParameterID) {
+        $testData = array(
+            array(1, "Some option name", 1),
+            array(4, "Some option name", 1),
+            array(4, "Another option name", 2)
+        );
+        $countElements = count($testData);
+        $selectableReportOptionArray = [];
+        for ($i = 0; $i < $countElements; $i++) {
+            if ($testData[$i][0] == $pParameterID) {
+                $selectableReportOption = new Selectable_report_option();
+                $selectableReportOption->setOptionName($testData[$i][1]);
+                $selectableReportOption->setOptionDisplayOrder($testData[$i][2]);
+                $selectableReportOptionArray[] = $selectableReportOption;
+            }
+
+        }
+        return $selectableReportOptionArray;
+
+    }
+
+    public function findMatchingUserFromUsernameAndPassword($pUsername, $pPassword) {
+        $testData = array(
+            array("id" => 1, "username" => "john", "password" => MD5("mypass")),
+            array("id" => 2, "username" => "paul", "password" => MD5(null)),
+            array("id" => 3, "username" => "ringo", "password" => MD5("otherthing")),
+            array("id" => 4, "username" => "george", "password" => MD5("theword")),
+            array("id" => 5, "username" => "george", "password" => MD5("another")),
+            array("id" => 6, "username" => "ringo", "password" => MD5("otherthing"))
+        );
+
+        foreach ($testData as $key => $subArray) {
+            if ($subArray["username"] == $pUsername && $subArray["password"] == MD5($pPassword)) {
+                return $subArray;
+            }
+        }
+
+
+    }
+
+
+    public function checkUserActive($pUsername) {
+        $testData = array(
+            array("id" => 1, "username" => "john", "active" => 1),
+            array("id" => 2, "username" => "paul", "active" => 0),
+            array("id" => 3, "username" => "ringo", "active" => 1),
+            array("id" => 4, "username" => "george", "active" => 1),
+            array("id" => 5, "username" => "ringo", "active" => 0),
+            array("id" => 6, "username" => "george", "active" => 1)
+        );
+        $rowCount = 0;
+
+        foreach ($testData as $key => $subArray) {
+            if ($subArray["username"] == $pUsername && $subArray["active"] == 1) {
+                $rowCount++;
+            }
+        }
+        return ($rowCount == 1);
+
+    }
+
+
 }

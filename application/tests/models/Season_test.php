@@ -63,4 +63,12 @@ class Season_test extends TestCase {
         $this->obj = new Season();
         $this->obj->setSeasonYear($inputID);
     }
+
+    public function test_CreateSeasonFromID() {
+        $id = 2;
+        $season = Season::createSeasonFromID($id);
+
+        $this->assertInstanceOf('Season', $season);
+        $this->assertEquals($id, $season->getSeasonID());
+    }
 }
