@@ -309,9 +309,27 @@ class User_test extends TestCase
         $this->obj->setActive($inputValue);
         $this->assertEquals($expected, $this->obj->isActive());
     }
+    
+    public function test_CreateUserFromNameAndRole() {
+        $id = 4;
+        $username = "johnabc";
+        $firstname = "John";
+        $lastname = "Smith";
+        $rolename = "super";
+        $active = 1;
+        $emailAddress = "test@johnsmith";
 
+        $user = User::createUserFromNameAndRole($id, $username, $firstname, $lastname, $rolename, $active, $email_address);
 
-
+        $this->assertInstanceOf('User', $user);
+        $this->assertEquals($id, $user->getID());
+        $this->assertEquals($username, $user->getUsername());
+        $this->assertEquals($firstname, $user->getFirstName());
+        $this->assertEquals($lastname, $user->getLastName());
+        $this->assertEquals($rolename, $user->getRoleName());
+        $this->assertEquals(($active == 1), $user->isActive());
+        $this->assertEquals($emailAddress, $user->getEmailAddress());
+    }
 
 
 }
