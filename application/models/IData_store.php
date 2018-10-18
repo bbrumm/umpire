@@ -53,7 +53,7 @@ interface IData_store {
 
     public function findPermissionsForUser(User $pUser);
 
-    public function checkUserExistsForReset();
+    public function checkUserExistsForReset(User $pUser);
 
     public function logPasswordResetRequest($pRequestData);
 
