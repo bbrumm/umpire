@@ -1,7 +1,7 @@
 function updatePageFromCheckboxSelection() {
-	reportID = document.getElementById('reportName').value;
+	var reportID = document.getElementById('reportName').value;
 	//console.log("selected report ID: " + reportID);
-	
+	/** global: reportList */
 	updateControlSelection("rdRegion", reportList[reportID].region_enabled);
 	updateControlSelection("chkLeague[]", reportList[reportID].league_enabled);
 	updateControlSelection("chkUmpireDiscipline[]", reportList[reportID].umpire_type_enabled);
@@ -17,18 +17,16 @@ function updateControlSelection(elementName, controlEnabled) {
 	//console.log("checkbox count: " + leagueCheckboxes.length);
 	
 	//Find valid leagues based on this region
-	validLeagueList = findValidLeagues();
+	var validLeagueList = findValidLeagues();
 	
 	//Find valid age groups
-	validAgeGroupList = findValidAgeGroups();
+	var validAgeGroupList = findValidAgeGroups();
+	var singleControlEnabled;
 	
 	var i;
 	for (i = 0; i < groupOfCheckboxes.length; i++) {
     	//console.log("chk id: " + document.getElementById(leagueCheckboxes[i].id).id);
-		controlToUpdate = document.getElementById(groupOfCheckboxes[i].id);
-		
-		
-		
+		var controlToUpdate = document.getElementById(groupOfCheckboxes[i].id);
 		//Then check if it is a valid combination
 		if(elementName == "chkLeague[]") {
 			if (validLeagueList.indexOf(controlToUpdate.id) != -1) {
@@ -47,7 +45,7 @@ function updateControlSelection(elementName, controlEnabled) {
 			if (validAgeGroupList.indexOf(controlToUpdate.id) != -1) {
 				//Valid.
 				//console.log("valid age group: " + controlToUpdate.id);
-				if (controlEnabled == 1) {
+				if (controlEnabled === 1) {
 					singleControlEnabled = true;
 				} else {
 					singleControlEnabled = false;
@@ -56,13 +54,15 @@ function updateControlSelection(elementName, controlEnabled) {
 				singleControlEnabled = false;
 			}
 		} else {
-			if (controlEnabled == 0) {
+			if (controlEnabled === 0) {
 				singleControlEnabled = false;
 			} else {
 				singleControlEnabled = true;
 			}
 		}
 		
+		var disabledStatus;
+		var bgColour;
 		
 		if(singleControlEnabled) {
 			disabledStatus = false;
@@ -97,19 +97,18 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 	//console.log("select all: " + selectAllCheckbox.id);
 	//console.log("select all group: " + matchingElementName);
 	
-	relatedCheckboxes = document.getElementsByName(matchingElementName);
-	
-	countChecked = 0;
-	countCheckable = 0;
+	var relatedCheckboxes = document.getElementsByName(matchingElementName);
+	var countChecked = 0;
+	var countCheckable = 0;
 	for (i=0; i < relatedCheckboxes.length; i++) {
-		if (relatedCheckboxes[i].disabled != true) {
+		if (relatedCheckboxes[i].disabled !== true) {
 			countCheckable++;
-			if(relatedCheckboxes[i].checked == true) {
+			if(relatedCheckboxes[i].checked === true) {
 				countChecked++;
 			}
 		}
 	}
-	
+	var selectAllMakesCheckboxesChecked;
 	if(countChecked == countCheckable) {
 		//All checkable checkboxes are checked. Make them unchecked.
 		selectAllMakesCheckboxesChecked = false;
@@ -117,8 +116,8 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 		selectAllMakesCheckboxesChecked = true;
 	}
 	
-	for (i=0; i < relatedCheckboxes.length; i++) {
-		if (relatedCheckboxes[i].disabled != true) {
+	for (var i=0; i < relatedCheckboxes.length; i++) {
+		if (relatedCheckboxes[i].disabled !== true) {
 			//Checkbox not disabled. Set it to "checked".
 			document.getElementById(relatedCheckboxes[i].id).checked = selectAllMakesCheckboxesChecked;
 		}
@@ -128,7 +127,7 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 }
 
 function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
-	selectAllCheckboxId = "";
+	var selectAllCheckboxId = "";
 	switch(groupName) {
 		case "chkLeague[]":
 			selectAllCheckboxId = "LeagueSelectAll";
@@ -146,12 +145,12 @@ function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
 	//console.log("group name element:" + groupName);
 	//console.log("select all element:" + document.getElementById(selectAllCheckboxId).id);
 	
-	countChecked = 0;
-	countCheckable = 0;
-	for (i=0; i < groupOfCheckboxes.length; i++) {
-		if (groupOfCheckboxes[i].disabled != true) {
+	var countChecked = 0;
+	var countCheckable = 0;
+	for (var i=0; i < groupOfCheckboxes.length; i++) {
+		if (groupOfCheckboxes[i].disabled !== true) {
 			countCheckable++;
-			if(groupOfCheckboxes[i].checked == true) {
+			if(groupOfCheckboxes[i].checked === true) {
 				countChecked++;
 			}
 		}
@@ -171,9 +170,9 @@ function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
 
 
 function findSelectedRegion() {
-	regionElements = document.getElementsByName('rdRegion');
-	for(i=0; i < regionElements.length; i++) {
-		if (regionElements[i].checked == true) {
+	var regionElements = document.getElementsByName('rdRegion');
+	for(var i=0; i < regionElements.length; i++) {
+		if (regionElements[i].checked === true) {
 			return regionElements[i].id;
 		}
 	}
@@ -181,10 +180,9 @@ function findSelectedRegion() {
 
 function findSelectedLeagues() {
 	var selectedLeagues = [];
-	
 	leagueElements = document.getElementsByName('chkLeague[]');
-	for(i=0; i < leagueElements.length; i++) {
-		if (leagueElements[i].checked == true) {
+	for(var i=0; i < leagueElements.length; i++) {
+		if (leagueElements[i].checked === true) {
 			//return leagueElements[i].id;
 			selectedLeagues.push(leagueElements[i].id);
 		}
@@ -197,11 +195,11 @@ function findValidLeagues() {
 	var validLeagues = [];
 	
 	//Find the selected region:
-	selectedRegionValue = findSelectedRegion();
+	var selectedRegionValue = findSelectedRegion();
 	//console.log("Selected region: " + selectedRegionValue);
-	
+	/** global: validCombinations */
 	//Variable validCombinations is initialised in report_home.php.
-	for(i=0; i < validCombinations.length; i++) {
+	for(var i=0; i < validCombinations.length; i++) {
 		//console.log("Valid league: " + validCombinations[i]['region']);
 		//console.log("Region value: " + regionValue);
 		if(validCombinations[i]['region'] == selectedRegionValue) {
@@ -218,15 +216,15 @@ function findValidAgeGroups() {
 	var validAgeGroups = [];
 	
 	//Find the selected region:
-	selectedRegionValue = findSelectedRegion();
+	var selectedRegionValue = findSelectedRegion();
 	
 	//Find the selected leagues:
-	selectedLeagueValues = findSelectedLeagues();
-	
-	for(i=0; i < validCombinations.length; i++) {
+	var selectedLeagueValues = findSelectedLeagues();
+	/** global: validCombinations */
+	for(var i=0; i < validCombinations.length; i++) {
 		
 		//console.log("Region value: " + regionValue);
-		for(j=0; j < selectedLeagueValues.length; j++) {
+		for(var j=0; j < selectedLeagueValues.length; j++) {
 			//console.log("Age group check: " + selectedLeagueValues[j]);
 			if(validCombinations[i]['region'] == selectedRegionValue &&
 		        validCombinations[i]['league'] == selectedLeagueValues[j]) {
@@ -244,14 +242,14 @@ function findValidAgeGroups() {
 
 
 function validateReportSelections() {
-    checkboxesLeague = document.getElementsByName("chkLeague[]");
-    checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
-    checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
+    var checkboxesLeague = document.getElementsByName("chkLeague[]");
+    var checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
+    var checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
     
-    convertedStringLeague = convertValueArrayToString(checkboxesLeague);
-    convertedStringUmpireDiscipline = convertValueArrayToString(checkboxesUmpireDiscipline);
-    convertedStringAgeGroup = convertValueArrayToString(checkboxesAgeGroup);
-    convertedStringRegion = convertValueArrayToString(document.getElementsByName("rdRegion"));
+    var convertedStringLeague = convertValueArrayToString(checkboxesLeague);
+    var convertedStringUmpireDiscipline = convertValueArrayToString(checkboxesUmpireDiscipline);
+    var convertedStringAgeGroup = convertValueArrayToString(checkboxesAgeGroup);
+    var convertedStringRegion = convertValueArrayToString(document.getElementsByName("rdRegion"));
     
     document.getElementById("chkLeagueHidden").value = convertedStringLeague;
     document.getElementById("chkUmpireDisciplineHidden").value = convertedStringUmpireDiscipline;
