@@ -32,7 +32,7 @@ function updateControlSelection(elementName, controlEnabled) {
 			if (validLeagueList.indexOf(controlToUpdate.id) != -1) {
 				//Valid.
 				//console.log("valid league: " + controlToUpdate.id);
-				if (controlEnabled == 1) {
+				if (controlEnabled === 1) {
 					singleControlEnabled = true;
 				} else {
 					singleControlEnabled = false;
@@ -164,6 +164,8 @@ function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
 		document.getElementById(selectAllCheckboxId).checked = false;
 		//console.log("select all is NOT rechecked");
 	}
+
+	return true;
 	
 }
 
@@ -180,7 +182,7 @@ function findSelectedRegion() {
 
 function findSelectedLeagues() {
 	var selectedLeagues = [];
-	leagueElements = document.getElementsByName('chkLeague[]');
+	var leagueElements = document.getElementsByName('chkLeague[]');
 	for(var i=0; i < leagueElements.length; i++) {
 		if (leagueElements[i].checked === true) {
 			//return leagueElements[i].id;
@@ -197,8 +199,8 @@ function findValidLeagues() {
 	//Find the selected region:
 	var selectedRegionValue = findSelectedRegion();
 	//console.log("Selected region: " + selectedRegionValue);
-	/** global: validCombinations */
 	//Variable validCombinations is initialised in report_home.php.
+    /** global: validCombinations */
 	for(var i=0; i < validCombinations.length; i++) {
 		//console.log("Valid league: " + validCombinations[i]['region']);
 		//console.log("Region value: " + regionValue);
