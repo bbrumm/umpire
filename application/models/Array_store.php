@@ -220,6 +220,17 @@ class Array_store extends CI_Model implements IData_store
     }
 
     public function checkUserExistsForReset() {
+        $userArray = array(
+            "test", "something", "another", "bongo"
+        );
+        $userFound = false;
+        $arrayCount = count($userArray);
+        for ($i=0; $i<$arrayCount; $i++) {
+            if ($userArray[$i] == $pUser->getUsername() {
+                $userFound = true;
+            }
+        }
+        return $userFound;
     }
 
     public function logPasswordResetRequest($pRequestData) {
