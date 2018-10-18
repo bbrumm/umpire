@@ -319,7 +319,7 @@ class User_test extends TestCase
         $active = 1;
         $emailAddress = "test@johnsmith";
 
-        $user = User::createUserFromNameAndRole($id, $username, $firstname, $lastname, $rolename, $active, $email_address);
+        $user = User::createUserFromNameAndRole($id, $username, $firstname, $lastname, $rolename, $active, $emailAddress);
 
         $this->assertInstanceOf('User', $user);
         $this->assertEquals($id, $user->getID());
