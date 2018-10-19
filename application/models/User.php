@@ -50,7 +50,7 @@ class User extends CI_Model
     }
     
     public static function createUserFromNameAndEmail($pUsername,
-        $pFirstName, $pLastName, $pEmail) {
+        $pFirstName, $pLastName, $pEmailAddress) {
         $obj = new User();
         $obj->setUsername($pUsername);
         $obj->setFirstName($pFirstName);
