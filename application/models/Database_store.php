@@ -425,7 +425,7 @@ class Database_store extends CI_Model implements IData_store {
     }
 
 
-    public function updatePassword($pUser) {
+    public function updatePassword(User $pUser) {
         $this->db->where('user_name', $pUser->getUsername());
         $this->db->update('umpire_users', array('user_password'=>$pUser->getPassword()));
     }
