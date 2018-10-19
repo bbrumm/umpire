@@ -65,7 +65,7 @@ interface IData_store {
 
     public function logPasswordReset($pData);
 
-    public function updateEmailAddress();
+    public function updateEmailAddress(User $pUser);
     
     public function loadSelectableReportOptions($pParameterID);
 
