@@ -44,7 +44,7 @@ class User_maintenance_model extends CI_Model {
 
 
     public function updatePassword(IData_store $pDataStore, User $pUser) {
-        $this->logPasswordReset();
+        $this->logPasswordReset($pDataStore, $pUser);
 
         $pDataStore->updatePassword($pUser);
     }
