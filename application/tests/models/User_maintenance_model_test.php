@@ -91,9 +91,9 @@ class User_maintenance_model_test extends TestCase
         $requestData = array(
         'request_datetime'=>'19/10/18 06:30 AM',
         'activation_id'=>'123123123',
-        'ip_address'=>'123.14.5.67',
-        'user_name'=>'john',
-        'email_address'=>'test@abc123.com'
+        'client_ip'=>'123.14.5.67',
+        'username_entered'=>'john',
+        'email_address_entered'=>'test@abc123.com'
         );
         $actual = $this->obj->logPasswordResetRequest($arrayStore, $requestData);
         $expected = true;
@@ -109,9 +109,9 @@ class User_maintenance_model_test extends TestCase
         $requestData = array(
         'request_datetime'=>'19/10/18 06:30 AM',
         'activation_id'=>'123123123',
-        'ip_address'=>'123.14.5.67',
-        'user_name'=>'unknownperson',
-        'email_address'=>'test@abc123.com'
+        'client_ip'=>'123.14.5.67',
+        'username_entered'=>'unknownperson',
+        'email_address_entered'=>'test@abc123.com'
         );
         $actual = $this->obj->logPasswordResetRequest($arrayStore, $requestData);
         $expected = false;
