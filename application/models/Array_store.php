@@ -202,7 +202,7 @@ class Array_store extends CI_Model implements IData_store
     }
 
     public function findLatestImportedFile() {
-        //TODO write code
+            //TODO write code
     }
 
     public function runETLProcedure($pSeason, $pImportedFileID) {
@@ -234,21 +234,88 @@ class Array_store extends CI_Model implements IData_store
     }
 
     public function logPasswordResetRequest($pRequestData) {
+        $existingArray = [];
+        $existingArray[] = $pRequestData;
+        return true;
     }
 
-    public function storeActivationID($pActivationID) {
+    public function storeActivationID($pActivationID, $pUser) {
+        $recordFound = false;
+        $existingData = array(
+            array("username"=>"abcdef", "email_address"=>"test@abc.com")
+        );
+        $arrayCount = count($existingData);
+        for($i=0; $i<$arrayCount; $i++) {
+            if ($existingData[$i]["username"] == $pUser->getUsername() &&
+                $existingData[$i]["email_address"] == $pUser->getEmailAddress()) {
+                $recordFound = true;
+            }
+        }
+        return $recordFound;
+
     }
 
     public function createUserFromActivationID($pActivationID) {
+        $existingData = array(
+           array("username"=>"abcdef", "activation_id"=>"123456"),
+            array("username"=>"qwe", "activation_id"=>"123"),
+            array("username"=>"asd", "activation_id"=>"111"),
+            array("username"=>"zxc", "activation_id"=>"111")
+        );
+
+        $arrayCount = count($existingData);
+        for($i=0; $i<$arrayCount; $i++) {
+            if ($existingData[$i]["activation_id"] == $pActivationID) {
+                $user = new User();
+                $user->setUsername(existingData[$i]["username"]);
+                return $user;
+            }
+        }
+
     }
 
-    public function updatePassword() {
+
+    public function updatePassword(User $pUser) {
+        $recordFound = false;
+        $existingData = array(
+            array("username"=>"abcdef", "password"=>"mypass"),
+            array("username"=>"john", "password"=>"one"),
+            array("username"=>"john", "password"=>"two"),
+            array("username"=>"another", "password"=>"three")
+        );
+        $arrayCount = count($existingData);
+        for($i=0; $i<$arrayCount; $i++) {
+            if ($existingData[$i]["username"] == $pUser->getUsername()) {
+                $recordFound = true;
+                $existingData[$i]["password"] == $pUser->getPassword();
+            }
+        }
+        return $recordFound;
     }
 
     public function logPasswordReset($pData) {
+        $existingData = [];
+        $existingData[] = $pData;
+        return true;
+
     }
 
     public function updateEmailAddress() {
+        $recordFound = false;
+        $existingData = array(
+            array("username"=>"test", "email_address"=>"email1"),
+            array("username"=>"john", "email_address"=>"email1one"),
+            array("username"=>"john", "email_address"=>"email1two"),
+            array("username"=>"another", "email_address"=>"email1three")
+        );
+        $arrayCount = count($existingData);
+        for($i=0; $i<$arrayCount; $i++) {
+            if ($existingData[$i]["username"] == $pUser->getUsername()) {
+                $recordFound = true;
+                $existingData[$i]["email_address"] == $pUser->getEmailAddress();
+            }
+        }
+        return $recordFound;
     }
 
     public function findUserFromUsernameAndPassword($username, $password) {
