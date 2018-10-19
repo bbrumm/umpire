@@ -267,11 +267,27 @@ class Array_store extends CI_Model implements IData_store
         for($i=0; $i<$arrayCount; $i++) {
             if ($existingData[$i]["activation_id"] == $pActivationID) {
                 $user = new User();
-                $user->setUsername(existingData[$i]["username"]);
+                $user->setUsername($existingData[$i]["username"]);
                 return $user;
             }
         }
 
+    }
+    
+    public function getUserNameFromActivationID(User $pUser) {
+        $existingData = array(
+           array("username"=>"abcdef", "activation_id"=>"123456"),
+            array("username"=>"qwe", "activation_id"=>"123"),
+            array("username"=>"asd", "activation_id"=>"111"),
+            array("username"=>"zxc", "activation_id"=>"111")
+        );
+
+        $arrayCount = count($existingData);
+        for($i=0; $i<$arrayCount; $i++) {
+            if ($existingData[$i]["activation_id"] == $pUser->getActivationID()) {
+                return $existingData[$i]["username"];
+            }
+        } 
     }
 
 
