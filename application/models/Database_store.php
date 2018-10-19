@@ -447,9 +447,9 @@ class Database_store extends CI_Model implements IData_store {
 
 
 
-    public function updateEmailAddress() {
-            $this->db->where('user_name', $this->getUsername());
-            $this->db->update('umpire_users', array('user_email'=>$this->getEmailAddress()));
+    public function updateEmailAddress(User $pUser) {
+            $this->db->where('user_name', $pUser->getUsername());
+            $this->db->update('umpire_users', array('user_email'=>$pUser->getEmailAddress()));
         }
     
     public function loadSelectableReportOptions($pParameterID) {
