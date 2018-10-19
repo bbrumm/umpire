@@ -488,7 +488,9 @@ class Database_store extends CI_Model implements IData_store {
     }
 
 
-
+    public function getUserNameFromActivationID(User $pUser) {
+        
+    }
 
     
     
