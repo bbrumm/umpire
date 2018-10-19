@@ -389,7 +389,7 @@ class Database_store extends CI_Model implements IData_store {
         
     }
 
-    public function logPasswordResetRequest($pRequestData, $pUser) {
+    public function logPasswordResetRequest($pRequestData) {
         $data = array(
             'request_datetime' => $pRequestData['request_datetime'],
             'activation_id' => $pRequestData['activation_id'],
@@ -405,9 +405,9 @@ class Database_store extends CI_Model implements IData_store {
 
 
 
-    public function storeActivationID($pActivationID) {
-        $this->db->where('user_name', $this->getUsername());
-        $this->db->where('user_email', $this->getEmailAddress());
+    public function storeActivationID($pActivationID, $pUser) {
+        $this->db->where('user_name', $pUser->getUsername());
+        $this->db->where('user_email', $pUser->getEmailAddress());
         $this->db->update('umpire_users', array('activation_id'=>$pActivationID));
     }
 
