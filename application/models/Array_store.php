@@ -300,7 +300,7 @@ class Array_store extends CI_Model implements IData_store
 
     }
 
-    public function updateEmailAddress() {
+    public function updateEmailAddress(User $pUser) {
         $recordFound = false;
         $existingData = array(
             array("username"=>"test", "email_address"=>"email1"),
