@@ -389,7 +389,7 @@ class Database_store extends CI_Model implements IData_store {
         
     }
 
-    public function logPasswordResetRequest($pRequestData) {
+    public function logPasswordResetRequest($pRequestData, $pUser) {
         $data = array(
             'request_datetime' => $pRequestData['request_datetime'],
             'activation_id' => $pRequestData['activation_id'],
@@ -425,9 +425,9 @@ class Database_store extends CI_Model implements IData_store {
     }
 
 
-    public function updatePassword() {
-        $this->db->where('user_name', $this->getUsername());
-        $this->db->update('umpire_users', array('user_password'=>$this->getPassword()));
+    public function updatePassword($pUser) {
+        $this->db->where('user_name', $pUser->getUsername());
+        $this->db->update('umpire_users', array('user_password'=>$pUser->getPassword()));
     }
 
     public function findOldPassword(User $pUser) {
