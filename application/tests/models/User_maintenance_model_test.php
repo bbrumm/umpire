@@ -52,7 +52,7 @@ class User_maintenance_model_test extends TestCase
     public function test_CheckUserExistsForReset_NoMatch() {
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
-        $user = createUserFromNameAndEmail("abcdef", "john", "smith", "test@abc.com");
+        $user = User::createUserFromNameAndEmail("abcdef", "john", "smith", "test@abc.com");
         $expected = false;
         $actual = $this->obj->checkUserExistsForReset($arrayStore, $user);
         $this->assertEquals($expected, $actual);
@@ -61,7 +61,7 @@ class User_maintenance_model_test extends TestCase
     public function test_CheckUserExistsForReset_TwoRecordsMatch() {
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
-        $user = createUserFromNameAndEmail("john", "john", "smith", "test@abc.com");
+        $user = User::createUserFromNameAndEmail("john", "john", "smith", "test@abc.com");
         $expected = false;
         $actual = $this->obj->checkUserExistsForReset($arrayStore, $user);
         $this->assertEquals($expected, $actual);
@@ -70,7 +70,7 @@ class User_maintenance_model_test extends TestCase
     public function test_CheckUserExistsForReset_UserMatchEmailNoMatch() {
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
-        $user = createUserFromNameAndEmail("abcdef", "john", "smith", "testwrong@abc.com");
+        $user = User::createUserFromNameAndEmail("abcdef", "john", "smith", "testwrong@abc.com");
         $expected = false;
         $actual = $this->obj->checkUserExistsForReset($arrayStore, $user);
         $this->assertEquals($expected, $actual);
@@ -79,7 +79,7 @@ class User_maintenance_model_test extends TestCase
     public function test_CheckUserExistsForReset_UserNoMatchEmailMatch() {
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
-        $user = createUserFromNameAndEmail("abcdefwrong", "john", "smith", "test@abc.com");
+        $user = User::createUserFromNameAndEmail("abcdefwrong", "john", "smith", "test@abc.com");
         $expected = false;
         $actual = $this->obj->checkUserExistsForReset($arrayStore, $user);
         $this->assertEquals($expected, $actual);
