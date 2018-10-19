@@ -149,7 +149,7 @@ class User_maintenance_model_test extends TestCase
         $user->setActivationID($activationID);
         $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
         $expected = "abcdef";
-        $this->assertEquals($expected->getUsername, $actual->getUsername());
+        $this->assertEquals($expected, $actual->getUsername());
     }
 
     public function test_CreateUserFromActivationID_NotFound() {
@@ -160,7 +160,7 @@ class User_maintenance_model_test extends TestCase
         $user->setActivationID($activationID);
         $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
         $expected = false;
-        $this->assertEquals($expected->getUsername, $actual->getUsername());
+        $this->assertEquals($expected, $actual->getUsername());
     }
 
 
@@ -172,7 +172,7 @@ class User_maintenance_model_test extends TestCase
         $user->setActivationID($activationID);
         $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
         $expected = false;
-        $this->assertEquals($expected->getUsername, $actual->getUsername());
+        $this->assertEquals($expected, $actual->getUsername());
     }
 
 
