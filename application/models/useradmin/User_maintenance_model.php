@@ -89,8 +89,9 @@ class User_maintenance_model extends CI_Model {
     }
 
     public function updateEmailAddress(IData_store $pDataStore, User $pUser) {
-        $this->db->where('user_name', $pUser->getUsername());
-        $this->db->update('umpire_users', array('user_email'=>$pUser->getEmailAddress()));
+        $pDataStore->updateEmailAddress($pUser);
+        //$this->db->where('user_name', $pUser->getUsername());
+        //$this->db->update('umpire_users', array('user_email'=>$pUser->getEmailAddress()));
     }
 
 
