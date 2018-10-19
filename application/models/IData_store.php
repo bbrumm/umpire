@@ -70,5 +70,8 @@ interface IData_store {
     public function loadSelectableReportOptions($pParameterID);
 
     public function findUserFromUsernameAndPassword($username, $password);
+
+    public function findOldUserPassword(User $pUser);
+
     
 }

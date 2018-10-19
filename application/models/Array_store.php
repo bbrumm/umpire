@@ -246,6 +246,7 @@ class Array_store extends CI_Model implements IData_store
         );
         $arrayCount = count($existingData);
         for($i=0; $i<$arrayCount; $i++) {
+            //echo "username (". $pUser->getUsername() ."), email (".$pUser->getEmailAddress() .") <BR />";
             if ($existingData[$i]["username"] == $pUser->getUsername() &&
                 $existingData[$i]["email_address"] == $pUser->getEmailAddress()) {
                 $recordFound = true;
@@ -292,7 +293,7 @@ class Array_store extends CI_Model implements IData_store
 
 
     public function updatePassword(User $pUser) {
-        $recordFound = false;
+        $updateStatus = false;
         $existingData = array(
             array("username"=>"abcdef", "password"=>"mypass"),
             array("username"=>"john", "password"=>"one"),
@@ -302,11 +303,17 @@ class Array_store extends CI_Model implements IData_store
         $arrayCount = count($existingData);
         for($i=0; $i<$arrayCount; $i++) {
             if ($existingData[$i]["username"] == $pUser->getUsername()) {
-                $recordFound = true;
-                $existingData[$i]["password"] == $pUser->getPassword();
+                if ($pUser->getPassword() != null && $pUser->getPassword() != "") {
+                    $existingData[$i]["password"] == $pUser->getPassword();
+                    $updateStatus = true;
+                }
             }
         }
-        return $recordFound;
+        return $updateStatus;
+    }
+
+    public function findOldUserPassword(User $pUser) {
+        return "some_old_password";
     }
 
     public function logPasswordReset($pData) {
@@ -317,7 +324,7 @@ class Array_store extends CI_Model implements IData_store
     }
 
     public function updateEmailAddress(User $pUser) {
-        $recordFound = false;
+        $updateStatus = false;
         $existingData = array(
             array("username"=>"test", "email_address"=>"email1"),
             array("username"=>"john", "email_address"=>"email1one"),
@@ -327,14 +334,16 @@ class Array_store extends CI_Model implements IData_store
         $arrayCount = count($existingData);
         for($i=0; $i<$arrayCount; $i++) {
             if ($existingData[$i]["username"] == $pUser->getUsername()) {
-                $recordFound = true;
+                $updateStatus = true;
                 $existingData[$i]["email_address"] == $pUser->getEmailAddress();
             }
         }
-        return $recordFound;
+        return $updateStatus;
     }
 
     public function findUserFromUsernameAndPassword($username, $password) {
+
+
     }
 
     public function loadSelectableReportOptions($pParameterID) {
@@ -370,7 +379,7 @@ class Array_store extends CI_Model implements IData_store
 
         foreach ($testData as $key => $subArray) {
             if ($subArray["username"] == $pUsername && $subArray["password"] == MD5($pPassword)) {
-                return $subArray;
+                return User::createUserFromNameAndPW($subArray["username"], null, null, $subArray["password"], $subArray["id"]);
             }
         }
 

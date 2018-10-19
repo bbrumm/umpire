@@ -26,7 +26,7 @@ class User_maintenance_model extends CI_Model {
 
 
     public function storeActivationID(IData_store $pDataStore, User $pUser, $pActivationID) {
-        $pDataStore->storeActivationID($pUser, $pActivationID);
+        return $pDataStore->storeActivationID($pUser, $pActivationID);
     }
 
 
@@ -46,7 +46,7 @@ class User_maintenance_model extends CI_Model {
     public function updatePassword(IData_store $pDataStore, User $pUser) {
         $this->logPasswordReset($pDataStore, $pUser);
 
-        $pDataStore->updatePassword($pUser);
+        return $pDataStore->updatePassword($pUser);
     }
 
     private function logPasswordReset(IData_store $pDataStore, User $pUser) {
@@ -71,7 +71,7 @@ class User_maintenance_model extends CI_Model {
     public function validate(IData_store $pDataStore, $pUsername, $pPassword){
         $username = $this->security->xss_clean($pUsername);
         $password = $this->security->xss_clean($pPassword);
-        $user = $pDataStore->findUserFromUsernameAndPassword($username, $password);
+        $user = $pDataStore->findMatchingUserFromUsernameAndPassword($username, $password);
         if(isset($user)) {
             // If there is a user, then create session data
             $data = array(
@@ -89,7 +89,7 @@ class User_maintenance_model extends CI_Model {
     }
 
     public function updateEmailAddress(IData_store $pDataStore, User $pUser) {
-        $pDataStore->updateEmailAddress($pUser);
+        return $pDataStore->updateEmailAddress($pUser);
         //$this->db->where('user_name', $pUser->getUsername());
         //$this->db->update('umpire_users', array('user_email'=>$pUser->getEmailAddress()));
     }

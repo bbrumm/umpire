@@ -114,7 +114,7 @@ class User_maintenance_model_test extends TestCase
         'email_address_entered'=>'test@abc123.com'
         );
         $actual = $this->obj->logPasswordResetRequest($arrayStore, $requestData);
-        $expected = false;
+        $expected = true; //Should return true because the database allows for old/missing usernames to be logged here.
         $this->assertEquals($expected, $actual);
 
 
@@ -137,7 +137,7 @@ class User_maintenance_model_test extends TestCase
         $activationID = "123456";
         $user = User::createUserFromNameAndPW("abcdefnotfound", "john", "smith", "mypass");
         $actual = $this->obj->storeActivationID($arrayStore, $user, $activationID);
-        $expected = true;
+        $expected = false;
         $this->assertEquals($expected, $actual);
     }
 
@@ -160,7 +160,7 @@ class User_maintenance_model_test extends TestCase
         $user->setActivationID($activationID);
         $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
         $expected = false;
-        $this->assertEquals($expected, $actual->getUsername());
+        $this->assertEquals($expected, $actual);
     }
 
 
@@ -171,8 +171,8 @@ class User_maintenance_model_test extends TestCase
         $user = User::createUserFromNameAndPW("john", "john", "smith", "mypass");
         $user->setActivationID($activationID);
         $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
-        $expected = false;
-        $this->assertEquals($expected, $actual->getUsername());
+        $expected = $user;
+        $this->assertEquals($expected, $actual);
     }
 
 
@@ -229,7 +229,7 @@ class User_maintenance_model_test extends TestCase
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("john", "john", "smith", "newpass");
-        $expected = false;
+        $expected = true; //The code gets the first user
         $actual = $this->obj->updatePassword($arrayStore, $user);
         $this->assertEquals($expected, $actual);
     }
@@ -240,7 +240,7 @@ class User_maintenance_model_test extends TestCase
     public function test_Validate_UserExists() {
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
-        $username = "test";
+        $username = "john";
         $password = "mypass";
         $expected = true;
         $actual = $this->obj->validate($arrayStore, $username, $password);
@@ -250,7 +250,7 @@ class User_maintenance_model_test extends TestCase
     public function test_Validate_UserExistsButWrongPW() {
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
-        $username = "test";
+        $username = "john";
         $password = "wrongpass";
         $expected = false;
         $actual = $this->obj->validate($arrayStore, $username, $password);
@@ -302,9 +302,9 @@ class User_maintenance_model_test extends TestCase
     public function test_Validate_TwoResults() {
         $arrayStore = new Array_store;
         $this->obj = new User_maintenance_model();
-        $username = "john";
-        $password = "mypass";
-        $expected = false;
+        $username = "ringo";
+        $password = "otherthing";
+        $expected = true;
         $actual = $this->obj->validate($arrayStore, $username, $password);
         $this->assertEquals($expected, $actual);
     }
