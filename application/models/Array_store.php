@@ -239,7 +239,7 @@ class Array_store extends CI_Model implements IData_store
         return true;
     }
 
-    public function storeActivationID($pActivationID, $pUser) {
+    public function storeActivationID($pUser, $pActivationID) {
         $recordFound = false;
         $existingData = array(
             array("username"=>"abcdef", "email_address"=>"test@abc.com")
