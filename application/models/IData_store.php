@@ -61,7 +61,7 @@ interface IData_store {
 
     public function createUserFromActivationID($pActivationID);
 
-    public function updatePassword($pUser);
+    public function updatePassword(User $pUser);
 
     public function logPasswordReset($pData);
 
