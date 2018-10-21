@@ -30,3 +30,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 .metadata/.plugins/org.eclipse.wst.jsdt.core/variablesAndContainers.dat
 RemoteSystemsTempFiles/.buildpath
 application/tests/build/logs/junit.xml
+application/tests/build/logs/junit.xml

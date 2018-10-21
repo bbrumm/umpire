@@ -117,7 +117,7 @@ class User_permission_loader_model_test extends TestCase
         $arrayStore = new Array_store;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
-        $actual = $this->obj->userHasImportFilePermission($user);
+        $actual = $this->obj->userCanSeeUserAdminPage($user);
         $expected = true;
         $this->assertEquals($expected, $actual);
     }
@@ -126,7 +126,7 @@ class User_permission_loader_model_test extends TestCase
         $arrayStore = new Array_store;
         $username = "george";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
-        $actual = $this->obj->userHasImportFilePermission($user);
+        $actual = $this->obj->userCanSeeUserAdminPage($user);
         $expected = false;
         $this->assertEquals($expected, $actual);
     }
@@ -135,7 +135,7 @@ class User_permission_loader_model_test extends TestCase
         $arrayStore = new Array_store;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
-        $actual = $this->obj->userHasImportFilePermission($user);
+        $actual = $this->obj->userCanSeeDataTestPage($user);
         $expected = true;
         $this->assertEquals($expected, $actual);
     }
@@ -144,7 +144,7 @@ class User_permission_loader_model_test extends TestCase
         $arrayStore = new Array_store;
         $username = "george";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
-        $actual = $this->obj->userHasImportFilePermission($user);
+        $actual = $this->obj->userCanSeeDataTestPage($user);
         $expected = false;
         $this->assertEquals($expected, $actual);
     }
@@ -153,7 +153,7 @@ class User_permission_loader_model_test extends TestCase
         $arrayStore = new Array_store;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
-        $actual = $this->obj->userHasImportFilePermission($user);
+        $actual = $this->obj->userCanCreatePDF($user);
         $expected = true;
         $this->assertEquals($expected, $actual);
     }
@@ -162,7 +162,7 @@ class User_permission_loader_model_test extends TestCase
         $arrayStore = new Array_store;
         $username = "george";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
-        $actual = $this->obj->userHasImportFilePermission($user);
+        $actual = $this->obj->userCanCreatePDF($user);
         $expected = false;
         $this->assertEquals($expected, $actual);
     }
