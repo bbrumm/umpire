@@ -215,7 +215,10 @@ class Array_store extends CI_Model implements IData_store
             array("username"=>"abcdef", "first_name"=>"andy", "last_name"=>"jones"),
             array("username"=>"qwe", "first_name"=>"quinten", "last_name"=>"johnson"),
             array("username"=>"asd", "first_name"=>"sam", "last_name"=>"smith"),
-            array("username"=>"john12", "first_name"=>"john", "last_name"=>"smith")
+            array("username"=>"asd", "first_name"=>"sam2", "last_name"=>"smith2"),
+            array("username"=>"john", "first_name"=>"john", "last_name"=>"smith"),
+            array("username"=>"paul", "first_name"=>"paul", "last_name"=>"smith"),
+            array("username"=>"george", "first_name"=>"george", "last_name"=>"smith")
         );
 
         $userRow = [];
@@ -223,20 +226,9 @@ class Array_store extends CI_Model implements IData_store
         $arrayCount = count($existingData);
         for($i=0; $i<$arrayCount; $i++) {
             if ($existingData[$i]["username"] == $pUsername) {
-                $user = User::createUserFromNameAndRole(1, $existingData[$i]["username"], $existingData[$i]["first_name"], $existingData[$i]["last_name"], null, 1, null);
-
-                /*
-                $userRow["id"] = 1;
-                $userRow["user_name"] = $existingData[$i]["username"];
-                $userRow["first_name"] = $existingData[$i]["first_name"];
-                $userRow["last_name"] = $existingData[$i]["last_name"];
-                $userRow["role_name"] = null;
-                $userRow["active"] = 1;
-                $userRow["user_email"] = null;
-                echo "user id: " . $userRow["id"];
-                return $userRow;
-                */
-                //echo "user id " . $user->getID();
+                $user = User::createUserFromNameAndRole(1, $existingData[$i]["username"],
+                    $existingData[$i]["first_name"], $existingData[$i]["last_name"],
+                    null, 1, null);
                 return $user;
             }
         }
@@ -249,12 +241,36 @@ class Array_store extends CI_Model implements IData_store
     }
 
     public function findPermissionsForUser(User $pUser) {
-        $permissionArray = array (
-            array("id"=>1, "permission_id"=>1, "permission_name"=>"something", "selection_name"=>"sel1"),
-            array("id"=>2, "permission_id"=>1, "permission_name"=>"else", "selection_name"=>"sel2")
+        $permissionArrayJohn = array (
+            array("id"=>1, "permission_id"=>1, "permission_name"=>"IMPORT_FILES", "selection_name"=>"All"),
+            array("id"=>2, "permission_id"=>2, "permission_name"=>"VIEW_USER_ADMIN", "selection_name"=>"All"),
+            array("id"=>3, "permission_id"=>3, "permission_name"=>"VIEW_DATA_TEST", "selection_name"=>"All"),
+            array("id"=>4, "permission_id"=>4, "permission_name"=>"CREATE_PDF", "selection_name"=>"All")
 
         );
-        return $permissionArray;
+
+        $permissionArrayPaul = array (
+            array("id"=>1, "permission_id"=>1, "permission_name"=>"IMPORT_FILES", "selection_name"=>"All")
+
+        );
+
+        $permissionArrayGeorge = array (
+            array("id"=>1, "permission_id"=>1, "permission_name"=>"IMPORT_FILES", "selection_name"=>"Some"),
+            array("id"=>2, "permission_id"=>2, "permission_name"=>"VIEW_USER_ADMIN", "selection_name"=>"Some"),
+            array("id"=>3, "permission_id"=>3, "permission_name"=>"VIEW_DATA_TEST", "selection_name"=>"Some"),
+            array("id"=>4, "permission_id"=>4, "permission_name"=>"CREATE_PDF", "selection_name"=>"Some")
+
+        );
+
+        if($pUser->getUsername() == "john") {
+            return $permissionArrayJohn;
+        } elseif($pUser->getUsername() == "paul") {
+            return $permissionArrayPaul;
+        } elseif($pUser->getUsername() == "george") {
+            return $permissionArrayGeorge;
+        } else {
+            return $permissionArrayJohn;
+        }
 
     }
 
