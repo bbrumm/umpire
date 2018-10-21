@@ -211,12 +211,51 @@ class Array_store extends CI_Model implements IData_store
 
 
     public function getUserFromUsername($pUsername) {
+        $existingData = array(
+            array("username"=>"abcdef", "first_name"=>"andy", "last_name"=>"jones"),
+            array("username"=>"qwe", "first_name"=>"quinten", "last_name"=>"johnson"),
+            array("username"=>"asd", "first_name"=>"sam", "last_name"=>"smith"),
+            array("username"=>"john12", "first_name"=>"john", "last_name"=>"smith")
+        );
+
+        $userRow = [];
+
+        $arrayCount = count($existingData);
+        for($i=0; $i<$arrayCount; $i++) {
+            if ($existingData[$i]["username"] == $pUsername) {
+                $user = User::createUserFromNameAndRole(1, $existingData[$i]["username"], $existingData[$i]["first_name"], $existingData[$i]["last_name"], null, 1, null);
+
+                /*
+                $userRow["id"] = 1;
+                $userRow["user_name"] = $existingData[$i]["username"];
+                $userRow["first_name"] = $existingData[$i]["first_name"];
+                $userRow["last_name"] = $existingData[$i]["last_name"];
+                $userRow["role_name"] = null;
+                $userRow["active"] = 1;
+                $userRow["user_email"] = null;
+                echo "user id: " . $userRow["id"];
+                return $userRow;
+                */
+                //echo "user id " . $user->getID();
+                return $user;
+            }
+        }
+
+
     }
+
 
     public function setPermissionArrayForUser() {
     }
 
     public function findPermissionsForUser(User $pUser) {
+        $permissionArray = array (
+            array("id"=>1, "permission_id"=>1, "permission_name"=>"something", "selection_name"=>"sel1"),
+            array("id"=>2, "permission_id"=>1, "permission_name"=>"else", "selection_name"=>"sel2")
+
+        );
+        return $permissionArray;
+
     }
 
     public function checkUserExistsForReset(User $pUser) {

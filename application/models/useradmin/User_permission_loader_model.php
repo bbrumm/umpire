@@ -3,13 +3,8 @@
 class User_permission_loader_model extends CI_Model {
 
     public function getUserFromUsername(IData_store $pDataStore, $pUsername) {
-        $user = new User();
-        $row = $pDataStore->checkUserFoundForUsername($pUsername);
-        $rowsFound = isset($row);
-
-        if ($rowsFound) {
-            $user = User::createUserFromNameAndRole($row->ID, $row->user_name,
-                $row->first_name, $row->last_name, $row->role_name, 1, $row->user_email);
+        $user = $pDataStore->getUserFromUsername($pUsername);
+        if (isset($user)) {
             $this->setPermissionArrayForUser($pDataStore, $user);
             return $user;
         } else {

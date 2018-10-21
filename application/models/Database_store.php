@@ -363,18 +363,28 @@ class Database_store extends CI_Model implements IData_store {
             WHERE (ps.id IN ( 
             	SELECT ups.permission_selection_id 
             	FROM user_permission_selection ups 
-            	WHERE user_id = ". $this->getId() ." 
+            	WHERE user_id = " . $this->getId() . " 
             ) OR ps.id IN ( 
             	SELECT rps.permission_selection_id 
             	FROM role_permission_selection rps  
             	INNER JOIN umpire_users u ON rps.role_id = u.role_id 
-            	WHERE u.id = ". $this->getId() ."
+            	WHERE u.id = " . $this->getId() . "
                 AND u.role_id != 4));";
-        
+
         $query = $this->db->query($queryString);
-        $resultArray = $query->result_array();
+        $row = $query->result_array();
+
+        if (isset($row)) {
+            $user = User::createUserFromNameAndRole($row->ID, $row->user_name,
+            $row->first_name, $row->last_name, $row->role_name, 1, $row->user_email);
+
+            return $user;
+        } else {
+            return null;
+        }
+
         
-        return count($resultArray);
+        //return count($resultArray);
     }
 
 
@@ -493,6 +503,10 @@ class Database_store extends CI_Model implements IData_store {
     }
 
     public function findOldUserPassword(User $pUser) {
+
+    }
+
+    public function checkUserFoundForUsername($pUsername) {
 
     }
 
