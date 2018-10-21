@@ -56,5 +56,16 @@ class Array_library {
 	    return $arrayDifferences;
 	}
 
+    public function findKeyFromValue($pArray, $pValueToFind, $pKeyToLookAt) {
+        $arrayKeyFound = 0;
+        for ($i=0; $i < count($pArray); $i++) {
+            if ($pArray[$i][$pKeyToLookAt] == $pValueToFind) {
+                $arrayKeyFound = $i;
+            }
+        }
+        return $arrayKeyFound;
+
+    }
+
 }
 ?>

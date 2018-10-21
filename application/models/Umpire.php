@@ -92,4 +92,4 @@ class Umpire extends CI_Model
     }
     
 }
-?>
+

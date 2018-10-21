@@ -28,4 +28,3 @@ class Etl_test_model extends CI_Model
         
     }
 }
-?>

@@ -1,11 +1,10 @@
 <?php
 class Report_instance extends CI_Model {
-	
-	private $reportQuery;
+
 	private $resultArray;
 	private $reportTitle;
 	private $columnLabelResultArray;
-	private $rowLabelResultArray;
+	//private $rowLabelResultArray;
 	
 	private $resultOutputArray; //New variable to store the array so it can be directly output to the screen
 	
@@ -70,11 +69,6 @@ class Report_instance extends CI_Model {
 	}
 	
 
-	
-
-	
-
-	
 	private function translateRptGrStructureToSimpleArray($pReportGroupingStructureArray) {
 	    $simpleColumnFieldArray =[];
 	    $countReportGroupingStructureArray = count($pReportGroupingStructureArray);
@@ -89,6 +83,7 @@ class Report_instance extends CI_Model {
 
 	public function setReportType(Requested_report_model $pRequestedReport) {
 	    //RequestedReport values are set in controllers/report.php->index();
+        //TODO remove this entire IF ELSE statement block once the unit tests are passing
 	    if ($pRequestedReport->getPDFMode() == true) {
 	        $ageGroupValue = rtrim($pRequestedReport->getAgeGroup(), ',');
 	        $umpireDisciplineValue = rtrim($pRequestedReport->getUmpireType(), ',');
@@ -136,7 +131,7 @@ class Report_instance extends CI_Model {
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryForReport = $separateReport->getReportDataQuery($this);
         
-        $this->debug_library->debugOutput("queryForReport:",  $queryForReport);
+        //$this->debug_library->debugOutput("queryForReport:",  $queryForReport);
 
         //Run query and store result in array
         $query = $this->db->query($queryForReport);
@@ -227,7 +222,7 @@ class Report_instance extends CI_Model {
 
         $query = $this->db->query($columnLabelQuery);
         $this->columnLabelResultArray = $query->result_array();
-        $this->debug_library->debugOutput("columnLabelResultArray in setColumnLabelResultArray:", $this->getColumnLabelResultArray());
+        //$this->debug_library->debugOutput("columnLabelResultArray in setColumnLabelResultArray:", $this->getColumnLabelResultArray());
     }
 
     private function setResultOutputArray(IReport $separateReport) {
@@ -260,7 +255,8 @@ class Report_instance extends CI_Model {
 	     * E.g. if a report needs to show columns for BFL, GFL, and GDFL, and the full list of columns includes BFL, BFL, GDFL, GFL, BFL, GFL...
 	     * Then the result will be BFL=3, GFL=1, GDFL=1.
 	     */
-	     
+
+	    $arrayLibrary = new Array_library();
 	    $columnLabelResults = $this->columnLabelResultArray;
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
 	    $columnCountLabels = [];
@@ -284,7 +280,7 @@ class Report_instance extends CI_Model {
 	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {
 	                    //Value found in array. Increment counter value
 	                    //Find the array that stores this value
-	                    $currentArrayKey = $this->findKeyFromValue(
+	                    $currentArrayKey = $arrayLibrary->findKeyFromValue(
 	                        $columnCountLabels[$i], $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
 	                    $columnCountLabels[$i][$currentArrayKey]["count"]++;
 	               } else {
@@ -300,7 +296,7 @@ class Report_instance extends CI_Model {
                         //Value found in array. Increment counter value
                         //Check if the value on the first row matches
                         if ($this->isFirstRowMatching($columnLabels, $columnLabelResults, $i, $j)) {
-                            $currentArrayKey = $this->findKeyFromValue($columnCountLabels[$i],
+                            $currentArrayKey = $arrayLibrary->findKeyFromValue($columnCountLabels[$i],
                                 $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
                                 $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
                             $columnCountLabels[$i][$currentArrayKey]["count"]++;
@@ -336,19 +332,21 @@ class Report_instance extends CI_Model {
 	            }
 	        }
 	    }
-	    $this->debug_library->debugOutput("ColumnCountLabels:", $columnCountLabels);
+	    //$this->debug_library->debugOutput("ColumnCountLabels:", $columnCountLabels);
 	    return $columnCountLabels;
 	     
 	}
 	
 	private function isFirstColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $pColumnCountLabels, $firstLoopCounter, $secondLoopCounter) {
-	    return $this->in_array_r(
+	    $arrayLibrary = new Array_library();
+	    return $arrayLibrary->in_array_r(
 	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $pColumnCountLabels[$firstLoopCounter]
 	    );
 	}
 	
 	private function isFirstAndSecondColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $pColumnCountLabels, $firstLoopCounter, $secondLoopCounter) {
-	    return $this->in_array_r(
+        $arrayLibrary = new Array_library();
+	    return $arrayLibrary->in_array_r(
 	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()] . "|" .
             $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $pColumnCountLabels[$firstLoopCounter]
 	    );
@@ -358,27 +356,8 @@ class Report_instance extends CI_Model {
 	    return $pColumnLabelResults[$secondLoopCounter-1][$pColumnLabels[$firstLoopCounter-1]->getFieldName()] == 
 	       $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()];
 	}
-	
-	private function in_array_r($needle, $haystack, $strict = false) {
-	    foreach ($haystack as $item) {
-	        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
-	            return true;
-	        }
-	    }
-	
-	    return false;
-	}
-	
-	private function findKeyFromValue($pArray, $pValueToFind, $pKeyToLookAt) {
-	    $arrayKeyFound = 0;
-	    for ($i=0; $i < count($pArray); $i++) {
-	        if ($pArray[$i][$pKeyToLookAt] == $pValueToFind) {
-	            $arrayKeyFound = $i;
-	        }
-	    }
-	    return $arrayKeyFound;
 
-	}
+	
+
 	
 }
-?>

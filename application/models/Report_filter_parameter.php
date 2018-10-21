@@ -69,8 +69,4 @@ class Report_filter_parameter extends CI_Model {
         return implode(", ", $pInputString);
     }
     
-    
-    
-    
-    
 }

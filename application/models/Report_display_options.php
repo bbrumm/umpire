@@ -148,4 +148,3 @@ class Report_display_options extends CI_Model {
 	
 }
 
-?>
