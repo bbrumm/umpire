@@ -5,6 +5,7 @@ class Report_instance extends CI_Model {
 	private $reportTitle;
 	private $columnLabelResultArray;
 	//private $rowLabelResultArray;
+    private $reportColumnFields;
 	
 	private $resultOutputArray; //New variable to store the array so it can be directly output to the screen
 	
@@ -21,6 +22,8 @@ class Report_instance extends CI_Model {
 
 	private $separateReport;
 	private $formattedOutputArray;
+
+	private $columnCountLabels;
 
 	public function __construct() {
 	    $this->load->model('Report_display_options');
@@ -93,11 +96,11 @@ class Report_instance extends CI_Model {
     	    $umpireDisciplineValue = implode(',', $pRequestedReport->getUmpireType());
 	    }
 	    
-	    $pDatabaseStore = new Database_store();
+	    $pDataStore = new Database_store();
 	    
-	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport, $pDatabaseStore);
+	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport, $pDataStore);
 	    $this->reportParameter = $this->reportParamLoader->getReportParameter();
-	    $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport, $pDatabaseStore);
+	    $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport, $pDataStore);
 	    
 	    $reportGroupingStructureArray = $this->reportParamLoader->getReportGroupingStructureArray();
 
@@ -110,64 +113,33 @@ class Report_instance extends CI_Model {
 	    $this->requestedReport = $pRequestedReport;
 
 	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
-	    $columnGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Column');
-	    $rowGroupForReport = $this->extractGroupFromGroupingStructure($reportGroupingStructureArray, 'Row');
-	    $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
-	    $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
-	    
-	    $this->filterParameterUmpireType->createFilterParameter($this->requestedReport->getUmpireType(), $this->requestedReport->getPDFMode());
-	    $this->filterParameterAgeGroup->createFilterParameter($this->requestedReport->getAgeGroup(), $this->requestedReport->getPDFMode());
-	    $this->filterParameterLeague->createFilterParameter($this->requestedReport->getLeague(), $this->requestedReport->getPDFMode());
-	    $this->filterParameterRegion->createFilterParameter($this->requestedReport->getRegion(), $this->requestedReport->getPDFMode(), true);
-		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason());
+	    $this->setRowAndColumnGroups($reportGroupingStructureArray);
+	    $this->filterParameters();
+		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason($pDataStore));
 	}
 	
 	private function setReportTitle($pSeasonYear) {
 	    return str_replace("%seasonYear", $pSeasonYear, $this->reportParameter->getReportTitle());
 	}
+
+	private function filterParameters() {
+        $this->filterParameterUmpireType->createFilterParameter($this->requestedReport->getUmpireType(), $this->requestedReport->getPDFMode());
+        $this->filterParameterAgeGroup->createFilterParameter($this->requestedReport->getAgeGroup(), $this->requestedReport->getPDFMode());
+        $this->filterParameterLeague->createFilterParameter($this->requestedReport->getLeague(), $this->requestedReport->getPDFMode());
+        $this->filterParameterRegion->createFilterParameter($this->requestedReport->getRegion(), $this->requestedReport->getPDFMode(), true);
+    }
+
+    private function setRowAndColumnGroups($pReportGroupingStructureArray) {
+        $columnGroupForReport = $this->extractGroupFromGroupingStructure($pReportGroupingStructureArray, 'Column');
+        $rowGroupForReport = $this->extractGroupFromGroupingStructure($pReportGroupingStructureArray, 'Row');
+        $this->reportDisplayOptions->setColumnGroup($columnGroupForReport);
+        $this->reportDisplayOptions->setRowGroup($rowGroupForReport);
+    }
 	
 	
-	public function loadReportResults() {
+	public function loadReportResults($pDataStore) {
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
-        $queryForReport = $separateReport->getReportDataQuery($this);
-        
-        //$this->debug_library->debugOutput("queryForReport:",  $queryForReport);
-
-        //Run query and store result in array
-        $query = $this->db->query($queryForReport);
-        
-        //Transform array to pivot
-        $queryResultArray = $query->result_array();
-        
-        if (!isset($queryResultArray[0])) {
-            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for report "
-                . $this->requestedReport->getReportNumber() .".<BR />Query:<BR />" . $queryForReport);
-        }
-        
-        //Set result array (function includes logic for different reports
-        /*
-         *  Expected Output:
-            Array
-            (
-                [Abbott, Trevor] => Array
-                    (
-                        [0] => Array (each instance or col/row combination to output)
-                            (
-                                [short_league_name] => BFL (one of the column groups)
-                                [match_count] => 1 (value to output)
-                                [club_name] => Modewarre (another column group)
-                            )
-
-                        [1] => Array (another instance to output)
-                            (
-                                [short_league_name] => BFL
-                                [match_count] => 1
-                                [club_name] => Queenscliff
-                            )
-
-                    )
-         *
-         */
+        $queryResultArray = $pDataStore->loadReportData($separateReport, $this);
         $this->setResultArray($separateReport, $queryResultArray);
 
         //Pivot the array so it can be displayed
@@ -179,9 +151,10 @@ class Report_instance extends CI_Model {
         $this->separateReport = $separateReport;
 	}
 
+
 	private function extractGroupFromGroupingStructure($pReportGroupingStructureArray, $pGroupingType) {
-	    $reportGroupingStructure = new Report_grouping_structure();
-	    
+	    //$reportGroupingStructure = new Report_grouping_structure();
+        $outputReportGroupingStructure = [];
 	    for($i=0; $i<count($pReportGroupingStructureArray); $i++) {
 	        if ($pReportGroupingStructureArray[$i]->getGroupingType() == $pGroupingType) {
 	           $outputReportGroupingStructure[] = $pReportGroupingStructureArray[$i];
@@ -191,18 +164,35 @@ class Report_instance extends CI_Model {
 	}
 	
 	
-	private function findLastGameDateForSelectedSeason() {
-	    $queryString = "SELECT DATE_FORMAT(MAX(match_time), '%a %d %b %Y, %h:%i %p') AS last_date 
-            FROM match_played 
-            INNER JOIN round ON round.id = match_played.round_id 
-            INNER JOIN season ON season.id = round.season_id 
-            WHERE season.season_year = ". $this->requestedReport->getSeason() .";";
-	     
-	    $query = $this->db->query($queryString);
-	    $queryResultArray = $query->result_array();
-	    return $queryResultArray[0]['last_date'];
+	private function findLastGameDateForSelectedSeason($pDataStore) {
+	    return $pDataStore->findLastGameDateForSelectedSeason($this->requestedReport);
 	}
-	
+
+
+    //Set result array (function includes logic for different reports
+    /*
+     *  Expected Output:
+        Array
+        (
+            [Abbott, Trevor] => Array
+                (
+                    [0] => Array (each instance or col/row combination to output)
+                        (
+                            [short_league_name] => BFL (one of the column groups)
+                            [match_count] => 1 (value to output)
+                            [club_name] => Modewarre (another column group)
+                        )
+
+                    [1] => Array (another instance to output)
+                        (
+                            [short_league_name] => BFL
+                            [match_count] => 1
+                            [club_name] => Queenscliff
+                        )
+
+                )
+     *
+     */
 	public function setResultArray(IReport $pSeparateReport, $pResultArray) {
         foreach ($this->reportDisplayOptions->getColumnGroup() as $columnGroupItem) {
             $columnLabelArray[] = $columnGroupItem->getFieldName();
@@ -231,8 +221,6 @@ class Report_instance extends CI_Model {
 
         $this->resultOutputArray = $separateReport->transformQueryResultsIntoOutputArray(
             $resultArray, $columnLabelResultArray, $this->getReportColumnFields());
-
-
     }
 
     public function getFormattedResultsForOutput() {
@@ -259,96 +247,114 @@ class Report_instance extends CI_Model {
 	    $arrayLibrary = new Array_library();
 	    $columnLabelResults = $this->columnLabelResultArray;
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
-	    $columnCountLabels = [];
+	    //$columnCountLabels = [];
+
+        //$currentIterationReportGroupFieldName = "";
 	    //Loop through the possible labels
 	    for ($i=0; $i < count($columnLabels); $i++) {
 	        if ($i == 0) {
-	            $columnCountLabels[0] = [];
+	            $this->columnCountLabels[0] = [];
 	        }
 	        if ($i == 1) {
-	            $columnCountLabels[1] = [];
+                $this->columnCountLabels[1] = [];
 	        }
 	        if ($i == 2) {
-	            $columnCountLabels[2] = [];
+                $this->columnCountLabels[2] = [];
 	        }
 	         
 	        $arrayKeyNumber = 0;
 	         
 	        //Loop through columnLabelResults
 	        for ($j=0; $j < count($columnLabelResults); $j++) {
+                $currentIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	            if ($i == 0) {
-	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {
+	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $i, $j)) {
 	                    //Value found in array. Increment counter value
 	                    //Find the array that stores this value
 	                    $currentArrayKey = $arrayLibrary->findKeyFromValue(
-	                        $columnCountLabels[$i], $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
-	                    $columnCountLabels[$i][$currentArrayKey]["count"]++;
+                            $this->columnCountLabels[$i], $currentIterationReportGroupFieldName, "unique label");
+                        $this->incrementArrayColumnCount($i, $currentArrayKey);
 	               } else {
 	                    //Value not found. Add to array.
-	                    $columnCountLabels[$i][$arrayKeyNumber]["label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                    $columnCountLabels[$i][$arrayKeyNumber]["unique label"] = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                    $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
+                        $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
+                        $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
+                        $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
 	                    $arrayKeyNumber++;
 	                }
 	            }
 	            if ($i == 1) {
-                    if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $columnLabelResults, $columnCountLabels, $i, $j)) {
+                    $previousIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()];
+                    if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $this->columnCountLabels, $i, $j)) {
                         //Value found in array. Increment counter value
                         //Check if the value on the first row matches
                         if ($this->isFirstRowMatching($columnLabels, $columnLabelResults, $i, $j)) {
-                            $currentArrayKey = $arrayLibrary->findKeyFromValue($columnCountLabels[$i],
-                                $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-                                $columnLabelResults[$j][$columnLabels[$i]->getFieldName()], "unique label");
-                            $columnCountLabels[$i][$currentArrayKey]["count"]++;
+                            $currentArrayKey = $arrayLibrary->findKeyFromValue($this->columnCountLabels[$i],
+                                $previousIterationReportGroupFieldName . "|" .
+                                $currentIterationReportGroupFieldName, "unique label");
+                            $this->incrementArrayColumnCount($i, $currentArrayKey);
                         } else {
-                            $columnCountLabels[$i][$arrayKeyNumber]["label"] =
-                               $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-                            $columnCountLabels[$i][$arrayKeyNumber]["unique label"] =
-                               $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-                               $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-                            $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
+                            $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
+                            $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $previousIterationReportGroupFieldName . "|" .
+                                $currentIterationReportGroupFieldName);
+                            $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
                             $arrayKeyNumber++;
                         }
                     } else {
                         //Value not found. Add to array.
-                        $columnCountLabels[$i][$arrayKeyNumber]["label"] =
-                           $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-                        $columnCountLabels[$i][$arrayKeyNumber]["unique label"] =
-                           $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-                           $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-                        $columnCountLabels[$i][$arrayKeyNumber]["count"] = 1;
+                        $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
+                        $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $previousIterationReportGroupFieldName . "|" .
+                            $currentIterationReportGroupFieldName);
+                        $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
                         $arrayKeyNumber++;
                     }
 	            }
 	            if ($i == 2) {
-	                //Set all count values to 1 for this level, as it is not likely that the third row will need to be merged/have a higher than 1 colspan.
-	                $columnCountLabels[$i][$j]["label"] =
-	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                $columnCountLabels[$i][$j]["unique label"] =
-	                   $columnLabelResults[$j][$columnLabels[$i-2]->getFieldName()] . "|" .
-	                   $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()] . "|" .
-	                   $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
-	                $columnCountLabels[$i][$j]["count"] = 1;
+                    $previousIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()];
+                    $previousTwoIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i-2]->getFieldName()];
+	                //Set all count values to 1 for this level, as it is not likely that the third row
+                    //will need to be merged/have a higher than 1 colspan.
+
+                    $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
+                    $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $previousTwoIterationReportGroupFieldName . "|" .
+                        $previousIterationReportGroupFieldName . "|" .
+                        $currentIterationReportGroupFieldName);
+                    $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
 	            }
 	        }
 	    }
 	    //$this->debug_library->debugOutput("ColumnCountLabels:", $columnCountLabels);
-	    return $columnCountLabels;
+	    return $this->columnCountLabels;
 	     
 	}
+
+    private function setArrayColumnLabel($pIteration, $pArrayKeyNumber, $pValue) {
+        $this->columnCountLabels[$pIteration][$pArrayKeyNumber]["label"] = $pValue;
+    }
+
+    private function setArrayColumnUniqueLabel($pIteration, $pArrayKeyNumber, $pValue) {
+        $this->columnCountLabels[$pIteration][$pArrayKeyNumber]["unique label"] = $pValue;
+    }
+
+    private function setArrayColumnCount($pIteration, $pArrayKeyNumber, $pValue) {
+        $this->columnCountLabels[$pIteration][$pArrayKeyNumber]["count"] = $pValue;
+    }
+
+    private function incrementArrayColumnCount($pIteration, $pArrayKeyNumber) {
+        $this->columnCountLabels[$pIteration][$pArrayKeyNumber]["count"]++;
+    }
 	
-	private function isFirstColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $pColumnCountLabels, $firstLoopCounter, $secondLoopCounter) {
+	private function isFirstColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $firstLoopCounter, $secondLoopCounter) {
 	    $arrayLibrary = new Array_library();
 	    return $arrayLibrary->in_array_r(
-	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $pColumnCountLabels[$firstLoopCounter]
+	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $this->columnCountLabels[$firstLoopCounter]
 	    );
 	}
 	
-	private function isFirstAndSecondColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $pColumnCountLabels, $firstLoopCounter, $secondLoopCounter) {
+	private function isFirstAndSecondColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $firstLoopCounter, $secondLoopCounter) {
         $arrayLibrary = new Array_library();
 	    return $arrayLibrary->in_array_r(
 	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()] . "|" .
-            $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $pColumnCountLabels[$firstLoopCounter]
+            $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $this->columnCountLabels[$firstLoopCounter]
 	    );
 	}
 	
@@ -357,7 +363,4 @@ class Report_instance extends CI_Model {
 	       $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()];
 	}
 
-	
-
-	
 }

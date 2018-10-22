@@ -510,6 +510,37 @@ class Database_store extends CI_Model implements IData_store {
 
     }
 
+    public function getReportData(Requested_report_model $separateReport, Report_instance $reportInstance) {
+        $queryForReport = $separateReport->getReportDataQuery($reportInstance);
+
+        //$this->debug_library->debugOutput("queryForReport:",  $queryForReport);
+
+        //Run query and store result in array
+        $query = $this->db->query($queryForReport);
+
+        //Transform array to pivot
+        $queryResultArray = $query->result_array();
+
+        if (!isset($queryResultArray[0])) {
+            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for report "
+                . $separateReport->getReportNumber() .".<BR />Query:<BR />" . $queryForReport);
+        }
+
+        return $queryResultArray;
+    }
+
+    public function findLastGameDateForSelectedSeason(Requested_report_model $requestedReport) {
+        $queryString = "SELECT DATE_FORMAT(MAX(match_time), '%a %d %b %Y, %h:%i %p') AS last_date 
+            FROM match_played 
+            INNER JOIN round ON round.id = match_played.round_id 
+            INNER JOIN season ON season.id = round.season_id 
+            WHERE season.season_year = ". $requestedReport->getSeason() .";";
+
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+        return $queryResultArray[0]['last_date'];
+    }
+
     
     
 }

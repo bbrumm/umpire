@@ -73,7 +73,9 @@ interface IData_store {
 
     public function findOldUserPassword(User $pUser);
 
+    public function getReportData(Requested_report_model $separateReport, Report_instance $reportInstance);
 
+    public function findLastGameDateForSelectedSeason(Requested_report_model $requestedReport);
 
     
 }
