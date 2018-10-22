@@ -86,16 +86,6 @@ class Report_instance extends CI_Model {
 
 	public function setReportType(Requested_report_model $pRequestedReport) {
 	    //RequestedReport values are set in controllers/report.php->index();
-        //TODO remove this entire IF ELSE statement block once the unit tests are passing
-	    if ($pRequestedReport->getPDFMode() == true) {
-	        $ageGroupValue = rtrim($pRequestedReport->getAgeGroup(), ',');
-	        $umpireDisciplineValue = rtrim($pRequestedReport->getUmpireType(), ',');
-	    } else {
-    	    $ageGroupValue = implode(',', $pRequestedReport->getAgeGroup());
-    	    $leagueValue = "";
-    	    $umpireDisciplineValue = implode(',', $pRequestedReport->getUmpireType());
-	    }
-	    
 	    $pDataStore = new Database_store();
 	    
 	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport, $pDataStore);
