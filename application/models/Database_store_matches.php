@@ -341,7 +341,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
 
     }
 
-    public function getReportData(Requested_report_model $separateReport, Report_instance $reportInstance) {
+    public function loadReportData(Parent_report $separateReport, Report_instance $reportInstance) {
         $queryForReport = $separateReport->getReportDataQuery($reportInstance);
 
         //$this->debug_library->debugOutput("queryForReport:",  $queryForReport);

@@ -235,7 +235,15 @@ class Array_store_matches extends CI_Model implements IData_store_matches
 
 
 
-    public function getReportData(Requested_report_model $separateReport, Report_instance $reportInstance) { }
+    public function loadReportData(Parent_report $separateReport, Report_instance $reportInstance) {
+        $resultArray = array (
+            array('last_first_name'=>'john', 'short_league_name'=>'GFL', 'club_name'=>'Geelong', 'age_group'=>'Under 18', 'match_count'=>2),
+            array('last_first_name'=>'sue', 'short_league_name'=>'GFL', 'club_name'=>'Geelong', 'age_group'=>'Under 18', 'match_count'=>5)
+
+        );
+
+        return $resultArray;
+    }
 
     public function findLastGameDateForSelectedSeason(Requested_report_model $requestedReport) {
 
