@@ -11,7 +11,7 @@ class FileImport extends CI_Controller {
 		$this->load->model('Match_import');
 		$this->load->model('Run_etl_stored_proc');
 		$this->load->model('Missing_data_updater');
-		$this->load->model('Database_store');
+		$this->load->model('Database_store_matches');
 		$this->load->helper('form');
 		include 'vendor/phpexcel/Classes/PHPExcel.php';
 	}
@@ -47,7 +47,7 @@ class FileImport extends CI_Controller {
 	
 	public function runETLProcess() {
 	    //This function runs when the user presses "Update Reports" on the File Import page if missing data is found.
-	    $databaseStore = new Database_store();
+	    $databaseStore = new Database_store_matches();
 	    $this->Missing_data_updater->updateDataAndRunETLProcedure($databaseStore, $_POST);
 	    $this->showUploadComplete();
 	}

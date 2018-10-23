@@ -11,7 +11,7 @@ class ResetPasswordEntry extends CI_Controller {
         $this->load->helper('string');
         $this->load->model('user');
         $this->load->model('useradmin/User_maintenance_model');
-        $this->load->model('Database_store');
+        $this->load->model('Database_store_matches');
     }
     
     function load($pActivationID) {
@@ -63,7 +63,7 @@ class ResetPasswordEntry extends CI_Controller {
     public function submitNewPassword() {
         $userName = $_POST['username'];
         $userMaintenance = new User_maintenance_model();
-        $dbStore = new Database_store();
+        $dbStore = new Database_store_user();
         
         $newPassword= $this->security->xss_clean($this->input->post('password'));
         $confirmNewPassword= $this->security->xss_clean($this->input->post('confirmPassword'));

@@ -86,7 +86,7 @@ class Report_instance extends CI_Model {
 
 	public function setReportType(Requested_report_model $pRequestedReport) {
 	    //RequestedReport values are set in controllers/report.php->index();
-	    $pDataStore = new Database_store();
+	    $pDataStore = new Database_store_matches();
 	    
 	    $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport, $pDataStore);
 	    $this->reportParameter = $this->reportParamLoader->getReportParameter();

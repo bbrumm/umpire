@@ -2,7 +2,7 @@
 
 class User_permission_loader_model extends CI_Model {
 
-    public function getUserFromUsername(IData_store $pDataStore, $pUsername) {
+    public function getUserFromUsername(IData_store_user $pDataStore, $pUsername) {
         $user = $pDataStore->getUserFromUsername($pUsername);
         if (isset($user)) {
             $this->setPermissionArrayForUser($pDataStore, $user);
@@ -12,7 +12,7 @@ class User_permission_loader_model extends CI_Model {
         }
     }
 
-    private function setPermissionArrayForUser(IData_store $pDataStore, User $pUser) {
+    private function setPermissionArrayForUser(IData_store_user $pDataStore, User $pUser) {
 
         $userPermissionArray = $pDataStore->findPermissionsForUser($pUser);
         $countNumberOfPermissions = count($userPermissionArray);

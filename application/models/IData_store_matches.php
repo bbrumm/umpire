@@ -1,7 +1,7 @@
 <?php
 //This interface is used to allow testing of the validation separate from database testing
 //More info: https://stackoverflow.com/questions/19937667/how-can-i-unit-test-a-method-with-database-access
-interface IData_store {
+interface IData_store_matches {
     //Report_param_loader
     public function loadAllReportParameters($pReportNumber);
     
@@ -34,7 +34,7 @@ interface IData_store {
 
     public function insertAgeGroupDivision($competitionData);
 
-    public function updateTeamAndClubTables(IData_store $pDataStore, array $pPostData);
+    public function updateTeamAndClubTables(IData_store_matches $pDataStore, array $pPostData);
 
     
     //Match_import
@@ -44,34 +44,12 @@ interface IData_store {
     
     public function runETLProcedure($pSeason, $pImportedFileID);
     
-    //User
-    public function findMatchingUserFromUsernameAndPassword($pUsername, $pPassword);
 
-    public function checkUserActive($pUsername);
 
-    public function getUserFromUsername($pUsername);
-
-    public function findPermissionsForUser(User $pUser);
-
-    public function checkUserExistsForReset(User $pUser);
-
-    public function logPasswordResetRequest($pRequestData);
-
-    public function storeActivationID($pActivationID, $pUser);
-
-    public function createUserFromActivationID($pActivationID);
-
-    public function updatePassword(User $pUser);
-
-    public function logPasswordReset($pData);
-
-    public function updateEmailAddress(User $pUser);
-    
+    //Report Instance
     public function loadSelectableReportOptions($pParameterID);
 
-    public function findUserFromUsernameAndPassword($username, $password);
 
-    public function findOldUserPassword(User $pUser);
 
     public function getReportData(Requested_report_model $separateReport, Report_instance $reportInstance);
 

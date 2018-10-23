@@ -78,7 +78,7 @@ class Report_selection_parameter_test extends TestCase {
     }
 
     public function test_initialiseSelectableReportOptions_OneValue() {
-        $arrayStore = new Array_store();
+        $arrayStore = new Array_store_matches();
 
         $inputParameterID = 1;
         $inputParameterName = "the name";
@@ -105,7 +105,7 @@ class Report_selection_parameter_test extends TestCase {
     }
 
     public function test_initialiseSelectableReportOptions_TwoValues() {
-        $arrayStore = new Array_store();
+        $arrayStore = new Array_store_matches();
 
         $inputParameterID = 4;
         $inputParameterName = "the name";

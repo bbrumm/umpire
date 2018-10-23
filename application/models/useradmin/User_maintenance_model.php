@@ -7,11 +7,11 @@ class User_maintenance_model extends CI_Model {
     }
 
 
-    public function checkUserExistsForReset(IData_store $pDataStore, User $pUser) {
+    public function checkUserExistsForReset(IData_store_user $pDataStore, User $pUser) {
         return ($pDataStore->checkUserExistsForReset($pUser) > 0);
     }
 
-    public function logPasswordResetRequest(IData_store $pDataStore, $pRequestData) {
+    public function logPasswordResetRequest(IData_store_user $pDataStore, $pRequestData) {
         $data = array(
             'request_datetime' => $pRequestData['request_datetime'],
             'activation_id' => $pRequestData['activation_id'],
@@ -25,12 +25,12 @@ class User_maintenance_model extends CI_Model {
     }
 
 
-    public function storeActivationID(IData_store $pDataStore, User $pUser, $pActivationID) {
+    public function storeActivationID(IData_store_user $pDataStore, User $pUser, $pActivationID) {
         return $pDataStore->storeActivationID($pUser, $pActivationID);
     }
 
 
-    public function createUserFromActivationID(IData_store $pDataStore, User $pUser) {
+    public function createUserFromActivationID(IData_store_user $pDataStore, User $pUser) {
         $returnedUsername = $pDataStore->getUserNameFromActivationID($pUser);
 
         if (isset($returnedUsername)) {
@@ -43,13 +43,13 @@ class User_maintenance_model extends CI_Model {
     }
 
 
-    public function updatePassword(IData_store $pDataStore, User $pUser) {
+    public function updatePassword(IData_store_user $pDataStore, User $pUser) {
         $this->logPasswordReset($pDataStore, $pUser);
 
         return $pDataStore->updatePassword($pUser);
     }
 
-    private function logPasswordReset(IData_store $pDataStore, User $pUser) {
+    private function logPasswordReset(IData_store_user $pDataStore, User $pUser) {
 
         $oldPassword = $pDataStore->findOldUserPassword($pUser);
 
@@ -68,7 +68,7 @@ class User_maintenance_model extends CI_Model {
     }
 
 
-    public function validate(IData_store $pDataStore, $pUsername, $pPassword){
+    public function validate(IData_store_user $pDataStore, $pUsername, $pPassword){
         $username = $this->security->xss_clean($pUsername);
         $password = $this->security->xss_clean($pPassword);
         $user = $pDataStore->findMatchingUserFromUsernameAndPassword($username, $password);
@@ -88,7 +88,7 @@ class User_maintenance_model extends CI_Model {
         return false;
     }
 
-    public function updateEmailAddress(IData_store $pDataStore, User $pUser) {
+    public function updateEmailAddress(IData_store_user $pDataStore, User $pUser) {
         return $pDataStore->updateEmailAddress($pUser);
         //$this->db->where('user_name', $pUser->getUsername());
         //$this->db->update('umpire_users', array('user_email'=>$pUser->getEmailAddress()));

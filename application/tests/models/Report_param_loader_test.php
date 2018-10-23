@@ -29,7 +29,7 @@ class Report_param_loader_test extends TestCase {
   
   public function test_loadAllParametersTest() {
       $requestedReportModel = Requested_report_model::createRequestedReportFromValues(1, 2016, "N", "A", "W", "L", true);
-      $arrayStore = new Array_store();
+      $arrayStore = new Array_store_matches();
       
       $this->obj->loadAllReportParametersForReport($requestedReportModel, $arrayStore);
       
@@ -40,7 +40,7 @@ class Report_param_loader_test extends TestCase {
   
   public function test_loadAllParametersTestV2() {
       $requestedReportModel = Requested_report_model::createRequestedReportFromValues(2, 2016, "N", "A", "W", "L", true);
-      $arrayStore = new Array_store();
+      $arrayStore = new Array_store_matches();
       
       $this->obj->loadAllReportParametersForReport($requestedReportModel, $arrayStore);
       
@@ -52,14 +52,14 @@ class Report_param_loader_test extends TestCase {
   public function test_loadAllParametersTestNotFound() {
       $this->expectException(Exception::class);
       $requestedReportModel = Requested_report_model::createRequestedReportFromValues(15, 2016, "N", "A", "W", "L", true);
-      $arrayStore = new Array_store();
+      $arrayStore = new Array_store_matches();
       
       $this->obj->loadAllReportParametersForReport($requestedReportModel, $arrayStore);
   }
   
   public function test_loadAllGroupingStructuresForReport() {
       $requestedReportModel = Requested_report_model::createRequestedReportFromValues(1, 2016, "N", "A", "W", "L", true);
-      $arrayStore = new Array_store();
+      $arrayStore = new Array_store_matches();
       
       $this->obj->loadAllGroupingStructuresForReport($requestedReportModel, $arrayStore);
       
@@ -71,7 +71,7 @@ class Report_param_loader_test extends TestCase {
   public function test_loadAllGroupingStructuresForReportNotFound() {
       $this->expectException(Exception::class);
       $requestedReportModel = Requested_report_model::createRequestedReportFromValues(18, 2016, "N", "A", "W", "L", true);
-      $arrayStore = new Array_store();
+      $arrayStore = new Array_store_matches();
       
       $this->obj->loadAllGroupingStructuresForReport($requestedReportModel, $arrayStore);
   }

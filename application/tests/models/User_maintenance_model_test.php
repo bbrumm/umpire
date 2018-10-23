@@ -41,7 +41,7 @@ class User_maintenance_model_test extends TestCase
     }
     
     public function test_CheckUserExistsForReset() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("test", "john", "smith", "mypass");
         $expected = true;
@@ -50,7 +50,7 @@ class User_maintenance_model_test extends TestCase
     }
     
     public function test_CheckUserExistsForReset_NoMatch() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("abcdef", "john", "smith", "test@abc.com");
         $expected = false;
@@ -59,7 +59,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_CheckUserExistsForReset_TwoRecordsMatch() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("john", "john", "smith", "test@abc.com");
         $expected = false;
@@ -68,7 +68,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_CheckUserExistsForReset_UserMatchEmailNoMatch() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("abcdef", "john", "smith", "testwrong@abc.com");
         $expected = false;
@@ -77,7 +77,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_CheckUserExistsForReset_UserNoMatchEmailMatch() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("abcdefwrong", "john", "smith", "test@abc.com");
         $expected = false;
@@ -86,7 +86,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_LogPasswordResetRequest() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $requestData = array(
         'request_datetime'=>'19/10/18 06:30 AM',
@@ -104,7 +104,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_LogPasswordResetRequest_MissingUsername() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $requestData = array(
         'request_datetime'=>'19/10/18 06:30 AM',
@@ -122,7 +122,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_StoreActivationID() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $activationID = "123456";
         $user = User::createUserFromNameAndEmail("abcdef", "john", "smith", "test@abc.com");
@@ -132,7 +132,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_StoreActivationID_UserNotFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $activationID = "123456";
         $user = User::createUserFromNameAndPW("abcdefnotfound", "john", "smith", "mypass");
@@ -142,7 +142,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_CreateUserFromActivationID() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $activationID = "123456";
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "mypass");
@@ -153,7 +153,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_CreateUserFromActivationID_NotFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $activationID = "987";
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "mypass");
@@ -165,7 +165,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_CreateUserFromActivationID_TwoUsersFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $activationID = "111";
         $user = User::createUserFromNameAndPW("john", "john", "smith", "mypass");
@@ -177,7 +177,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_UpdatePassword() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "newpass");
         $expected = true;
@@ -187,7 +187,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_UpdatePassword_SamePW() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "mypass");
         $expected = true;
@@ -197,7 +197,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_UpdatePassword_Empty() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "");
         $expected = false;
@@ -206,7 +206,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_UpdatePassword_Null() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", null);
         $expected = false;
@@ -217,7 +217,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_UpdatePassword_UserNotFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("abcdefnotfound", "john", "smith", "newpass");
         $expected = false;
@@ -226,7 +226,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_UpdatePassword_TwoUsersFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("john", "john", "smith", "newpass");
         $expected = true; //The code gets the first user
@@ -238,7 +238,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_Validate_UserExists() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "john";
         $password = "mypass";
@@ -248,7 +248,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_Validate_UserExistsButWrongPW() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "john";
         $password = "wrongpass";
@@ -258,7 +258,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_Validate_MissingUsername() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "somethingnew";
         $password = "mypass";
@@ -268,7 +268,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_Validate_EmptyValues() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "";
         $password = "";
@@ -278,7 +278,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_Validate_EmptyPassword() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "abcdef";
         $password = "";
@@ -289,7 +289,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_Validate_NullValues() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = null;
         $password = null;
@@ -300,7 +300,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_Validate_TwoResults() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "ringo";
         $password = "otherthing";
@@ -312,7 +312,7 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_Validate_SQLInjection() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "1 OR 1=1";
         $password = "1 OR 1=1";
@@ -322,7 +322,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_Validate_SQLInjectionCreate() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $username = "; CREATE TABLE inj (id NUMBER);";
         $password = "mypass";
@@ -332,7 +332,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_UpdateEmailAddress() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("test", "john", "smith", "test@email.com");
         $expected = true;
@@ -341,7 +341,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_UpdateEmailAddress_EmailEmpty() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("test", "john", "smith", "");
         $expected = true;
@@ -350,7 +350,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_UpdateEmailAddress_EmailNull() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("test", "john", "smith", null);
         $expected = true;
@@ -359,7 +359,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_UpdateEmailAddress_UserNotFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("abcnotfound", "john", "smith", "test@abc.com");
         $expected = false;
@@ -368,7 +368,7 @@ class User_maintenance_model_test extends TestCase
     }
 
     public function test_UpdateEmailAddress_TwoUsersFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndEmail("john", "john", "smith", null);
         $expected = true;

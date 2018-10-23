@@ -16,12 +16,12 @@ class Refresh_mv_tables extends CI_Model
         $this->load->model('Season');
     }
     
-    public function refreshMVTables(IData_Store $pDataStore, $season, $importedFileID) {
+    public function refreshMVTables(IData_store_matches $pDataStore, $season, $importedFileID) {
         /*
         $queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
         $query = $this->db->query($queryString);
         */
-        if (is_a($pDataStore, 'Array_store')) {
+        if (is_a($pDataStore, 'Array_store_matches')) {
             //TODO remove this once I have refactored this code
         } else {
             $seasonYear = $this->getSeasonYear($season);

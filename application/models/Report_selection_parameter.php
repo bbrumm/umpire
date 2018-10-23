@@ -12,7 +12,7 @@ class Report_selection_parameter extends CI_Model
         parent::__construct();
         $this->load->model('Selectable_report_option');
         $this->load->library('Debug_library');
-        $this->load->model('Database_store');
+        $this->load->model('Database_store_matches');
     }
 
     public static function createReportSelectionParameter($pParameterID, $pParameterName, 
@@ -78,12 +78,12 @@ class Report_selection_parameter extends CI_Model
         $this->allowMultipleSelections = $pValue;
     }
     
-    public function initialiseSelectableReportOptions(IData_store $pDataStore) {
+    public function initialiseSelectableReportOptions(IData_store_matches $pDataStore) {
         $this->loadSelectableReportOptions($pDataStore);
         //$this->debug_library->debugOutput("initialiseSelectableReportOptions : ", $this->getSelectableReportOptions());
     }
     
-    private function loadSelectableReportOptions(IData_store $pDataStore) {
+    private function loadSelectableReportOptions(IData_store_matches $pDataStore) {
         $parameterID = $this->getParameterID();
         $this->setSelectableReportOptions($pDataStore->loadSelectableReportOptions($parameterID));
     }

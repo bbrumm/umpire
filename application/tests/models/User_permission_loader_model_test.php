@@ -9,7 +9,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_getUserFromUsername() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $firstname = "john";
         $lastname = "smith";
@@ -21,7 +21,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_getUserFromUsername_UserNotFound() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john20";
         $actual = $this->obj->getUserFromUsername($arrayStore, $username);
         $expected = false;
@@ -29,7 +29,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_getUserFromUsername_TwoUsers() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "asd";
         $firstname = "sam";
         $lastname = "smith";
@@ -41,7 +41,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserHasSpecificPermission() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $permissionName = "IMPORT_FILES";
@@ -52,7 +52,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserHasSpecificPermission_SelectionNotInArray() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $permissionName = "IMPORT_FILES";
@@ -63,7 +63,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserHasSpecificPermission_PermissionNotInArray() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $permissionName = "MORE";
@@ -74,7 +74,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserHasSpecificPermission_Empty() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $permissionName = "";
@@ -85,7 +85,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserHasSpecificPermission_Null() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $permissionName = null;
@@ -96,7 +96,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserHasImportFilePermission() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "paul";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userHasImportFilePermission($user);
@@ -105,7 +105,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserHasImportFilePermission_No() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "george";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userHasImportFilePermission($user);
@@ -114,7 +114,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserCanSeeAdminPage() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userCanSeeUserAdminPage($user);
@@ -123,7 +123,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserCanSeeAdminPage_No() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "george";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userCanSeeUserAdminPage($user);
@@ -132,7 +132,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserCanSeeDataTestPage() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userCanSeeDataTestPage($user);
@@ -141,7 +141,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserCanSeeDataTest_No() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "george";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userCanSeeDataTestPage($user);
@@ -150,7 +150,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserCanCreatePDF() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "john";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userCanCreatePDF($user);
@@ -159,7 +159,7 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_UserCanCreatePDF_No() {
-        $arrayStore = new Array_store;
+        $arrayStore = new Array_store_user;
         $username = "george";
         $user = $this->obj->getUserFromUsername($arrayStore, $username);
         $actual = $this->obj->userCanCreatePDF($user);

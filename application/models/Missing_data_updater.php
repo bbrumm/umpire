@@ -7,35 +7,35 @@ class Missing_data_updater extends CI_Model {
         $this->load->library('Debug_library');
         $this->load->library('Array_library');
         $this->load->model('Match_import');
-        $this->load->model('Database_store');
+        $this->load->model('Database_store_matches');
         $this->load->model('Run_etl_stored_proc');
     }
     
-    public function loadPossibleLeaguesForComp(IData_store $pDataStore) {
+    public function loadPossibleLeaguesForComp(IData_store_matches $pDataStore) {
         return $pDataStore->loadPossibleLeaguesForComp();
     }
     
-    public function loadPossibleClubsForTeam(IData_store $pDataStore) {
+    public function loadPossibleClubsForTeam(IData_store_matches $pDataStore) {
         return $pDataStore->loadPossibleClubsForTeam();
     }
     
-    public function loadPossibleRegions(IData_store $pDataStore) {
+    public function loadPossibleRegions(IData_store_matches $pDataStore) {
         return $pDataStore->loadPossibleRegions();
     }
     
-    public function loadPossibleAgeGroups(IData_store $pDataStore) {
+    public function loadPossibleAgeGroups(IData_store_matches $pDataStore) {
         return $pDataStore->loadPossibleAgeGroups();
     }
     
-    public function loadPossibleShortLeagueNames(IData_store $pDataStore) {
+    public function loadPossibleShortLeagueNames(IData_store_matches $pDataStore) {
         return $pDataStore->loadPossibleShortLeagueNames();
     }
     
-    public function loadPossibleDivisions(IData_store $pDataStore) {
+    public function loadPossibleDivisions(IData_store_matches $pDataStore) {
         return $pDataStore->loadPossibleDivisions();
     }
     
-    public function updateDataAndRunETLProcedure(IData_store $pDataStore, $pPostArray) {
+    public function updateDataAndRunETLProcedure(IData_store_matches $pDataStore, $pPostArray) {
         //$this->debug_library->debugOutput("POST from updateDataAndRunETLProcedure", $pPostArray);
         
         if (array_key_exists('competition', $pPostArray)) {
@@ -78,7 +78,7 @@ class Missing_data_updater extends CI_Model {
         */
     }
     
-    public function updateSingleCompetition(IData_store $pDataStore, array $competitionData) {
+    public function updateSingleCompetition(IData_store_matches $pDataStore, array $competitionData) {
         //Find league_id to use, based on parameters.
         //If there are more than one (sometimes there is two), it is because there are two competition names, so just pick the earliest one
         //$leagueIDToUse = $this->findSingleLeagueIDFromParameters($competitionData);
@@ -133,7 +133,7 @@ class Missing_data_updater extends CI_Model {
     }
     */
 
-    public function insertNewLeague(IData_store $pDataStore, array $competitionData) {
+    public function insertNewLeague(IData_store_matches $pDataStore, array $competitionData) {
         //First, check if there is an age_group_division that exists, and insert one if it does not.
         $pDataStore->checkAndInsertAgeGroupDivision($competitionData);
 
@@ -142,7 +142,7 @@ class Missing_data_updater extends CI_Model {
     }
     
     
-    private function updateTeamAndClubTables(IData_store $pDataStore, array $pPostData) {
+    private function updateTeamAndClubTables(IData_store_matches $pDataStore, array $pPostData) {
         //$this->debug_library->debugOutput("updateTeamAndClubTables POST", $pPostData);
         
         foreach ($pPostData['rdTeam'] as $teamID => $radioSelection) {
@@ -166,11 +166,11 @@ class Missing_data_updater extends CI_Model {
         }
     }
     
-    private function insertNewClub(IData_store $pDataStore, $newClubName) {
+    private function insertNewClub(IData_store_matches $pDataStore, $newClubName) {
         return $pDataStore->insertNewClub($newClubName);
     }
     
-    private function updateTeamTable(IData_store $pDataStore, $pTeamID, $pClubID) {
+    private function updateTeamTable(IData_store_matches $pDataStore, $pTeamID, $pClubID) {
         $pDataStore->updateTeamTable($pTeamID, $pClubID);
     }
 }

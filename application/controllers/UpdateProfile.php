@@ -14,7 +14,7 @@ if (! defined('BASEPATH'))
             $this->load->model('User');
             $this->load->model('useradmin/User_maintenance_model');
             $this->load->model('useradmin/User_permission_loader_model');
-            $this->load->model('Database_store');
+            $this->load->model('Database_store_matches');
             $this->load->library('Debug_library');
         }
         
@@ -43,7 +43,7 @@ if (! defined('BASEPATH'))
             //TODO: Refactor this with the ResetPasswordEntry controller as it's very similar code
             $userName = $_POST['username'];
             $userMaintenance = new User_maintenance_model();
-            $dbStore = new Database_store();
+            $dbStore = new Database_store_user();
             
             $newPassword= $this->security->xss_clean($this->input->post('password'));
             $confirmNewPassword= $this->security->xss_clean($this->input->post('confirmPassword'));
@@ -68,7 +68,7 @@ if (! defined('BASEPATH'))
         
         public function updateEmail() {
             $userMaintenance = new User_maintenance_model();
-            $dbStore = new Database_store();
+            $dbStore = new Database_store_user();
             $userName = $_POST['username'];
             
             $newEmail= $this->security->xss_clean($this->input->post('email_address'));
@@ -86,7 +86,7 @@ if (! defined('BASEPATH'))
         
         private function lookupUserData(User $pUser) {
             $userPermissionLoader = new User_permission_loader_model();
-            $dbStore = new Database_store();
+            $dbStore = new Database_store_user();
 
             $foundUser = $userPermissionLoader->getUserFromUsername($dbStore, $pUser->getUsername());
             

@@ -9,7 +9,7 @@ class ForgotPassword extends CI_Controller {
         $this->load->helper('string');
         $this->load->model('useradmin/User_maintenance_model');
         $this->load->model('useradmin/User_permission_loader_model');
-        $this->load->model('Database_store');
+        $this->load->model('Database_store_matches');
         
     }
     
@@ -64,7 +64,7 @@ class ForgotPassword extends CI_Controller {
         $umpireUser->setEmailAddress($pEmailAddress);
         $userMaintenance = new User_maintenance_model();
         $userPermissionLoader = new User_permission_loader_model();
-        $dbStore = new Database_store();
+        $dbStore = new Database_store_user();
         
         $data['activation_id'] = random_string('alnum',15);
         $data['request_datetime'] = date('Y-m-d H:i:s');

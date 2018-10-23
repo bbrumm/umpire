@@ -8,12 +8,12 @@ class Match_import extends CI_Model
         $this->load->model('Table_operation');
         $this->load->model('Season');
         $this->load->library('Debug_library');
-        $this->load->model('Database_store');
+        $this->load->model('Database_store_matches');
     }
 
     public function fileImport($data) {
         date_default_timezone_set("Australia/Melbourne");
-        $pDataStore = new Database_store();
+        $pDataStore = new Database_store_matches();
         //Remove data from previous load first
         $this->clearMatchImportTable($pDataStore);
 
@@ -95,7 +95,7 @@ class Match_import extends CI_Model
         return $resultArray[0]['progress_value'];
     }
 
-    public function findSeasonToUpdate(IData_store $pDataStore) {
+    public function findSeasonToUpdate(IData_store_matches $pDataStore) {
         return $pDataStore->findSeasonToUpdate();
     }
 
@@ -103,7 +103,7 @@ class Match_import extends CI_Model
         return $pDataStore->findLatestImportedFile();
     }
 
-    private function clearMatchImportTable(IData_store $pDataStore) {
+    private function clearMatchImportTable(IData_store_matches $pDataStore) {
         $queryString = "DELETE FROM match_import;";
         $this->db->query($queryString);
     }

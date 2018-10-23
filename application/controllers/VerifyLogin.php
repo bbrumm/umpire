@@ -6,7 +6,7 @@ class VerifyLogin extends CI_Controller {
          parent::__construct();
          $this->load->model('user','',TRUE);
          $this->load->model('useradmin/User_authentication_model');
-         $this->load->model('Database_store');
+         $this->load->model('Database_store_matches');
 
      }
     
@@ -33,7 +33,7 @@ class VerifyLogin extends CI_Controller {
          //Field validation succeeded.  Validate against database
          $username = $this->input->post('username');
          $userAuth = new User_authentication_model();
-         $dbStore = new Database_store();
+         $dbStore = new Database_store_user();
     
          //Check if user is active first
          if($userAuth->checkUserActive($dbStore, $username)) {

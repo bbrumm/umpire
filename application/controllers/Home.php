@@ -11,7 +11,7 @@ class Home extends CI_Controller {
         $this->load->model('Report_selection');
         $this->load->model('Season');
         $this->load->model('User');
-        $this->load->model('Database_store');
+        $this->load->model('Database_store_matches');
 
         if($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
@@ -55,7 +55,7 @@ class Home extends CI_Controller {
     }
     
     private function getAllReportSelectionParameters() {
-        $pDataStore = new Database_store();
+        $pDataStore = new Database_store_matches();
         
         $queryString = "SELECT parameter_id, parameter_name, parameter_display_order, allow_multiple_selections 
             FROM report_selection_parameters 

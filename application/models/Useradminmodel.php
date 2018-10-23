@@ -8,12 +8,12 @@ class Useradminmodel extends CI_Model {
         $this->load->model("User");
         $this->load->library('Debug_library');
         $this->load->model("useradmin/User_permission_loader_model");
-        $this->load->model("Database_store");
+        $this->load->model("Database_store_matches");
     }
     
     public function getAllUsers() {
         $userPermissionLoader = User_permission_loader_model();
-        $dbStore = new Database_store();
+        $dbStore = new Database_store_user();
         $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, r.role_name, u.active 
             FROM umpire_users u  
             INNER JOIN role r ON u.role_id = r.id  
