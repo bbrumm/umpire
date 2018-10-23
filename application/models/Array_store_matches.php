@@ -12,7 +12,7 @@ class Array_store_matches extends CI_Model implements IData_store_matches
     public function loadAllReportParameters($pReportNumber) {
         $reportParameterArray = [];
         $reportParameterArray[1] = Report_parameter::createNewReportParameter(
-            'Random Title', 1, 0, 'text', true, 'portrait', 'a4', 200);
+            'Random Title %seasonYear', 1, 0, 'text', true, 'portrait', 'a4', 200);
         $reportParameterArray[2] = Report_parameter::createNewReportParameter(
             'Another Title', 2, 0, 'text', false, 'landscape', 'a4', 200);
         $reportParameterArray[3] = Report_parameter::createNewReportParameter(
@@ -240,6 +240,8 @@ class Array_store_matches extends CI_Model implements IData_store_matches
     public function findLastGameDateForSelectedSeason(Requested_report_model $requestedReport) {
 
     }
+
+
 
 
 }

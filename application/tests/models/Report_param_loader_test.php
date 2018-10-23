@@ -33,7 +33,7 @@ class Report_param_loader_test extends TestCase {
       
       $this->obj->loadAllReportParametersForReport($requestedReportModel, $arrayStore);
       
-      $expected = "Random Title";
+      $expected = "Random Title %seasonYear";
       $actual = $this->obj->getReportParameter()->getReportTitle();
       $this->assertEquals($expected, $actual);
   }
