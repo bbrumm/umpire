@@ -88,8 +88,12 @@ if ($showHeader) {
     		$session_data = $this->session->userdata('logged_in');
     		$username = $session_data['username'];
     		//Get user object, including their role and permissions
-    		$currentUser = new User();
-    		$currentUser->getUserFromUsername($session_data['username']);
+            //$currentUser = User::createUserFromUsername($session_data['username']);
+
+            $currentUser = $userPermissionLoader->getUserFromUsername($pDataStore, $username);
+    		//$currentUser = new User();
+    		//$currentUser->getUserFromUsername($session_data['username']);
+
     		//$userFirstName = $currentUser->getUsername();
     		//echo "First Name: " . $currentUser->getFirstName();
     		$menuHome = "<div class='menuBarLink'>Home Page</div>";

@@ -89,6 +89,16 @@ class Report1 extends Parent_report implements IReport {
     }
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
+        /*echo "pResultArray<pre>";
+        print_r($pResultArray);
+        echo "</pre>";
+        echo "pFieldForRowLabel<pre>";
+        print_r($pFieldForRowLabel);
+        echo "</pre>";
+        echo "pFieldsForColumnLabel<pre>";
+        print_r($pFieldsForColumnLabel);
+        echo "</pre>";
+        */
         $pivotedArray = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
@@ -100,13 +110,17 @@ class Report1 extends Parent_report implements IReport {
                 $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]];
             }
             foreach ($pFieldsForColumnLabel as $columnField) {
-
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, $columnField, $columnField);
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "match_count", "match_count");
 
             }
             $counterForRow++;
         }
+        /*
+        echo "pivotedArray<pre>";
+        print_r($pivotedArray);
+        echo "</pre>";
+        */
         return $pivotedArray;
     }
     

@@ -1,5 +1,5 @@
 <?php
-require_once 'IData_store_matches.php';
+require_once 'IData_store_user.php';
 class Database_store_user extends CI_Model implements IData_store_user
 {
 

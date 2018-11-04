@@ -55,17 +55,27 @@ class Report_instance_test extends TestCase
         $this->obj->loadReportResults($dataStore);
 
         $this->assertEquals(1, 1);
-        /* TODO fix this test
+        //TODO fix this test
         $expectedColumnLabelResultArraySet = true;
-        $actualColumnLabelResultArraySet = !empty($this->obj->getColumnLabelResultArray());
+        $columnLabelResultArray = $this->obj->getColumnLabelResultArray();
+        //echo "getColumnLabelResultArray: <pre>" . print_r($columnLabelResultArray) . "</pre>";
+        //echo "getColumnLabelResultArray empty:" . isset($columnLabelResultArray);
+        $actualColumnLabelResultArraySet = !empty($columnLabelResultArray);
         $this->assertEquals($expectedColumnLabelResultArraySet, $actualColumnLabelResultArraySet);
 
+
         $expectedResultOutputArraySet = true;
-        $actualResultOutputArraySet = !empty($this->obj->getResultOutputArray());
+        $resultOutputArray = $this->obj->getResultOutputArray();
+        //echo "<pre>" . print_r($resultOutputArray) . "</pre>";
+        //echo "resultOutputArray count: " . count($resultOutputArray);
+        $actualResultOutputArraySet = !empty($resultOutputArray);
         $this->assertEquals($expectedResultOutputArraySet, $actualResultOutputArraySet);
-        */
+
 
     }
+
+    
+
 
 
 }

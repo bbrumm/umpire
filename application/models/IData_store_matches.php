@@ -55,5 +55,6 @@ interface IData_store_matches {
 
     public function findLastGameDateForSelectedSeason(Requested_report_model $requestedReport);
 
+    public function findDistinctColumnHeadings(IReport $separateReport, Report_instance $reportInstance);
     
 }

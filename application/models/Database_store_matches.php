@@ -372,6 +372,14 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         return $queryResultArray[0]['last_date'];
     }
 
+    public function findDistinctColumnHeadings(IReport $separateReport, Report_instance $reportInstance) {
+        $columnLabelQuery = $separateReport->getReportColumnQuery($reportInstance);
+
+        $query = $this->db->query($columnLabelQuery);
+        return $query->result_array();
+
+    }
+
     
     
 }

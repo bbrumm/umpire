@@ -6,7 +6,7 @@ class VerifyLogin extends CI_Controller {
          parent::__construct();
          $this->load->model('user','',TRUE);
          $this->load->model('useradmin/User_authentication_model');
-         $this->load->model('Database_store_matches');
+         $this->load->model('Database_store_user');
 
      }
     

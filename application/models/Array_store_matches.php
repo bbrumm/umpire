@@ -249,6 +249,19 @@ class Array_store_matches extends CI_Model implements IData_store_matches
 
     }
 
+    public function findDistinctColumnHeadings(IReport $separateReport, Report_instance $reportInstance) {
+        /*
+        $testData = array(
+            'short_league_name', 'club_name'
+        );
+        */
+        $testData = array(
+            array('short_league_name' => 'GFL', 'club_name' => 'Geelong')
+        );
+        return $testData;
+
+    }
+
 
 
 

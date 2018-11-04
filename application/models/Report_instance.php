@@ -130,10 +130,15 @@ class Report_instance extends CI_Model {
 	public function loadReportResults($pDataStore) {
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryResultArray = $pDataStore->loadReportData($separateReport, $this);
+        /*
+        echo "loadReportResults: " . count($queryResultArray);
+        echo "<pre>". print_r($queryResultArray) ."</pre>";
+        */
         $this->setResultArray($separateReport, $queryResultArray);
 
+        //echo "getResultArray: " . count($this->getResultArray());
         //Pivot the array so it can be displayed
-        $this->setColumnLabelResultArray($separateReport, $queryResultArray);
+        $this->setColumnLabelResultArray($pDataStore, $separateReport);
         
         //TODO: This function is causing the output values to be misaligned.
         $this->setResultOutputArray($separateReport);
@@ -195,20 +200,29 @@ class Report_instance extends CI_Model {
         //$this->debug_library->debugOutput("pResultArray:", $pResultArray);
 	}
 
-    private function setColumnLabelResultArray(IReport $separateReport, $pColumnLabelArray) {
+    private function setColumnLabelResultArray(IData_store_matches $pDataStore, IReport $separateReport) {
         //Find a distinct list of values to use as column headings
         //$separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
-        $columnLabelQuery = $separateReport->getReportColumnQuery($this);
-
-        $query = $this->db->query($columnLabelQuery);
-        $this->columnLabelResultArray = $query->result_array();
+        $this->columnLabelResultArray = $pDataStore->findDistinctColumnHeadings($separateReport, $this);
         //$this->debug_library->debugOutput("columnLabelResultArray in setColumnLabelResultArray:", $this->getColumnLabelResultArray());
     }
 
     private function setResultOutputArray(IReport $separateReport) {
         $columnLabelResultArray = $this->getColumnLabelResultArray();
         $resultArray = $this->getResultArray();
+        /*
+        echo "count resultArray: " . count($resultArray);
 
+        echo " resultArray<pre>";
+        print_r($resultArray);
+        echo "</pre>";
+        echo " columnLabelResultArray<pre>";
+        print_r($columnLabelResultArray);
+        echo "</pre>";
+        echo " reportColumnFields<pre>";
+        print_r($this->getReportColumnFields());
+        echo "</pre>";
+        */
         $this->resultOutputArray = $separateReport->transformQueryResultsIntoOutputArray(
             $resultArray, $columnLabelResultArray, $this->getReportColumnFields());
     }
