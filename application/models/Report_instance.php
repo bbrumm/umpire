@@ -210,19 +210,6 @@ class Report_instance extends CI_Model {
     private function setResultOutputArray(IReport $separateReport) {
         $columnLabelResultArray = $this->getColumnLabelResultArray();
         $resultArray = $this->getResultArray();
-        /*
-        echo "count resultArray: " . count($resultArray);
-
-        echo " resultArray<pre>";
-        print_r($resultArray);
-        echo "</pre>";
-        echo " columnLabelResultArray<pre>";
-        print_r($columnLabelResultArray);
-        echo "</pre>";
-        echo " reportColumnFields<pre>";
-        print_r($this->getReportColumnFields());
-        echo "</pre>";
-        */
         $this->resultOutputArray = $separateReport->transformQueryResultsIntoOutputArray(
             $resultArray, $columnLabelResultArray, $this->getReportColumnFields());
     }
@@ -251,6 +238,11 @@ class Report_instance extends CI_Model {
 	    $arrayLibrary = new Array_library();
 	    $columnLabelResults = $this->columnLabelResultArray;
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
+
+	    echo "test columnLabels";
+	    print_r($columnLabels);
+
+
 	    //$columnCountLabels = [];
 
         //$currentIterationReportGroupFieldName = "";
@@ -356,7 +348,7 @@ class Report_instance extends CI_Model {
 	
 	private function isFirstAndSecondColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $firstLoopCounter, $secondLoopCounter) {
         $arrayLibrary = new Array_library();
-	    return $arrayLibrary->in_array_r(
+        return $arrayLibrary->in_array_r(
 	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()] . "|" .
             $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $this->columnCountLabels[$firstLoopCounter]
 	    );

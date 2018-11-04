@@ -52,12 +52,6 @@ class Parent_report extends CI_Model {
     }
 
     public function isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
-        /*echo "columnField1: " . $pReportColumnFields[1];
-        echo "col heading set: <pre>";
-        print_r($pColumnHeadingSet);
-        echo "</pre>";
-        echo "columnHeadingSet " . $pColumnHeadingSet[$pReportColumnFields[1]];
-        */
         return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]] &&
             $pColumnItem[$pReportColumnFields[1]] == $pColumnHeadingSet[$pReportColumnFields[1]]);
     }
