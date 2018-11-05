@@ -69,15 +69,15 @@ class User_test extends TestCase
     }
 
     public function test_PasswordNull() {
-        $expected = null;
-        $this->obj->setPassword($expected);
-        $this->assertEquals($expected, $this->obj->getPassword());
+        $this->expectException(InvalidArgumentException::class);
+        $input = null;
+        $this->obj->setPassword($input);
     }
 
     public function test_PasswordEmpty() {
-        $expected = "";
-        $this->obj->setPassword($expected);
-        $this->assertEquals($expected, $this->obj->getPassword());
+        $this->expectException(InvalidArgumentException::class);
+        $input = "";
+        $this->obj->setPassword($input);
     }
 
     public function test_FirstName() {

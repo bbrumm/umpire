@@ -331,16 +331,17 @@ class Array_store_user extends CI_Model implements IData_store_user
         $user2 = User::createUserFromNameAndPW("paul", "paul", "mcc", "apass");
         $existingUsers = array ($user1, $user2);
         $newUsername = $pUser->getUsername();
-        $newPassword = $pUser->getUsername();
+        $newPassword = $pUser->getPassword();
         if (!empty($newUsername) && !empty($newPassword)) {
             $existingUsers[] = $pUser;
         }
+        $lastIndex = count($existingUsers) - 1;
 
-        if ($existingUsers[2]->getUsername() == $pUser->getUsername() &&
-        count($existingUsers) == 3) {
+        if ($existingUsers[$lastIndex]->getUsername() == $pUser->getUsername()
+            && count($existingUsers) == 3) {
             return true;
         } else {
-            throw new exception("There was an error when inserting the user. Please contact support.");
+            throw new Exception("There was an error when inserting the user. Please contact support.");
         }
 
     }

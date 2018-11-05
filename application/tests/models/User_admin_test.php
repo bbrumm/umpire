@@ -194,7 +194,8 @@ class User_admin_model_test extends TestCase
     }
 
 
-    public function addNewUser() {
+    public function test_addNewUser() {
+        $arrayStore = new Array_store_user();
         $userData = array (
             "username" => "test1",
             "firstname" => "jacob",
@@ -202,13 +203,15 @@ class User_admin_model_test extends TestCase
             "password" => "abc"
            );
 
-        $actualResult = $this->obj->addNewUser($userData);
+        $actualResult = $this->obj->addNewUser($arrayStore, $userData);
         $expectedResult = true;
         $this->assertEquals($expectedResult, $actualResult);
     }
 
 
-    public function addNewUser_EmptyUsername() {
+    public function test_addNewUser_EmptyUsername() {
+        $this->expectException(Exception::class);
+        $arrayStore = new Array_store_user();
         $userData = array (
             "username" => "",
             "firstname" => "jacob",
@@ -216,13 +219,12 @@ class User_admin_model_test extends TestCase
             "password" => "abc"
         );
 
-        $actualResult = $this->obj->addNewUser($userData);
-        $expectedResult = false;
-        $this->assertEquals($expectedResult, $actualResult);
+        $actualResult = $this->obj->addNewUser($arrayStore, $userData);
     }
 
 
-    public function addNewUser_EmptyNames() {
+    public function test_addNewUser_EmptyNames() {
+        $arrayStore = new Array_store_user();
         $userData = array (
             "username" => "test1",
             "firstname" => "",
@@ -230,13 +232,15 @@ class User_admin_model_test extends TestCase
             "password" => "abc"
             );
 
-        $actualResult = $this->obj->addNewUser($userData);
+        $actualResult = $this->obj->addNewUser($arrayStore, $userData);
         $expectedResult = true;
         $this->assertEquals($expectedResult, $actualResult);
     }
 
 
-    public function addNewUser_EmptyPassword() {
+    public function test_addNewUser_EmptyPassword() {
+        $this->expectException(InvalidArgumentException::class);
+        $arrayStore = new Array_store_user();
         $userData = array (
             "username" => "test1",
             "firstname"=> "jacob",
@@ -244,9 +248,7 @@ class User_admin_model_test extends TestCase
             "password" => ""
         );
 
-        $actualResult = $this->obj->addNewUser($userData);
-        $expectedResult = false;
-        $this->assertEquals($expectedResult, $actualResult);
+        $actualResult = $this->obj->addNewUser($arrayStore, $userData);
     }
 
 

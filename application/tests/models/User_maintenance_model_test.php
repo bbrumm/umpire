@@ -197,21 +197,23 @@ class User_maintenance_model_test extends TestCase
 
 
     public function test_UpdatePassword_Empty() {
+        $this->expectException(InvalidArgumentException::class);
         $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "");
         $expected = false;
         $actual = $this->obj->updatePassword($arrayStore, $user);
-        $this->assertEquals($expected, $actual);
+        //$this->assertEquals($expected, $actual);
     }
 
     public function test_UpdatePassword_Null() {
+        $this->expectException(InvalidArgumentException::class);
         $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", null);
         $expected = false;
         $actual = $this->obj->updatePassword($arrayStore, $user);
-        $this->assertEquals($expected, $actual);
+        //$this->assertEquals($expected, $actual);
     }
 
 

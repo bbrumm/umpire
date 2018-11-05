@@ -76,9 +76,13 @@ class Useradminmodel extends CI_Model {
     }
     
     public function addNewUser(IData_store_user $pDataStore, $pSubmittedData) {
-        $newUser = User::createUserFromNameAndPW(
+        if (strlen($pSubmittedData['password']) > 0) {
+            $newUser = User::createUserFromNameAndPW(
                 $pSubmittedData['username'], $pSubmittedData['firstname'], $pSubmittedData['lastname'], MD5($pSubmittedData['password']));
-        return $pDataStore->insertUserIntoDatabase($newUser);
+        } else {
+            throw new InvalidArgumentException("Password cannot be empty.");
+        }
+        return $pDataStore->insertNewUser($newUser);
     }
 
 

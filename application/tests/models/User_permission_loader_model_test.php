@@ -13,8 +13,9 @@ class User_permission_loader_model_test extends TestCase
         $username = "john";
         $firstname = "john";
         $lastname = "smith";
+        $password = "mypass";
         $actual = $this->obj->getUserFromUsername($arrayStore, $username);
-        $expected = User::createUserFromNameAndPW($username, $firstname, $lastname, null);
+        $expected = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
         $this->assertEquals($expected->getUsername(), $actual->getUsername());
         $this->assertEquals($expected->getFirstName(), $actual->getFirstName());
         $this->assertEquals($expected->getLastName(), $actual->getLastName());
@@ -33,8 +34,9 @@ class User_permission_loader_model_test extends TestCase
         $username = "asd";
         $firstname = "sam";
         $lastname = "smith";
+        $password = "mypass";
         $actual = $this->obj->getUserFromUsername($arrayStore, $username);
-        $expected = User::createUserFromNameAndPW($username, $firstname, $lastname, null);
+        $expected = User::createUserFromNameAndPW($username, $firstname, $lastname, $password);
         $this->assertEquals($expected->getUsername(), $actual->getUsername());
         $this->assertEquals($expected->getFirstName(), $actual->getFirstName());
         $this->assertEquals($expected->getLastName(), $actual->getLastName());

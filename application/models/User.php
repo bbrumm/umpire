@@ -124,7 +124,11 @@ class User extends CI_Model
     }
 
     public function setPassword($pValue) {
-        $this->password = $pValue;
+        if(strlen($pValue) > 0) {
+            $this->password = $pValue;
+        } else {
+            throw new InvalidArgumentException('Password cannot be empty.');
+        }
     }
 
     public function setFirstName($pValue) {
