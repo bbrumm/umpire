@@ -13,6 +13,7 @@ class UserAdmin extends CI_Controller
         $this->load->helper('url_helper');
         $this->load->helper(array('form', 'url'));
         $this->load->model('Useradminmodel');
+        $this->load->model('Database_store_user');
         $this->load->library('Debug_library');
         $this->load->library('Array_library');
     }
@@ -23,9 +24,10 @@ class UserAdmin extends CI_Controller
     
     public function addNewUser() {
         $this->debug_library->debugOutput("POST from AddNewUser", $_POST);
+        $dataStore = new Database_store_user();
         $data = "";
         $userAdminModel = new Useradminmodel();
-        $userAddSuccess = $userAdminModel->addNewUser($_POST);
+        $userAddSuccess = $userAdminModel->addNewUser($dataStore, $_POST);
         
         $this->debug_library->debugOutput("UserAddSuccess", $userAddSuccess);
         
@@ -39,19 +41,20 @@ class UserAdmin extends CI_Controller
     public function loadPage($pUserAddedMessage = "") {
         
         if($this->session->userdata('logged_in')) {
+            $dataStore = new Database_store_user();
             $userAdmin = new Useradminmodel();
-            $userArray = $userAdmin->getAllUsers();
-            $roleArray = $userAdmin->getRoleArray();
+            $userArray = $userAdmin->getAllUsers($dataStore);
+            $roleArray = $userAdmin->getRoleArray($dataStore);
             //$subRoleArray = $userAdmin->getSubRoleArray();
             
-            $permissionSelectionArray = $userAdmin->getPermissionSelectionArray();
+            $permissionSelectionArray = $userAdmin->getPermissionSelectionArray($dataStore);
             
             //TODO: Remove these once the permission selection array is working
-            $reportSelectionArray = $userAdmin->getReportArray();
-            $regionSelectionArray = $userAdmin->getRegionArray();
-            $umpireDisciplineSelectionArray = $userAdmin->getUmpireDisciplineArray();
-            $ageGroupSelectionArray = $userAdmin->getAgeGroupArray();
-            $leagueSelectionArray = $userAdmin->getLeagueArray();
+            $reportSelectionArray = $userAdmin->getReportArray($dataStore);
+            $regionSelectionArray = $userAdmin->getRegionArray($dataStore);
+            $umpireDisciplineSelectionArray = $userAdmin->getUmpireDisciplineArray($dataStore);
+            $ageGroupSelectionArray = $userAdmin->getAgeGroupArray($dataStore);
+            $leagueSelectionArray = $userAdmin->getLeagueArray($dataStore);
             
             $this->load->view('templates/header');
             
@@ -109,8 +112,9 @@ The [#] represents the permission_selection.id value. This can be used to insert
          * 
          * Better to load both sets of data into two arrays, with the same structure, that can then be compared easily
          */
-        
-        $userPermissionsFromDB = $userAdmin->getAllUserPermissionsFromDB();
+        $dataStore = new Database_store_user();
+
+        $userPermissionsFromDB = $userAdmin->getAllUserPermissionsFromDB($dataStore);
         $userPermissionsFromForm = $_POST['userPrivilege'];
         
         $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
@@ -125,7 +129,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
         //Add privileges for users that were added on the form
         $userAdmin->addPrivileges($permissionsInFormNotDB);
         
-        $userRolesFromDB = $userAdmin->getAllUserRolesFromDB();
+        $userRolesFromDB = $userAdmin->getAllUserRolesFromDB($dataStore);
         $userRolesFromForm = $_POST['userRole'];
         
         //$this->debug_library->debugOutput("saveUserPrivileges Roles DB:", $userRolesFromDB);
@@ -140,8 +144,8 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $userAdmin->updateUserRoles($userRoleDifferences);
         
         //TODO: Update active/not active status
-        $userActiveFromDB = $userAdmin->getAllUserActiveFromDB();
-        $userActiveFromForm= $userAdmin->translateUserFormActive($_POST);
+        $userActiveFromDB = $userAdmin->getAllUserActiveFromDB($dataStore);
+        $userActiveFromForm = $userAdmin->translateUserFormActive($_POST);
         
         //$this->debug_library->debugOutput("saveUserPrivileges Active DB:", $userActiveFromDB);
         //$this->debug_library->debugOutput("saveUserPrivileges Active Form:", $userActiveFromForm);

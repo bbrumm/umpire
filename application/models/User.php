@@ -39,9 +39,7 @@ class User extends CI_Model
 
     public static function createUserFromUsername($pUsername) {
         $obj = new User();
-
         $obj->setUsername($pUsername);
-
         return $obj;
     }
 

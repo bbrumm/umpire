@@ -11,167 +11,117 @@ class Useradminmodel extends CI_Model {
         $this->load->model("Database_store_matches");
     }
     
-    public function getAllUsers() {
-        $userPermissionLoader = User_permission_loader_model();
-        $dbStore = new Database_store_user();
-        $queryString = "SELECT u.id, u.user_name, u.first_name, u.last_name, r.role_name, u.active 
-            FROM umpire_users u  
-            INNER JOIN role r ON u.role_id = r.id  
-            WHERE u.user_name NOT IN ('bbrumm');";
-        
-        //Run query and store result in array
-        $query = $this->db->query($queryString);
-        $queryResultArray = $query->result_array();
-        $userArray = '';
-        $arrayCount = count($queryResultArray);
-
-        for($i=0; $i<$arrayCount; $i++) {
-            $newUser = User::createUserFromNameAndRole(
-                $queryResultArray[$i]['id'], $queryResultArray[$i]['user_name'], 
-                $queryResultArray[$i]['first_name'], $queryResultArray[$i]['last_name'], 
-                $queryResultArray[$i]['role_name'], $queryResultArray[$i]['active'], NULL);
-            $userPermissionLoader->setPermissionArray($dbStore, $newUser);
-            $userArray[] = $newUser;
+    public function getAllUsers(IData_store_user $pDataStore) {
+        $userArray = $pDataStore->getAllUsers();
+        if (empty($userArray)) {
+            throw new Exception("No users were found in the database. Please contact support.");
         }
         return $userArray;
     }
-    
-    private function getArrayFromQuery($queryString) {
-        $query = $this->db->query($queryString);
-        $queryResultArray = $query->result_array();
-        return $queryResultArray;
+
+    public function getRoleArray(IData_store_user $pDataStore) {
+        $roleArray = $pDataStore->getRoleArray();
+        if (empty($roleArray)) {
+            throw new Exception("No roles were found in the database. Please contact support.");
+        }
+        return $roleArray;
     }
     
-    public function getRoleArray() {
-        $queryString = "SELECT id, role_name, display_order FROM role WHERE role_name != 'Owner' ORDER BY display_order;";
-        return $this->getArrayFromQuery($queryString);
+    public function getReportArray(IData_store_user $pDataStore) {
+        $reportArray = $pDataStore->getReportArray();
+        if (empty($reportArray)) {
+            throw new Exception("No reports were found in the database. Please contact support.");
+        }
+        return $reportArray;
     }
     
-    public function getReportArray() {
-        $queryString = "SELECT report_table_id, report_title FROM report_table;";
-        return $this->getArrayFromQuery($queryString);
+    public function getRegionArray(IData_store_user $pDataStore) {
+        $regionArray = $pDataStore->getRegionArray();
+        if (empty($regionArray)) {
+            throw new Exception("No regions were found in the database. Please contact support.");
+        }
+        return $regionArray;
     }
     
-    public function getRegionArray() {
-        $queryString = "SELECT id, region_name FROM region;";
-        return $this->getArrayFromQuery($queryString);
+    public function getUmpireDisciplineArray(IData_store_user $pDataStore) {
+        $umpireDisciplineArray = $pDataStore->getUmpireDisciplineArray();
+        if (empty($umpireDisciplineArray)) {
+            throw new Exception("No umpire disciplines were found in the database. Please contact support.");
+        }
+        return $umpireDisciplineArray;
     }
     
-    public function getUmpireDisciplineArray() {
-        $queryString = "SELECT id, umpire_type_name FROM umpire_type;";
-        return $this->getArrayFromQuery($queryString);
+    public function getAgeGroupArray(IData_store_user $pDataStore) {
+        $ageGroupArray = $pDataStore->getAgeGroupArray();
+        if (empty($ageGroupArray)) {
+            throw new Exception("No age groups were found in the database. Please contact support.");
+        }
+        return $ageGroupArray;
     }
     
-    public function getAgeGroupArray() {
-        $queryString = "SELECT id, age_group FROM age_group ORDER BY display_order;";
-        return $this->getArrayFromQuery($queryString);
+    public function getLeagueArray(IData_store_user $pDataStore) {
+        $leagueArray = $pDataStore->getLeagueArray();
+        if (empty($leagueArray)) {
+            throw new Exception("No leagues were found in the database. Please contact support.");
+        }
+        return $leagueArray;
     }
     
-    public function getLeagueArray() {
-        $queryString = "SELECT id, short_league_name FROM short_league_name ORDER BY display_order;";
-        return $this->getArrayFromQuery($queryString);
+    public function getPermissionSelectionArray(IData_store_user $pDataStore) {
+        $permissionSelectionArray = $pDataStore->getPermissionSelectionArray();
+        if (empty($permissionSelectionArray)) {
+            throw new Exception("No permission selections were found in the database. Please contact support.");
+        }
+        return $permissionSelectionArray;
     }
     
-    public function getPermissionSelectionArray() {
-        $queryString = "SELECT id, permission_id, category, selection_name ". 
-        " FROM permission_selection ORDER BY category, display_order;";
-        return $this->getArrayFromQuery($queryString);
-    }
-    
-    public function addNewUser($pSubmittedData) {
+    public function addNewUser(IData_store_user $pDataStore, $pSubmittedData) {
         $newUser = User::createUserFromNameAndPW(
                 $pSubmittedData['username'], $pSubmittedData['firstname'], $pSubmittedData['lastname'], MD5($pSubmittedData['password']));
-        return $this->insertUserIntoDatabase($newUser);
+        return $pDataStore->insertUserIntoDatabase($newUser);
     }
-    
-    private function insertUserIntoDatabase(User $pUser) {
-        //TODO: Replace the default role with a user selection, once it is built into the UI.
-        $queryString = "INSERT INTO umpire_users
-            (first_name, last_name, user_name, user_email, user_password, role_id)
-            VALUES (?, ?, ?, 'None', ?, 6);";
-        
-        $query = $this->db->query($queryString, array(
-            $pUser->getFirstName(), $pUser->getLastName(), $pUser->getUsername(), $pUser->getPassword()
-        ));
-        
-        if ($this->db->affected_rows() == 1) {
-            return true;
-        } else {
-            throw new exception("There was an error when inserting the user. Please contact support.");
-        }
-        
+
+
+    /*
+     This should return data in this format:
+     Array (
+         [username] => Array
+           (
+             [permission_selection.id] => on
+             [permission_selection.id] => on
+             [permission_selection.id] => on
+     */
+    public function getAllUserPermissionsFromDB(IData_store_user $pDataStore) {
+        return $pDataStore->getAllUserPermissionsFromDB();
     }
-    
-    public function getAllUserPermissionsFromDB() {
-        /*
-         This should return data in this format:
+
+
+    /*
+     This should return data in this format:
+        Array (
+            [bbeveridge] => 2
+            [jhillgrove] => 2
+            [gmanager] => 2
+    */
+    public function getAllUserRolesFromDB(IData_store_user $pDataStore) {
+        return $pDataStore->getAllUserRolesFromDB();
+    }
+
+
+    /*
+     This should return data in this format:
          Array (
-             [username] => Array
-               (
-                 [permission_selection.id] => on
-                 [permission_selection.id] => on
-                 [permission_selection.id] => on
-         */
-        
-        $queryString = "SELECT u.user_name, ps.id
-            FROM umpire_users u
-            INNER JOIN user_permission_selection ups ON u.id = ups.user_id
-            INNER JOIN permission_selection ps ON ps.id = ups.permission_selection_id
-            INNER JOIN permission p ON p.id = ps.permission_id
-            WHERE p.id IN (6, 7)";
-        
-        $resultArray = $this->getArrayFromQuery($queryString);
-        
-        //Translate the data into the format mentioned above
-        return $this->translatePermissionArray($resultArray);
-        
-        
+             [username] => on
+             [username] => on
+             [username] => on
+     */
+    public function getAllUserActiveFromDB(IData_store_user $pDataStore) {
+        return $pDataStore->getAllUserActiveFromDB();
     }
-    
-    public function getAllUserRolesFromDB() {
-        /*
-         This should return data in this format:
-            Array (
-                [bbeveridge] => 2
-                [jhillgrove] => 2
-                [gmanager] => 2
-        */
-        
-        $queryString = "SELECT user_name, role_id
-            FROM umpire_users
-            WHERE user_name NOT IN ('bbrumm');";
-        
-        $resultArray = $this->getArrayFromQuery($queryString);
-        
-        //Translate the data into the format mentioned above
-        return $this->translateRoleArray($resultArray);
-        
-        
-    }
-    
-    public function getAllUserActiveFromDB() {
-        /*
-         This should return data in this format:
-             Array (
-                 [username] => on
-                 [username] => on
-                 [username] => on
-         */
-        
-        $queryString = "SELECT user_name, active
-            FROM umpire_users
-            WHERE user_name NOT IN ('bbrumm');";
-        
-        $resultArray = $this->getArrayFromQuery($queryString);
-        
-        //Translate the data into the format mentioned above
-        return $this->translateActiveArray($resultArray);
-        
-        
-    }
-    
+
+
     public function translateUserFormActive($postArray) {
-        $translatedArray = "";
+        $translatedArray = [];
         foreach ($postArray['userRole'] as $userName=>$userRole) {
             if(isset($postArray['userActive'][$userName])) {
                 $translatedArray[$userName] = '1';
@@ -182,34 +132,8 @@ class Useradminmodel extends CI_Model {
         return $translatedArray;
     }
     
-    private function translatePermissionArray($resultArray) {
-        $translatedArray = "";
-        foreach ($resultArray as $rowItem) {
-            $translatedArray[$rowItem['user_name']][$rowItem['id']] = 'on';
-        }
-        return $translatedArray;
-        
-    }
-    
-    private function translateRoleArray($resultArray) {
-        $translatedArray = "";
-        foreach ($resultArray as $rowItem) {
-            $translatedArray[$rowItem['user_name']] = $rowItem['role_id'];
-        }
-        return $translatedArray;
-        
-    }
-    
-    private function translateActiveArray($resultArray) {
-        $translatedArray = "";
-        foreach ($resultArray as $rowItem) {
-            $translatedArray[$rowItem['user_name']] = $rowItem['active'];
-        }
-        return $translatedArray;
-        
-    }
-    
-    
+
+
     
     public function removePrivileges($permissionArray) {
         foreach ($permissionArray as $username=>$userPermissionArray) {
