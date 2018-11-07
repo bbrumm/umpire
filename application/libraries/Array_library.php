@@ -56,6 +56,15 @@ class Array_library {
 	    return $arrayDifferences;
 	}
 
+	public function findMultiArrayDiff($array1, $array2) {
+        $intersect = array_uintersect($array1, $array2, array($this, 'compareDeepValue'));
+        return $intersect;
+    }
+
+    private function compareDeepValue($val1, $val2) {
+        return strcmp(serialize($val1), serialize($val2));
+    }
+
     public function findKeyFromValue($pArray, $pValueToFind, $pKeyToLookAt) {
         $arrayKeyFound = 0;
         for ($i=0; $i < count($pArray); $i++) {

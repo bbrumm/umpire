@@ -11,7 +11,7 @@ class Useradminmodel extends CI_Model {
         $this->load->model("Database_store_matches");
     }
     
-    public function getAllUsers(IData_store_user $pDataStore) {
+    public function getAllUsers(IData_store_user_admin $pDataStore) {
         $userArray = $pDataStore->getAllUsers();
         if (empty($userArray)) {
             throw new Exception("No users were found in the database. Please contact support.");
@@ -19,7 +19,7 @@ class Useradminmodel extends CI_Model {
         return $userArray;
     }
 
-    public function getRoleArray(IData_store_user $pDataStore) {
+    public function getRoleArray(IData_store_user_admin $pDataStore) {
         $roleArray = $pDataStore->getRoleArray();
         if (empty($roleArray)) {
             throw new Exception("No roles were found in the database. Please contact support.");
@@ -27,7 +27,7 @@ class Useradminmodel extends CI_Model {
         return $roleArray;
     }
     
-    public function getReportArray(IData_store_user $pDataStore) {
+    public function getReportArray(IData_store_user_admin $pDataStore) {
         $reportArray = $pDataStore->getReportArray();
         if (empty($reportArray)) {
             throw new Exception("No reports were found in the database. Please contact support.");
@@ -35,7 +35,7 @@ class Useradminmodel extends CI_Model {
         return $reportArray;
     }
     
-    public function getRegionArray(IData_store_user $pDataStore) {
+    public function getRegionArray(IData_store_user_admin $pDataStore) {
         $regionArray = $pDataStore->getRegionArray();
         if (empty($regionArray)) {
             throw new Exception("No regions were found in the database. Please contact support.");
@@ -43,7 +43,7 @@ class Useradminmodel extends CI_Model {
         return $regionArray;
     }
     
-    public function getUmpireDisciplineArray(IData_store_user $pDataStore) {
+    public function getUmpireDisciplineArray(IData_store_user_admin $pDataStore) {
         $umpireDisciplineArray = $pDataStore->getUmpireDisciplineArray();
         if (empty($umpireDisciplineArray)) {
             throw new Exception("No umpire disciplines were found in the database. Please contact support.");
@@ -51,7 +51,7 @@ class Useradminmodel extends CI_Model {
         return $umpireDisciplineArray;
     }
     
-    public function getAgeGroupArray(IData_store_user $pDataStore) {
+    public function getAgeGroupArray(IData_store_user_admin $pDataStore) {
         $ageGroupArray = $pDataStore->getAgeGroupArray();
         if (empty($ageGroupArray)) {
             throw new Exception("No age groups were found in the database. Please contact support.");
@@ -59,7 +59,7 @@ class Useradminmodel extends CI_Model {
         return $ageGroupArray;
     }
     
-    public function getLeagueArray(IData_store_user $pDataStore) {
+    public function getLeagueArray(IData_store_user_admin $pDataStore) {
         $leagueArray = $pDataStore->getLeagueArray();
         if (empty($leagueArray)) {
             throw new Exception("No leagues were found in the database. Please contact support.");
@@ -67,7 +67,7 @@ class Useradminmodel extends CI_Model {
         return $leagueArray;
     }
     
-    public function getPermissionSelectionArray(IData_store_user $pDataStore) {
+    public function getPermissionSelectionArray(IData_store_user_admin $pDataStore) {
         $permissionSelectionArray = $pDataStore->getPermissionSelectionArray();
         if (empty($permissionSelectionArray)) {
             throw new Exception("No permission selections were found in the database. Please contact support.");
@@ -75,7 +75,7 @@ class Useradminmodel extends CI_Model {
         return $permissionSelectionArray;
     }
     
-    public function addNewUser(IData_store_user $pDataStore, $pSubmittedData) {
+    public function addNewUser(IData_store_user_admin $pDataStore, $pSubmittedData) {
         if (strlen($pSubmittedData['password']) > 0) {
             $newUser = User::createUserFromNameAndPW(
                 $pSubmittedData['username'], $pSubmittedData['firstname'], $pSubmittedData['lastname'], MD5($pSubmittedData['password']));
@@ -95,7 +95,7 @@ class Useradminmodel extends CI_Model {
              [permission_selection.id] => on
              [permission_selection.id] => on
      */
-    public function getAllUserPermissionsFromDB(IData_store_user $pDataStore) {
+    public function getAllUserPermissionsFromDB(IData_store_user_admin $pDataStore) {
         return $pDataStore->getAllUserPermissionsFromDB();
     }
 
@@ -107,7 +107,7 @@ class Useradminmodel extends CI_Model {
             [jhillgrove] => 2
             [gmanager] => 2
     */
-    public function getAllUserRolesFromDB(IData_store_user $pDataStore) {
+    public function getAllUserRolesFromDB(IData_store_user_admin $pDataStore) {
         return $pDataStore->getAllUserRolesFromDB();
     }
 
@@ -119,7 +119,7 @@ class Useradminmodel extends CI_Model {
              [username] => on
              [username] => on
      */
-    public function getAllUserActiveFromDB(IData_store_user $pDataStore) {
+    public function getAllUserActiveFromDB(IData_store_user_admin $pDataStore) {
         return $pDataStore->getAllUserActiveFromDB();
     }
 
@@ -139,127 +139,34 @@ class Useradminmodel extends CI_Model {
 
 
     
-    public function removePrivileges($permissionArray) {
+    public function removePrivileges(IData_store_user_admin $pDataStore, $permissionArray) {
         foreach ($permissionArray as $username=>$userPermissionArray) {
             //Remove permission and log removal
             foreach($userPermissionArray as $permission_selection_id=>$setValue) {
-                $this->removeUserPrivilege($username, $permission_selection_id);
+                $pDataStore->removeUserPrivilege($username, $permission_selection_id);
             }
         }
     }
     
-    public function addPrivileges($permissionArray) {
+    public function addPrivileges(IData_store_user_admin $pDataStore, $permissionArray) {
         foreach ($permissionArray as $username=>$userPermissionArray) {
-            //Remove permission and log removal
+            //Add permission and log removal
             foreach($userPermissionArray as $permission_selection_id=>$setValue) {
-                $this->addUserPrivilege($username, $permission_selection_id);
+                $pDataStore->addUserPrivilege($username, $permission_selection_id);
             }
         }
     }
     
-    public function updateUserRoles($userRoleArray) {
+    public function updateUserRoles(IData_store_user_admin $pDataStore, $userRoleArray) {
         foreach ($userRoleArray as $username=>$newRoleID) {
-            $this->updateUserRole($username, $newRoleID);
+            $pDataStore->updateUserRole($username, $newRoleID);
         }
     }
     
-    public function updateUserActive($userActiveArray) {
+    public function updateUserActive(IData_store_user_admin $pDataStore, $userActiveArray) {
         foreach ($userActiveArray as $username=>$setValue) {
-            $this->updateSingleUserActive($username, $setValue);
+            $pDataStore->updateSingleUserActive($username, $setValue);
         }
     }
-    
-    private function updateUserRole($username, $newRoleID) {
-        $queryString = "UPDATE umpire_users
-            SET role_id = ?
-            WHERE user_name = ?";
-        
-        $query = $this->db->query($queryString, array(
-            $newRoleID, $username
-        ));
-        //TODO: Replace magic number with global constant that represents UPDATE
-        $this->logRoleChange($username, $newRoleID);
-    }
-    
-    private function updateSingleUserActive($username, $setValue) {
-        $queryString = "UPDATE umpire_users
-            SET active = ?
-            WHERE user_name = ?";
-        
-        $query = $this->db->query($queryString, array(
-            $setValue, $username
-        ));
-        //TODO: Replace magic number with global constant that represents UPDATE
-        $this->logActiveChange($username, $setValue);
-    }
-    
-    private function removeUserPrivilege($username, $permission_selection_id) {
-        $queryString = "DELETE FROM user_permission_selection 
-            WHERE user_id IN (
-            SELECT id
-            FROM umpire_users u
-            WHERE user_name = ?
-            ) AND permission_selection_id = ?;";
-        
-        $query = $this->db->query($queryString, array(
-            $username, $permission_selection_id
-        ));
-        //TODO: Replace magic number 3 with global constant that represents DELETE
-        $this->logPrivilegeChange($username, $permission_selection_id, 3);
-        
-    }
-    
-    private function logPrivilegeChange($username, $permission_selection_id, $operation_ref) {
-        $session_data = $this->session->userdata('logged_in');
-        $currentUsername = $session_data['username'];
-        
-        $queryString = "INSERT INTO log_privilege_changes
-            (username_changed, privilege_changed, privilege_action, username_changed_by, changed_datetime)
-            VALUES (?, ?, ?, ?, NOW());";
-        
-        $query = $this->db->query($queryString, array(
-            $username, $permission_selection_id, $operation_ref, $currentUsername
-        ));
-    }
-    
-    private function addUserPrivilege($username, $permission_selection_id) {
-        $queryString = "INSERT INTO user_permission_selection
-            (user_id, permission_selection_id)
-            SELECT id, ?
-            FROM umpire_users u
-            WHERE user_name = ?;";
-        
-        $query = $this->db->query($queryString, array(
-            $permission_selection_id, $username
-        ));
-        //TODO: Replace magic number 1 with global constant that represents INSERT
-        $this->logPrivilegeChange($username, $permission_selection_id, 1);
-        
-    }
-    
-    private function logRoleChange($username, $newRoleID) {
-        $session_data = $this->session->userdata('logged_in');
-        $currentUsername = $session_data['username'];
-        
-        $queryString = "INSERT INTO log_role_changes
-            (username_changed, role_changed, role_action, username_changed_by, changed_datetime)
-            VALUES (?, ?, ?, ?, NOW());";
-        
-        $query = $this->db->query($queryString, array(
-            $username, $newRoleID, 2, $currentUsername
-        ));
-    }
-    
-    private function logActiveChange($username, $newActiveValue) {
-        $session_data = $this->session->userdata('logged_in');
-        $currentUsername = $session_data['username'];
-        
-        $queryString = "INSERT INTO log_active_changes
-            (username_changed, new_active, role_action, username_changed_by, changed_datetime)
-            VALUES (?, ?, ?, ?, NOW());";
-        
-        $query = $this->db->query($queryString, array(
-            $username, $newActiveValue, 2, $currentUsername
-        ));
-    }
+
 }

@@ -30,27 +30,5 @@ interface IData_store_user
 
     public function findOldUserPassword(User $pUser);
 
-    public function getAllUsers();
-
-    public function getRoleArray();
-
-    public function getReportArray();
-
-    public function getRegionArray();
-
-    public function getUmpireDisciplineArray();
-
-    public function getAgeGroupArray();
-
-    public function getLeagueArray();
-
-    public function getPermissionSelectionArray();
-
-    public function insertNewUser(User $pUser);
-
-    public function getAllUserPermissionsFromDB();
-
-    public function getAllUserRolesFromDB();
-
 
 }

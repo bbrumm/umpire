@@ -124,10 +124,10 @@ The [#] represents the permission_selection.id value. This can be used to insert
         //$this->debug_library->debugOutput("saveUserPrivileges Form not DB:", $permissionsInFormNotDB);
         
         //Remove privileges from users that were changed on the form
-        $userAdmin->removePrivileges($permissionsInDBNotForm);
+        $userAdmin->removePrivileges($dataStore, $permissionsInDBNotForm);
         
         //Add privileges for users that were added on the form
-        $userAdmin->addPrivileges($permissionsInFormNotDB);
+        $userAdmin->addPrivileges($dataStore, $permissionsInFormNotDB);
         
         $userRolesFromDB = $userAdmin->getAllUserRolesFromDB($dataStore);
         $userRolesFromForm = $_POST['userRole'];
@@ -141,7 +141,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
         //$this->debug_library->debugOutput("saveUserPrivileges Role Differences:", $userRoleDifferences);
         
         //Update user roles
-        $userAdmin->updateUserRoles($userRoleDifferences);
+        $userAdmin->updateUserRoles($dataStore, $userRoleDifferences);
         
         //TODO: Update active/not active status
         $userActiveFromDB = $userAdmin->getAllUserActiveFromDB($dataStore);
@@ -156,7 +156,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
         //$this->debug_library->debugOutput("saveUserPrivileges Active Differences:", $userActiveDifferences);
         
         //Update user roles
-        $userAdmin->updateUserActive($userActiveDifferences);
+        $userAdmin->updateUserActive($dataStore, $userActiveDifferences);
         
         
         
