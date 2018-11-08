@@ -28,7 +28,7 @@ class Match_import_test extends TestCase
 
     public function test_ImportFile_ValidXLS() {
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_valid_xls.xls"
@@ -54,7 +54,7 @@ class Match_import_test extends TestCase
 
     public function test_ImportFile_ValidXLSX() {
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_valid_xlsx.xlsx"
@@ -81,7 +81,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_MissingColumnHeaderRow() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_missing_header_row.xlsx"
@@ -94,7 +94,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_BlankColumnHeaderRow() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_blank_header_row.xlsx"
@@ -107,7 +107,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_IncorrectColumnHeaderRow() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_incorrect_header_row.xlsx"
@@ -120,7 +120,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_MissingLastColumn() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_missing_last_col.xlsx"
