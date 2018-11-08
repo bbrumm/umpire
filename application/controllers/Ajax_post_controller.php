@@ -87,12 +87,12 @@ class Ajax_Post_Controller extends CI_Controller
     
     
     
-    
+    /*
     public function getTestProgressValue() {
         $matchImport = new Match_import();
         return $matchImport->getProgressValueInDB();
     }
-    
+    */
     
     
     public function updateProgressBar() {

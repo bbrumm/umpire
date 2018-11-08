@@ -9,53 +9,63 @@ class Match_import extends CI_Model
         $this->load->model('Season');
         $this->load->library('Debug_library');
         $this->load->model('Database_store_matches');
+        $this->load->model('Run_etl_stored_proc');
     }
 
-    public function fileImport($data) {
+    public function fileImport($pFileLoader, $pDataStore, $data) {
         date_default_timezone_set("Australia/Melbourne");
-        $pDataStore = new Database_store_matches();
         //Remove data from previous load first
-        $this->clearMatchImportTable($pDataStore);
+        $pFileLoader->clearMatchImportTable();
 
-        $importedFilename = $data['upload_data']['file_name'];
-        $dataFile = "application/import/" . $importedFilename;
+        $importedFilename = $pFileLoader->getImportedFilename($data);
+        $dataFile = $pFileLoader->getImportedFilePathAndName($data);
+
+        //TODO: Refactor this into an ImportFile object that has each of these attributes
         $objPHPExcel = PHPExcel_IOFactory::load($dataFile);
         $sheet = $objPHPExcel->getActiveSheet();
         $lastRow = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
+
         $columns = $this->findColumnsFromSpreadshet($sheet, $lastColumn);
-        $data = $sheet->rangeToArray('A2:' . $lastColumn . $lastRow, $columns);
-        $queryStatus = $this->db->insert_batch('match_import', $data);
+        $sheetData = $sheet->rangeToArray('A2:' . $lastColumn . $lastRow, $columns);
+
+        $queryStatus = $pFileLoader->insertMatchImportTable($sheetData);
+
         if ($queryStatus) {
             //Now the data is imported, extract it into the normalised tables.
-            $importedFileID = $this->logImportedFile($importedFilename);
-            $this->prepareNormalisedTables($importedFileID);
+            $this->prepareNormalisedTables($pFileLoader, $pDataStore, $importedFilename);
+            return true;
         } else {
-            $error = $this->db->error();
+            $errorArray = $this->db->error();
+            throw new Exception("Error inserting data into match_import table. Code: " . $errorArray["code"] . ", Message: ". $errorArray["message"]);
         }
     }
 
     private function findColumnsFromSpreadshet($pSheet, $pLastColumn) {
         $sheetColumnHeaderArray = $pSheet->rangeToArray("A1:" . $pLastColumn . "1");
+        if (!$this->isColumnHeaderExist($sheetColumnHeaderArray)) {
+            throw new Exception("Column headers are missing from the imported file.");
+        }
+
         $columnHeaderToTableMatchArray = array(
-            'Season' => 'season',
-            'Round' => 'round',
-            'Date' => 'date',
-            'Competition Name' => 'competition_name',
-            'Ground' => 'ground',
-            'Time' => 'time',
-            'Home Team' => 'home_team',
-            'Away Team' => 'away_team',
-            'Field Umpire 1' => 'field_umpire_1',
-            'Field Umpire 2' => 'field_umpire_2',
-            'Field Umpire 3' => 'field_umpire_3',
-            'Boundary Umpire 1' => 'boundary_umpire_1',
-            'Boundary Umpire 2' => 'boundary_umpire_2',
-            'Boundary Umpire 3' => 'boundary_umpire_3',
-            'Boundary Umpire 4' => 'boundary_umpire_4',
-            'Boundary Umpire 5' => 'boundary_umpire_5',
-            'Goal Umpire 1' => 'goal_umpire_1',
-            'Goal Umpire 2' => 'goal_umpire_2'
+            'Season' => array('column_name'=>'season', 'required'=>true),
+            'Round' => array('column_name'=>'round', 'required'=>true),
+            'Date' => array('column_name'=>'date', 'required'=>true),
+            'Competition Name' => array('column_name'=>'competition_name', 'required'=>true),
+            'Ground' => array('column_name'=>'ground', 'required'=>true),
+            'Time' => array('column_name'=>'time', 'required'=>true),
+            'Home Team' => array('column_name'=>'home_team', 'required'=>true),
+            'Away Team' => array('column_name'=>'away_team', 'required'=>true),
+            'Field Umpire 1' => array('column_name'=>'field_umpire_1', 'required'=>true),
+            'Field Umpire 2' => array('column_name'=>'field_umpire_2', 'required'=>true),
+            'Field Umpire 3' => array('column_name'=>'field_umpire_3', 'required'=>true),
+            'Boundary Umpire 1' => array('column_name'=>'boundary_umpire_1', 'required'=>true),
+            'Boundary Umpire 2' => array('column_name'=>'boundary_umpire_2', 'required'=>true),
+            'Boundary Umpire 3' => array('column_name'=>'boundary_umpire_3', 'required'=>true),
+            'Boundary Umpire 4' => array('column_name'=>'boundary_umpire_4', 'required'=>false),
+            'Boundary Umpire 5' => array('column_name'=>'boundary_umpire_5', 'required'=>false),
+            'Goal Umpire 1' => array('column_name'=>'goal_umpire_1', 'required'=>true),
+            'Goal Umpire 2' => array('column_name'=>'goal_umpire_2', 'required'=>true)
         );
 
         $columns = array();
@@ -65,34 +75,43 @@ class Match_import extends CI_Model
             and if it finds a match, adds the column name into the columns array
             */
             if (array_key_exists($columnHeader, $columnHeaderToTableMatchArray)) {
-                $columns[] = $columnHeaderToTableMatchArray[$columnHeader];
+                $columns[] = $columnHeaderToTableMatchArray[$columnHeader]['column_name'];
             }
         }
+
+        //Check if all required columns are in the imported spreadsheet
+        $this->checkAllRequiredColumnsFound($sheetColumnHeaderArray[0], $columnHeaderToTableMatchArray);
+
         return $columns;
     }
 
-    private function prepareNormalisedTables($importedFileID) {
-        $season = Season::createSeasonFromID($this->findSeasonToUpdate());
-        $this->Run_etl_stored_proc->runETLProcedure($season, $importedFileID);
+    private function isColumnHeaderExist($pSheetColumnHeaderArray) {
+        return ($pSheetColumnHeaderArray[0][0] == "Season");
     }
 
-    public function logErrorMessage($pMessage) {
-        $queryString = "INSERT INTO test_error_log (logged_date, message) VALUES (NOW(), '" . $pMessage . "');";
-        $query = $this->db->query($queryString);
-        $resultArray = $query->result_array();
+    private function checkAllRequiredColumnsFound($pSheetColumnHeaderArray, $pColumnHeaderToTableMatchArray) {
+        $missingColumnCount = 0;
+        $missingColumnNames = "";
+
+        foreach ($pColumnHeaderToTableMatchArray as $expectedColumnHeaderLabel=>$expectedColumnHeaderProperties) {
+            if ($expectedColumnHeaderProperties['required']) {
+                if (!in_array($expectedColumnHeaderLabel, $pSheetColumnHeaderArray)) {
+                    $missingColumnCount++;
+                    $missingColumnNames .= $expectedColumnHeaderLabel . ", ";
+                }
+            }
+        }
+
+        if ($missingColumnCount > 0) {
+            throw new Exception("A required column is missing from the imported file: " . $missingColumnNames);
+        }
     }
 
-    public function updateProgressValueInDB($progressPct) {
-        $queryString = "UPDATE test_progress SET progress_value = " . $progressPct . ";";
-        $query = $this->db->query($queryString);
-        $resultArray = $query->result_array();
-    }
+    private function prepareNormalisedTables($pFileLoader, $pDataStore, $importedFilename) {
+        $importedFileID = $pFileLoader->logImportedFile($importedFilename);
 
-    public function getProgressValueInDB() {
-        $queryString = "SELECT progress_value FROM test_progress;";
-        $query = $this->db->query($queryString);
-        $resultArray = $query->result_array();
-        return $resultArray[0]['progress_value'];
+        $season = Season::createSeasonFromID($this->findSeasonToUpdate($pDataStore));
+        $pFileLoader->runETLProcedure($season, $importedFileID);
     }
 
     public function findSeasonToUpdate(IData_store_matches $pDataStore) {
@@ -101,54 +120,6 @@ class Match_import extends CI_Model
 
     public function findLatestImportedFile($pDataStore) {
         return $pDataStore->findLatestImportedFile();
-    }
-
-    private function clearMatchImportTable(IData_store_matches $pDataStore) {
-        $queryString = "DELETE FROM match_import;";
-        $this->db->query($queryString);
-    }
-
-    private function logImportedFile($filename) {
-        $session_data = $this->session->userdata('logged_in');
-        $username = $session_data['username'];
-
-        $data = array(
-            'filename' => $filename,
-            'imported_datetime' => date('Y-m-d H:i:s', time()),
-            'imported_user_id' => $username,
-            'etl_status' => 2 //2 = not yet started
-        );
-
-        $queryStatus = $this->db->insert('imported_files', $data);
-        return $this->db->insert_id();
-    }
-
-    private function logTableOperation($operationName, $tableName, $importedFileID, $rowCount) {
-        $operationID = $this->findTableIDFromName('operation_ref', 'operation_name', $operationName);
-        $processedTableID = $this->findTableIDFromName('processed_table', 'table_name', $tableName);
-
-        $data = array(
-            'imported_file_id' => $importedFileID,
-            'processed_table_id' => $processedTableID,
-            'operation_id' => $operationID,
-            'operation_datetime' => date('Y-m-d H:i:s', time()),
-            'rowcount' => $rowCount
-        );
-
-        $queryStatus = $this->db->insert('table_operations', $data);
-    }
-
-    private function findTableIDFromName($tableName, $tableField, $operationName) {
-        $this->db->where($tableField, $operationName);
-        $query = $this->db->get($tableName);
-
-        if ($query->num_rows() == 1) {
-            // If there is a user, then create session data
-            $row = $query->row();
-            return $row->id;
-        }
-        // If the previous process did not validate, then return false.
-        return null;
     }
 
     public function findMissingDataOnImport() {
