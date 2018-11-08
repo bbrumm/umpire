@@ -26,8 +26,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
-*.xlsx
-*.xls
 .metadata/.plugins/org.eclipse.wst.jsdt.core/variablesAndContainers.dat
 RemoteSystemsTempFiles/.buildpath
 application/tests/build/logs/junit.xml
