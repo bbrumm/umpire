@@ -26,6 +26,10 @@ class Match_import extends CI_Model
         $lastRow = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
 
+        if ($this->sheetHasNoData($sheet)) {
+            throw new Exception("The imported file contains no rows on the selected sheet.");
+        }
+
         $columns = $this->findColumnsFromSpreadshet($sheet, $lastColumn);
         $sheetData = $sheet->rangeToArray('A2:' . $lastColumn . $lastRow, $columns);
 
@@ -38,6 +42,14 @@ class Match_import extends CI_Model
         } else {
             $errorArray = $this->db->error();
             throw new Exception("Error inserting data into match_import table. Code: " . $errorArray["code"] . ", Message: ". $errorArray["message"]);
+        }
+    }
+
+    private function sheetHasNoData($sheet) {
+        if ($sheet->getHighestRow() == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 

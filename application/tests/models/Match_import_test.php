@@ -17,7 +17,6 @@ class Match_import_test extends TestCase
      * Blank column headers
      * Incorrect column headers
      * Missing last column
-     * //TODO write
      * Missing several columns
      * Extra column
      * No records
@@ -124,6 +123,84 @@ class Match_import_test extends TestCase
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_missing_last_col.xlsx"
+            )
+        );
+
+        $actualResult = $this->obj->fileImport($fileLoader, $dataStore, $data);
+    }
+
+    public function test_ImportFile_MissingSeveralColumns() {
+        $this->expectException(Exception::class);
+        $fileLoader = new File_loader_test();
+        $dataStore = new Database_store_matches();
+        $data = array (
+            "upload_data"=>array(
+                "file_name"=>"test_missing_several_cols.xlsx"
+            )
+        );
+
+        $actualResult = $this->obj->fileImport($fileLoader, $dataStore, $data);
+    }
+
+    public function test_ImportFile_ExtraColumn() {
+        $fileLoader = new File_loader_test();
+        $dataStore = new Database_store_matches();
+        $data = array (
+            "upload_data"=>array(
+                "file_name"=>"test_extra_column.xlsx"
+            )
+        );
+        $expectedResult = true;
+        $actualResult = $this->obj->fileImport($fileLoader, $dataStore, $data);
+        $this->assertEquals($expectedResult, $actualResult);
+
+        $matchImportArray = $fileLoader->getMatchImportData();
+        $expectedRowCount = 3;
+        $actualRowCount = count($matchImportArray);
+        $this->assertEquals($expectedRowCount, $actualRowCount);
+
+        $expectedLastRowSeason = 2018;
+        $actualLastRowSeason = $matchImportArray[$actualRowCount-1][0];
+        $this->assertEquals($expectedLastRowSeason, $actualLastRowSeason);
+
+        $expectedLastRowFieldUmp1 = "Aaron Riches";
+        $actualLastRowFieldUmp1 = $matchImportArray[$actualRowCount-1][9];
+        $this->assertEquals($expectedLastRowFieldUmp1, $actualLastRowFieldUmp1);
+    }
+
+    public function test_ImportFile_NoData() {
+        $this->expectException(Exception::class);
+        $fileLoader = new File_loader_test();
+        $dataStore = new Database_store_matches();
+        $data = array (
+            "upload_data"=>array(
+                "file_name"=>"test_no_data.xlsx"
+            )
+        );
+
+        $actualResult = $this->obj->fileImport($fileLoader, $dataStore, $data);
+    }
+
+    public function test_ImportFile_NotExcel() {
+        $this->expectException(Exception::class);
+        $fileLoader = new File_loader_test();
+        $dataStore = new Database_store_matches();
+        $data = array (
+            "upload_data"=>array(
+                "file_name"=>"license.txt"
+            )
+        );
+
+        $actualResult = $this->obj->fileImport($fileLoader, $dataStore, $data);
+    }
+
+    public function test_ImportFile_AnotherSheetSelected() {
+        $this->expectException(Exception::class);
+        $fileLoader = new File_loader_test();
+        $dataStore = new Database_store_matches();
+        $data = array (
+            "upload_data"=>array(
+                "file_name"=>"test_another_sheet.xlsx"
             )
         );
 

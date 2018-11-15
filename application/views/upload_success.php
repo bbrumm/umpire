@@ -88,15 +88,15 @@ function updateProgressBar() {
 	}
 }
 
-
+/*
 function startTestDataImport() {
 	// Trigger the process in web server.
     console.log ("test5 start data import");
-  $.ajax({url: "<?php echo base_url(); ?>" + "index.php/ajax_post_controller/startDataImport"});
+  $.ajax({url: " echo base_url(); " + "index.php/ajax_post_controller/startDataImport"});
   // Refresh the progress bar every 1 second.
   timer = window.setInterval(updateProgressBar, 1000);
 }
-
+*/
 
 
 //When the document is ready
