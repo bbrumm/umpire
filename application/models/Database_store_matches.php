@@ -269,7 +269,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     
     public function insertNewClub($pClubName) {
         $queryString = "INSERT INTO club (club_name) VALUES (?);";
-        $query = $this->db->query($queryString, array($newClubName));
+        $query = $this->db->query($queryString, array($pClubName));
         return $this->db->insert_id();
     }
     
@@ -283,6 +283,8 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     
     //Match_import
     public function findSeasonToUpdate() {
+        //echo "<pre>".print_r(debug_backtrace(2),true)."</pre>";
+
         $queryString = "SELECT MAX(season.ID) AS season_id " .
             "FROM season " .
             "INNER JOIN match_import ON season.season_year = match_import.season;";

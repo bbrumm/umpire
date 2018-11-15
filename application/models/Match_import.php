@@ -37,6 +37,7 @@ class Match_import extends CI_Model
 
         if ($queryStatus) {
             //Now the data is imported, extract it into the normalised tables.
+            //echo "test table ";
             $this->prepareNormalisedTables($pFileLoader, $pDataStore, $importedFilename);
             return true;
         } else {

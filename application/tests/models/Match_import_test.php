@@ -132,7 +132,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_MissingSeveralColumns() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_missing_several_cols.xlsx"
@@ -144,7 +144,7 @@ class Match_import_test extends TestCase
 
     public function test_ImportFile_ExtraColumn() {
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_extra_column.xlsx"
@@ -171,7 +171,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_NoData() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_no_data.xlsx"
@@ -184,7 +184,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_NotExcel() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"license.txt"
@@ -197,7 +197,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_AnotherSheetSelected() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Database_store_matches();
+        $dataStore = new Array_store_matches();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_another_sheet.xlsx"
