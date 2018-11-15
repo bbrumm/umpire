@@ -11,6 +11,7 @@ class Ajax_Post_Controller extends CI_Controller
         $this->load->helper('url_helper');
         $this->load->model('Umpireadminmodel');
         $this->load->model('Missing_data_updater');
+        $this->load->model('Database_store_umpire_admin');
         include 'application/helpers/phpexcel/Classes/PHPExcel.php';
         
         
@@ -69,8 +70,9 @@ class Ajax_Post_Controller extends CI_Controller
         
         // Either you can print value or you can send value to database
         //echo "updateUmpireGames test";
+        $dataStore = new Database_store_umpire_admin();
         $umpireAdminModel = new Umpireadminmodel();
-        $umpireAdminModel->updateUmpireGameValues($params);
+        $umpireAdminModel->updateUmpireGameValues($dataStore, $params);
         
     }
 

@@ -14,6 +14,31 @@ class Umpire extends CI_Model
     function __construct() {
         parent::__construct();
     }
+
+    public static function createUmpireAllData($pID, $pFirstName, $pLastName, $pGamesPlayedPrior,
+           $pGamesPlayedOtherLeagues, $pOldGamesPlayedPrior, $pOldGamesPlayedOtherLeagues) {
+        $obj = new Umpire();
+        $obj->setID($pID);
+        $obj->setFirstName($pFirstName);
+        $obj->setLastName($pLastName);
+        $obj->setGamesPlayedPrior($pGamesPlayedPrior);
+        $obj->setGamesPlayedOtherLeagues($pGamesPlayedOtherLeagues);
+        $obj->setOldGamesPlayedPrior($pOldGamesPlayedPrior);
+        $obj->setOldGamesPlayedOtherLeagues($pOldGamesPlayedOtherLeagues);
+
+        return $obj;
+    }
+
+    public static function createUmpireFromQueryResult($resultArrayRow) {
+        $obj = new Umpire();
+        $obj->setID($resultArrayRow['id']);
+        $obj->setFirstName($resultArrayRow['first_name']);
+        $obj->setLastName($resultArrayRow['last_name']);
+        $obj->setGamesPlayedPrior($resultArrayRow['games_prior']);
+        $obj->setGamesPlayedOtherLeagues($resultArrayRow['games_other_leagues']);
+
+        return $obj;
+    }
     
     
     public function getId() {
@@ -46,42 +71,42 @@ class Umpire extends CI_Model
     
     
     //SET Functions
-    public function setId($pValue) {
+    private function setId($pValue) {
         $this->id = $pValue;
     }
-    
-    public function setFirstName($pValue) {
+
+    private function setFirstName($pValue) {
         $this->firstName = $pValue;
     }
-    
-    public function setLastName($pValue) {
+
+    private function setLastName($pValue) {
         $this->lastName = $pValue;
     }
-    
-    public function setGamesPlayedPrior($pValue) {
+
+    private function setGamesPlayedPrior($pValue) {
         if ($this->validateGamesPlayedValue($pValue) == true) {
             $this->gamesPlayedPrior= $pValue;
         }
     }
-    
-    public function setGamesPlayedOtherLeagues($pValue) {
+
+    private function setGamesPlayedOtherLeagues($pValue) {
         if ($this->validateGamesPlayedValue($pValue) == true) {
             $this->gamesPlayedOtherLeagues= $pValue;
         }
     }
-    
-    public function setOldGamesPlayedPrior($pValue) {
+
+    private function setOldGamesPlayedPrior($pValue) {
         if ($this->validateGamesPlayedValue($pValue) == true) {
             $this->oldGamesPlayedPrior= $pValue;
         }
     }
-    
-    public function setOldGamesPlayedOtherLeagues($pValue) {
+
+    private function setOldGamesPlayedOtherLeagues($pValue) {
         if ($this->validateGamesPlayedValue($pValue) == true) {
             $this->oldGamesPlayedOtherLeagues= $pValue;
         }
     }
-    
+
     private function validateGamesPlayedValue($pInputValue) {
         if (is_numeric($pInputValue)) {
             return true;

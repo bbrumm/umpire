@@ -13,6 +13,7 @@ if (! defined('BASEPATH'))
             $this->load->helper('url_helper');
             $this->load->helper(array('form', 'url'));
             $this->load->model('Umpireadminmodel');
+            $this->load->model('Database_store_umpire_admin');
             $this->load->library('Debug_library');
         }
         
@@ -22,7 +23,8 @@ if (! defined('BASEPATH'))
         
         public function loadPage($pUserAddedMessage = "") {
             $umpireAdmin = new Umpireadminmodel();
-            $umpireArray = $umpireAdmin->getAllUmpiresAndValues();
+            $dataStore = new Database_store_umpire_admin();
+            $umpireArray = $umpireAdmin->getAllUmpiresAndValues($dataStore);
             
             $data['umpireArray'] = $umpireArray;
             $data['dataUpdatedMessage'] = "Data updated.";
@@ -39,9 +41,9 @@ if (! defined('BASEPATH'))
             //echo "Games played update code goes here.";
             //Update all numbers from the screen. No need to worry about adding a dirty flag, as this is a step that will not happen very often.
             //I also need to log when these changes were made, and by who, and what the before and after values were, just in case we need to track it.
-            
+            $dataStore = new Database_store_umpire_admin();
             $umpireAdmin = new Umpireadminmodel();
-            $umpireUpdateSuccess = $umpireAdmin->updateUmpireGameValues($_POST);
+            $umpireUpdateSuccess = $umpireAdmin->updateUmpireGameValues($dataStore, $_POST);
             
             $this->debug_library->debugOutput("UmpireUpdateSuccess", $umpireUpdateSuccess);
             
