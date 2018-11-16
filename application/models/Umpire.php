@@ -108,10 +108,10 @@ class Umpire extends CI_Model
     }
 
     private function validateGamesPlayedValue($pInputValue) {
-        if (is_numeric($pInputValue)) {
+        if (is_numeric($pInputValue) || is_null($pInputValue)) {
             return true;
         } else {
-            throw new InvalidArgumentException('Games value must be numeric.');
+            throw new InvalidArgumentException('Games value must be numeric. Provided value was ['. $pInputValue .'].');
         }
         
     }
