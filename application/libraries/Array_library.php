@@ -22,7 +22,7 @@ class Array_library {
     	return false;
     }
     
-    
+    /*
     public function sortByOrder($a, $b) {
     	return $a['1'] - $b['1'];
     }
@@ -39,11 +39,13 @@ class Array_library {
     	return $sortResult;
     	
     }
+
     
     public function compareStringValues($a, $b) {
 	    return strcmp($a, $b);
 	}
-	
+	*/
+
 	public function findRecursiveArrayDiff($array1, $array2) {
 	    //This function assumes that both arrays have the same keys, which works for the user permissions, but may not work elsewhere.
 	    $arrayDifferences = "";
