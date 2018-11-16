@@ -18,7 +18,7 @@ interface IData_store_user
 
     public function storeActivationID($pActivationID, $pUser);
 
-    public function createUserFromActivationID($pActivationID);
+    //public function createUserFromActivationID($pActivationID);
 
     public function updatePassword(User $pUser);
 
@@ -26,7 +26,7 @@ interface IData_store_user
 
     public function updateEmailAddress(User $pUser);
 
-    public function findUserFromUsernameAndPassword($username, $password);
+    //public function findUserFromUsernameAndPassword($username, $password);
 
     public function findOldUserPassword(User $pUser);
 

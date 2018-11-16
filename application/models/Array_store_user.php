@@ -32,8 +32,7 @@ class Array_store_user extends CI_Model implements IData_store_user
     }
 
 
-    public function setPermissionArrayForUser() {
-    }
+
 
     public function findPermissionsForUser(User $pUser) {
         $permissionArrayJohn = array (
@@ -106,6 +105,7 @@ class Array_store_user extends CI_Model implements IData_store_user
 
     }
 
+    /*
     public function createUserFromActivationID($pActivationID) {
         $existingData = array(
             array("username"=>"abcdef", "activation_id"=>"123456"),
@@ -124,6 +124,7 @@ class Array_store_user extends CI_Model implements IData_store_user
         }
 
     }
+    */
 
     public function getUserNameFromActivationID(User $pUser) {
         $existingData = array(
@@ -191,10 +192,12 @@ class Array_store_user extends CI_Model implements IData_store_user
         return $updateStatus;
     }
 
+    /*
     public function findUserFromUsernameAndPassword($username, $password) {
 
 
     }
+*/
 
     public function findMatchingUserFromUsernameAndPassword($pUsername, $pPassword) {
         $testData = array(

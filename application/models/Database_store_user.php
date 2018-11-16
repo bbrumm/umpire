@@ -127,7 +127,7 @@ class Database_store_user extends CI_Model implements IData_store_user
         $this->db->update('umpire_users', array('activation_id'=>$pActivationID));
     }
 
-
+/*
     public function createUserFromActivationID($pActivationID) {
         $this->db->select('user_name');
         $this->db->where('activation_id', $pActivationID);
@@ -139,7 +139,7 @@ class Database_store_user extends CI_Model implements IData_store_user
 
         return $user;
     }
-
+*/
 
 
 
@@ -170,6 +170,7 @@ class Database_store_user extends CI_Model implements IData_store_user
         $this->db->update('umpire_users', array('user_email'=>$pUser->getEmailAddress()));
     }
 
+    /*
     public function findUserFromUsernameAndPassword($username, $password) {
         $this->db->where('user_name', $username);
         $this->db->where('user_password', $password);
@@ -185,6 +186,7 @@ class Database_store_user extends CI_Model implements IData_store_user
         $user->setEmailAddress($resultArray[0]['email_address']);
 
     }
+    */
 
 
 
