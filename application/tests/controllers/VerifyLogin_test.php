@@ -7,6 +7,9 @@ class VerifyLogin_test extends TestCase
         //$this->CI->load->controller('VerifyLogin');
         //$this->obj = new VerifyLogin();
         $_POST = array();
+
+
+
     }
 
     public function testIndex_CorrectDetails() {

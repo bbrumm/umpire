@@ -3,8 +3,12 @@
 	backupGlobals="true"
 	colors="true">
 	<testsuites>
-		<testsuite name="alltests">
-			<directory suffix="test.php">./</directory>
+		<testsuite name="unittests">
+            <directory suffix="test.php">../models</directory>
+			<exclude>./_ci_phpunit_test/</exclude>
+		</testsuite>
+		<testsuite name="integration">
+            <directory suffix="test.php">../controllers</directory>
 			<exclude>./_ci_phpunit_test/</exclude>
 		</testsuite>
 	</testsuites>
