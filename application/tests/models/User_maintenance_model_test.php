@@ -147,7 +147,7 @@ class User_maintenance_model_test extends TestCase
         $activationID = "123456";
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "mypass");
         $user->setActivationID($activationID);
-        $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
+        $actual = $this->obj->createUserFromActivationID($arrayStore, $activationID);
         $expected = "abcdef";
         $this->assertEquals($expected, $actual->getUsername());
     }
@@ -158,7 +158,7 @@ class User_maintenance_model_test extends TestCase
         $activationID = "987";
         $user = User::createUserFromNameAndPW("abcdef", "john", "smith", "mypass");
         $user->setActivationID($activationID);
-        $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
+        $actual = $this->obj->createUserFromActivationID($arrayStore, $activationID);
         $expected = false;
         $this->assertEquals($expected, $actual);
     }
@@ -168,9 +168,9 @@ class User_maintenance_model_test extends TestCase
         $arrayStore = new Array_store_user;
         $this->obj = new User_maintenance_model();
         $activationID = "111";
-        $user = User::createUserFromNameAndPW("john", "john", "smith", "mypass");
+        $user = User::createUserFromActivationID("asd", $activationID);
         $user->setActivationID($activationID);
-        $actual = $this->obj->createUserFromActivationID($arrayStore, $user);
+        $actual = $this->obj->createUserFromActivationID($arrayStore, $activationID);
         $expected = $user;
         $this->assertEquals($expected, $actual);
     }

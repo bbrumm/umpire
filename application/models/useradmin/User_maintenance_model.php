@@ -30,12 +30,12 @@ class User_maintenance_model extends CI_Model {
     }
 
 
-    public function createUserFromActivationID(IData_store_user $pDataStore, User $pUser) {
-        $returnedUsername = $pDataStore->getUserNameFromActivationID($pUser);
+    public function createUserFromActivationID(IData_store_user $pDataStore, $pActivationID) {
+        $returnedUser = $pDataStore->createUserFromActivationID($pActivationID);
 
-        if (isset($returnedUsername)) {
-            $pUser->setUsername($returnedUsername);
-            return $pUser;
+        if (isset($returnedUser)) {
+            //$pUser->setUsername($returnedUsername);
+            return $returnedUser;
         } else {
             return false;
         }

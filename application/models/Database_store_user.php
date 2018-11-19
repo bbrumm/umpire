@@ -47,11 +47,11 @@ class Database_store_user extends CI_Model implements IData_store_user
 
         $query = $this->db->query($queryString);
 
-        return $query->num_rows();
+        //return $query->num_rows();
 
         if ($query->num_rows() == 1) {
             $row = $query->row();
-            $user = User::createUserFromNameAndRole($row->ID, $row->user_name,
+            $user = User::createUserFromNameAndRole($row->id, $row->user_name,
                 $row->first_name, $row->last_name, $row->role_name, 1, $row->user_email);
             return $user;
         } else {
@@ -67,28 +67,34 @@ class Database_store_user extends CI_Model implements IData_store_user
             WHERE (ps.id IN ( 
             	SELECT ups.permission_selection_id 
             	FROM user_permission_selection ups 
-            	WHERE user_id = " . $this->getId() . " 
+            	WHERE user_id = " . $pUser->getId() . " 
             ) OR ps.id IN ( 
             	SELECT rps.permission_selection_id 
             	FROM role_permission_selection rps  
             	INNER JOIN umpire_users u ON rps.role_id = u.role_id 
-            	WHERE u.id = " . $this->getId() . "
+            	WHERE u.id = " . $pUser->getId() . "
                 AND u.role_id != 4));";
 
         $query = $this->db->query($queryString);
-        $row = $query->result_array();
+        $resultArray = $query->result_array();
 
+        return $resultArray;
+        /*
         if (isset($row)) {
-            $user = User::createUserFromNameAndRole($row->ID, $row->user_name,
+
+            $row = $query->row();
+            $user = User::createUserFromNameAndRole($row->id, $row->user_name,
                 $row->first_name, $row->last_name, $row->role_name, 1, $row->user_email);
 
-            return $user;
+
+
+
+            return $resultArray;
         } else {
             return null;
         }
+        */
 
-
-        //return count($resultArray);
     }
 
 
@@ -109,9 +115,9 @@ class Database_store_user extends CI_Model implements IData_store_user
         $data = array(
             'request_datetime' => $pRequestData['request_datetime'],
             'activation_id' => $pRequestData['activation_id'],
-            'ip_address' => $pRequestData['client_ip'],
-            'user_name' => $pRequestData['username_entered'],
-            'email_address' => $pRequestData['email_address_entered']
+            'ip_address' => $pRequestData['ip_address'],
+            'user_name' => $pRequestData['user_name'],
+            'email_address' => $pRequestData['email_address']
         );
 
         $queryStatus = $this->db->insert('password_reset_request', $data);
@@ -121,25 +127,28 @@ class Database_store_user extends CI_Model implements IData_store_user
 
 
 
-    public function storeActivationID($pActivationID, $pUser) {
+    public function storeActivationID($pUser, $pActivationID) {
         $this->db->where('user_name', $pUser->getUsername());
         $this->db->where('user_email', $pUser->getEmailAddress());
         $this->db->update('umpire_users', array('activation_id'=>$pActivationID));
     }
 
-/*
+
     public function createUserFromActivationID($pActivationID) {
         $this->db->select('user_name');
         $this->db->where('activation_id', $pActivationID);
         $query = $this->db->get('umpire_users');
 
         $resultArray = $query->result();
-        $user = new User();
-        $user->setUsername($resultArray[0]->user_name);
-
-        return $user;
+        $rowCount = count($resultArray);
+        if ($rowCount > 0) {
+            $user = User::createUserFromActivationID($resultArray[0]->user_name, $pActivationID);
+            return $user;
+        } else {
+            throw new Exception("No users found for the specified activation ID.");
+        }
     }
-*/
+
 
 
 

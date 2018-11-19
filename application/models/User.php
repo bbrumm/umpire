@@ -67,6 +67,13 @@ class User extends CI_Model
         return $obj;
     }
 
+    public static function createUserFromActivationID($pUsername, $pActivationID) {
+        $obj = new User();
+        $obj->setUsername($pUsername);
+        $obj->setActivationID($pActivationID);
+        return $obj;
+    }
+
 
     public function getId() {
         return $this->id;

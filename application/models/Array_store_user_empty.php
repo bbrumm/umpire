@@ -30,11 +30,11 @@ class Array_store_user_empty extends CI_Model implements IData_store_user {
     public function storeActivationID($pActivationID, $pUser) {
 
     }
-/*
+
     public function createUserFromActivationID($pActivationID) {
 
     }
-*/
+
     public function updatePassword(User $pUser) {
 
     }

@@ -15,8 +15,8 @@ class VerifyLogin_test extends TestCase
     public function testIndex_CorrectDetails() {
         //Set POST array
         $postArray = array(
-            'username'=>'bbrumm',
-            'password'=>'bbrumm2017'
+            'username'=>'bbrummtest',
+            'password'=>'test'
         );
         $output = $this->request('POST', ['VerifyLogin', 'index'], $postArray);
 
@@ -27,7 +27,7 @@ class VerifyLogin_test extends TestCase
     public function testIndex_IncorrectPW() {
         //Set POST array
         $postArray = array(
-            'username'=>'bbrumm',
+            'username'=>'bbrummtest',
             'password'=>'123'
         );
         $output = $this->request('POST', ['VerifyLogin', 'index'], $postArray);

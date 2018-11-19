@@ -23,11 +23,11 @@ class ForgotPassword extends CI_Controller {
         
     }
     
-    public function submitChangePasswordForm() {
+    public function submitChangePasswordForm($pSendEmail = true) {
         //Perform checks and send confirmation email
         $username = $this->security->xss_clean($this->input->post('username'));
         $emailAddress = $this->security->xss_clean($this->input->post('emailAddress'));
-        $sendStatusInfo = $this->validateUserAndSendEmail($username, $emailAddress);
+        $sendStatusInfo = $this->validateUserAndSendEmail($username, $emailAddress, $pSendEmail);
         
         if ($sendStatusInfo['status'] == "sent") {
             //Show page
@@ -58,14 +58,14 @@ class ForgotPassword extends CI_Controller {
         $this->load->view('templates/footer');
     }
     
-    private function validateUserAndSendEmail($pUserName, $pEmailAddress) {
+    private function validateUserAndSendEmail($pUserName, $pEmailAddress, $pSendEmail) {
         $umpireUser = new User();
         $umpireUser->setUsername($pUserName);
         $umpireUser->setEmailAddress($pEmailAddress);
         $userMaintenance = new User_maintenance_model();
         $userPermissionLoader = new User_permission_loader_model();
         $dbStore = new Database_store_user();
-        
+
         $data['activation_id'] = random_string('alnum',15);
         $data['request_datetime'] = date('Y-m-d H:i:s');
         $data['client_ip'] = $this->input->ip_address();
@@ -78,14 +78,18 @@ class ForgotPassword extends CI_Controller {
         if($userMaintenance->checkUserExistsForReset($dbStore, $umpireUser)) {
             
             $encoded_email = urlencode($pEmailAddress);
-            
+            //TODO: Move this into a separate function
             if($logRequest) {
                 $userPermissionLoader->getUserFromUsername($dbStore, $pUserName);
                 $umpireUser->setPasswordResetURL(base_url() . "index.php/ResetPasswordEntry/load/" . $data['activation_id']);
 
                 $userMaintenance->storeActivationID($dbStore, $umpireUser, $data['activation_id']);
-                
-                $sendStatus = $this->sendPasswordResetEmail($umpireUser);
+
+                if ($pSendEmail) {
+                    $sendStatus = $this->sendPasswordResetEmail($umpireUser);
+                } else {
+                    $sendStatus = true;
+                }
                 
                 if($sendStatus){
                     $sendStatusInfo['status'] = "sent";

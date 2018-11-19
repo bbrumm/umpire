@@ -13,11 +13,17 @@ class ResetPasswordEntry extends CI_Controller {
         $this->load->model('useradmin/User_maintenance_model');
         $this->load->model('Database_store_matches');
     }
-    
+
+    /*
+     * This is called when the user clicks on the link in the email.
+     * A check is made against the activationID in the database to ensure it's not being faked.
+     */
+
     function load($pActivationID) {
         $userMaintenance = new User_maintenance_model();
-        $umpireUser = $userMaintenance->createUserFromActivationID($pActivationID);
-        $umpireUser->setActivationID($pActivationID);
+        $dataStore = new Database_store_user();
+        $umpireUser = $userMaintenance->createUserFromActivationID($dataStore, $pActivationID);
+        //$umpireUser->setActivationID($pActivationID);
         //TODO check that this works and refactor. Repeated in function below.
         $data['activationIDMatches'] = isset($umpireUser);
         $data['activationID'] = $umpireUser->getActivationID();
