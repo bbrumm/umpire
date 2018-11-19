@@ -43,7 +43,31 @@ class VerifyLogin_test extends TestCase
             'password'=>'123'
         );
         $output = $this->request('POST', ['VerifyLogin', 'index'], $postArray);
-        $expected = "User is not active.";
+        $expected = "User is not active. Please contact support or the administrator.";
+
+        $this->assertContains($expected, $output);
+    }
+
+    public function testIndex_MissingUsername() {
+        //Set POST array
+        $postArray = array(
+            'username'=>null,
+            'password'=>'123'
+        );
+        $output = $this->request('POST', ['VerifyLogin', 'index'], $postArray);
+        $expected = "User is not active. Please contact support or the administrator.";
+
+        $this->assertContains($expected, $output);
+    }
+
+    public function testIndex_MissingPassword() {
+        //Set POST array
+        $postArray = array(
+            'username'=>'abc',
+            'password'=>null
+        );
+        $output = $this->request('POST', ['VerifyLogin', 'index'], $postArray);
+        $expected = "User is not active. Please contact support or the administrator.";
 
         $this->assertContains($expected, $output);
     }
