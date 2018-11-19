@@ -85,6 +85,7 @@ class ForgotPassword extends CI_Controller {
 
                 $userMaintenance->storeActivationID($dbStore, $umpireUser, $data['activation_id']);
 
+                //Send the email only if the flag is set. Flag is set to false for component testing.
                 if ($pSendEmail) {
                     $sendStatus = $this->sendPasswordResetEmail($umpireUser);
                 } else {
