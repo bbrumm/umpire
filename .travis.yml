@@ -9,6 +9,7 @@ before_script:
 - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
 - composer install
 - cd application/tests
+- "SetupTestData.php"
 script: "../../vendor/phpunit/phpunit/phpunit --coverage-clover build/logs/clover.xml"
 after_success:
 - cd ../../
