@@ -1,3 +1,5 @@
+USE databas6;
+
 CREATE TABLE password_reset_request (
   request_datetime datetime,
   activation_id varchar(200),
