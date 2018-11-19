@@ -24,3 +24,16 @@ CREATE TABLE umpire_users (
 
 INSERT INTO umpire_users (id, user_name, user_email, user_password, first_name, last_name, role_id, active)
 VALUES (24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 3, 1);
+
+CREATE TABLE role (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  role_name varchar(100) DEFAULT NULL,
+  display_order int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+INSERT INTO role (id, role_name, display_order) VALUES (1,'Owner',1);
+INSERT INTO role (id, role_name, display_order) VALUES (2,'Administrator',2);
+INSERT INTO role (id, role_name, display_order) VALUES (3,'Super User (Geelong)',3);
+INSERT INTO role (id, role_name, display_order) VALUES (4,'Regular User',4);
+INSERT INTO role (id, role_name, display_order) VALUES (5,'Super User (Colac)',4);
