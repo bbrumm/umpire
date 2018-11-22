@@ -122,4 +122,18 @@ CREATE TABLE password_reset_log (
   user_name varchar(255) DEFAULT NULL,
   old_password varchar(255) DEFAULT NULL,
   new_password varchar(255) DEFAULT NULL
-)
+);
+
+
+CREATE TABLE imported_files (
+  imported_file_id int(11) NOT NULL AUTO_INCREMENT,
+  filename varchar(500) NOT NULL,
+  imported_datetime datetime NOT NULL,
+  imported_user_id varchar(200) DEFAULT NULL,
+  etl_status int(2) DEFAULT NULL,
+  PRIMARY KEY (imported_file_id)
+);
+
+
+
+INSERT INTO imported_files VALUES (1,'data_setup_insert.xlsx','2018-09-19 17:37:15','bb',1);
