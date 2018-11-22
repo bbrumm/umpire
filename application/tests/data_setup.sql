@@ -160,3 +160,49 @@ CREATE TABLE report_selection_parameter_values (
 );
 
 INSERT INTO report_selection_parameter_values VALUES (1,1,'Geelong',1),(2,1,'Colac',2),(3,2,'BFL',1),(4,2,'GFL',2),(5,2,'GDFL',3),(6,2,'GJFL',4),(7,2,'CDFNL',5),(8,3,'Field',1),(9,3,'Boundary',2),(10,3,'Goal',3),(11,4,'Seniors',1),(12,4,'Reserves',2),(13,4,'Colts',3),(14,4,'Under 17.5',10),(15,4,'Under 16',15),(16,4,'Under 14.5',20),(17,4,'Under 14',25),(18,4,'Under 12',30),(19,4,'Youth Girls',80),(20,4,'Junior Girls',90),(21,4,'Under 19 Girls',50),(22,4,'Under 15 Girls',60),(23,4,'Under 12 Girls',70),(24,2,'Women',6),(25,4,'Under 19',6),(26,4,'Under 17',12),(27,4,'Under 15',17),(28,4,'Under 13',27),(29,4,'Under 18 Girls',53);
+
+
+
+CREATE TABLE t_field_list (
+  field_id int(11) NOT NULL AUTO_INCREMENT,
+  field_name varchar(200) DEFAULT NULL,
+  PRIMARY KEY (field_id)
+);
+
+INSERT INTO t_field_list VALUES (1,'match_count'),(2,'short_league_name'),(3,'club_name'),(4,'full_name'),(5,'age_group'),(6,'umpire_type_age_group'),(7,'weekend_date'),(8,'umpire_type'),(9,'umpire_name'),(10,'subtotal'),(11,'umpire_count'),(12,'first_umpire'),(13,'second_umpire'),(14,'last_first_name');
+
+
+CREATE TABLE t_pdf_settings (
+  pdf_settings_id int(11) NOT NULL AUTO_INCREMENT,
+  resolution int(5) NOT NULL,
+  paper_size varchar(5) NOT NULL,
+  orientation varchar(20) NOT NULL,
+  PRIMARY KEY (pdf_settings_id)
+);
+
+INSERT INTO t_pdf_settings VALUES (1,200,'a3','Landscape'),(2,200,'a3','Portrait'),(3,100,'a3','Landscape'),(4,200,'a4','Landscape');
+
+
+CREATE TABLE t_report (
+  report_id int(3) NOT NULL AUTO_INCREMENT,
+  report_name varchar(100) NOT NULL,
+  report_title varchar(200) NOT NULL,
+  value_field_id int(11) DEFAULT NULL,
+  no_value_display varchar(10) DEFAULT NULL,
+  first_column_format varchar(50) DEFAULT NULL,
+  colour_cells int(1) DEFAULT NULL,
+  pdf_settings_id int(11) DEFAULT NULL,
+  region_enabled int(1) DEFAULT NULL,
+  league_enabled int(1) DEFAULT NULL,
+  age_group_enabled int(1) DEFAULT NULL,
+  umpire_type_enabled int(1) DEFAULT NULL,
+  PRIMARY KEY (report_id),
+  KEY value_field_id (value_field_id),
+  KEY pdf_settings_id (pdf_settings_id),
+  CONSTRAINT t_report_ibfk_1 FOREIGN KEY (value_field_id) REFERENCES t_field_list (field_id),
+  CONSTRAINT t_report_ibfk_2 FOREIGN KEY (pdf_settings_id) REFERENCES t_pdf_settings (pdf_settings_id)
+);
+
+
+INSERT INTO t_report VALUES (1,'01 - Umpires and Clubs','01 - Umpires and Clubs (%seasonYear)',1,' ','text',1,1,1,1,1,1),(2,'02 - Umpire Names by League','02 - Umpire Names by League (%seasonYear)',1,' ','text',0,2,1,1,1,1),(3,'03 - Summary','03 - Summary by Week (Matches Where No Umpires Are Recorded) (%seasonYear)',1,' ','date',0,1,1,0,0,0),(4,'04 - Summary by Club','04 - Summary by Club (Matches Where No Umpires Are Recorded) (%seasonYear)',1,' ','text',0,1,1,0,0,0),(5,'05 - Summary by League','05 - Games with Zero Umpires For Each League (%seasonYear)',1,'0','text',0,3,1,0,0,0),(6,'06 - Pairings','06 - Umpire Pairing (%seasonYear)',1,' ','text',1,1,1,1,1,1),(7,'07 - 2 and 3 Field Umpires','06 - Games with 2 or 3 Field Umpires (%seasonYear)',1,'','text',0,4,1,1,1,0),(8,'08 - Umpire Games Tally','08 - Umpire Games Tally',1,NULL,'text',0,4,0,0,0,0);
+
