@@ -34,7 +34,9 @@ class ResetPasswordEntry extends CI_Controller {
         $this->load->view('templates/footer');
         
     }
-    
+
+    /*
+     * Remove this later as it may already be covered by the load() function
     function index() {
         $data['$activationIDMatches'] = true;
         
@@ -44,6 +46,7 @@ class ResetPasswordEntry extends CI_Controller {
         
         
     }
+    */
     
     private function showPasswordResetDonePage() {
         $this->load->view('templates/header');

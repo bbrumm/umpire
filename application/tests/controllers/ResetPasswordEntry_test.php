@@ -11,9 +11,6 @@ class ResetPasswordEntry_test extends TestCase
         $this->dbLocal = $this->CI->load->database('default', TRUE);
     }
 
-    public function test_Dummy() {
-        $this->assertEquals(1, 1);
-    }
 
     /*
      * Complete this test once the ForgotPassword tests are done

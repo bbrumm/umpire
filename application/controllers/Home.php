@@ -48,7 +48,7 @@ class Home extends CI_Controller {
         return $maxDate;
     }
     
-    public function getLatestImportDateOutput() {
+    private function getLatestImportDateOutput() {
         $dateFormatString = "d M Y, h:i:s A";
         $latestImportDate = $this->getLatestImportDate();
         return "Data last imported on " . date($dateFormatString, strtotime($latestImportDate));
