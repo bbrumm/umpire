@@ -260,3 +260,50 @@ CREATE TABLE field_list (
 
 
 INSERT INTO field_list VALUES (1,'match_count'),(2,'short_league_name'),(3,'club_name'),(4,'full_name'),(5,'age_group'),(6,'umpire_type_age_group'),(7,'weekend_date'),(8,'umpire_type'),(9,'umpire_name'),(10,'subtotal'),(11,'umpire_count'),(12,'first_umpire'),(13,'second_umpire'),(14,'last_first_name'),(15,'season_year'),(16,'total_match_count'),(17,'column_heading');
+
+
+CREATE TABLE ground (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  main_name varchar(100) DEFAULT NULL COMMENT 'The common name for a ground.',
+  alternative_name varchar(100) DEFAULT NULL COMMENT 'An alternative name for a ground, as there are multiple names for the same ground.',
+  PRIMARY KEY (id),
+  KEY alternative_name (alternative_name)
+);
+
+
+
+CREATE TABLE round (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  round_number int(11) DEFAULT NULL COMMENT 'The round number of the season.',
+  round_date datetime DEFAULT NULL COMMENT 'The date this round starts on.',
+  season_id int(11) DEFAULT NULL COMMENT 'The season this round belongs to.',
+  league_id int(11) DEFAULT NULL COMMENT 'The league this round belonds to.',
+  PRIMARY KEY (ID),
+  KEY fk_round_season_idx (season_id),
+  KEY fk_round_league_idx (league_id),
+  CONSTRAINT fk_round_league FOREIGN KEY (league_id) REFERENCES league (ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT fk_round_season FOREIGN KEY (season_id) REFERENCES season (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+
+CREATE TABLE match_played (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  round_id int(11) DEFAULT NULL,
+  ground_id int(11) DEFAULT NULL,
+  match_time datetime DEFAULT NULL,
+  home_team_id int(11) DEFAULT NULL,
+  away_team_id int(11) DEFAULT NULL,
+  match_staging_id int(11) DEFAULT NULL,
+  PRIMARY KEY (ID),
+  KEY fk_match_round_idx (round_id),
+  KEY fk_match_ground_idx (ground_id),
+  KEY fk_match_team_idx (home_team_id),
+  KEY idx_mp_1 (match_staging_id),
+  CONSTRAINT fk_match_ground FOREIGN KEY (ground_id) REFERENCES ground (id),
+  CONSTRAINT fk_match_round FOREIGN KEY (round_id) REFERENCES round (ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT fk_match_team FOREIGN KEY (home_team_id) REFERENCES team (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+
+
+INSERT INTO match_played (id, round_id, ground_id, match_time, home_team_id, away_team_id, match_staging_id) VALUES (1,1,1,'2015-04-03 14:10:00',1,1,1);
