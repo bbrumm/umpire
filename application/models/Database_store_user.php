@@ -55,7 +55,8 @@ class Database_store_user extends CI_Model implements IData_store_user
                 $row->first_name, $row->last_name, $row->role_name, 1, $row->user_email);
             return $user;
         } else {
-            return false;
+            throw new Exception("User not found.");
+            //return false;
         }
     }
 
@@ -105,6 +106,7 @@ class Database_store_user extends CI_Model implements IData_store_user
         $this->db->select('id');
         $this->db->where('user_name', $pUser->getUsername());
         $this->db->where('user_email', $pUser->getEmailAddress());
+        //print_r($pUser);
         $query = $this->db->get('umpire_users');
 
         return ($query->num_rows() > 0);
@@ -159,12 +161,16 @@ class Database_store_user extends CI_Model implements IData_store_user
 
     public function findOldUserPassword(User $pUser) {
         $this->db->select('user_password');
-        $this->db->where('user_name', $this->getUsername());
+        $this->db->where('user_name', $pUser->getUsername());
         $query = $this->db->get('umpire_users');
 
         $resultArray = $query->result();
+        if (count($resultArray) == 1) {
+            return $resultArray[0]->user_password;
+        } else {
+            throw new Exception("Username not found: " . $pUser->getUsername());
+        }
 
-        return $resultArray[0]->user_password;
     }
 
     public function logPasswordReset($pData) {

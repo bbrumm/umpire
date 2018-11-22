@@ -47,7 +47,7 @@
     
     echo form_close(); 
     
-    echo form_open('UpdateProfile/updatePassword');
+    echo form_open('ResetPasswordEntry/submitNewPassword');
     echo "<input type='hidden' name='username' id='username' value='". $username ."' />";
     ?>
         <div class="loginFieldRow">

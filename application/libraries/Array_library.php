@@ -78,5 +78,18 @@ class Array_library {
 
     }
 
+    public function findArrayDBObjectDiff($array1, $array2, $pFieldName) {
+	    $arrayDifferences = [];
+        foreach ($array1 as $key=>$subArray) {
+            if($subArray->$pFieldName != $array2[$key]->$pFieldName) {
+                $arrayDifferences[] = $subArray->$pFieldName;
+            }
+
+        }
+        return $arrayDifferences;
+
+
+    }
+
 }
 ?>

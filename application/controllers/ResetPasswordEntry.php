@@ -52,11 +52,12 @@ class ResetPasswordEntry extends CI_Controller {
     }
     
     private function showPasswordResetEntryPage($pStatusMessage) {
+        $dataStore = new Database_store_user();
         $data['statusMessage'] = $pStatusMessage;
         $userMaintenance = new User_maintenance_model();
         //TODO check that this works and refactor. Repeated in function above
-        $umpireUser = $userMaintenance->createUserFromActivationID();
-        $umpireUser->setActivationID($_POST['activationID']);
+        $umpireUser = $userMaintenance->createUserFromActivationID($dataStore, $_POST['activationID']);
+        //$umpireUser->setActivationID($_POST['activationID']);
         $data['activationIDMatches'] = isset($umpireUser);
         $data['activationID'] = $umpireUser->getActivationID();
         $data['username'] = $umpireUser->getUsername();
@@ -67,10 +68,24 @@ class ResetPasswordEntry extends CI_Controller {
     }
     
     public function submitNewPassword() {
+
+        $userAuthModel = new User_authentication_model();
+        $dbStore = new Database_store_user();
+
+
+        $passwordUpdated = $userAuthModel->updatePassword($dbStore, $_POST['username'], $_POST['password'], $_POST['confirmPassword']);
+
+        if($passwordUpdated) {
+            $this->showPasswordResetDonePage();
+        } else {
+            $statusMessage = "Passwords do not match or are less than 6 characters. ".
+                "Please ensure that both passwords you have entered are the same, and they are at least 6 characters long.";
+            $this->showPasswordResetEntryPage($statusMessage);
+        }
+
+        /*
         $userName = $_POST['username'];
         $userMaintenance = new User_maintenance_model();
-        $dbStore = new Database_store_user();
-        
         $newPassword= $this->security->xss_clean($this->input->post('password'));
         $confirmNewPassword= $this->security->xss_clean($this->input->post('confirmPassword'));
         
@@ -89,6 +104,7 @@ class ResetPasswordEntry extends CI_Controller {
                 "Please ensure that both passwords you have entered are the same, and they are at least 6 characters long.";
             $this->showPasswordResetEntryPage($statusMessage);
         }
+        */
     }
     
     

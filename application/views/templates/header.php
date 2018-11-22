@@ -89,6 +89,7 @@ if ($showHeader) {
     		$username = $session_data['username'];
     		//Get user object, including their role and permissions
             //$currentUser = User::createUserFromUsername($session_data['username']);
+            $pDataStore = new Database_store_user();
 
             $currentUser = $userPermissionLoader->getUserFromUsername($pDataStore, $username);
     		//$currentUser = new User();

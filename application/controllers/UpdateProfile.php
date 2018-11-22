@@ -24,7 +24,7 @@ if (! defined('BASEPATH'))
         
         public function loadPage($pUserAddedMessage = "", $pMessageIsSuccess = FALSE) {
             $sessionData = $this->session->userdata('logged_in');
-            
+
             $umpireUser = new User();
             $umpireUser->setUsername($sessionData['username']);
             $umpireUser = $this->lookupUserData($umpireUser);
@@ -38,33 +38,7 @@ if (! defined('BASEPATH'))
             $this->load->view('updateprofile', $data);
             $this->load->view('templates/footer');
         }
-        
-        public function updatePassword() {
-            //TODO: Refactor this with the ResetPasswordEntry controller as it's very similar code
-            $userName = $_POST['username'];
-            $userMaintenance = new User_maintenance_model();
-            $dbStore = new Database_store_user();
-            
-            $newPassword= $this->security->xss_clean($this->input->post('password'));
-            $confirmNewPassword= $this->security->xss_clean($this->input->post('confirmPassword'));
-            
-            $umpireUser = new User();
-            
-            $validPassword = $userMaintenance->validatePassword($newPassword, $confirmNewPassword);
-            
-            if ($validPassword) {
-                
-                $umpireUser->setUsername($userName);
-                $umpireUser->setPassword(MD5($newPassword));
-                $userMaintenance->updatePassword($dbStore, $umpireUser);
-                $statusMessage = "Password reset successfully.";
-                $this->loadPage($statusMessage, TRUE);
-            } else {
-                $statusMessage = "Passwords do not match or are less than 6 characters. ".
-                    "Please ensure that both passwords you have entered are the same, and they are at least 6 characters long.";
-                $this->loadPage($statusMessage);
-            }
-        }
+
         
         public function updateEmail() {
             $userMaintenance = new User_maintenance_model();
