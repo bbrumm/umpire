@@ -24,7 +24,7 @@ class Report_populator_model extends CI_Model {
 		 *  
 		 */
 		
-		$reportToDisplay->loadReportResults();
+		$reportToDisplay->loadReportResults($dataStore);
 		
 		return $reportToDisplay;
 

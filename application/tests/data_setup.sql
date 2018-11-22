@@ -137,3 +137,26 @@ CREATE TABLE imported_files (
 
 
 INSERT INTO imported_files VALUES (1,'data_setup_insert.xlsx','2018-09-19 17:37:15','bb',1);
+
+
+CREATE TABLE report_selection_parameters (
+  parameter_id int(11) NOT NULL,
+  parameter_name varchar(100) NOT NULL,
+  parameter_display_order int(3) NOT NULL,
+  allow_multiple_selections tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (parameter_id)
+);
+
+INSERT INTO report_selection_parameters VALUES (1,'Region',1,0),(2,'League',2,1),(3,'Umpire Discipline',3,1),(4,'Age Group',4,1);
+
+
+CREATE TABLE report_selection_parameter_values (
+  parameter_value_id int(11) NOT NULL AUTO_INCREMENT,
+  parameter_id int(11) NOT NULL,
+  parameter_value_name varchar(100) NOT NULL,
+  parameter_display_order int(3) NOT NULL,
+  PRIMARY KEY (parameter_value_id),
+  KEY fk_param_value (parameter_id)
+);
+
+INSERT INTO report_selection_parameter_values VALUES (1,1,'Geelong',1),(2,1,'Colac',2),(3,2,'BFL',1),(4,2,'GFL',2),(5,2,'GDFL',3),(6,2,'GJFL',4),(7,2,'CDFNL',5),(8,3,'Field',1),(9,3,'Boundary',2),(10,3,'Goal',3),(11,4,'Seniors',1),(12,4,'Reserves',2),(13,4,'Colts',3),(14,4,'Under 17.5',10),(15,4,'Under 16',15),(16,4,'Under 14.5',20),(17,4,'Under 14',25),(18,4,'Under 12',30),(19,4,'Youth Girls',80),(20,4,'Junior Girls',90),(21,4,'Under 19 Girls',50),(22,4,'Under 15 Girls',60),(23,4,'Under 12 Girls',70),(24,2,'Women',6),(25,4,'Under 19',6),(26,4,'Under 17',12),(27,4,'Under 15',17),(28,4,'Under 13',27),(29,4,'Under 18 Girls',53);
