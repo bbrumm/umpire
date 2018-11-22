@@ -305,5 +305,7 @@ CREATE TABLE match_played (
 );
 
 
-
-INSERT INTO match_played (id, round_id, ground_id, match_time, home_team_id, away_team_id, match_staging_id) VALUES (1,1,1,'2015-04-03 14:10:00',1,1,1);
+/*
+INSERT INTO match_played (id, round_id, ground_id, match_time, home_team_id, away_team_id, match_staging_id)
+VALUES (1,1,1,'2015-04-03 14:10:00',1,1,1);
+*/
