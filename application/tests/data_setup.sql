@@ -206,3 +206,10 @@ CREATE TABLE t_report (
 
 INSERT INTO t_report VALUES (1,'01 - Umpires and Clubs','01 - Umpires and Clubs (%seasonYear)',1,' ','text',1,1,1,1,1,1),(2,'02 - Umpire Names by League','02 - Umpire Names by League (%seasonYear)',1,' ','text',0,2,1,1,1,1),(3,'03 - Summary','03 - Summary by Week (Matches Where No Umpires Are Recorded) (%seasonYear)',1,' ','date',0,1,1,0,0,0),(4,'04 - Summary by Club','04 - Summary by Club (Matches Where No Umpires Are Recorded) (%seasonYear)',1,' ','text',0,1,1,0,0,0),(5,'05 - Summary by League','05 - Games with Zero Umpires For Each League (%seasonYear)',1,'0','text',0,3,1,0,0,0),(6,'06 - Pairings','06 - Umpire Pairing (%seasonYear)',1,' ','text',1,1,1,1,1,1),(7,'07 - 2 and 3 Field Umpires','06 - Games with 2 or 3 Field Umpires (%seasonYear)',1,'','text',0,4,1,1,1,0),(8,'08 - Umpire Games Tally','08 - Umpire Games Tally',1,NULL,'text',0,4,0,0,0,0);
 
+CREATE TABLE season (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  season_year int(11) DEFAULT NULL COMMENT 'The year that this season belongs to.',
+  PRIMARY KEY (ID)
+);
+
+INSERT INTO season VALUES (1,2015),(2,2016),(3,2017),(4,2018);
