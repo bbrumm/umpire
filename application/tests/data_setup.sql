@@ -233,3 +233,20 @@ CREATE TABLE report_table (
 );
 
 INSERT INTO report_table VALUES (1,'1','mv_report_01','Report 1'),(2,'2','mv_report_02','Report 2'),(3,'3','mv_report_03','Report 3'),(4,'4','mv_report_04','Report 4'),(5,'5','mv_report_05','Report 5'),(6,'6','mv_report_06','Report 6'),(7,'7','mv_report_07','Report 7'),(8,'8','mv_report_08','Report 8');
+
+CREATE TABLE report_grouping_structure (
+  report_grouping_structure_id int(11) NOT NULL AUTO_INCREMENT,
+  grouping_type varchar(10) NOT NULL,
+  report_id int(3) NOT NULL,
+  field_id int(5) NOT NULL,
+  field_group_order int(3) NOT NULL,
+  merge_field int(1) NOT NULL DEFAULT '0',
+  group_heading varchar(100) DEFAULT NULL,
+  group_size_text varchar(500) DEFAULT NULL,
+  PRIMARY KEY (report_grouping_structure_id),
+  KEY report_id (report_id),
+  KEY field_id (field_id)
+);
+
+INSERT INTO report_grouping_structure VALUES (1,'Column',1,2,1,1,NULL,NULL),(2,'Column',1,3,2,0,NULL,NULL),(3,'Row',1,14,1,0,'Name','Umpire_Name_First_Last'),(4,'Column',2,5,1,1,NULL,NULL),(5,'Column',2,2,2,0,NULL,NULL),(6,'Row',2,14,1,0,'Name',NULL),(7,'Column',3,6,1,1,NULL,NULL),(8,'Column',3,2,2,0,NULL,NULL),(9,'Row',3,7,1,0,'Week (Sat)',NULL),(10,'Column',4,8,1,1,NULL,NULL),(11,'Column',4,5,2,1,NULL,NULL),(12,'Column',4,2,3,0,NULL,NULL),(13,'Row',4,3,1,0,'Club',NULL),(14,'Column',5,2,1,1,NULL,NULL),(15,'Row',5,8,1,0,'Discipline',NULL),(16,'Row',5,5,2,0,'Age Group',NULL),(17,'Column',6,13,1,0,NULL,NULL),(18,'Row',6,12,1,0,'Umpire Name','Umpire_Name_First_Last'),(19,'Column',5,10,2,0,NULL,NULL),(20,'Column',7,2,1,1,NULL,NULL),(21,'Column',7,11,2,0,NULL,NULL),(22,'Row',7,5,1,0,'Age Group',NULL),(23,'Column',8,15,1,0,NULL,NULL),(24,'Row',8,4,1,0,NULL,NULL);
+
