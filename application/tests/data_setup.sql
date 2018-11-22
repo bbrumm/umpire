@@ -250,3 +250,13 @@ CREATE TABLE report_grouping_structure (
 
 INSERT INTO report_grouping_structure VALUES (1,'Column',1,2,1,1,NULL,NULL),(2,'Column',1,3,2,0,NULL,NULL),(3,'Row',1,14,1,0,'Name','Umpire_Name_First_Last'),(4,'Column',2,5,1,1,NULL,NULL),(5,'Column',2,2,2,0,NULL,NULL),(6,'Row',2,14,1,0,'Name',NULL),(7,'Column',3,6,1,1,NULL,NULL),(8,'Column',3,2,2,0,NULL,NULL),(9,'Row',3,7,1,0,'Week (Sat)',NULL),(10,'Column',4,8,1,1,NULL,NULL),(11,'Column',4,5,2,1,NULL,NULL),(12,'Column',4,2,3,0,NULL,NULL),(13,'Row',4,3,1,0,'Club',NULL),(14,'Column',5,2,1,1,NULL,NULL),(15,'Row',5,8,1,0,'Discipline',NULL),(16,'Row',5,5,2,0,'Age Group',NULL),(17,'Column',6,13,1,0,NULL,NULL),(18,'Row',6,12,1,0,'Umpire Name','Umpire_Name_First_Last'),(19,'Column',5,10,2,0,NULL,NULL),(20,'Column',7,2,1,1,NULL,NULL),(21,'Column',7,11,2,0,NULL,NULL),(22,'Row',7,5,1,0,'Age Group',NULL),(23,'Column',8,15,1,0,NULL,NULL),(24,'Row',8,4,1,0,NULL,NULL);
 
+
+
+CREATE TABLE field_list (
+  field_id int(11) NOT NULL AUTO_INCREMENT,
+  field_name varchar(200) NOT NULL,
+  PRIMARY KEY (field_id)
+);
+
+
+INSERT INTO field_list VALUES (1,'match_count'),(2,'short_league_name'),(3,'club_name'),(4,'full_name'),(5,'age_group'),(6,'umpire_type_age_group'),(7,'weekend_date'),(8,'umpire_type'),(9,'umpire_name'),(10,'subtotal'),(11,'umpire_count'),(12,'first_umpire'),(13,'second_umpire'),(14,'last_first_name'),(15,'season_year'),(16,'total_match_count'),(17,'column_heading');
