@@ -260,7 +260,7 @@ CREATE TABLE field_list (
 
 
 INSERT INTO field_list VALUES (1,'match_count'),(2,'short_league_name'),(3,'club_name'),(4,'full_name'),(5,'age_group'),(6,'umpire_type_age_group'),(7,'weekend_date'),(8,'umpire_type'),(9,'umpire_name'),(10,'subtotal'),(11,'umpire_count'),(12,'first_umpire'),(13,'second_umpire'),(14,'last_first_name'),(15,'season_year'),(16,'total_match_count'),(17,'column_heading');
-/*
+
 
 CREATE TABLE ground (
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -285,6 +285,7 @@ CREATE TABLE round (
   CONSTRAINT fk_round_season FOREIGN KEY (season_id) REFERENCES season (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
+/*
 
 CREATE TABLE match_played (
   ID int(11) NOT NULL AUTO_INCREMENT,
@@ -304,7 +305,7 @@ CREATE TABLE match_played (
   CONSTRAINT fk_match_team FOREIGN KEY (home_team_id) REFERENCES team (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-*/
+
 /*
 INSERT INTO match_played (id, round_id, ground_id, match_time, home_team_id, away_team_id, match_staging_id)
 VALUES (1,1,1,'2015-04-03 14:10:00',1,1,1);
