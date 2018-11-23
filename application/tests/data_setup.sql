@@ -305,3 +305,16 @@ CREATE TABLE match_played (
 INSERT INTO match_played (id, round_id, ground_id, match_time, home_team_id, away_team_id, match_staging_id)
 VALUES (1,1,1,'2015-04-03 14:10:00',1,1,1);
 
+
+CREATE TABLE dw_mv_report_01 (
+  last_first_name varchar(200) DEFAULT NULL,
+  short_league_name varchar(100) DEFAULT NULL,
+  club_name varchar(100) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  umpire_type varchar(100) DEFAULT NULL,
+  match_count int(11) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL
+);
+
+INSERT INTO dw_mv_report_01 VALUES ('Wood, Shalia','BFL','Ocean Grove','Reserves','Geelong','Boundary',1,2016);
