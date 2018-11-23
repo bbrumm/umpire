@@ -280,12 +280,10 @@ CREATE TABLE round (
   league_id int(11) DEFAULT NULL COMMENT 'The league this round belonds to.',
   PRIMARY KEY (ID),
   KEY fk_round_season_idx (season_id),
-  KEY fk_round_league_idx (league_id),
-  CONSTRAINT fk_round_league FOREIGN KEY (league_id) REFERENCES league (ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT fk_round_season FOREIGN KEY (season_id) REFERENCES season (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY fk_round_league_idx (league_id)
 );
 
-/*
+
 
 CREATE TABLE match_played (
   ID int(11) NOT NULL AUTO_INCREMENT,
@@ -299,14 +297,11 @@ CREATE TABLE match_played (
   KEY fk_match_round_idx (round_id),
   KEY fk_match_ground_idx (ground_id),
   KEY fk_match_team_idx (home_team_id),
-  KEY idx_mp_1 (match_staging_id),
-  CONSTRAINT fk_match_ground FOREIGN KEY (ground_id) REFERENCES ground (id),
-  CONSTRAINT fk_match_round FOREIGN KEY (round_id) REFERENCES round (ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT fk_match_team FOREIGN KEY (home_team_id) REFERENCES team (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY idx_mp_1 (match_staging_id)
 );
 
 
-/*
+
 INSERT INTO match_played (id, round_id, ground_id, match_time, home_team_id, away_team_id, match_staging_id)
 VALUES (1,1,1,'2015-04-03 14:10:00',1,1,1);
-*/
+
