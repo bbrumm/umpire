@@ -317,4 +317,7 @@ CREATE TABLE dw_mv_report_01 (
   season_year int(4) DEFAULT NULL
 );
 
-INSERT INTO dw_mv_report_01 VALUES ('Wood, Shalia','BFL','Ocean Grove','Reserves','Geelong','Boundary',1,2016);
+INSERT INTO dw_mv_report_01(last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, match_count, season_year)
+VALUES ('Wood, Shalia','BFL','Ocean Grove','Reserves','Geelong','Boundary',1,2016);
+INSERT INTO dw_mv_report_01(last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, match_count, season_year)
+VALUES ('Zarb, Jonathan', 'GFL', 'Ocean Grove', 'Seniors', 'Geelong', 'Field', 1, 2018);
