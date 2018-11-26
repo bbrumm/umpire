@@ -355,8 +355,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         $queryResultArray = $query->result_array();
 
         if (!isset($queryResultArray[0])) {
-            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for report "
-                . $separateReport->getReportNumber() .".<BR />Query:<BR />" . $queryForReport);
+            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for the report.<BR />Query:<BR />" . $queryForReport);
         }
 
         return $queryResultArray;
