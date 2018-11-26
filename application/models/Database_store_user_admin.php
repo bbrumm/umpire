@@ -80,8 +80,8 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     public function insertNewUser(User $pUser) {
         //TODO: Replace the default role with a user selection, once it is built into the UI.
         $queryString = "INSERT INTO umpire_users
-        (first_name, last_name, user_name, user_email, user_password, role_id)
-        VALUES (?, ?, ?, 'None', ?, 6);";
+        (first_name, last_name, user_name, user_email, user_password, role_id, active)
+        VALUES (?, ?, ?, 'None', ?, 6, 1);";
 
         $query = $this->db->query($queryString, array(
             $pUser->getFirstName(), $pUser->getLastName(), $pUser->getUsername(), $pUser->getPassword()

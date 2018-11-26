@@ -280,7 +280,9 @@ class Report_instance extends CI_Model {
 	            }
 	            if ($i == 1) {
                     $previousIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()];
-                    if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $this->columnCountLabels, $i, $j)) {
+                    //if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $this->columnCountLabels, $i, $j)) {
+                    //TODO text that this new line is working
+                    if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $columnLabelResults, $i, $j)) {
                         //Value found in array. Increment counter value
                         //Check if the value on the first row matches
                         if ($this->isFirstRowMatching($columnLabels, $columnLabelResults, $i, $j)) {
@@ -348,9 +350,11 @@ class Report_instance extends CI_Model {
 	
 	private function isFirstAndSecondColumnLabelInArray($pColumnLabels, $pColumnLabelResults, $firstLoopCounter, $secondLoopCounter) {
         $arrayLibrary = new Array_library();
+        $firstFieldName = $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()];
+        $secondFieldName = $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()];
+
         return $arrayLibrary->in_array_r(
-	        $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter-1]->getFieldName()] . "|" .
-            $pColumnLabelResults[$secondLoopCounter][$pColumnLabels[$firstLoopCounter]->getFieldName()], $this->columnCountLabels[$firstLoopCounter]
+            $firstFieldName . "|" . $secondFieldName, $this->columnCountLabels[$firstLoopCounter]
 	    );
 	}
 	

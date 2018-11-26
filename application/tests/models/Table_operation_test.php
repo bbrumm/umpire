@@ -1,5 +1,5 @@
 <?php
-class Tabke_operation_test extends TestCase
+class Table_operation_test extends TestCase
 {
     public function setUp()
     {

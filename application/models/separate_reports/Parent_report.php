@@ -75,7 +75,7 @@ class Parent_report extends CI_Model {
 
             $thClassNameToUse = $this->determineClassNameToUse($pReportDisplayOptions);
             $thOutput .= $this->addTableHeaderCellsToOutput($pReportDisplayOptions, $thClassNameToUse, $i);
-            $thOutput .= $this->addTableHeaderMergedCells($columnCountForHeadingCells, $pReportDisplayOptions);
+            $thOutput .= $this->addTableHeaderMergedCells($columnCountForHeadingCells, $pReportDisplayOptions, $i);
 
 
             $thOutput .= "</thead>";

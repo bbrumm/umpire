@@ -1,0 +1,30 @@
+<phpunit
+	bootstrap="/application/tests/Bootstrap.php"
+	backupGlobals="true"
+	colors="true">
+	<testsuites>
+		<testsuite name="unittests">
+            <directory suffix="test.php">/Applications/MAMP/htdocs/umpire/application/tests/models</directory>
+			<exclude>./_ci_phpunit_test/</exclude>
+		</testsuite>
+		<testsuite name="integration">
+            <directory suffix="test.php">/Applications/MAMP/htdocs/umpire/application/tests/controllers</directory>
+			<exclude>./_ci_phpunit_test/</exclude>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">/Applications/MAMP/htdocs/umpire/application/controllers</directory>
+			<directory suffix=".php">/Applications/MAMP/htdocs/umpire/application/models</directory>
+			<directory suffix=".php">/Applications/MAMP/htdocs/umpire/application/views</directory>
+			<directory suffix=".php">/Applications/MAMP/htdocs/umpire/application/libraries</directory>
+			<directory suffix=".php">/Applications/MAMP/htdocs/umpire/application/helpers</directory>
+			<directory suffix=".php">/Applications/MAMP/htdocs/umpire/application/hooks</directory>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-html" target="build/coverage"/>
+		<log type="coverage-clover" target="build/logs/clover.xml"/>
+		<log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+	</logging>
+</phpunit>
