@@ -496,3 +496,20 @@ CREATE TABLE umpire_games_history (
   updated_by varchar(100) DEFAULT NULL,
   updated_date datetime DEFAULT NULL
 );
+
+CREATE TABLE dw_dim_umpire (
+  umpire_key int(11) NOT NULL AUTO_INCREMENT,
+  first_name varchar(100) DEFAULT NULL,
+  last_name varchar(100) DEFAULT NULL,
+  last_first_name varchar(200) DEFAULT NULL,
+  umpire_type varchar(100) DEFAULT NULL,
+  games_prior int(5) DEFAULT NULL,
+  games_other_leagues int(5) DEFAULT NULL,
+  PRIMARY KEY (umpire_key),
+  KEY idx_du_join (first_name,last_name,umpire_type),
+  KEY idx_du_fn (first_name),
+  KEY idx_du_ln (last_name),
+  KEY idx_du_ut (umpire_type),
+  KEY idx_du_nametype (umpire_key,last_first_name,umpire_type),
+  KEY idx_du_keytype (umpire_key,umpire_type)
+);

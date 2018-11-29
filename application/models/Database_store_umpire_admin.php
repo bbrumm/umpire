@@ -49,7 +49,7 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
 
         //Combine all components for query
         $queryString .= $queryStringGamesPrior . $queryStringGamesOther . $queryStringWhere . ";";
-        $this->debug_library->debugOutput("queryString for umpire update", $queryString);
+        //$this->debug_library->debugOutput("queryString for umpire update", $queryString);
 
         return $queryString;
     }
