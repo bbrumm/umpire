@@ -337,6 +337,7 @@ CREATE TABLE dw_mv_report_02 (
 );
 
 INSERT INTO dw_mv_report_02 VALUES ('Mcgrath, Caleb','Women','Seniors',1,10,1,'Geelong','Field',4,2018);
+INSERT INTO dw_mv_report_02 VALUES ('Mcgrath, Caleb','GFL','Seniors',1,10,1,'Geelong','Field',4,2018);
 
 CREATE TABLE staging_no_umpires (
   weekend_date datetime DEFAULT NULL,
@@ -352,7 +353,7 @@ CREATE TABLE staging_no_umpires (
 
 
 INSERT INTO staging_no_umpires(weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
-VALUES ('2018-06-16 00:00:00', 'Seniors', 'Field', 'Women', 'Bell Post Hill vs Drysdale', 612741, 2018);
+VALUES ('2018-06-16 00:00:00', 'Seniors', 'Boundary', 'Women', 'Bell Post Hill vs Drysdale', 612741, 2018);
 
 CREATE TABLE dw_mv_report_04 (
   club_name varchar(100) DEFAULT NULL,
@@ -411,7 +412,8 @@ CREATE TABLE dw_mv_report_07 (
   match_count int(11) DEFAULT NULL
 );
 
-INSERT INTO dw_mv_report_07 VALUES ('Field','Seniors','Geelong','GFL',2016,1,10,'2 Umpires',2);
+INSERT INTO dw_mv_report_07 (umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count)
+VALUES ('Field','Seniors','Geelong','GFL',2018,1,10,'2 Umpires',2);
 
 
 CREATE TABLE dw_mv_report_08 (
