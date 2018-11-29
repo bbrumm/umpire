@@ -484,3 +484,15 @@ CREATE TABLE umpire (
 );
 
 INSERT INTO umpire VALUES (22960,'Tim','Arnott',166,0);
+
+CREATE TABLE umpire_games_history (
+  id int(11) DEFAULT NULL,
+  first_name varchar(100) DEFAULT NULL,
+  last_name varchar(100) DEFAULT NULL,
+  old_games_prior int(5) DEFAULT NULL,
+  old_games_other_leagues int(5) DEFAULT NULL,
+  new_games_prior int(5) DEFAULT NULL,
+  new_games_other_leagues int(5) DEFAULT NULL,
+  updated_by varchar(100) DEFAULT NULL,
+  updated_date datetime DEFAULT NULL
+);
