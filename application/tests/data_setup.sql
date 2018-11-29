@@ -321,3 +321,96 @@ INSERT INTO dw_mv_report_01(last_first_name, short_league_name, club_name, age_g
 VALUES ('Wood, Shalia','BFL','Ocean Grove','Reserves','Geelong','Boundary',1,2016);
 INSERT INTO dw_mv_report_01(last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, match_count, season_year)
 VALUES ('Zarb, Jonathan', 'GFL', 'Ocean Grove', 'Seniors', 'Geelong', 'Field', 1, 2018);
+
+
+CREATE TABLE dw_mv_report_02 (
+  last_first_name varchar(200) DEFAULT NULL,
+  short_league_name varchar(100) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  age_sort_order int(2) DEFAULT NULL,
+  league_sort_order int(2) DEFAULT NULL,
+  two_ump_flag int(1) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  umpire_type varchar(100) DEFAULT NULL,
+  match_count int(11) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL
+);
+
+INSERT INTO dw_mv_report_02 VALUES ('Mcgrath, Caleb','Women','Seniors',1,10,1,'Geelong','Field',4,2018);
+
+
+INSERT INTO staging_no_umpires(weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
+VALUES ('2018-06-16 00:00:00', 'Seniors', 'Field', 'Women', 'Bell Post Hill vs Drysdale', 612741, 2018);
+
+CREATE TABLE dw_mv_report_04 (
+  club_name varchar(100) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  short_league_name varchar(100) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  umpire_type varchar(100) DEFAULT NULL,
+  age_sort_order int(11) DEFAULT NULL,
+  league_sort_order int(11) DEFAULT NULL,
+  match_count int(11) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL
+);
+
+INSERT INTO dw_mv_report_04 VALUES ('Werribee Centrals','Seniors','GFL','Geelong','Field',6,10,14,2018);
+
+
+CREATE TABLE dw_mv_report_05 (
+  umpire_type varchar(100) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  age_sort_order int(2) DEFAULT NULL,
+  short_league_name varchar(100) DEFAULT NULL,
+  league_sort_order int(2) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  match_no_ump int(11) DEFAULT NULL,
+  total_match_count int(11) DEFAULT NULL,
+  match_pct int(11) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL
+);
+
+
+INSERT INTO dw_mv_report_05 VALUES ('Field','Seniors',20,'GFL',4,'Geelong',90,96,93,2018);
+
+CREATE TABLE dw_mv_report_06 (
+  umpire_type varchar(100) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  first_umpire varchar(200) DEFAULT NULL,
+  second_umpire varchar(200) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL,
+  match_count int(11) DEFAULT NULL,
+  short_league_name varchar(200) DEFAULT NULL
+);
+
+INSERT INTO dw_mv_report_06 VALUES ('Field','Seniors','Geelong','Woolsey, Louise','Bell, Gwenda',2018,15,'GFL');
+
+
+CREATE TABLE dw_mv_report_07 (
+  umpire_type varchar(100) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  short_league_name varchar(200) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL,
+  age_sort_order int(2) DEFAULT NULL,
+  league_sort_order int(2) DEFAULT NULL,
+  umpire_count varchar(100) DEFAULT NULL,
+  match_count int(11) DEFAULT NULL
+);
+
+INSERT INTO dw_mv_report_07 VALUES ('Field','Seniors','Geelong','GFL',2016,1,10,'2 Umpires',2);
+
+
+CREATE TABLE dw_mv_report_08 (
+  season_year varchar(100) DEFAULT NULL,
+  full_name varchar(200) DEFAULT NULL,
+  match_count int(11) DEFAULT NULL,
+  total_match_count int(11) DEFAULT NULL,
+  last_name varchar(100) DEFAULT NULL,
+  first_name varchar(100) DEFAULT NULL,
+  KEY idx_rpt8_fnln (last_name,first_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO dw_mv_report_08 VALUES ('2018','Abbott, Trevor',27,426,'Abbott','Trevor');
+

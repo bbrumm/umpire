@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1543261449">
-  <project timestamp="1543261449">
+<coverage generated="1543262487">
+  <project timestamp="1543262487">
     <file name="/Applications/MAMP/htdocs/umpire/application/controllers/Ajax_post_controller.php">
       <class name="Ajax_Post_Controller" namespace="global" fullPackage="Ajax.Post">
         <metrics complexity="7" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="39" coveredstatements="0" elements="46" coveredelements="0"/>
@@ -1905,7 +1905,7 @@
     </file>
     <file name="/Applications/MAMP/htdocs/umpire/application/models/Database_store_matches.php">
       <class name="Database_store_matches" namespace="global" fullPackage="Database.store">
-        <metrics complexity="38" methods="28" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="141" coveredstatements="57" elements="169" coveredelements="61"/>
+        <metrics complexity="38" methods="28" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="140" coveredstatements="57" elements="168" coveredelements="61"/>
       </class>
       <line num="2" type="stmt" count="1"/>
       <line num="5" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="166"/>
@@ -2060,24 +2060,23 @@
       <line num="340" type="stmt" count="0"/>
       <line num="342" type="method" name="checkUserFoundForUsername" visibility="public" complexity="1" crap="2" count="0"/>
       <line num="344" type="stmt" count="0"/>
-      <line num="346" type="method" name="loadReportData" visibility="public" complexity="2" crap="2.09" count="1"/>
+      <line num="346" type="method" name="loadReportData" visibility="public" complexity="2" crap="2.02" count="1"/>
       <line num="347" type="stmt" count="1"/>
       <line num="352" type="stmt" count="1"/>
       <line num="355" type="stmt" count="1"/>
       <line num="357" type="stmt" count="1"/>
       <line num="358" type="stmt" count="0"/>
-      <line num="359" type="stmt" count="0"/>
-      <line num="362" type="stmt" count="1"/>
-      <line num="365" type="method" name="findLastGameDateForSelectedSeason" visibility="public" complexity="1" crap="1" count="1"/>
-      <line num="370" type="stmt" count="1"/>
+      <line num="361" type="stmt" count="1"/>
+      <line num="364" type="method" name="findLastGameDateForSelectedSeason" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="369" type="stmt" count="1"/>
+      <line num="371" type="stmt" count="1"/>
       <line num="372" type="stmt" count="1"/>
       <line num="373" type="stmt" count="1"/>
-      <line num="374" type="stmt" count="1"/>
-      <line num="377" type="method" name="findDistinctColumnHeadings" visibility="public" complexity="1" crap="1" count="1"/>
-      <line num="378" type="stmt" count="1"/>
+      <line num="376" type="method" name="findDistinctColumnHeadings" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="377" type="stmt" count="1"/>
+      <line num="379" type="stmt" count="1"/>
       <line num="380" type="stmt" count="1"/>
-      <line num="381" type="stmt" count="1"/>
-      <metrics loc="387" ncloc="361" classes="1" methods="28" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="142" coveredstatements="58" elements="170" coveredelements="62"/>
+      <metrics loc="386" ncloc="360" classes="1" methods="28" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="141" coveredstatements="58" elements="169" coveredelements="62"/>
     </file>
     <file name="/Applications/MAMP/htdocs/umpire/application/models/Database_store_umpire_admin.php">
       <class name="Database_store_umpire_admin" namespace="global" fullPackage="Database.store.umpire">
@@ -7314,6 +7313,6 @@
       <line num="205" type="stmt" count="0"/>
       <metrics loc="204" ncloc="190" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="152" coveredstatements="0" elements="152" coveredelements="0"/>
     </file>
-    <metrics files="121" loc="13020" ncloc="10899" classes="71" methods="697" coveredmethods="454" conditionals="0" coveredconditionals="0" statements="6014" coveredstatements="2108" elements="6711" coveredelements="2562"/>
+    <metrics files="121" loc="13019" ncloc="10898" classes="71" methods="697" coveredmethods="454" conditionals="0" coveredconditionals="0" statements="6013" coveredstatements="2108" elements="6710" coveredelements="2562"/>
   </project>
 </coverage>

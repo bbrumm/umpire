@@ -29,7 +29,7 @@ class Report4_test extends TestCase {
         $inputRegion = false;
         $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
         
-        $expected = "SELECT DISTINCT s.umpire_type, s.age_group, s.short_league_name FROM staging_all_ump_age_league s ".
+        $expected = "SELECT DISTINCT s.umpire_type, s.age_group, s.short_league_name FROM dw_mv_report_04 s ".
         "WHERE s.short_league_name IN ('Five','Six') ORDER BY s.umpire_type, s.age_sort_order, s.league_sort_order;";
         $actual = $this->obj->getReportColumnQuery($reportInstance);
         $this->assertEquals($expected, $actual);
