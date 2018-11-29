@@ -438,6 +438,15 @@ CREATE TABLE dw_dim_league (
   KEY idx_dl_join (short_league_name,full_name,region_name,competition_name)
 );
 
-INSERT INTO `dw_dim_league` VALUES (1,'GFL','AFL Barwon Blood Toyota Geelong FNL','Geelong','AFL Barwon - 2018 Blood Toyota Geelong FNL Seniors',1,2018)
+INSERT INTO `dw_dim_league` VALUES (1,'GFL','AFL Barwon Blood Toyota Geelong FNL','Geelong','AFL Barwon - 2018 Blood Toyota Geelong FNL Seniors',1,2018);
+
+CREATE TABLE report_column_display_order (
+  report_id int(3) DEFAULT NULL,
+  column_heading varchar(200) DEFAULT NULL,
+  display_order int(5) DEFAULT '0'
+);
+
+
+INSERT INTO report_column_display_order VALUES (8,'Games Prior',10),(8,'2015',20),(8,'2016',30),(8,'2017',40),(8,'2018',50),(8,'Total Geelong',60),(8,'Games Other Leagues',70),(8,'Total Overall',80);
 
 
