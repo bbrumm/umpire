@@ -426,3 +426,18 @@ CREATE TABLE dw_mv_report_08 (
 
 INSERT INTO dw_mv_report_08 VALUES ('2018','Abbott, Trevor',27,426,'Abbott','Trevor');
 
+CREATE TABLE dw_dim_league (
+  league_key int(11) NOT NULL AUTO_INCREMENT,
+  short_league_name varchar(50) DEFAULT NULL,
+  full_name varchar(200) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  competition_name varchar(500) DEFAULT NULL,
+  league_sort_order int(11) DEFAULT NULL,
+  league_year int(11) DEFAULT NULL,
+  PRIMARY KEY (league_key),
+  KEY idx_dl_join (short_league_name,full_name,region_name,competition_name)
+);
+
+INSERT INTO `dw_dim_league` VALUES (1,'GFL','AFL Barwon Blood Toyota Geelong FNL','Geelong','AFL Barwon - 2018 Blood Toyota Geelong FNL Seniors',1,2018)
+
+
