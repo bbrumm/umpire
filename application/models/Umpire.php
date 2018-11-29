@@ -36,7 +36,8 @@ class Umpire extends CI_Model
         $obj->setLastName($resultArrayRow['last_name']);
         $obj->setGamesPlayedPrior($resultArrayRow['games_prior']);
         $obj->setGamesPlayedOtherLeagues($resultArrayRow['games_other_leagues']);
-
+        $obj->setOldGamesPlayedPrior($resultArrayRow['games_prior']);
+        $obj->setOldGamesPlayedOtherLeagues($resultArrayRow['games_other_leagues']);
         return $obj;
     }
     
