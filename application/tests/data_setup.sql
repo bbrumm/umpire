@@ -338,6 +338,18 @@ CREATE TABLE dw_mv_report_02 (
 
 INSERT INTO dw_mv_report_02 VALUES ('Mcgrath, Caleb','Women','Seniors',1,10,1,'Geelong','Field',4,2018);
 
+CREATE TABLE staging_no_umpires (
+  weekend_date datetime DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  umpire_type varchar(100) DEFAULT NULL,
+  short_league_name varchar(100) DEFAULT NULL,
+  team_names varchar(400) DEFAULT NULL,
+  match_id int(11) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL,
+  KEY idx_stg_no (umpire_type,short_league_name,age_group),
+  KEY idx_stg_no_mid (match_id)
+);
+
 
 INSERT INTO staging_no_umpires(weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-06-16 00:00:00', 'Seniors', 'Field', 'Women', 'Bell Post Hill vs Drysdale', 612741, 2018);
