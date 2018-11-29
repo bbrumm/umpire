@@ -513,3 +513,24 @@ CREATE TABLE dw_dim_umpire (
   KEY idx_du_nametype (umpire_key,last_first_name,umpire_type),
   KEY idx_du_keytype (umpire_key,umpire_type)
 );
+
+CREATE TABLE umpire_type (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  umpire_type_name varchar(100) DEFAULT NULL,
+  PRIMARY KEY (ID),
+  KEY idx_ut_ut (umpire_type_name)
+);
+
+
+INSERT INTO umpire_type VALUES (1,'Field'),(2,'Boundary'),(3,'Goal');
+
+CREATE TABLE umpire_name_type (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  umpire_id int(11) DEFAULT NULL,
+  umpire_type_id int(11) DEFAULT NULL,
+  PRIMARY KEY (ID),
+  KEY fk_unt_umpire_idx (umpire_id),
+  KEY fk_unt_ut_idx (umpire_type_id)
+);
+
+INSERT INTO umpire_name_type(umpire_id, umpire_type_id) VALUES (22960, 1);
