@@ -471,3 +471,16 @@ CREATE TABLE staging_all_ump_age_league (
 
 INSERT INTO staging_all_ump_age_league VALUES ('Seniors','Boundary','GFL','Geelong',1,1);
 
+CREATE TABLE umpire (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  first_name varchar(100) DEFAULT NULL,
+  last_name varchar(100) DEFAULT NULL,
+  games_prior int(5) DEFAULT '0',
+  games_other_leagues int(5) DEFAULT '0',
+  PRIMARY KEY (ID),
+  KEY idx_umpire_1 (first_name,last_name),
+  KEY idx_ump_fn (first_name),
+  KEY idx_ump_ln (last_name)
+);
+
+INSERT INTO umpire VALUES (22960,'Tim','Arnott',166,0);
