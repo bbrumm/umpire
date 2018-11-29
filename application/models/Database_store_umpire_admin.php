@@ -71,7 +71,7 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
             $currentLoopCount++;
 
             //Check if values have changed, if so, update data
-            if ($this->haveUmpireGamesNumbersChanged($currentUmpire)) {
+            if ($currentUmpire->haveUmpireGamesNumbersChanged()) {
                 $queryString .= " (".
                     $currentUmpire->getID().", 
                     '". $currentUmpire->getFirstName() ."',
@@ -96,6 +96,9 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
         $query = $this->db->query($queryString);
 
     }
+
+
+
 
     public function updateDimUmpireTable() {
         $queryString = "TRUNCATE TABLE dw_dim_umpire;";

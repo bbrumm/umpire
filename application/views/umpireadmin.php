@@ -127,8 +127,8 @@ if (isset($userAddedMessage)) {
     	<?php 
     	
     	//$newUmpire = new Umpire();
-    	$umpireIteration->setOldGamesPlayedPrior($umpireIteration->getGamesPlayedPrior());
-    	$umpireIteration->setOldGamesPlayedOtherLeagues($umpireIteration->getGamesPlayedOtherLeagues());
+    	//$umpireIteration->setOldGamesPlayedPrior($umpireIteration->getGamesPlayedPrior());
+    	//$umpireIteration->setOldGamesPlayedOtherLeagues($umpireIteration->getGamesPlayedOtherLeagues());
     	
     	/*
     	$umpireData = $umpireIteration->getFirstName() . "," .

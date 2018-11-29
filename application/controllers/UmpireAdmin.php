@@ -38,22 +38,22 @@ if (! defined('BASEPATH'))
         }
         
         public function updateUmpireGamesPlayed() {
-            //echo "Games played update code goes here.";
-            //Update all numbers from the screen. No need to worry about adding a dirty flag, as this is a step that will not happen very often.
-            //I also need to log when these changes were made, and by who, and what the before and after values were, just in case we need to track it.
+            /*
+            Update all numbers from the screen.
+            No need to worry about adding a dirty flag, as this is a step that will not happen very often.
+            I also need to log when these changes were made, and by who,
+            and what the before and after values were, just in case we need to track it.
+            */
             $dataStore = new Database_store_umpire_admin();
             $umpireAdmin = new Umpireadminmodel();
             $umpireUpdateSuccess = $umpireAdmin->updateUmpireGameValues($dataStore, $_POST);
-            
-            $this->debug_library->debugOutput("UmpireUpdateSuccess", $umpireUpdateSuccess);
-            
+
             if ($umpireUpdateSuccess) {
                 $umpireUpdateSuccessMessage= "Data successfully updated.";
-                //$this->debug_library->debugOutput("userAddedMessage", $userAddedMessage);
-                $this->loadPage($umpireUpdateSuccessMessage);
             } else {
                 $umpireUpdateSuccessMessage= "Data not updated.";
             }
+            $this->loadPage($umpireUpdateSuccessMessage);
             
         }
         

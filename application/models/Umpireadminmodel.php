@@ -40,6 +40,8 @@ class Umpireadminmodel extends CI_Model {
 
             //Also update the dw_mv_report_08 table
             $pDataStore->updateMVReport8Table();
+
+            return true;
         }
 
     }
@@ -59,18 +61,12 @@ class Umpireadminmodel extends CI_Model {
                 $matchedExistingUmpire->getGamesPlayedPrior(), $matchedExistingUmpire->getGamesPlayedOtherLeagues());
 
             //Check if values have changed, if so, update data
-            if ($this->haveUmpireGamesNumbersChanged($currentUmpire)) {
+            if ($currentUmpire->haveUmpireGamesNumbersChanged()) {
                 $countChangedUmpires++;
                 $umpireArray[] = $currentUmpire;
             }
         }
         return $umpireArray;
-    }
-
-    
-    private function haveUmpireGamesNumbersChanged(Umpire $pUmpire) {
-        return ($pUmpire->getGamesPlayedPrior() <> $pUmpire->getOldGamesPlayedPrior() ||
-            $pUmpire->getGamesPlayedOtherLeagues() <> $pUmpire->getOldGamesPlayedOtherLeagues());
     }
 
 

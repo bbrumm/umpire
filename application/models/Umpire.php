@@ -115,6 +115,11 @@ class Umpire extends CI_Model
         }
         
     }
+
+    public function haveUmpireGamesNumbersChanged() {
+        return ($this->getGamesPlayedPrior() <> $this->getOldGamesPlayedPrior() ||
+            $this->getGamesPlayedOtherLeagues() <> $this->getOldGamesPlayedOtherLeagues());
+    }
     
 }
 
