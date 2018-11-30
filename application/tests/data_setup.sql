@@ -448,7 +448,7 @@ CREATE TABLE dw_dim_league (
   KEY idx_dl_join (short_league_name,full_name,region_name,competition_name)
 );
 
-INSERT INTO `dw_dim_league` VALUES (1,'GFL','AFL Barwon Blood Toyota Geelong FNL','Geelong','AFL Barwon - 2018 Blood Toyota Geelong FNL Seniors',1,2018);
+INSERT INTO dw_dim_league VALUES (1,'GFL','AFL Barwon Blood Toyota Geelong FNL','Geelong','AFL Barwon - 2018 Blood Toyota Geelong FNL Seniors',1,2018);
 
 CREATE TABLE report_column_display_order (
   report_id int(3) DEFAULT NULL,
@@ -484,6 +484,7 @@ CREATE TABLE umpire (
 );
 
 INSERT INTO umpire VALUES (22960,'Tim','Arnott',166,0);
+INSERT INTO umpire VALUES (89372,'Mitch','Gray',387,0);
 
 CREATE TABLE umpire_games_history (
   id int(11) DEFAULT NULL,
@@ -534,3 +535,4 @@ CREATE TABLE umpire_name_type (
 );
 
 INSERT INTO umpire_name_type(umpire_id, umpire_type_id) VALUES (22960, 1);
+INSERT INTO umpire_name_type(umpire_id, umpire_type_id) VALUES (89372, 1);
