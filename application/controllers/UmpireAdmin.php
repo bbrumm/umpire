@@ -1,8 +1,4 @@
-<?php
-
-if (! defined('BASEPATH'))
-    exit('No direct script access allowed');
-    
+<?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
     class UmpireAdmin extends CI_Controller
     {
         
@@ -15,10 +11,6 @@ if (! defined('BASEPATH'))
             $this->load->model('Umpireadminmodel');
             $this->load->model('Database_store_umpire_admin');
             $this->load->library('Debug_library');
-        }
-        
-        function index() {
-            $this->loadPage(NULL);
         }
         
         public function loadPage($pUserAddedMessage = "") {

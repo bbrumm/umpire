@@ -116,7 +116,7 @@ if ($showHeader) {
     		
     		if($userPermissionLoader->userCanSeeUserAdminPage($currentUser)) {
     		    echo anchor("UserAdmin", $menuUserAdmin);
-    		    echo anchor("UmpireAdmin", $menuUmpireAdmin);
+    		    echo anchor("UmpireAdmin/loadPage", $menuUmpireAdmin);
     		}
     		
     		if ($userPermissionLoader->userCanSeeDataTestPage($currentUser)) {

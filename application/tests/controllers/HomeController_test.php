@@ -45,10 +45,23 @@ class HomeController_test extends TestCase
     public function test_LoadPage_NotLoggedIn() {
         $sessionArray['logged_in'] = null;
         $this->CI->session->set_userdata($sessionArray);
-
         $output = $this->request('POST', ['Home', 'index']);
 
         $this->assertRedirect('login');
+
+    }
+
+    public function test_LoadPage_Logout() {
+        $sessionArray['logged_in'] = array('username'=>'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $expectedHeader = "<h2>Select a Report</h2>";
+        $this->assertContains($expectedHeader, $output);
+
+        //Logout
+        $output = $this->request('POST', ['Home', 'logout']);
+        $this->assertRedirect('home');
 
     }
 
