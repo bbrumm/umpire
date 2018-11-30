@@ -36,8 +36,8 @@ class Home extends CI_Controller {
         $this->session->unset_userdata('logged_in');
         //$this->session->sess_destroy();
         //Reloads itself, causing the index() method above to be called.
-        redirect('home', 'refresh');
-    }
+        redirect('home', 'refresh');}
+    //Closing bracket on above line so it's picked up by Coveralls correctly
     
     private function getLatestImportDate() {
         $queryString = "SELECT MAX(imported_datetime) as MAX_DATE FROM imported_files";
