@@ -715,6 +715,30 @@ CREATE TABLE dw_fact_match (
   away_team_key int(11) DEFAULT NULL
 );
 
+CREATE TABLE dw_dim_time (
+  time_key int(11) NOT NULL AUTO_INCREMENT,
+  round_number int(2) DEFAULT NULL,
+  match_date datetime DEFAULT NULL,
+  date_year int(4) DEFAULT NULL,
+  date_month int(2) DEFAULT NULL,
+  date_day int(2) DEFAULT NULL,
+  date_hour int(2) DEFAULT NULL,
+  date_minute int(2) DEFAULT NULL,
+  weekend_date date DEFAULT NULL,
+  weekend_year int(4) DEFAULT NULL,
+  weekend_month int(2) DEFAULT NULL,
+  weekend_day int(2) DEFAULT NULL,
+  PRIMARY KEY (time_key)
+);
+
+
+CREATE TABLE dw_dim_team (
+  team_key int(11) NOT NULL AUTO_INCREMENT,
+  team_name varchar(100) DEFAULT NULL,
+  club_name varchar(100) DEFAULT NULL,
+  PRIMARY KEY (team_key)
+);
+
 
 
 /*
