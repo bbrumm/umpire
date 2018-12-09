@@ -814,6 +814,18 @@ CREATE TABLE dw_dim_age_group (
   PRIMARY KEY (age_group_key)
 );
 
+CREATE TABLE dw_rpt06_stg2 (
+  umpire_type varchar(200) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  first_umpire varchar(200) DEFAULT NULL,
+  second_umpire varchar(200) DEFAULT NULL,
+  date_year int(11) DEFAULT NULL,
+  match_id int(11) DEFAULT NULL,
+  short_league_name varchar(200) DEFAULT NULL
+);
+
+
 /*
 ********
 ********
