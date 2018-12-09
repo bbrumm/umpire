@@ -825,6 +825,18 @@ CREATE TABLE dw_rpt06_stg2 (
   short_league_name varchar(200) DEFAULT NULL
 );
 
+CREATE TABLE dw_rpt06_staging (
+  umpire_key int(11) DEFAULT NULL,
+  umpire_type varchar(200) DEFAULT NULL,
+  last_first_name varchar(200) DEFAULT NULL,
+  match_id int(11) DEFAULT NULL,
+  date_year int(11) DEFAULT NULL,
+  league_key int(11) DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  short_league_name varchar(200) DEFAULT NULL
+);
+
 
 /*
 ********
