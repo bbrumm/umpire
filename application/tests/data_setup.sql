@@ -677,13 +677,3 @@ CREATE TABLE staging_matches_homeaway (
   umpire_type_name varchar(100) CHARACTER SET utf8 DEFAULT NULL
 );
 
-
-CREATE TABLE staging_no_umpires (
-  weekend_date datetime DEFAULT NULL,
-  age_group varchar(100) DEFAULT NULL,
-  umpire_type varchar(100) DEFAULT NULL,
-  short_league_name varchar(100) DEFAULT NULL,
-  team_names varchar(400) DEFAULT NULL,
-  match_id int(11) DEFAULT NULL,
-  season_year int(4) DEFAULT NULL
-);
