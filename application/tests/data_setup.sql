@@ -1,5 +1,9 @@
 USE databas6;
 
+SET collation_connection = 'utf8_general_ci';
+
+ALTER DATABASE databas6 CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 CREATE TABLE password_reset_request (
   request_datetime datetime,
   activation_id varchar(200),
