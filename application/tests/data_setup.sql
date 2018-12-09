@@ -693,6 +693,21 @@ CREATE TABLE processed_table (
 
 INSERT INTO `processed_table` VALUES (1,'match_import'),(2,'round'),(3,'umpire'),(4,'umpire_name_type'),(5,'match_staging'),(6,'match_played'),(7,'umpire_name_type_match'),(8,'mv_report_01'),(9,'mv_report_02'),(10,'mv_summary_staging'),(11,'mv_report_03'),(12,'mv_report_04'),(13,'mv_report_05'),(14,'mv_report_06'),(15,'mv_report_06_staging'),(16,'mv_umpire_list'),(17,'mv_denormalised'),(18,'ground'),(19,'mv_report_07'),(20,'dw_fact_match'),(21,'dw_dim_age_group'),(22,'dw_dim_league'),(23,'dw_dim_team'),(24,'dw_dim_time'),(25,'dw_dim_umpire'),(26,'staging_match'),(27,'staging_no_umpires'),(28,'staging_all_ump_age_league'),(29,'dw_mv_report_02'),(30,'dw_mv_report_04'),(31,'dw_mv_report_05'),(32,'dw_mv_report_06'),(33,'dw_mv_report_07'),(34,'dw_mv_report_01'),(35,'dw_rpt06_staging'),(37,'mv_report_07_stg1'),(36,'dw_rpt06_stg2'),(38,'competition_lookup'),(39,'team'),(41,'dw_mv_report_08');
 
+
+CREATE TABLE table_operations (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  imported_file_id int(11) NOT NULL,
+  processed_table_id int(11) NOT NULL,
+  operation_id int(11) NOT NULL,
+  operation_datetime datetime NOT NULL,
+  rowcount int(11) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+
+
+
+
 /*
 ********
 ********
