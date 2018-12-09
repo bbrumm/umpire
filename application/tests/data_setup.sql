@@ -876,6 +876,18 @@ CREATE TABLE incomplete_records (
 );
 
 
+CREATE TABLE short_league_name (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  short_league_name varchar(100) DEFAULT NULL,
+  display_order int(2) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+
+
+INSERT INTO short_league_name VALUES (1,'BFL',1),(2,'GFL',2),(3,'GDFL',3),(4,'GJFL',4),(5,'CDFNL',5),(6,'Women',6);
+
+
 
 
 /*
