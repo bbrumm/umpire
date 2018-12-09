@@ -806,7 +806,13 @@ CREATE TABLE division (
 
 INSERT INTO division VALUES (4,'None'),(5,'Grading'),(6,'Practice'),(7,'Div 1'),(8,'Div 2'),(9,'Div 3'),(10,'Div 4'),(11,'Div 5'),(12,'Div 6'),(13,'Div 7');
 
-
+CREATE TABLE dw_dim_age_group (
+  age_group_key int(11) NOT NULL AUTO_INCREMENT,
+  age_group varchar(50) DEFAULT NULL,
+  sort_order int(2) DEFAULT NULL,
+  division varchar(100) DEFAULT NULL,
+  PRIMARY KEY (age_group_key)
+);
 
 /*
 ********
