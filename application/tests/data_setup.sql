@@ -695,7 +695,7 @@ CREATE TABLE processed_table (
   PRIMARY KEY (id)
 );
 
-INSERT INTO `processed_table` VALUES (1,'match_import'),(2,'round'),(3,'umpire'),(4,'umpire_name_type'),(5,'match_staging'),(6,'match_played'),(7,'umpire_name_type_match'),(8,'mv_report_01'),(9,'mv_report_02'),(10,'mv_summary_staging'),(11,'mv_report_03'),(12,'mv_report_04'),(13,'mv_report_05'),(14,'mv_report_06'),(15,'mv_report_06_staging'),(16,'mv_umpire_list'),(17,'mv_denormalised'),(18,'ground'),(19,'mv_report_07'),(20,'dw_fact_match'),(21,'dw_dim_age_group'),(22,'dw_dim_league'),(23,'dw_dim_team'),(24,'dw_dim_time'),(25,'dw_dim_umpire'),(26,'staging_match'),(27,'staging_no_umpires'),(28,'staging_all_ump_age_league'),(29,'dw_mv_report_02'),(30,'dw_mv_report_04'),(31,'dw_mv_report_05'),(32,'dw_mv_report_06'),(33,'dw_mv_report_07'),(34,'dw_mv_report_01'),(35,'dw_rpt06_staging'),(37,'mv_report_07_stg1'),(36,'dw_rpt06_stg2'),(38,'competition_lookup'),(39,'team'),(41,'dw_mv_report_08');
+INSERT INTO processed_table VALUES (1,'match_import'),(2,'round'),(3,'umpire'),(4,'umpire_name_type'),(5,'match_staging'),(6,'match_played'),(7,'umpire_name_type_match'),(8,'mv_report_01'),(9,'mv_report_02'),(10,'mv_summary_staging'),(11,'mv_report_03'),(12,'mv_report_04'),(13,'mv_report_05'),(14,'mv_report_06'),(15,'mv_report_06_staging'),(16,'mv_umpire_list'),(17,'mv_denormalised'),(18,'ground'),(19,'mv_report_07'),(20,'dw_fact_match'),(21,'dw_dim_age_group'),(22,'dw_dim_league'),(23,'dw_dim_team'),(24,'dw_dim_time'),(25,'dw_dim_umpire'),(26,'staging_match'),(27,'staging_no_umpires'),(28,'staging_all_ump_age_league'),(29,'dw_mv_report_02'),(30,'dw_mv_report_04'),(31,'dw_mv_report_05'),(32,'dw_mv_report_06'),(33,'dw_mv_report_07'),(34,'dw_mv_report_01'),(35,'dw_rpt06_staging'),(37,'mv_report_07_stg1'),(36,'dw_rpt06_stg2'),(38,'competition_lookup'),(39,'team'),(41,'dw_mv_report_08');
 
 
 CREATE TABLE table_operations (
@@ -797,6 +797,15 @@ CREATE TABLE age_group (
 );
 
 INSERT INTO age_group VALUES (1,'Seniors',1),(2,'Reserves',2),(3,'Colts',3),(4,'Under 16',15),(5,'Under 14',25),(6,'Youth Girls',80),(7,'Junior Girls',90),(8,'Under 17.5',10),(9,'Under 14.5',20),(10,'Under 12',30),(11,'Under 19 Girls',50),(12,'Under 15 Girls',60),(13,'Under 12 Girls',70),(14,'Under 19',6),(15,'Under 17',12),(16,'Under 15',17),(17,'Under 13',27),(18,'Under 18 Girls',53);
+
+CREATE TABLE division (
+  ID int(11) NOT NULL,
+  division_name varchar(20) DEFAULT NULL,
+  PRIMARY KEY (ID)
+);
+
+INSERT INTO division VALUES (4,'None'),(5,'Grading'),(6,'Practice'),(7,'Div 1'),(8,'Div 2'),(9,'Div 3'),(10,'Div 4'),(11,'Div 5'),(12,'Div 6'),(13,'Div 7');
+
 
 
 /*
