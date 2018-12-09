@@ -782,11 +782,7 @@ CREATE TABLE age_group_division (
   ID int(11) NOT NULL AUTO_INCREMENT,
   age_group_id int(11) DEFAULT NULL,
   division_id int(11) DEFAULT NULL,
-  PRIMARY KEY (ID),
-  KEY fk_age_group_id_idx (age_group_id),
-  KEY fk_age_group_division_idx (division_id),
-  CONSTRAINT fk_age_group_division FOREIGN KEY (division_id) REFERENCES division (ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT fk_age_group_id FOREIGN KEY (age_group_id) REFERENCES age_group (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (ID)
 );
 
 
