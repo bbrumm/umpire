@@ -869,6 +869,13 @@ CREATE TABLE mv_report_07_stg1 (
 );
 
 
+CREATE TABLE incomplete_records (
+  record_type varchar(100) DEFAULT NULL,
+  source_id int(11) DEFAULT NULL,
+  source_value varchar(100) DEFAULT NULL
+);
+
+
 
 
 /*
