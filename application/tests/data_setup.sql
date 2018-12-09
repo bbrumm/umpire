@@ -536,3 +536,154 @@ CREATE TABLE umpire_name_type (
 
 INSERT INTO umpire_name_type(umpire_id, umpire_type_id) VALUES (22960, 1);
 INSERT INTO umpire_name_type(umpire_id, umpire_type_id) VALUES (89372, 1);
+
+CREATE TABLE match_import (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  season int(11) DEFAULT NULL,
+  round int(11) DEFAULT NULL,
+  date varchar(45) DEFAULT NULL,
+  competition_name varchar(200) DEFAULT NULL,
+  ground varchar(200) DEFAULT NULL,
+  time varchar(200) DEFAULT NULL,
+  home_team varchar(200) DEFAULT NULL,
+  away_team varchar(200) DEFAULT NULL,
+  field_umpire_1 varchar(200) DEFAULT NULL,
+  field_umpire_2 varchar(200) DEFAULT NULL,
+  field_umpire_3 varchar(200) DEFAULT NULL,
+  boundary_umpire_1 varchar(200) DEFAULT NULL,
+  boundary_umpire_2 varchar(200) DEFAULT NULL,
+  boundary_umpire_3 varchar(200) DEFAULT NULL,
+  boundary_umpire_4 varchar(200) DEFAULT NULL,
+  goal_umpire_1 varchar(200) DEFAULT NULL,
+  goal_umpire_2 varchar(200) DEFAULT NULL,
+  boundary_umpire_5 varchar(200) DEFAULT NULL,
+  boundary_umpire_6 varchar(200) DEFAULT NULL,
+  PRIMARY KEY (ID)
+);
+
+CREATE TABLE match_staging (
+  appointments_id int(11) NOT NULL,
+  appointments_season int(11) DEFAULT NULL,
+  appointments_round int(11) DEFAULT NULL,
+  appointments_date datetime DEFAULT NULL,
+  appointments_compname varchar(100) DEFAULT NULL,
+  appointments_ground varchar(100) DEFAULT NULL,
+  appointments_time datetime DEFAULT NULL,
+  appointments_hometeam varchar(100) DEFAULT NULL,
+  appointments_awayteam varchar(100) DEFAULT NULL,
+  appointments_field1_first varchar(100) DEFAULT NULL,
+  appointments_field1_last varchar(100) DEFAULT NULL,
+  appointments_field2_first varchar(100) DEFAULT NULL,
+  appointments_field2_last varchar(100) DEFAULT NULL,
+  appointments_field3_first varchar(100) DEFAULT NULL,
+  appointments_field3_last varchar(100) DEFAULT NULL,
+  appointments_boundary1_first varchar(100) DEFAULT NULL,
+  appointments_boundary1_last varchar(100) DEFAULT NULL,
+  appointments_boundary2_first varchar(100) DEFAULT NULL,
+  appointments_boundary2_last varchar(100) DEFAULT NULL,
+  appointments_boundary3_first varchar(100) DEFAULT NULL,
+  appointments_boundary3_last varchar(100) DEFAULT NULL,
+  appointments_boundary4_first varchar(100) DEFAULT NULL,
+  appointments_boundary4_last varchar(100) DEFAULT NULL,
+  appointments_goal1_first varchar(100) DEFAULT NULL,
+  appointments_goal1_last varchar(100) DEFAULT NULL,
+  appointments_goal2_first varchar(100) DEFAULT NULL,
+  appointments_goal2_last varchar(100) DEFAULT NULL,
+  season_id int(11) DEFAULT NULL,
+  round_ID int(11) DEFAULT NULL,
+  round_date datetime DEFAULT NULL,
+  round_leagueid int(11) DEFAULT NULL,
+  league_leaguename varchar(100) DEFAULT NULL,
+  league_sponsored_league_name varchar(100) DEFAULT NULL,
+  agd_agegroupid int(11) DEFAULT NULL,
+  ag_agegroup varchar(100) DEFAULT NULL,
+  agd_divisionid int(11) DEFAULT NULL,
+  division_divisionname varchar(100) DEFAULT NULL,
+  ground_id int(11) DEFAULT NULL,
+  ground_mainname varchar(100) DEFAULT NULL,
+  home_team_id int(11) DEFAULT NULL,
+  away_team_id int(11) DEFAULT NULL,
+  appointments_boundary5_first varchar(200) DEFAULT NULL,
+  appointments_boundary5_last varchar(200) DEFAULT NULL,
+  appointments_boundary6_first varchar(200) DEFAULT NULL,
+  appointments_boundary6_last varchar(200) DEFAULT NULL,
+  match_staging_id int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (match_staging_id)
+);
+
+
+
+CREATE TABLE staging_match (
+  season_id int(11) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL,
+  umpire_id int(11) DEFAULT NULL,
+  umpire_first_name varchar(100) DEFAULT NULL,
+  umpire_last_name varchar(100) DEFAULT NULL,
+  home_club varchar(100) DEFAULT NULL,
+  home_team varchar(100) DEFAULT NULL,
+  away_club varchar(100) DEFAULT NULL,
+  away_team varchar(100) DEFAULT NULL,
+  short_league_name varchar(100) DEFAULT NULL,
+  league_name varchar(100) DEFAULT NULL,
+  age_group_id int(11) DEFAULT NULL,
+  age_group_name varchar(100) DEFAULT NULL,
+  umpire_type_name varchar(100) DEFAULT NULL,
+  match_id int(11) DEFAULT NULL,
+  match_time datetime DEFAULT NULL,
+  region_id int(11) DEFAULT NULL,
+  region_name varchar(100) DEFAULT NULL,
+  division_name varchar(100) DEFAULT NULL,
+  competition_name varchar(500) DEFAULT NULL
+);
+
+
+CREATE TABLE staging_matches_away (
+  season_year int(11) DEFAULT NULL COMMENT 'The year that this season belongs to.',
+  first_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  last_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  ID int(11) NOT NULL DEFAULT '0',
+  team_name varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT 'The team name within a club.',
+  club_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  short_league_name varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT 'The shorter name of the league, used for reports',
+  age_group varchar(20) CHARACTER SET utf8 DEFAULT NULL,
+  umpire_type_name varchar(100) CHARACTER SET utf8 DEFAULT NULL
+);
+
+
+
+CREATE TABLE staging_matches_home (
+  season_year int(11) DEFAULT NULL COMMENT 'The year that this season belongs to.',
+  first_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  last_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  ID int(11) NOT NULL DEFAULT '0',
+  team_name varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT 'The team name within a club.',
+  club_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  short_league_name varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT 'The shorter name of the league, used for reports',
+  age_group varchar(20) CHARACTER SET utf8 DEFAULT NULL,
+  umpire_type_name varchar(100) CHARACTER SET utf8 DEFAULT NULL
+);
+
+
+
+CREATE TABLE staging_matches_homeaway (
+  season_year int(11) DEFAULT NULL,
+  first_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  last_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  ID int(11) NOT NULL DEFAULT '0',
+  team_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  club_name varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  short_league_name varchar(200) CHARACTER SET utf8 DEFAULT NULL,
+  age_group varchar(20) CHARACTER SET utf8 DEFAULT NULL,
+  umpire_type_name varchar(100) CHARACTER SET utf8 DEFAULT NULL
+);
+
+
+CREATE TABLE staging_no_umpires (
+  weekend_date datetime DEFAULT NULL,
+  age_group varchar(100) DEFAULT NULL,
+  umpire_type varchar(100) DEFAULT NULL,
+  short_league_name varchar(100) DEFAULT NULL,
+  team_names varchar(400) DEFAULT NULL,
+  match_id int(11) DEFAULT NULL,
+  season_year int(4) DEFAULT NULL
+);
