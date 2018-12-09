@@ -847,6 +847,17 @@ CREATE TABLE region (
 
 INSERT INTO region VALUES (1,'Geelong'),(2,'Colac');
 
+CREATE TABLE club (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  club_name varchar(100) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+
+
+INSERT INTO club VALUES (63,'Anakie'),(64,'Anglesea'),(65,'Bannockburn'),(66,'Barwon Heads'),(67,'Bell Park'),(68,'Bell Post Hill'),(69,'Belmont Lions'),(70,'Belmont Lions / Newcomb'),(71,'Colac'),(72,'Corio'),(73,'Drysdale'),(74,'Drysdale Bennett'),(75,'Drysdale Byrne'),(76,'Drysdale Eddy'),(77,'Drysdale Hall'),(78,'Drysdale Hector'),(79,'Drysdale Hoyer'),(80,'East Geelong'),(81,'Geelong Amateur'),(82,'Geelong West'),(83,'Geelong West St Peters'),(84,'Grovedale'),(85,'Gwsp'),(86,'Gwsp / Bannockburn'),(87,'Inverleigh'),(88,'Lara'),(89,'Leopold'),(90,'Modewarre'),(91,'Newcomb'),(92,'Newcomb Power'),(93,'Newtown & Chilwell'),(94,'North Geelong'),(95,'North Shore'),(96,'Ocean Grove'),(97,'Ogcc'),(98,'Portarlington'),(99,'Queenscliff'),(100,'South Barwon'),(101,'South Barwon / Geelong Amateur'),(102,'St Albans'),(103,'St Albans Allthorpe'),(104,'St Albans Reid'),(105,'St Joseph\'s'),(106,'St Joseph\'s Hill'),(107,'St Joseph\'s Podbury'),(108,'St Mary\'s'),(109,'Thomson'),(110,'Tigers Black'),(111,'Tigers Gold'),(112,'Torquay'),(113,'Torquay Bumpstead'),(114,'Torquay Coles'),(115,'Torquay Dunstan'),(116,'Torquay Jones'),(117,'Torquay Nairn'),(118,'Torquay Papworth'),(119,'Torquay Pyers'),(120,'Torquay Scott'),(121,'Werribee Centrals'),(122,'Winchelsea'),(123,'Winchelsea / Grovedale'),(124,'Birregurra'),(125,'Lorne'),(126,'Alvie'),(127,'Apollo Bay'),(128,'Colac Imperials'),(129,'Irrewarra-beeac'),(130,'Otway Districts'),(131,'Simpson'),(132,'South Colac'),(133,'Western Eagles'),(134,'Aireys Inlet'),(135,'Ammos'),(136,'Ammos'),(137,'Ammos'),(138,'Bannockburn / South Barwon'),(139,'Dragons'),(140,'Eagles'),(141,'Eagles'),(142,'East Newcomb'),(143,'East Tigers'),(144,'Flying Joeys'),(145,'Gdfl Raiders'),(146,'Lethbridge'),(147,'Roosters'),(148,'Saints'),(149,'Seagulls'),(150,'Surf Coast'),(151,'Teesdale'),(152,'Tigers'),(153,'Winchelsea / Inverleigh'),(154,'Modewarre / Grovedale'),(155,'Grovedale Shiell'),(156,'St Joseph\'s Jackman'),(157,'Grovedale Fisher'),(158,'Ocean Grove Blue'),(159,'Modewarre / Winchelsea'),(160,'Swans'),(161,'Little River'),(162,'Giants'),(163,'Spotswood'),(164,'Leaping Joeys'),(165,'Leopold Pitt'),(166,'Leopold Butteriss'),(167,'Bell Post Hill / Bannockburn'),(168,'Belmont'),(169,'East Geelong / Geelong West'),(170,'Grovedale / South Barwon'),(171,'Grovedale / St Albans'),(172,'North Shore / Geelong West'),(173,'St Albans/Newtown & Chilwell');
+
+
 
 /*
 ********
