@@ -362,3 +362,6 @@ build/coverage/views/upload_success.php.html
 build/coverage/views/useradmin.php.html
 build/logs/clover.xml
 build/logs/junit.xml
+application/tests/import/~$test_extra_column.xlsx
+application/tests/import/~$2017 Appointments.xlsx
+application/tests/import/~$test_valid_xlsx.xlsx

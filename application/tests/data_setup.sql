@@ -677,6 +677,14 @@ CREATE TABLE staging_matches_homeaway (
   umpire_type_name varchar(100) CHARACTER SET utf8 DEFAULT NULL
 );
 
+CREATE TABLE umpire_name_type_match (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  umpire_name_type_id int(11) DEFAULT NULL,
+  match_id int(11) DEFAULT NULL,
+  PRIMARY KEY (ID)
+);
+
+
 /*
 ********
 ********
