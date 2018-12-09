@@ -30,8 +30,9 @@ class Match_import extends CI_Model
             throw new Exception("The imported file contains no rows on the selected sheet.");
         }
 
-        $columns = $this->findColumnsFromSpreadshet($sheet, $lastColumn);
+        $columns = $this->findColumnsFromSpreadsheet($sheet, $lastColumn);
         $sheetData = $sheet->rangeToArray('A2:' . $lastColumn . $lastRow);
+
 
         //Update array keys in sheetData to use the column headings.
         //Without this, the keys will just be numbers
@@ -63,14 +64,16 @@ class Match_import extends CI_Model
         //foreach($sheet as $row) {
         for($j=0; $j<count($sheetData); $j++) {
             for($i=0; $i<count($sheetData[$j]); $i++) {
-                $newSheetData[$j][$pColumns[$i]] = $sheetData[$j][$i];
+                if($pColumns[$i]['found'] == true) {
+                    $newSheetData[$j][$pColumns[$i]['column_name']] = $sheetData[$j][$i];
+                }
             }
         }
 
         return $newSheetData;
     }
 
-    private function findColumnsFromSpreadshet($pSheet, $pLastColumn) {
+    private function findColumnsFromSpreadsheet($pSheet, $pLastColumn) {
         $sheetColumnHeaderArray = $pSheet->rangeToArray("A1:" . $pLastColumn . "1");
         if (!$this->isColumnHeaderExist($sheetColumnHeaderArray)) {
             throw new Exception("Column headers are missing from the imported file.");
@@ -104,7 +107,15 @@ class Match_import extends CI_Model
             and if it finds a match, adds the column name into the columns array
             */
             if (array_key_exists($columnHeader, $columnHeaderToTableMatchArray)) {
-                $columns[] = $columnHeaderToTableMatchArray[$columnHeader]['column_name'];
+                $columns[] = array(
+                    'column_name'=>$columnHeaderToTableMatchArray[$columnHeader]['column_name'],
+                    'found'=>true
+                );
+            } else {
+                $columns[] = array(
+                    'column_name'=>$columnHeader,
+                    'found'=>false
+                );
             }
         }
 
@@ -113,6 +124,8 @@ class Match_import extends CI_Model
 
         return $columns;
     }
+
+
 
     private function isColumnHeaderExist($pSheetColumnHeaderArray) {
         return ($pSheetColumnHeaderArray[0][0] == "Season");

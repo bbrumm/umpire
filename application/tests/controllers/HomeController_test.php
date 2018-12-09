@@ -17,8 +17,8 @@ class HomeController_test extends TestCase
         $expectedHeader = "<h2>Select a Report</h2>";
         $this->assertContains($expectedHeader, $output);
 
-        $expectedDateImported = "Data last imported on 19 Sep 2018, 05:37:15 PM";
-        $this->assertContains($expectedDateImported, $output);
+        //$expectedDateImported = "Data last imported on 19 Sep 2018, 05:37:15 PM";
+        //$this->assertContains($expectedDateImported, $output);
 
         /*
         Don't test these UI elements as they are fragile

@@ -43,11 +43,11 @@ class Match_import_test extends TestCase
         $this->assertEquals($expectedRowCount, $actualRowCount);
 
         $expectedLastRowSeason = 2018;
-        $actualLastRowSeason = $matchImportArray[3][0];
+        $actualLastRowSeason = $matchImportArray[3]['season'];
         $this->assertEquals($expectedLastRowSeason, $actualLastRowSeason);
 
         $expectedLastRowFieldUmp1 = "Christopher Jones";
-        $actualLastRowFieldUmp1 = $matchImportArray[3][8];
+        $actualLastRowFieldUmp1 = $matchImportArray[3]['field_umpire_1'];
         $this->assertEquals($expectedLastRowFieldUmp1, $actualLastRowFieldUmp1);
     }
 
@@ -69,11 +69,11 @@ class Match_import_test extends TestCase
         $this->assertEquals($expectedRowCount, $actualRowCount);
 
         $expectedLastRowSeason = 2018;
-        $actualLastRowSeason = $matchImportArray[$actualRowCount-1][0];
+        $actualLastRowSeason = $matchImportArray[$actualRowCount-1]['season'];
         $this->assertEquals($expectedLastRowSeason, $actualLastRowSeason);
 
         $expectedLastRowFieldUmp1 = "Aaron Riches";
-        $actualLastRowFieldUmp1 = $matchImportArray[$actualRowCount-1][8];
+        $actualLastRowFieldUmp1 = $matchImportArray[$actualRowCount-1]['field_umpire_1'];
         $this->assertEquals($expectedLastRowFieldUmp1, $actualLastRowFieldUmp1);
     }
 
@@ -160,12 +160,12 @@ class Match_import_test extends TestCase
         $this->assertEquals($expectedRowCount, $actualRowCount);
 
         $expectedLastRowSeason = 2018;
-        $actualLastRowSeason = $matchImportArray[$actualRowCount-1][0];
+        $actualLastRowSeason = $matchImportArray[$actualRowCount-1]['season'];
         $this->assertEquals($expectedLastRowSeason, $actualLastRowSeason);
 
-        $expectedLastRowFieldUmp1 = "Aaron Riches";
-        $actualLastRowFieldUmp1 = $matchImportArray[$actualRowCount-1][9];
-        $this->assertEquals($expectedLastRowFieldUmp1, $actualLastRowFieldUmp1);
+        $expectedLastRowFieldUmp2 = "Daniel Dorling";
+        $actualLastRowFieldUmp2 = $matchImportArray[$actualRowCount-1]['field_umpire_2'];
+        $this->assertEquals($expectedLastRowFieldUmp2, $actualLastRowFieldUmp2);
     }
 
     public function test_ImportFile_NoData() {
