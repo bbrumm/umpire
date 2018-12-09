@@ -838,6 +838,16 @@ CREATE TABLE dw_rpt06_staging (
 );
 
 
+CREATE TABLE region (
+  id int(11) NOT NULL,
+  region_name varchar(50) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+
+INSERT INTO region VALUES (1,'Geelong'),(2,'Colac');
+
+
 /*
 ********
 ********
