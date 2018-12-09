@@ -705,6 +705,15 @@ CREATE TABLE table_operations (
 );
 
 
+CREATE TABLE dw_fact_match (
+  match_id int(11) DEFAULT NULL,
+  umpire_key int(11) DEFAULT NULL,
+  age_group_key int(11) DEFAULT NULL,
+  league_key int(11) DEFAULT NULL,
+  time_key int(11) DEFAULT NULL,
+  home_team_key int(11) DEFAULT NULL,
+  away_team_key int(11) DEFAULT NULL
+);
 
 
 
