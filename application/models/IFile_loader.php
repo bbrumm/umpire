@@ -10,10 +10,10 @@ interface IFile_loader {
 
     public function clearMatchImportTable();
 
-    public function insertMatchImportTable($data);
+    public function insertMatchImportTable($data, $pColumnArray);
 
     public function logImportedFile($importedFilename);
 
-    public function runETLProcedure($season, $importedFileID);
+    public function runETLProcedure($pDataStore, $season, $importedFileID);
 
 }

@@ -17,11 +17,15 @@ class File_loader_import extends CI_Model implements IFile_loader
     }
 
     public function clearMatchImportTable() {
-        $queryString = "DELETE FROM match_import;";
-        $this->db->query($queryString);
+        /*
+         * No trailing semicolon on DELETE queries, because CI adds a WHERE 1=1 to it.
+         * See mysqli_driver: protected function _prep_query (line 318)
+         */
+        $queryString = "DELETE FROM match_import";
+        $query = $this->db->query($queryString);
     }
 
-    public function insertMatchImportTable($data) {
+    public function insertMatchImportTable($data, $pColumnArray) {
         return $this->db->insert_batch('match_import', $data);
     }
 
@@ -40,9 +44,9 @@ class File_loader_import extends CI_Model implements IFile_loader
         return $this->db->insert_id();
     }
 
-    public function runETLProcedure($season, $importedFileID) {
+    public function runETLProcedure($pDataStore, $season, $importedFileID) {
         $etlProc = new Run_etl_stored_proc();
-        $etlProc->runETLProcedure($season, $importedFileID);
+        $etlProc->runETLProcedure($pDataStore, $season, $importedFileID);
     }
 
 

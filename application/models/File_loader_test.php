@@ -22,7 +22,7 @@ class File_loader_test extends CI_Model implements IFile_loader
         $this->matchImportArray = null;
     }
 
-    public function insertMatchImportTable($data) {
+    public function insertMatchImportTable($data, $pColumnArray) {
         //Set an array on this object to be equal to the $data value
         $this->matchImportArray = $data;
         return true;
@@ -32,7 +32,7 @@ class File_loader_test extends CI_Model implements IFile_loader
 
     }
 
-    public function runETLProcedure($season, $importedFileID) {
+    public function runETLProcedure($pDataStore, $season, $importedFileID) {
 
     }
 

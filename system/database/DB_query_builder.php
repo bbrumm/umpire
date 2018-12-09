@@ -1561,7 +1561,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		is_bool($escape) OR $escape = $this->_protect_identifiers;
 
 		$keys = array_keys($this->_object_to_array(reset($key)));
-		sort($keys);
+		//sort($keys);
 
 		foreach ($key as $row)
 		{
@@ -1573,7 +1573,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 				return;
 			}
 
-			ksort($row); // puts $row in the same order as our keys
+			//ksort($row); // puts $row in the same order as our keys
 
 			if ($escape !== FALSE)
 			{

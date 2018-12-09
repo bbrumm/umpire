@@ -31,9 +31,13 @@ class Match_import extends CI_Model
         }
 
         $columns = $this->findColumnsFromSpreadshet($sheet, $lastColumn);
-        $sheetData = $sheet->rangeToArray('A2:' . $lastColumn . $lastRow, $columns);
+        $sheetData = $sheet->rangeToArray('A2:' . $lastColumn . $lastRow);
 
-        $queryStatus = $pFileLoader->insertMatchImportTable($sheetData);
+        //Update array keys in sheetData to use the column headings.
+        //Without this, the keys will just be numbers
+        $sheetData = $this->updateKeysToUseColumnNames($sheetData, $columns);
+
+        $queryStatus = $pFileLoader->insertMatchImportTable($sheetData, $columns);
 
         if ($queryStatus) {
             //Now the data is imported, extract it into the normalised tables.
@@ -52,6 +56,18 @@ class Match_import extends CI_Model
         } else {
             return false;
         }
+    }
+
+    private function updateKeysToUseColumnNames($sheetData, $pColumns) {
+        $newSheetData = [];
+        //foreach($sheet as $row) {
+        for($j=0; $j<count($sheetData); $j++) {
+            for($i=0; $i<count($sheetData[$j]); $i++) {
+                $newSheetData[$j][$pColumns[$i]] = $sheetData[$j][$i];
+            }
+        }
+
+        return $newSheetData;
     }
 
     private function findColumnsFromSpreadshet($pSheet, $pLastColumn) {
@@ -124,7 +140,7 @@ class Match_import extends CI_Model
         $importedFileID = $pFileLoader->logImportedFile($importedFilename);
 
         $season = Season::createSeasonFromID($this->findSeasonToUpdate($pDataStore));
-        $pFileLoader->runETLProcedure($season, $importedFileID);
+        $pFileLoader->runETLProcedure($pDataStore, $season, $importedFileID);
     }
 
     public function findSeasonToUpdate(IData_store_matches $pDataStore) {
