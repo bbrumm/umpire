@@ -17,10 +17,12 @@ class Refresh_mv_tables extends CI_Model
     }
     
     public function refreshMVTables(IData_store_matches $pDataStore, $season, $importedFileID) {
-        /*
-        $queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
-        $query = $this->db->query($queryString);
-        */
+
+        //$pDataStore->runETLProcedure($season, $importedFileID);
+
+        //$queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
+        //$query = $this->db->query($queryString);
+
         if (is_a($pDataStore, 'Array_store_matches')) {
             //TODO remove this once I have refactored this code
         } else {
@@ -115,6 +117,9 @@ class Refresh_mv_tables extends CI_Model
     }
 
     private function refreshMVTable7($pSeasonYear, $importedFileID) {
+        $this->updateTableMV7Staging($pSeasonYear);
+        $this->logTableOperation($importedFileID, "mv_report_07_stg1", 1);
+
         $this->updateKeyStatus("dw_mv_report_07", 0);
         $this->updateTableMV7($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_07", 1);
@@ -435,6 +440,32 @@ class Refresh_mv_tables extends CI_Model
         FROM dw_rpt06_stg2 s
         GROUP BY s.umpire_type, s.age_group, s.region_name, s.short_league_name, s.first_umpire, s.second_umpire, s.date_year;";
         $query = $this->db->query($queryString);
+    }
+
+    private function updateTableMV7Staging($pSeasonYear) {
+        $queryString = "TRUNCATE TABLE mv_report_07_stg1;";
+        $query = $this->db->query($queryString);
+
+        $queryString = "INSERT INTO mv_report_07_stg1(match_id, umpire_type, age_group, short_league_name, umpire_key, region_name, sort_order, league_sort_order)
+SELECT
+m2.match_id,
+u2.umpire_type,
+a2.age_group,
+l2.short_league_name,
+u2.umpire_key,
+l2.region_name,
+a2.sort_order,
+l2.league_sort_order
+FROM dw_fact_match m2
+INNER JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+INNER JOIN dw_dim_time ti2 ON m2.time_key = ti2.time_key
+WHERE ti2.date_year = $pSeasonYear;";
+
+        $query = $this->db->query($queryString);
+
+
     }
 
     private function updateTableMV7($pSeasonYear) {

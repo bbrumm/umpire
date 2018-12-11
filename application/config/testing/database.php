@@ -85,6 +85,7 @@ $db['default'] = array(
 	'password' => 'root',
 	'port' => '3306',
 	'database' => 'databas6',
+    //'database' => 'dbunittest',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

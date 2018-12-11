@@ -5,7 +5,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     public function __construct() {
         $this->load->database();
         $this->load->library('Debug_library');
-
+        $this->load->model('Etl_procedure_steps');
 
     }
     
@@ -302,8 +302,11 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     }
     
     public function runETLProcedure($pSeason, $pImportedFileID) {
-        $queryString = "CALL `RunETLProcess`(". $pSeason->getSeasonID() .", ". $pImportedFileID .")";
-        $query = $this->db->query($queryString);
+        //$queryString = "CALL `RunETLProcess`(". $pSeason->getSeasonID() .", ". $pImportedFileID .")";
+        //$query = $this->db->query($queryString);
+
+        $etlSteps = new Etl_procedure_steps();
+        $etlSteps->runETLProcess($pSeason, $pImportedFileID);
     }
     
     

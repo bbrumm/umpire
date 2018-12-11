@@ -1,8 +1,8 @@
-USE databas6;
+USE dbunittest;
 
 SET collation_connection = 'utf8_general_ci';
 
-ALTER DATABASE databas6 CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER DATABASE dbunittest CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE password_reset_request (
   request_datetime datetime,
