@@ -109,7 +109,7 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->logTableOperation($pImportedFileID, "umpire_name_type_match", self::OPERATION_DELETE);
     }
 
-    private function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
+    public function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
 VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $query = $this->runQuery($queryString);

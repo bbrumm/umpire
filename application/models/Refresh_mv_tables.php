@@ -14,6 +14,7 @@ class Refresh_mv_tables extends CI_Model
     function __construct() {
         parent::__construct();
         $this->load->model('Season');
+        $this->load->model('Etl_procedure_steps');
     }
     
     public function refreshMVTables(IData_store_matches $pDataStore, $season, $importedFileID) {
@@ -147,8 +148,11 @@ class Refresh_mv_tables extends CI_Model
     }
     
     private function logTableOperation($pImportedFileID, $pTableName, $pOperation) {
-        $queryString = "CALL LogTableOperation($pImportedFileID, (SELECT id FROM processed_table WHERE table_name = '$pTableName'), $pOperation, ROW_COUNT());";
-        $query = $this->db->query($queryString);
+        $etlProc = new Etl_procedure_steps();
+        $etlProc->logTableOperation($pImportedFileID, $pTableName, $pOperation);
+       
+        //$queryString = "CALL LogTableOperation($pImportedFileID, (SELECT id FROM processed_table WHERE table_name = '$pTableName'), $pOperation, ROW_COUNT());";
+        //$query = $this->db->query($queryString);
     }
     
     private function updateTableMV1($pSeasonYear) {
