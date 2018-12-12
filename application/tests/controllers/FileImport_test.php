@@ -32,5 +32,25 @@ class FileImport_test extends TestCase
         $this->assertContains($expected, $output);
     }
 
+    public function test_ImportFile_Invalid() {
+        $filename = "some_file_that_doesnt_exist.xlsx";
+
+
+        $_FILES['userfile'] = array(
+            //'name'      =>  $fileNameFull,
+            'name'      =>  $filename,
+            'tmp_name'  =>  APPPATH . 'tests/import/' . $filename,
+            //'tmp_name'  =>  $filename,
+            'type'      =>  'xlsx',
+            'size'      =>  10141,
+            'error'     =>  0
+        );
+
+
+        $output = $this->request('POST', ['FileImport', 'do_upload']);
+        $expected = "You did not select a file to upload.";
+        $this->assertContains($expected, $output);
+    }
+
 
 }

@@ -13,11 +13,6 @@ class FileImport extends CI_Controller {
 		$this->load->model('Missing_data_updater');
 		$this->load->model('Database_store_matches');
 		$this->load->helper('form');
-		//include 'vendor/phpexcel/Classes/PHPExcel.php';
-	}
-	
-	public function index() {
-	    
 	}
 
 	function do_upload()
@@ -71,11 +66,9 @@ class FileImport extends CI_Controller {
 	    $this->load->view('upload_success', $data);
 	    $this->load->view('templates/footer');
 	}
-	
-	
+
 	public function updateCompetition() {
 	    $selectedRegion = $_POST['selectedRegion'];
-	    
 	    echo "Ajax output";
 	}
 }
