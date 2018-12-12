@@ -74,8 +74,8 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Field', 'Women', 'A vs B', 40001, 201
             'chkRegionHidden'=>'Geelong',
             //'chkAgeGroup'=>array('Seniors'),
             'chkAgeGroupHidden'=>'Seniors',
-            //'chkUmpireDiscipline'=>array('Field'),
-            'chkUmpireDisciplineHidden'=>'Field',
+            //'chkUmpireDiscipline'=>array('Goal'),
+            'chkUmpireDisciplineHidden'=>'Goal',
             //'chkLeague'=>array('Women'),
             'chkLeagueHidden'=>'Women'
         );
