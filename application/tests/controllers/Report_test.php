@@ -61,10 +61,10 @@ VALUES ('Smith, John', 'GFL', 'Seniors', 1, 1, 0, 'Geelong', 'Field', 3, 2018);"
     public function test_Report3() {
         $queryString = "INSERT INTO staging_no_umpires 
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
-VALUES ('2018-04-07 00:00:00', 'Seniors', 'Field', 'Women', 'A vs B', 40001, 2018);";
+VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
         $query = $this->dbLocal->query($queryString);
 
-        $queryString = "INSERT INTO staging_all_ump_age_league VALUES ('Seniors','Boundary','GFL','Geelong',1,1);";
+        $queryString = "INSERT INTO staging_all_ump_age_league VALUES ('Seniors','Goal','Women','Geelong',1,1);";
         $query = $this->dbLocal->query($queryString);
 
         $postArray = array(
