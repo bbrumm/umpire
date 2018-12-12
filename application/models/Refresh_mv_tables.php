@@ -150,7 +150,7 @@ class Refresh_mv_tables extends CI_Model
     private function logTableOperation($pImportedFileID, $pTableName, $pOperation) {
         $etlProc = new Etl_procedure_steps();
         $etlProc->logTableOperation($pImportedFileID, $pTableName, $pOperation);
-       
+
         //$queryString = "CALL LogTableOperation($pImportedFileID, (SELECT id FROM processed_table WHERE table_name = '$pTableName'), $pOperation, ROW_COUNT());";
         //$query = $this->db->query($queryString);
     }
