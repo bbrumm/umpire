@@ -1,7 +1,4 @@
-<?php
-
-if (! defined('BASEPATH'))
-    exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
 
 class UserAdmin extends CI_Controller
 {
@@ -120,9 +117,6 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
         $permissionsInFormNotDB = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
         
-        //$this->debug_library->debugOutput("saveUserPrivileges DB not Form:", $permissionsInDBNotForm);
-        //$this->debug_library->debugOutput("saveUserPrivileges Form not DB:", $permissionsInFormNotDB);
-        
         //Remove privileges from users that were changed on the form
         $userAdmin->removePrivileges($dataStore, $permissionsInDBNotForm);
         
@@ -132,13 +126,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $userRolesFromDB = $userAdmin->getAllUserRolesFromDB($dataStore);
         $userRolesFromForm = $_POST['userRole'];
         
-        //$this->debug_library->debugOutput("saveUserPrivileges Roles DB:", $userRolesFromDB);
-        //$this->debug_library->debugOutput("saveUserPrivileges Roles Form:", $userRolesFromForm);
-        
-        //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
         $userRoleDifferences = $this->arrayDiff($userRolesFromDB, $userRolesFromForm);
-        
-        //$this->debug_library->debugOutput("saveUserPrivileges Role Differences:", $userRoleDifferences);
         
         //Update user roles
         $userAdmin->updateUserRoles($dataStore, $userRoleDifferences);
@@ -147,22 +135,12 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $userActiveFromDB = $userAdmin->getAllUserActiveFromDB($dataStore);
         $userActiveFromForm = $userAdmin->translateUserFormActive($_POST);
         
-        //$this->debug_library->debugOutput("saveUserPrivileges Active DB:", $userActiveFromDB);
-        //$this->debug_library->debugOutput("saveUserPrivileges Active Form:", $userActiveFromForm);
-        
         //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
         $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);
         
-        //$this->debug_library->debugOutput("saveUserPrivileges Active Differences:", $userActiveDifferences);
-        
         //Update user roles
         $userAdmin->updateUserActive($dataStore, $userActiveDifferences);
-        
-        
-        
-        
         $userAddedMessage = "User privileges updated.";
-        //$this->debug_library->debugOutput("userAddedMessage", $userAddedMessage);
         $this->loadPage($userAddedMessage);
     }
     
@@ -172,55 +150,12 @@ The [#] represents the permission_selection.id value. This can be used to insert
         return array_merge(array_diff_assoc($A, $intersect), array_diff_assoc($B, $intersect));
     }
     
-    
+    /*
     private function arrayDiffKey($A, $B) {
         $intersect = array_intersect_key($A, $B);
         return array_merge(array_diff_key($A, $intersect), array_diff_key($B, $intersect));
     }
-    
-    
-    
-    //TODO Remove this function
-    private function testArrayCheck() {
-        $userAdmin = new Useradminmodel();
-        
-        $array1['apple'][1] = 'on';
-        $array1['apple'][4] = 'on';
-        $array1['banana'][1] = 'on';
-        $array1['banana'][3] = 'on';
-        $array1['carrot'][2] = 'on';
-        $array1['carrot'][5] = 'on';
-        $array1['carrot'][6] = 'on';
-        
-        
-        $array2['apple'][1] = 'on';
-        $array2['banana'][2] = 'on';
-        $array2['banana'][3] = 'on';
-        $array2['carrot'][1] = 'on';
-        $array2['carrot'][5] = 'on';
-        $array2['carrot'][8] = 'on';
-        
-        $arrayDifferences = "";
-        foreach ($array1 as $key=>$valueArray) {
-            //Check if the username exists in the second array, otherwise we'll get an Undefined Index error.
-            if(array_key_exists($key, $array2)) {
-                //$arrayDifferences[$key] = array_diff($array1[$key], $array2[$key]);
-                $arrayDifferences[$key] = array_diff_key($array1[$key], $array2[$key]);
-                
-                $this->debug_library->debugOutput("array1 $key:", $array1[$key]);
-                $this->debug_library->debugOutput("array2 $key:", $array2[$key]);
-                
-                $this->debug_library->debugOutput("findRecursiveArrayDiff:", $arrayDifferences[$key]);
-            }
-        }
-        
-        return $arrayDifferences;
-        
-        
-        
-    }
-    
-    
+    */
     
 }
 ?>
