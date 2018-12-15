@@ -247,5 +247,9 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
         $this->setUserActiveData($testData);
     }
 
+    public function getCountOfMatchingUsers(User $pUser) {
+
+    }
+
 
 }

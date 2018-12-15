@@ -21,7 +21,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         //Run query and store result in array
         $query = $this->db->query($queryString);
         $queryResultArray = $query->result_array();
-        $userArray = '';
+        $userArray = [];
         $arrayCount = count($queryResultArray);
 
         for($i=0; $i<$arrayCount; $i++) {
@@ -254,6 +254,17 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         $query = $this->db->query($queryString, array(
             $username, $newActiveValue, 2, $currentUsername
         ));
+    }
+
+    public function getCountOfMatchingUsers(User $pUser) {
+        $queryString = "SELECT COUNT(*) AS usercount
+            FROM umpire_users u
+            WHERE u.user_name = '". $pUser->getUsername() ."';";
+
+        //Run query and store result in array
+        $query = $this->db->query($queryString);
+        $queryResultArray = $query->result_array();
+        return $queryResultArray[0]['usercount'];
     }
 
 

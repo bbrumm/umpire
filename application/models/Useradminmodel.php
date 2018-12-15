@@ -79,6 +79,10 @@ class Useradminmodel extends CI_Model {
         if (strlen($pSubmittedData['password']) > 0) {
             $newUser = User::createUserFromNameAndPW(
                 $pSubmittedData['username'], $pSubmittedData['firstname'], $pSubmittedData['lastname'], MD5($pSubmittedData['password']));
+            $countOfMatchingUsers = $pDataStore->getCountOfMatchingUsers($newUser);
+            if ($countOfMatchingUsers > 0) {
+                throw new Exception("Username already exists.");
+            }
         } else {
             throw new InvalidArgumentException("Password cannot be empty.");
         }

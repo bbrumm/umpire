@@ -20,13 +20,13 @@ class UserAdmin extends CI_Controller
     }
     
     public function addNewUser() {
-        $this->debug_library->debugOutput("POST from AddNewUser", $_POST);
-        $dataStore = new Database_store_user();
+        //$this->debug_library->debugOutput("POST from AddNewUser", $_POST);
+        $dataStore = new Database_store_user_admin();
         $data = "";
         $userAdminModel = new Useradminmodel();
         $userAddSuccess = $userAdminModel->addNewUser($dataStore, $_POST);
         
-        $this->debug_library->debugOutput("UserAddSuccess", $userAddSuccess);
+        //$this->debug_library->debugOutput("UserAddSuccess", $userAddSuccess);
         
         if ($userAddSuccess) {
             $userAddedMessage = "User ". $_POST['username'] ." successfully added.";
@@ -38,7 +38,7 @@ class UserAdmin extends CI_Controller
     public function loadPage($pUserAddedMessage = "") {
         
         if($this->session->userdata('logged_in')) {
-            $dataStore = new Database_store_user();
+            $dataStore = new Database_store_user_admin();
             $userAdmin = new Useradminmodel();
             $userArray = $userAdmin->getAllUsers($dataStore);
             $roleArray = $userAdmin->getRoleArray($dataStore);

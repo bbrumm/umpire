@@ -80,4 +80,8 @@ class Array_store_user_admin_empty extends CI_Model implements IData_store_user_
     public function updateSingleUserActive($username, $setValue) {
 
     }
+
+    public function getCountOfMatchingUsers(User $pUser) {
+
+    }
 }
