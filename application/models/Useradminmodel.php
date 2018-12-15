@@ -1,5 +1,4 @@
 <?php
-//require_once(__ROOT__.'/../system/libraries/MY_Model.php');
 
 class Useradminmodel extends CI_Model {
     function __construct()
@@ -171,6 +170,77 @@ class Useradminmodel extends CI_Model {
         foreach ($userActiveArray as $username=>$setValue) {
             $pDataStore->updateSingleUserActive($username, $setValue);
         }
+    }
+
+    public function saveUserPrivileges(IData_store_user_admin $pDataStore, $postData) {
+
+
+        /*
+         * Array structure:
+ [userPrivilege] => Array
+        (
+            [bbeveridge] => Array
+                (
+                    [8] => on
+                    [9] => on
+                    [10] => on
+                    [11] => on
+                    [12] => on
+
+The [#] represents the permission_selection.id value. This can be used to insert/delete from the user_permission_selection table.
+         */
+
+
+        /*
+         * Check which permissions are selected from the form (post is included)
+         * Check which permissions exist in the database but not sent from the form
+         * Insert these if they don't exist into user_permission_selection
+         * Delete these from user_permission_selection
+         *
+         * Repeat these steps using the role-level permissions
+         *
+         * Better to load both sets of data into two arrays, with the same structure, that can then be compared easily
+         *
+         * 
+         */
+        $arrayLibrary = new Array_library();
+
+        $userPermissionsFromDB = $this->getAllUserPermissionsFromDB($pDataStore);
+        $userPermissionsFromForm = $postData['userPrivilege'];
+
+        $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
+        $permissionsInFormNotDB = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
+
+        //Remove privileges from users that were changed on the form
+        $this->removePrivileges($pDataStore, $permissionsInDBNotForm);
+
+        //Add privileges for users that were added on the form
+        $this->addPrivileges($pDataStore, $permissionsInFormNotDB);
+
+        $userRolesFromDB = $this->getAllUserRolesFromDB($pDataStore);
+        $userRolesFromForm = $postData['userRole'];
+
+        $userRoleDifferences = $this->arrayDiff($userRolesFromDB, $userRolesFromForm);
+
+        //Update user roles
+        $this->updateUserRoles($pDataStore, $userRoleDifferences);
+
+        //TODO: Update active/not active status
+        $userActiveFromDB = $this->getAllUserActiveFromDB($pDataStore);
+        $userActiveFromForm = $this->translateUserFormActive($_POST);
+
+        //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
+        $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);
+
+        //Update user roles
+        $this->updateUserActive($pDataStore, $userActiveDifferences);
+
+        return true;
+    }
+
+    private function arrayDiff($A, $B) {
+        $intersect = array_intersect($A, $B);
+        return array_merge(array_diff_assoc($A, $intersect), array_diff_assoc($B, $intersect));
     }
 
 }

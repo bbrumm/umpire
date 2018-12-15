@@ -77,79 +77,18 @@ class UserAdmin extends CI_Controller
     }
     
     public function saveUserPrivileges() {
-        $userAdmin = new Useradminmodel();
-        $arrayLibrary = new Array_library();
-        
-        //$this->debug_library->debugOutput($this->testArrayCheck());
-        //$this->debug_library->debugOutput("POST from saveUserPrivileges:", $_POST);
-        
-        /*
-         * Array structure:
- [userPrivilege] => Array
-        (
-            [bbeveridge] => Array
-                (
-                    [8] => on
-                    [9] => on
-                    [10] => on
-                    [11] => on
-                    [12] => on
-
-The [#] represents the permission_selection.id value. This can be used to insert/delete from the user_permission_selection table.
-         */
-        
-        
-        /*        
-         * Check which permissions are selected from the form (post is included)
-         * Check which permissions exist in the database but not sent from the form
-         * Insert these if they don't exist into user_permission_selection
-         * Delete these from user_permission_selection
-         * 
-         * Repeat these steps using the role-level permissions
-         * 
-         * Better to load both sets of data into two arrays, with the same structure, that can then be compared easily
-         */
         $dataStore = new Database_store_user();
 
-        $userPermissionsFromDB = $userAdmin->getAllUserPermissionsFromDB($dataStore);
-        $userPermissionsFromForm = $_POST['userPrivilege'];
-        
-        $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
-        $permissionsInFormNotDB = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
-        
-        //Remove privileges from users that were changed on the form
-        $userAdmin->removePrivileges($dataStore, $permissionsInDBNotForm);
-        
-        //Add privileges for users that were added on the form
-        $userAdmin->addPrivileges($dataStore, $permissionsInFormNotDB);
-        
-        $userRolesFromDB = $userAdmin->getAllUserRolesFromDB($dataStore);
-        $userRolesFromForm = $_POST['userRole'];
-        
-        $userRoleDifferences = $this->arrayDiff($userRolesFromDB, $userRolesFromForm);
-        
-        //Update user roles
-        $userAdmin->updateUserRoles($dataStore, $userRoleDifferences);
-        
-        //TODO: Update active/not active status
-        $userActiveFromDB = $userAdmin->getAllUserActiveFromDB($dataStore);
-        $userActiveFromForm = $userAdmin->translateUserFormActive($_POST);
-        
-        //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
-        $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);
-        
-        //Update user roles
-        $userAdmin->updateUserActive($dataStore, $userActiveDifferences);
-        $userAddedMessage = "User privileges updated.";
-        $this->loadPage($userAddedMessage);
+        $userAdmin = new Useradminmodel();
+        $privilegesSaved = $userAdmin->saveUserPrivileges($dataStore, $_POST);
+        if ($privilegesSaved) {
+            $userAddedMessage = "User privileges updated.";
+            $this->loadPage($userAddedMessage);
+        }
+
     }
     
-    
-    private function arrayDiff($A, $B) {
-        $intersect = array_intersect($A, $B);
-        return array_merge(array_diff_assoc($A, $intersect), array_diff_assoc($B, $intersect));
-    }
-    
+
     /*
     private function arrayDiffKey($A, $B) {
         $intersect = array_intersect_key($A, $B);
@@ -158,4 +97,3 @@ The [#] represents the permission_selection.id value. This can be used to insert
     */
     
 }
-?>
