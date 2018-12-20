@@ -898,6 +898,15 @@ CREATE TABLE operation_ref (
 INSERT INTO operation_ref VALUES (1,'INSERT'),(2,'UPDATE'),(3,'DELETE');
 
 
+CREATE TABLE log_role_changes (
+  username_changed varchar(255) DEFAULT NULL,
+  role_changed int(11) DEFAULT NULL,
+  role_action int(1) DEFAULT NULL,
+  username_changed_by varchar(255) DEFAULT NULL,
+  changed_datetime datetime DEFAULT NULL
+);
+
+
 
 DELIMITER $$
 CREATE PROCEDURE `FindMissingData`()
