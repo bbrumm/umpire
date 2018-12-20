@@ -67,8 +67,8 @@ class FileImport extends CI_Controller {
 	    $this->load->view('templates/footer');
 	}
 
-	public function updateCompetition() {
+	/*public function updateCompetition() {
 	    $selectedRegion = $_POST['selectedRegion'];
 	    echo "Ajax output";
-	}
+	}*/
 }
