@@ -23,8 +23,7 @@ class Ajax_Post_Controller extends CI_Controller
     }
 
     // This function call from AJAX
-    public function user_data_submit()
-    {
+    public function user_data_submit() {
         $data = array(
             'username' => $this->input->post('name'),
             'pwd' => $this->input->post('pwd')

@@ -906,6 +906,22 @@ CREATE TABLE log_role_changes (
   changed_datetime datetime DEFAULT NULL
 );
 
+CREATE TABLE log_active_changes (
+  username_changed varchar(255) DEFAULT NULL,
+  new_active int(11) DEFAULT NULL,
+  role_action int(1) DEFAULT NULL,
+  username_changed_by varchar(255) DEFAULT NULL,
+  changed_datetime datetime DEFAULT NULL
+);
+
+CREATE TABLE log_privilege_changes (
+  username_changed varchar(255) DEFAULT NULL,
+  privilege_changed int(11) DEFAULT NULL,
+  privilege_action int(1) DEFAULT NULL,
+  username_changed_by varchar(255) DEFAULT NULL,
+  changed_datetime datetime DEFAULT NULL
+);
+
 
 
 DELIMITER $$
