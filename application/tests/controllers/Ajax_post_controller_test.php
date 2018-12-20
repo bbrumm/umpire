@@ -17,7 +17,7 @@ class Ajax_post_controller_test extends TestCase
             'pwd'=>'123',
         );
 
-        $output = $this->request('POST', ['Ajax_Post_Controller', 'user_data_submit'], $postDataArray);
+        $output = $this->request('POST', ['Ajax_post_controller', 'user_data_submit'], $postDataArray);
         $expectedOutput = '{"username":"bbrummtest","pwd":"123"}';
         $this->assertEquals($expectedOutput, $output);
     }
@@ -39,7 +39,7 @@ class Ajax_post_controller_test extends TestCase
             'competitionID'=>'1000'
         );
 
-        $output = $this->request('POST', ['Ajax_Post_Controller', 'updateCompetition'], $postDataArray);
+        $output = $this->request('POST', ['Ajax_post_controller', 'updateCompetition'], $postDataArray);
 
         //Find league ID of the test competition
         $queryString = "SELECT league_id FROM competition_lookup WHERE id = 1000;";
@@ -70,7 +70,7 @@ class Ajax_post_controller_test extends TestCase
             'competitionID'=>'1000'
         );
 
-        $output = $this->request('POST', ['Ajax_Post_Controller', 'updateCompetition'], $postDataArray);
+        $output = $this->request('POST', ['Ajax_post_controller', 'updateCompetition'], $postDataArray);
 
         //Check league was inserted
         $queryString = "SELECT MAX(id) AS id FROM league WHERE short_league_name = 'ABC';";
@@ -114,7 +114,7 @@ class Ajax_post_controller_test extends TestCase
         $postDataArray['data'] = "1000[first_name]=bbrumm&1000[last_name]=test&1000[geelong_prior]=$newGamesPrior&1000[other_leagues]=$newGamesOtherLeagues";
 
 
-        $output = $this->request('POST', ['Ajax_Post_Controller', 'updateUmpireGames'], $postDataArray);
+        $output = $this->request('POST', ['Ajax_post_controller', 'updateUmpireGames'], $postDataArray);
 
         //Check updated data
         $queryString = "SELECT games_prior, games_other_leagues FROM umpire WHERE id = 1000 AND first_name = 'bbrumm';";
