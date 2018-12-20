@@ -12,15 +12,17 @@ class Ajax_Post_Controller extends CI_Controller
         $this->load->model('Umpireadminmodel');
         $this->load->model('Missing_data_updater');
         $this->load->model('Database_store_umpire_admin');
-        include 'application/helpers/phpexcel/Classes/PHPExcel.php';
+        //include 'application/helpers/phpexcel/Classes/PHPExcel.php';
 
     }
     
     // Show view Page
+    /*
     public function index() {
         $this->load->helper('form');
         $this->load->view("ajax_post_view");
     }
+    */
 
     // This function call from AJAX
     public function user_data_submit() {
@@ -41,16 +43,14 @@ class Ajax_Post_Controller extends CI_Controller
             'competition_id' => $this->input->post('competitionID'),
         );
         
-        // Either you can print value or you can send value to database
+        $dataStore = new Database_store_matches();
         $missingDataUpdater = new Missing_data_updater();
-        $missingDataUpdater->updateSingleCompetition($data);
-
-        
+        $missingDataUpdater->updateSingleCompetition($dataStore, $data);
     }
     
     public function updateUmpireGames() {
         $params = array();
-        $this->debug_library->debugOutput("post for ajax", $_POST);
+        //$this->debug_library->debugOutput("post for ajax", $_POST);
         parse_str($_POST['data'], $params);
         
         // Either you can print value or you can send value to database
@@ -59,28 +59,4 @@ class Ajax_Post_Controller extends CI_Controller
         $umpireAdminModel->updateUmpireGameValues($dataStore, $params);
     }
 
-    public function startDataImport() {
-        //This is where I trigger the data import
-        runETL();
-        //TODO: Here, convert this to a function call inside etltest.php. But will this run in parallel?
-    }
-
-    /*
-     * Same code as checker?
-     This is where I could check if the data import is complete
-     Perhaps this is where the timer could go?
-     I think this is where I need to output data using json_encode, in order to get the view page to read it
-     Also use the loop and sleep function from process.php
-     In the loop:
-     - Create a table that lists the order of the tables impacted in hte import log
-     - Query this table here against the latest import log to see how many tables have been processed
-     - Loop through and work out a percent complete based on number of tables processed
-     - Json_encode the percent
-     */
-
-    public function updateProgressBar() {
-        //The echo statement here is stored in the responseText from the Ajax request
-        echo $this->getTestProgressValue();
-    }
-    
 }

@@ -54,7 +54,7 @@ class Missing_data_updater extends CI_Model {
 
     
     private function updateCompetitionTable($pDataStore, array $selectedData) {
-        //TOOD: Change this to look up the competition/league tables for the user-selected data
+        //TODO: Change this to look up the competition/league tables for the user-selected data
         /*This function needs to loop through each competition on the previous page.
          * For each competition, it needs to find a league that matches the user selected data.
          * If one match is found, use that league.
@@ -83,55 +83,9 @@ class Missing_data_updater extends CI_Model {
         //If there are more than one (sometimes there is two), it is because there are two competition names, so just pick the earliest one
         //$leagueIDToUse = $this->findSingleLeagueIDFromParameters($competitionData);
         $leagueIDToUse = $pDataStore->findSingleLeagueIDFromParameters($competitionData);
-        $pDataStore->updateSingleCompetition($pDataStore, $competitionData);
+        $pDataStore->updateSingleCompetition($leagueIDToUse, $competitionData);
         return $leagueIDToUse;
     }
-    /*
-    private function findSingleLeagueIDFromParameters(array $competitionData) {
-        
-        $queryString = "SELECT MIN(l.id) AS league_id
-            FROM league l
-            INNER JOIN region r ON l.region_id = r.id
-            INNER JOIN age_group_division agd ON l.age_group_division_id = agd.id
-            INNER JOIN age_group ag ON agd.age_group_id = ag.id
-            INNER JOIN division d ON agd.division_id = d.id
-            WHERE 1=1
-            AND r.id = '". $competitionData['region'] ."'
-            AND l.short_league_name = '". $competitionData['short_league_name']."'
-            AND d.id = '". $competitionData['division']."'
-            AND ag.id = '". $competitionData['age_group']."';";
-        
-        $query = $this->db->query($queryString);
-        
-        //echo "findSingleLeagueQuery:<BR/>$queryString<BR />";
-        
-        if (mysqli_more_results($this->db->conn_id)) {
-            mysqli_next_result($this->db->conn_id);
-        }
-        $resultArray = $query->result_array();
-        
-        $leagueIDToUse = $resultArray[0]['league_id'];
-        
-         //echo "leagueToUse(". $leagueIDToUse.")<BR />";
-        
-        if (is_null($leagueIDToUse)) {
-             No matching leagues found. We need to insert some data first.
-              We have the short_league_name, the league_name, and the region_id.
-              We need the age_group_division_id
-
-            $leagueIDToUse = $this->insertNewLeague($competitionData);
-            echo "OK";
-            
-        } else {
-            //This value is used for the validation in the JavaScript code in the upload_success page.
-            echo "OK";
-        }
-        
-        $query->free_result();
-        return $leagueIDToUse;
-        
-    }
-    */
 
     public function insertNewLeague(IData_store_matches $pDataStore, array $competitionData) {
         //First, check if there is an age_group_division that exists, and insert one if it does not.
