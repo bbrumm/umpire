@@ -77,7 +77,7 @@ class UserAdmin extends CI_Controller
     }
     
     public function saveUserPrivileges() {
-        $dataStore = new Database_store_user();
+        $dataStore = new Database_store_user_admin();
 
         $userAdmin = new Useradminmodel();
         $privilegesSaved = $userAdmin->saveUserPrivileges($dataStore, $_POST);
@@ -87,13 +87,6 @@ class UserAdmin extends CI_Controller
         }
 
     }
-    
 
-    /*
-    private function arrayDiffKey($A, $B) {
-        $intersect = array_intersect_key($A, $B);
-        return array_merge(array_diff_key($A, $intersect), array_diff_key($B, $intersect));
-    }
-    */
     
 }

@@ -333,8 +333,8 @@ class User_admin_model_test extends TestCase
     public function test_RemovePrivileges() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $deletedUsername = "john";
-        $deletedPermissionID = 2;
+        $deletedUsername = "jsmith";
+        $deletedPermissionID = 4;
 
         $permissionsToDeleteArray = array (
             $deletedUsername=>array ($deletedPermissionID=>0)
@@ -343,10 +343,10 @@ class User_admin_model_test extends TestCase
         $this->obj->removePrivileges($arrayStore, $permissionsToDeleteArray);
         $actualArray = $arrayStore->getUserPrivileges();
         $expectedArray = array (
-            array ("username"=>"john", "permission_selection_id"=>2),
-            array ("username"=>"ringo", "permission_selection_id"=>6),
-            array ("username"=>"george", "permission_selection_id"=>1),
-            array ("username"=>"george", "permission_selection_id"=>2)
+            array ("username"=>"jsmith", "permission_selection_id"=>1),
+            array ("username"=>"bbrumm", "permission_selection_id"=>3),
+            array ("username"=>"abc", "permission_selection_id"=>1),
+            array ("username"=>"abc", "permission_selection_id"=>9)
         );
 
         $expectedCount = count($expectedArray);
@@ -380,11 +380,11 @@ class User_admin_model_test extends TestCase
         $this->obj->removePrivileges($arrayStore, $permissionsToDeleteArray);
         $actualArray = $arrayStore->getUserPrivileges();
         $expectedArray = array (
-            array ("username"=>"john", "permission_selection_id"=>2),
-            array ("username"=>"john", "permission_selection_id"=>5),
-            array ("username"=>"ringo", "permission_selection_id"=>6),
-            array ("username"=>"george", "permission_selection_id"=>1),
-            array ("username"=>"george", "permission_selection_id"=>2)
+            array ("username"=>"jsmith", "permission_selection_id"=>1),
+            array ("username"=>"jsmith", "permission_selection_id"=>4),
+            array ("username"=>"bbrumm", "permission_selection_id"=>3),
+            array ("username"=>"abc", "permission_selection_id"=>1),
+            array ("username"=>"abc", "permission_selection_id"=>9)
         );
 
         $expectedCount = count($expectedArray);
@@ -408,7 +408,7 @@ class User_admin_model_test extends TestCase
     public function test_RemovePrivileges_PermissionNotFound() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $deletedUsername = "george";
+        $deletedUsername = "bbrumm";
         $deletedPermissionID = 4;
 
         $permissionsToDeleteArray = array (
@@ -418,11 +418,11 @@ class User_admin_model_test extends TestCase
         $this->obj->removePrivileges($arrayStore, $permissionsToDeleteArray);
         $actualArray = $arrayStore->getUserPrivileges();
         $expectedArray = array (
-            array ("username"=>"john", "permission_selection_id"=>2),
-            array ("username"=>"john", "permission_selection_id"=>5),
-            array ("username"=>"ringo", "permission_selection_id"=>6),
-            array ("username"=>"george", "permission_selection_id"=>1),
-            array ("username"=>"george", "permission_selection_id"=>2)
+            array ("username"=>"jsmith", "permission_selection_id"=>1),
+            array ("username"=>"jsmith", "permission_selection_id"=>4),
+            array ("username"=>"bbrumm", "permission_selection_id"=>3),
+            array ("username"=>"abc", "permission_selection_id"=>1),
+            array ("username"=>"abc", "permission_selection_id"=>9)
         );
 
         $expectedCount = count($expectedArray);
@@ -441,10 +441,10 @@ class User_admin_model_test extends TestCase
     public function test_RemovePrivileges_DeleteTwo() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $deletedUsername = "george";
+        $deletedUsername = "jsmith";
         $deletedPermissionID = 1;
-        $deletedUsername2 = "john";
-        $deletedPermissionID2 = 5;
+        $deletedUsername2 = "abc";
+        $deletedPermissionID2 = 9;
 
         $permissionsToDeleteArray = array (
             $deletedUsername=>array ($deletedPermissionID=>0),
@@ -454,9 +454,9 @@ class User_admin_model_test extends TestCase
         $this->obj->removePrivileges($arrayStore, $permissionsToDeleteArray);
         $actualArray = $arrayStore->getUserPrivileges();
         $expectedArray = array (
-            array ("username"=>"john", "permission_selection_id"=>2),
-            array ("username"=>"ringo", "permission_selection_id"=>6),
-            array ("username"=>"george", "permission_selection_id"=>2)
+            array ("username"=>"jsmith", "permission_selection_id"=>4),
+            array ("username"=>"bbrumm", "permission_selection_id"=>3),
+            array ("username"=>"abc", "permission_selection_id"=>1)
         );
 
         $expectedCount = count($expectedArray);
@@ -482,7 +482,7 @@ class User_admin_model_test extends TestCase
     public function test_AddPrivileges() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $addedUsername = "john";
+        $addedUsername = "jsmith";
         $addedPermissionID = 7;
 
         $permissionsToAddArray = array (
@@ -492,12 +492,12 @@ class User_admin_model_test extends TestCase
         $this->obj->addPrivileges($arrayStore, $permissionsToAddArray);
         $actualArray = $arrayStore->getUserPrivileges();
         $expectedArray = array (
-            array ("username"=>"john", "permission_selection_id"=>2),
-            array ("username"=>"john", "permission_selection_id"=>5),
-            array ("username"=>"ringo", "permission_selection_id"=>6),
-            array ("username"=>"george", "permission_selection_id"=>1),
-            array ("username"=>"george", "permission_selection_id"=>2),
-            array ("username"=>"john", "permission_selection_id"=>7),
+            array ("username"=>"jsmith", "permission_selection_id"=>1),
+            array ("username"=>"jsmith", "permission_selection_id"=>4),
+            array ("username"=>"bbrumm", "permission_selection_id"=>3),
+            array ("username"=>"abc", "permission_selection_id"=>1),
+            array ("username"=>"abc", "permission_selection_id"=>9),
+            array ("username"=>"jsmith", "permission_selection_id"=>7)
         );
 
         $addedRecords = array(
@@ -527,11 +527,11 @@ class User_admin_model_test extends TestCase
         $this->obj->addPrivileges($arrayStore, $permissionsToAddArray);
         $actualArray = $arrayStore->getUserPrivileges();
         $expectedArray = array (
-            array ("username"=>"john", "permission_selection_id"=>2),
-            array ("username"=>"john", "permission_selection_id"=>5),
-            array ("username"=>"ringo", "permission_selection_id"=>6),
-            array ("username"=>"george", "permission_selection_id"=>1),
-            array ("username"=>"george", "permission_selection_id"=>2)
+            array ("username"=>"jsmith", "permission_selection_id"=>1),
+            array ("username"=>"jsmith", "permission_selection_id"=>4),
+            array ("username"=>"bbrumm", "permission_selection_id"=>3),
+            array ("username"=>"abc", "permission_selection_id"=>1),
+            array ("username"=>"abc", "permission_selection_id"=>9)
         );
 
         $addedRecords = array(
@@ -551,8 +551,8 @@ class User_admin_model_test extends TestCase
     public function test_AddPrivileges_PermissionExists() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $addedUsername = "john";
-        $addedPermissionID = 2;
+        $addedUsername = "abc";
+        $addedPermissionID = 1;
 
         $permissionsToAddArray = array (
             $addedUsername=>array ($addedPermissionID=>1)
@@ -561,12 +561,11 @@ class User_admin_model_test extends TestCase
         $this->obj->addPrivileges($arrayStore, $permissionsToAddArray);
         $actualArray = $arrayStore->getUserPrivileges();
         $expectedArray = array (
-            array ("username"=>"john", "permission_selection_id"=>2),
-            array ("username"=>"john", "permission_selection_id"=>5),
-            array ("username"=>"ringo", "permission_selection_id"=>6),
-            array ("username"=>"george", "permission_selection_id"=>1),
-            array ("username"=>"george", "permission_selection_id"=>2),
-            array ("username"=>"john", "permission_selection_id"=>2)
+            array ("username"=>"jsmith", "permission_selection_id"=>1),
+            array ("username"=>"jsmith", "permission_selection_id"=>4),
+            array ("username"=>"bbrumm", "permission_selection_id"=>3),
+            array ("username"=>"abc", "permission_selection_id"=>1),
+            array ("username"=>"abc", "permission_selection_id"=>9)
         );
 
         $addedRecords = array(
@@ -579,7 +578,7 @@ class User_admin_model_test extends TestCase
         $matchingRecords = $arrayLibrary->findMultiArrayDiff($actualArray, $addedRecords);
 
         $this->assertEquals($expectedCount, $actualCount);
-        $this->assertEquals(2, count($matchingRecords));
+        $this->assertEquals(1, count($matchingRecords));
 
     }
 
@@ -685,7 +684,7 @@ class User_admin_model_test extends TestCase
     public function test_UpdateUserActive() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $updatedUsername = "ringo";
+        $updatedUsername = "abc";
         $updatedActive = 1;
 
         $usersToUpdateArray = array (
@@ -695,10 +694,9 @@ class User_admin_model_test extends TestCase
         $this->obj->updateUserActive($arrayStore, $usersToUpdateArray);
         $actualArray = $arrayStore->getUserActiveData();
         $expectedArray = array (
-            array ("username"=>"john", "active"=>1),
-            array ("username"=>"ringo", "active"=>0),
-            array ("username"=>"paul", "active"=>0),
-            array ("username"=>"george", "active"=>1)
+            array ("username"=>"jsmith", "active"=>1),
+            array ("username"=>"bbrumm", "active"=>1),
+            array ("username"=>"abc", "active"=>1)
         );
 
         $expectedCount = count($expectedArray);
@@ -729,10 +727,9 @@ class User_admin_model_test extends TestCase
         $this->obj->updateUserActive($arrayStore, $usersToUpdateArray);
         $actualArray = $arrayStore->getUserActiveData();
         $expectedArray = array (
-            array ("username"=>"john", "active"=>1),
-            array ("username"=>"ringo", "active"=>0),
-            array ("username"=>"paul", "active"=>0),
-            array ("username"=>"george", "active"=>1)
+            array ("username"=>"jsmith", "active"=>1),
+            array ("username"=>"bbrumm", "active"=>1),
+            array ("username"=>"abc", "active"=>0)
         );
 
         $expectedCount = count($expectedArray);
@@ -753,7 +750,7 @@ class User_admin_model_test extends TestCase
     public function test_UpdateUserActive_SetInactive() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $updatedUsername = "john";
+        $updatedUsername = "jsmith";
         $updatedActive = 0;
 
         $usersToUpdateArray = array (
@@ -763,10 +760,9 @@ class User_admin_model_test extends TestCase
         $this->obj->updateUserActive($arrayStore, $usersToUpdateArray);
         $actualArray = $arrayStore->getUserActiveData();
         $expectedArray = array (
-            array ("username"=>"john", "active"=>0),
-            array ("username"=>"ringo", "active"=>0),
-            array ("username"=>"paul", "active"=>0),
-            array ("username"=>"george", "active"=>1)
+            array ("username"=>"jsmith", "active"=>0),
+            array ("username"=>"bbrumm", "active"=>1),
+            array ("username"=>"abc", "active"=>0)
         );
 
         $expectedCount = count($expectedArray);
@@ -787,7 +783,7 @@ class User_admin_model_test extends TestCase
     public function test_UpdateUserActive_SetInvalid() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $updatedUsername = "john";
+        $updatedUsername = "jsmith";
         $updatedActive = "abc";
 
         $usersToUpdateArray = array (
@@ -797,10 +793,9 @@ class User_admin_model_test extends TestCase
         $this->obj->updateUserActive($arrayStore, $usersToUpdateArray);
         $actualArray = $arrayStore->getUserActiveData();
         $expectedArray = array (
-            array ("username"=>"john", "active"=>1),
-            array ("username"=>"ringo", "active"=>0),
-            array ("username"=>"paul", "active"=>0),
-            array ("username"=>"george", "active"=>1)
+            array ("username"=>"jsmith", "active"=>1),
+            array ("username"=>"bbrumm", "active"=>1),
+            array ("username"=>"abc", "active"=>0)
         );
 
         $expectedCount = count($expectedArray);
@@ -821,7 +816,7 @@ class User_admin_model_test extends TestCase
     public function test_UpdateUserActive_SetNull() {
         $arrayStore = new Array_store_user_admin();
         $arrayLibrary = new Array_library();
-        $updatedUsername = "john";
+        $updatedUsername = "bbrumm";
         $updatedActive = null;
 
         $usersToUpdateArray = array (
@@ -831,10 +826,9 @@ class User_admin_model_test extends TestCase
         $this->obj->updateUserActive($arrayStore, $usersToUpdateArray);
         $actualArray = $arrayStore->getUserActiveData();
         $expectedArray = array (
-            array ("username"=>"john", "active"=>1),
-            array ("username"=>"ringo", "active"=>0),
-            array ("username"=>"paul", "active"=>0),
-            array ("username"=>"george", "active"=>1)
+            array ("username"=>"jsmith", "active"=>1),
+            array ("username"=>"bbrumm", "active"=>1),
+            array ("username"=>"abc", "active"=>0)
         );
 
         $expectedCount = count($expectedArray);
@@ -850,6 +844,236 @@ class User_admin_model_test extends TestCase
         $this->assertEquals(0, count($matchingRecords));
 
 
+    }
+
+    public function test_SavePrivileges_OneUser() {
+        $arrayStore = new Array_store_user_admin();
+        $arrayLibrary = new Array_library();
+        $postDataArray = array (
+            'userPrivilege' => array (
+                "jsmith" => array (1=>"on", 4=>"on", 7=>"on"),
+                "bbrumm" => array (3=>"on"),
+                "abc" => array (1=>"on", 9=>"on")
+            ),
+            'userRole' => array (
+                'jsmith'=>2,
+                'bbrumm'=>1,
+                'abc'=>4,
+            ),
+            'userActive' => array (
+                'jsmith'=>1,
+                'bbrumm'=>1,
+                'abc'=>0,
+            )
+        );
+
+        $this->obj->saveUserPrivileges($arrayStore, $postDataArray);
+
+        $actualPrivilegeArray = $arrayStore->getAllUserPermissionsFromDB();
+        $expectedPrivilegeArray = array (
+            "jsmith" => array (1=>"on", 4=>"on", 7=>"on"),
+            "bbrumm" => array (3=>"on"),
+            "abc" => array (1=>"on", 9=>"on")
+        );
+
+
+        $expectedPrivilegeCount = count($expectedPrivilegeArray);
+        $actualPrivilegeCount = count($actualPrivilegeArray);
+        $countOfDifferentPrivileges = $this->countDifferentRecords($expectedPrivilegeArray, $actualPrivilegeArray);
+        $expectedCountOfDifferences = 0;
+
+        $this->assertEquals($expectedPrivilegeCount, $actualPrivilegeCount);
+        $this->assertEquals($expectedCountOfDifferences, $countOfDifferentPrivileges);
+
+        $actualRoleArray = $arrayStore->getAllUserRolesFromDB();
+        $expectedRoleArray = array (
+            'jsmith'=>2,
+            'bbrumm'=>1,
+            'abc'=>4,
+        );
+
+        $actualRoleCount = count($actualRoleArray);
+        $expectedRoleCount = count($expectedRoleArray);
+        $countOfDifferentRoles = count(array_diff($actualRoleArray, $expectedRoleArray));
+        $expectedCountOfDifferentRoles = 0;
+
+        $this->assertEquals($expectedRoleCount, $actualRoleCount);
+        $this->assertEquals($expectedCountOfDifferentRoles, $countOfDifferentRoles);
+
+        //Test Active value changes
+        $actualActiveArray = $arrayStore->getUserActiveData();
+        $expectedActiveArray = array (
+            array('username'=>'jsmith', 'active'=>1),
+            array('username'=>'bbrumm', 'active'=>1),
+            array('username'=>'abc', 'active'=>0)
+        );
+
+        $actualActiveCount = count($actualActiveArray);
+        $expectedActiveCount = count($expectedActiveArray);
+        $arrayDiff = $arrayLibrary->findRecursiveArrayDiff($actualActiveArray, $expectedActiveArray);
+        $countOfDifferentActive = $arrayLibrary->sumArrayValues($arrayDiff);
+        $expectedCountOfDifferentActive = 0;
+
+        $this->assertEquals($expectedActiveCount, $actualActiveCount);
+        $this->assertEquals($expectedCountOfDifferentActive, $countOfDifferentActive);
+
+
+    }
+
+    private function countDifferentRecords($expectedArray, $actualArray) {
+        $arrayLibrary = new Array_library();
+        $differentRecords = $arrayLibrary->findRecursiveArrayDiff($expectedArray, $actualArray);
+        $countDifferences = 0;
+        foreach ($differentRecords as $key=>$value) {
+            $countDifferences = $countDifferences + count($value);
+        }
+
+        return $countDifferences;
+
+    }
+
+    public function test_SavePrivileges_NoChanges() {
+        $arrayStore = new Array_store_user_admin();
+        $arrayLibrary = new Array_library();
+        $postDataArray = array (
+            'userPrivilege' => array (
+                "jsmith" => array (1=>"on", 4=>"on"),
+                "bbrumm" => array (3=>"on"),
+                "abc" => array (1=>"on", 9=>"on")
+            ),
+            'userRole' => array (
+                'jsmith'=>2,
+                'bbrumm'=>1,
+                'abc'=>4,
+            ),
+            'userActive' => array (
+                'jsmith'=>1,
+                'bbrumm'=>1,
+                'abc'=>1,
+            )
+        );
+
+        $this->obj->saveUserPrivileges($arrayStore, $postDataArray);
+
+        $actualPrivilegeArray = $arrayStore->getAllUserPermissionsFromDB();
+        $expectedPrivilegeArray = array (
+            "jsmith" => array (1=>"on", 4=>"on"),
+            "bbrumm" => array (3=>"on"),
+            "abc" => array (1=>"on", 9=>"on")
+        );
+
+
+        $expectedPrivilegeCount = count($expectedPrivilegeArray);
+        $actualPrivilegeCount = count($actualPrivilegeArray);
+        $countOfDifferentPrivileges = $this->countDifferentRecords($expectedPrivilegeArray, $actualPrivilegeArray);
+        $expectedCountOfDifferences = 0;
+
+        $this->assertEquals($expectedPrivilegeCount, $actualPrivilegeCount);
+        $this->assertEquals($expectedCountOfDifferences, $countOfDifferentPrivileges);
+
+        $actualRoleArray = $arrayStore->getAllUserRolesFromDB();
+        $expectedRoleArray = array (
+            'jsmith'=>2,
+            'bbrumm'=>1,
+            'abc'=>4,
+        );
+
+        $actualRoleCount = count($actualRoleArray);
+        $expectedRoleCount = count($expectedRoleArray);
+        $countOfDifferentRoles = count(array_diff($actualRoleArray, $expectedRoleArray));
+        $expectedCountOfDifferentRoles = 0;
+
+        $this->assertEquals($expectedRoleCount, $actualRoleCount);
+        $this->assertEquals($expectedCountOfDifferentRoles, $countOfDifferentRoles);
+
+        //Test Active value changes
+        $actualActiveArray = $arrayStore->getUserActiveData();
+        $expectedActiveArray = array (
+            array('username'=>'jsmith', 'active'=>1),
+            array('username'=>'bbrumm', 'active'=>1),
+            array('username'=>'abc', 'active'=>1)
+        );
+
+        $actualActiveCount = count($actualActiveArray);
+        $expectedActiveCount = count($expectedActiveArray);
+        $arrayDiff = $arrayLibrary->findRecursiveArrayDiff($actualActiveArray, $expectedActiveArray);
+        $countOfDifferentActive = $arrayLibrary->sumArrayValues($arrayDiff);
+        $expectedCountOfDifferentActive = 0;
+
+        $this->assertEquals($expectedActiveCount, $actualActiveCount);
+        $this->assertEquals($expectedCountOfDifferentActive, $countOfDifferentActive);
+    }
+
+    public function test_SavePrivileges_TwoUsers() {
+        $arrayStore = new Array_store_user_admin();
+        $arrayLibrary = new Array_library();
+        $postDataArray = array (
+            'userPrivilege' => array (
+                "jsmith" => array (1=>"on", 4=>"on", 6=>"on"),
+                "bbrumm" => array (3=>"on"),
+                "abc" => array (1=>"on", 9=>"on")
+            ),
+            'userRole' => array (
+                'jsmith'=>2,
+                'bbrumm'=>1,
+                'abc'=>4,
+            ),
+            'userActive' => array (
+                'jsmith'=>0,
+                'bbrumm'=>0,
+                'abc'=>1,
+            )
+        );
+
+        $this->obj->saveUserPrivileges($arrayStore, $postDataArray);
+
+        $actualPrivilegeArray = $arrayStore->getAllUserPermissionsFromDB();
+        $expectedPrivilegeArray = array (
+            "jsmith" => array (1=>"on", 4=>"on", 6=>"on"),
+            "bbrumm" => array (3=>"on"),
+            "abc" => array (1=>"on", 9=>"on")
+        );
+
+
+        $expectedPrivilegeCount = count($expectedPrivilegeArray);
+        $actualPrivilegeCount = count($actualPrivilegeArray);
+        $countOfDifferentPrivileges = $this->countDifferentRecords($expectedPrivilegeArray, $actualPrivilegeArray);
+        $expectedCountOfDifferences = 0;
+
+        $this->assertEquals($expectedPrivilegeCount, $actualPrivilegeCount);
+        $this->assertEquals($expectedCountOfDifferences, $countOfDifferentPrivileges);
+
+        $actualRoleArray = $arrayStore->getAllUserRolesFromDB();
+        $expectedRoleArray = array (
+            'jsmith'=>2,
+            'bbrumm'=>1,
+            'abc'=>4,
+        );
+
+        $actualRoleCount = count($actualRoleArray);
+        $expectedRoleCount = count($expectedRoleArray);
+        $countOfDifferentRoles = count(array_diff($actualRoleArray, $expectedRoleArray));
+        $expectedCountOfDifferentRoles = 0;
+
+        $this->assertEquals($expectedRoleCount, $actualRoleCount);
+        $this->assertEquals($expectedCountOfDifferentRoles, $countOfDifferentRoles);
+
+        //Test Active value changes
+        $actualActiveArray = $arrayStore->getUserActiveData();
+        $expectedActiveArray = array (
+            array('username'=>'jsmith', 'active'=>0),
+            array('username'=>'bbrumm', 'active'=>0),
+            array('username'=>'abc', 'active'=>1)
+        );
+
+        $actualActiveCount = count($actualActiveArray);
+        $expectedActiveCount = count($expectedActiveArray);
+        $arrayDiff = $arrayLibrary->findRecursiveArrayDiff($actualActiveArray, $expectedActiveArray);
+        $countOfDifferentActive = $arrayLibrary->sumArrayValues($arrayDiff);
+        $expectedCountOfDifferentActive = 0;
+
+        $this->assertEquals($expectedActiveCount, $actualActiveCount);
+        $this->assertEquals($expectedCountOfDifferentActive, $countOfDifferentActive);
     }
 
 }

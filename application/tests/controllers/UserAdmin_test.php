@@ -91,10 +91,37 @@ class UserAdmin_test extends TestCase
 
         //Load page
         try {
-            $output = $output = $this->request('POST', ['UserAdmin', 'addNewUser'], $postArray);
+            $output = $this->request('POST', ['UserAdmin', 'addNewUser'], $postArray);
         } finally {
             $output = ob_get_clean();
         }
+
+    }
+
+    public function test_SaveUserPrivileges() {
+
+        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $postDataArray = array (
+            'userPrivilege' => array (
+                'bbrummtest' => array (1=>"on")
+            ),
+            'userRole' => array (
+                'bbrummtest'=>2
+            ),
+            'userActive' => array (
+                'bbrummtest'=>1
+            )
+        );
+
+        //Load page
+        $output = $this->request('POST', ['UserAdmin', 'saveUserPrivileges'], $postDataArray);
+        $expectedHeader = "<h2>User Administration</h2>";
+        $this->assertContains($expectedHeader, $output);
+        $message = "User privileges updated.";
+
+        $this->assertContains($message, $output);
 
     }
 }

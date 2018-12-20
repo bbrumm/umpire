@@ -94,6 +94,15 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         }
     }
 
+    /*
+     This should return data in this format:
+     Array (
+         [username] => Array
+           (
+             [permission_selection.id] => on
+             [permission_selection.id] => on
+             [permission_selection.id] => on
+     */
     public function getAllUserPermissionsFromDB() {
         $queryString = "SELECT u.user_name, ps.id
             FROM umpire_users u
@@ -109,7 +118,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     private function translatePermissionArray($resultArray) {
-        $translatedArray = "";
+        $translatedArray = [];
         foreach ($resultArray as $rowItem) {
             $translatedArray[$rowItem['user_name']][$rowItem['id']] = 'on';
         }
@@ -128,7 +137,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     private function translateRoleArray($resultArray) {
-        $translatedArray = "";
+        $translatedArray = [];
         foreach ($resultArray as $rowItem) {
             $translatedArray[$rowItem['user_name']] = $rowItem['role_id'];
         }
@@ -136,7 +145,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
 
     }
 
-    public function getAllUserActiveFromDB(IData_store_user $pDataStore) {
+    public function getAllUserActiveFromDB() {
         $queryString = "SELECT user_name, active
             FROM umpire_users
             WHERE user_name NOT IN ('bbrumm');";
@@ -148,7 +157,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     private function translateActiveArray($resultArray) {
-        $translatedArray = "";
+        $translatedArray = [];
         foreach ($resultArray as $rowItem) {
             $translatedArray[$rowItem['user_name']] = $rowItem['active'];
         }

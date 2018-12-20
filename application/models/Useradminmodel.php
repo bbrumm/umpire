@@ -201,7 +201,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
          *
          * Better to load both sets of data into two arrays, with the same structure, that can then be compared easily
          *
-         * 
+         *
          */
         $arrayLibrary = new Array_library();
 
@@ -227,7 +227,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
 
         //TODO: Update active/not active status
         $userActiveFromDB = $this->getAllUserActiveFromDB($pDataStore);
-        $userActiveFromForm = $this->translateUserFormActive($_POST);
+        $userActiveFromForm = $this->translateUserFormActive($postData);
 
         //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
         $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);

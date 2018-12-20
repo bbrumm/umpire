@@ -115,13 +115,24 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
     }
 
     public function getAllUserPermissionsFromDB() {
-        $testData = array (
+        /*$testData = array (
             "jsmith" => array (1=>"on", 4=>"on"),
             "bbrumm" => array (3=>"on"),
             "abc" => array (1=>"on", 9=>"on")
-        );
+        );*/
 
-        return $testData;
+        //Translate the data into the format mentioned above
+        return $this->translatePermissionArray($this->testUserPrivilegeData);
+
+    }
+
+    private function translatePermissionArray($resultArray) {
+        $translatedArray = [];
+        foreach ($resultArray as $rowItem) {
+            $translatedArray[$rowItem['username']][$rowItem['permission_selection_id']] = 'on';
+        }
+        return $translatedArray;
+
     }
 
     public function getAllUserRolesFromDB() {
@@ -145,11 +156,11 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
     }
 
     private $testUserPrivilegeData = array (
-        array ("username"=>"john", "permission_selection_id"=>2),
-        array ("username"=>"john", "permission_selection_id"=>5),
-        array ("username"=>"ringo", "permission_selection_id"=>6),
-        array ("username"=>"george", "permission_selection_id"=>1),
-        array ("username"=>"george", "permission_selection_id"=>2)
+        array ("username"=>"jsmith", "permission_selection_id"=>1),
+        array ("username"=>"jsmith", "permission_selection_id"=>4),
+        array ("username"=>"bbrumm", "permission_selection_id"=>3),
+        array ("username"=>"abc", "permission_selection_id"=>1),
+        array ("username"=>"abc", "permission_selection_id"=>9)
     );
 
     public function getUserPrivileges() {
@@ -178,13 +189,19 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
     public function addUserPrivilege($username, $permission_selection_id) {
         $testData = $this->getUserPrivileges();
         $usernameFound = false;
+        $privilegeAlreadyExists = false;
         foreach ($testData as $key => $value) {
             if($value["username"] == $username) {
                 $usernameFound = true;
+                if ($value["permission_selection_id"] == $permission_selection_id) {
+                    $privilegeAlreadyExists = true;
+                    break;
+                }
                 break;
             }
         }
-        if ($usernameFound) {
+
+        if (!$privilegeAlreadyExists && $usernameFound) {
             $testData[] = array(
                 "username" => $username,
                 "permission_selection_id" => $permission_selection_id
@@ -221,13 +238,13 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
     }
 
     private $testUserActiveData = array (
-        array ("username"=>"john", "active"=>1),
-        array ("username"=>"ringo", "active"=>0),
-        array ("username"=>"paul", "active"=>0),
-        array ("username"=>"george", "active"=>1)
+        array ("username"=>"jsmith", "active"=>1),
+        array ("username"=>"bbrumm", "active"=>1),
+        array ("username"=>"abc", "active"=>0)
     );
 
     public function getUserActiveData() {
+        //return $this->translateActiveArray($this->testUserActiveData);
         return $this->testUserActiveData;
     }
 
@@ -250,6 +267,15 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
     public function getCountOfMatchingUsers(User $pUser) {
 
     }
+
+    /*private function translateActiveArray($resultArray) {
+        $translatedArray = [];
+        foreach ($resultArray as $rowItem) {
+            $translatedArray[$rowItem['username']][$rowItem['active']] = 1;
+        }
+        return $translatedArray;
+
+    }*/
 
 
 }
