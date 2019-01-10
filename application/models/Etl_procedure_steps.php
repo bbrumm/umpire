@@ -40,7 +40,7 @@ class Etl_procedure_steps extends CI_Model
         $this->insertMatchStaging($pImportedFileID);
         $this->deleteDuplicateMatchStagingRecords($pImportedFileID);
         $this->insertMatchPlayed($pImportedFileID);
-        $this->insertUmpireNameTypeMatch($pImportedFileID);
+        $this->insertUmpireNameTypeMatch($pSeason, $pImportedFileID);
 
         $this->truncateDimFact();
         $this->insertDimUmpire($pImportedFileID);
@@ -415,7 +415,7 @@ FROM match_staging;";
         $this->enableKeys("match_played");
     }
 
-    private function insertUmpireNameTypeMatch($pImportedFileID) {
+    private function insertUmpireNameTypeMatch($pSeason, $pImportedFileID) {
         $this->disableKeys("umpire_name_type_match");
 
         $queryString = "INSERT INTO umpire_name_type_match ( umpire_name_type_id, match_id ) 
@@ -427,7 +427,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_field1_first) AND (umpire.last_name = match_staging.appointments_field1_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Field' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -435,7 +437,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_field2_first) AND (umpire.last_name = match_staging.appointments_field2_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Field' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -443,7 +447,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_field3_first) AND (umpire.last_name = match_staging.appointments_field3_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Field' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -451,7 +457,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary1_first) AND (umpire.last_name = match_staging.appointments_boundary1_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -459,7 +467,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary2_first) AND (umpire.last_name = match_staging.appointments_boundary2_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -467,7 +477,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary3_first) AND (umpire.last_name = match_staging.appointments_boundary3_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -475,7 +487,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary4_first) AND (umpire.last_name = match_staging.appointments_boundary4_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -483,7 +497,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary5_first) AND (umpire.last_name = match_staging.appointments_boundary5_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -491,7 +507,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_boundary6_first) AND (umpire.last_name = match_staging.appointments_boundary6_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -499,7 +517,9 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_goal1_first) AND (umpire.last_name = match_staging.appointments_goal1_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
+INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Goal' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -507,7 +527,10 @@ INNER JOIN match_staging ON match_staging.match_staging_id = match_played.match_
 INNER JOIN umpire ON (umpire.first_name = match_staging.appointments_goal2_first) AND (umpire.last_name = match_staging.appointments_goal2_last) 
 INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id 
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
-WHERE umpire_type.umpire_type_name = 'Goal') AS ump;";
+INNER JOIN round ON match_played.round_id = round.ID 
+WHERE umpire_type.umpire_type_name = 'Goal' 
+AND round.season_id = ". $pSeason->getSeasonID() ."
+) AS ump;";
         $query = $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "umpire_name_type_match", self::OPERATION_INSERT);

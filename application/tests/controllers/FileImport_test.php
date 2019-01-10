@@ -8,8 +8,9 @@ class FileImport_test extends TestCase
     }
 
     public function test_ImportFile() {
-        $fileNameFull = "application/tests/import/2018_Appointments_Master 2018_08_08.xls";
+
         $filename = "2018_Appointments_Master 2018_08_08.xls";
+        $fileNameFull = "application/tests/import/". $filename;
         $postArray = array(
             'userfile'=>$fileNameFull
         );
