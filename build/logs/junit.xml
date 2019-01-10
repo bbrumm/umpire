@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <testsuite name="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" tests="1" assertions="6" errors="0" failures="0" skipped="0" time="1.665153">
-    <testcase name="test_UpdateUmpireGamesPlayed_Single" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="16" assertions="6" time="1.665153"/>
-  </testsuite>
-</testsuites>
+<testsuites/>
