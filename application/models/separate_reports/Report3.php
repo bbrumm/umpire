@@ -1,5 +1,6 @@
 <?php
 require_once 'IReport.php';
+require_once 'Parent_report.php';
 
 class Report3 extends Parent_report implements IReport {
     

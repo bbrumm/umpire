@@ -20,6 +20,7 @@ class Integration_test extends TestCase
 
 /*
  * Uncomment later to improve speed
+ * */
     public function test_SeasonsExist() {
         $queryString = "SELECT season_year FROM season ORDER BY id;";
         $query = $this->db->query($queryString);
@@ -67,6 +68,126 @@ class Integration_test extends TestCase
         $this->db->close();
     }
 
+    public function test_AgeGroupLocalVsProd() {
+        $queryString = "SELECT age_group FROM age_group ORDER BY display_order;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'age_group');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
+
+    public function test_AgeGroupsMatchDivisions() {
+        $queryString = "SELECT ag.age_group, d.division_name
+FROM age_group ag
+INNER JOIN age_group_division agd ON ag.id = agd.age_group_id
+INNER JOIN division d ON d.id = agd.division_id
+ORDER BY ag.display_order ASC, d.division_name ASC;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array(
+            array('age_group'=>'Seniors', 'division_name'=>'Div 1'),
+            array('age_group'=>'Seniors', 'division_name'=>'Div 2'),
+            array('age_group'=>'Seniors', 'division_name'=>'Grading'),
+            array('age_group'=>'Seniors', 'division_name'=>'None'),
+            array('age_group'=>'Reserves', 'division_name'=>'None'),
+            array('age_group'=>'Colts', 'division_name'=>'Div 1'),
+            array('age_group'=>'Colts', 'division_name'=>'Div 2'),
+            array('age_group'=>'Colts', 'division_name'=>'Div 3'),
+            array('age_group'=>'Colts', 'division_name'=>'Div 4'),
+            array('age_group'=>'Colts', 'division_name'=>'Grading'),
+            array('age_group'=>'Colts', 'division_name'=>'Practice'),
+            array('age_group'=>'Under 19', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 19', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 19', 'division_name'=>'Div 3'),
+            array('age_group'=>'Under 19', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 19', 'division_name'=>'None'),
+            array('age_group'=>'Under 17.5', 'division_name'=>'None'),
+            array('age_group'=>'Under 17', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 17', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 17', 'division_name'=>'Div 3'),
+            array('age_group'=>'Under 17', 'division_name'=>'Div 4'),
+            array('age_group'=>'Under 17', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 17', 'division_name'=>'None'),
+            array('age_group'=>'Under 16', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 16', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 16', 'division_name'=>'Div 3'),
+            array('age_group'=>'Under 16', 'division_name'=>'Div 4'),
+            array('age_group'=>'Under 16', 'division_name'=>'Div 5'),
+            array('age_group'=>'Under 16', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 15', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 15', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 15', 'division_name'=>'Div 3'),
+            array('age_group'=>'Under 15', 'division_name'=>'Div 4'),
+            array('age_group'=>'Under 15', 'division_name'=>'Div 5'),
+            array('age_group'=>'Under 15', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 15', 'division_name'=>'None'),
+            array('age_group'=>'Under 14.5', 'division_name'=>'None'),
+            array('age_group'=>'Under 14', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 14', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 14', 'division_name'=>'Div 3'),
+            array('age_group'=>'Under 14', 'division_name'=>'Div 4'),
+            array('age_group'=>'Under 14', 'division_name'=>'Div 5'),
+            array('age_group'=>'Under 14', 'division_name'=>'Div 6'),
+            array('age_group'=>'Under 14', 'division_name'=>'Div 7'),
+            array('age_group'=>'Under 14', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 13', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 13', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 13', 'division_name'=>'Div 3'),
+            array('age_group'=>'Under 13', 'division_name'=>'Div 4'),
+            array('age_group'=>'Under 13', 'division_name'=>'Div 5'),
+            array('age_group'=>'Under 13', 'division_name'=>'Div 6'),
+            array('age_group'=>'Under 13', 'division_name'=>'Div 7'),
+            array('age_group'=>'Under 13', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 13', 'division_name'=>'None'),
+            array('age_group'=>'Under 12', 'division_name'=>'None'),
+            array('age_group'=>'Under 19 Girls', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 19 Girls', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 19 Girls', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 19 Girls', 'division_name'=>'None'),
+            array('age_group'=>'Under 18 Girls', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 18 Girls', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 18 Girls', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 18 Girls', 'division_name'=>'None'),
+            array('age_group'=>'Under 15 Girls', 'division_name'=>'Div 1'),
+            array('age_group'=>'Under 15 Girls', 'division_name'=>'Div 2'),
+            array('age_group'=>'Under 15 Girls', 'division_name'=>'Grading'),
+            array('age_group'=>'Under 15 Girls', 'division_name'=>'None'),
+            array('age_group'=>'Under 12 Girls', 'division_name'=>'None'),
+            array('age_group'=>'Youth Girls', 'division_name'=>'None'),
+            array('age_group'=>'Junior Girls', 'division_name'=>'None')
+        );
+
+        foreach ($expectedArray as $key=>$subArray) {
+            $this->assertEquals($subArray['age_group'], $resultArray[$key]->age_group);
+            $this->assertEquals($subArray['division_name'], $resultArray[$key]->division_name);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_AgeGroupDivisionLocalVsProd() {
+        $queryString = "SELECT ag.age_group, d.division_name
+FROM age_group ag
+INNER JOIN age_group_division agd ON ag.id = agd.age_group_id
+INNER JOIN division d ON d.id = agd.division_id
+ORDER BY ag.display_order ASC, d.division_name ASC;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'age_group');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'division_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
 
     public function test_DivisionsExist() {
         $queryString = "SELECT division_name FROM division ORDER BY id;";
@@ -84,10 +205,175 @@ class Integration_test extends TestCase
         $this->assertEquals($expectedCount, $actualCount);
         $this->db->close();
     }
-*/
+
+    public function test_DivisionLocalVsProd() {
+        $queryString = "SELECT division_name FROM division ORDER BY id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'division_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
+    public function test_ClubNamesExist() {
+        $queryString = "SELECT club_name FROM club ORDER BY club_name";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array(
+            'Aireys Inlet',
+            'Alvie',
+            'Ammos',
+            'Anakie',
+            'Anglesea',
+            'Apollo Bay',
+            'Bannockburn',
+            'Bannockburn / South Barwon',
+            'Barwon Heads',
+            'Bell Park',
+            'Bell Post Hill',
+            'Bell Post Hill / Bannockburn',
+            'Belmont',
+            'Belmont Lions',
+            'Belmont Lions / Newcomb',
+            'Birregurra',
+            'Colac',
+            'Colac Imperials',
+            'Corio',
+            'Dragons',
+            'Drysdale',
+            'Drysdale Bennett',
+            'Drysdale Byrne',
+            'Drysdale Eddy',
+            'Drysdale Hall',
+            'Drysdale Hector',
+            'Drysdale Hoyer',
+            'Eagles',
+            'East Geelong',
+            'East Geelong / Geelong West',
+            'East Newcomb',
+            'East Tigers',
+            'Flying Joeys',
+            'Gdfl Raiders',
+            'Geelong Amateur',
+            'Geelong West',
+            'Geelong West St Peters',
+            'Giants',
+            'Grovedale',
+            'Grovedale / South Barwon',
+            'Grovedale / St Albans',
+            'Grovedale Fisher',
+            'Grovedale Shiell',
+            'Gwsp',
+            'Gwsp / Bannockburn',
+            'Inverleigh',
+            'Irrewarra-beeac',
+            'Lara',
+            'Leaping Joeys',
+            'Leopold',
+            'Leopold Butteriss',
+            'Leopold Pitt',
+            'Lethbridge',
+            'Little River',
+            'Lorne',
+            'Modewarre',
+            'Modewarre / Grovedale',
+            'Modewarre / Winchelsea',
+            'Newcomb',
+            'Newcomb Power',
+            'Newtown & Chilwell',
+            'North Geelong',
+            'North Shore',
+            'North Shore / Geelong West',
+            'Ocean Grove',
+            'Ocean Grove Blue',
+            'Ogcc',
+            'Otway Districts',
+            'Portarlington',
+            'Queenscliff',
+            'Roosters',
+            'Saints',
+            'Seagulls',
+            'Simpson',
+            'South Barwon',
+            'South Barwon / Geelong Amateur',
+            'South Colac',
+            'Spotswood',
+            'St Albans',
+            'St Albans Allthorpe',
+            'St Albans Reid',
+            'St Albans/Newtown & Chilwell',
+            'St Joseph\'s',
+            'St Joseph\'s Hill',
+            'St Joseph\'s Jackman',
+            'St Joseph\'s Podbury',
+            'St Mary\'s',
+            'Surf Coast',
+            'Swans',
+            'Teesdale',
+            'Thomson',
+            'Tigers',
+            'Tigers Black',
+            'Tigers Gold',
+            'Torquay',
+            'Torquay Bumpstead',
+            'Torquay Coles',
+            'Torquay Dunstan',
+            'Torquay Jones',
+            'Torquay Nairn',
+            'Torquay Papworth',
+            'Torquay Pyers',
+            'Torquay Scott',
+            'Werribee Centrals',
+            'Western Eagles',
+            'Winchelsea',
+            'Winchelsea / Grovedale',
+            'Winchelsea / Inverleigh'
+
+        );
+
+        foreach ($expectedArray as $key=>$value) {
+            $this->assertEquals($value, $resultArray[$key]->club_name);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_ClubNamesAreNotDuplicated() {
+        $queryString = "SELECT club_name
+FROM club
+GROUP BY club_name
+HAVING COUNT(*) > 1;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+
+        $expectedArray = array();
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_ClubsLocalVsProd() {
+        $queryString = "SELECT club_name FROM club ORDER BY id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'club_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
 
 /*
- * TODO refactor these tables to prevent duplication
+ * TODO refactor these tables to prevent duplication, then write the test for this
+
     public function test_LeaguesExist() {
         $queryString = "SELECT league_name FROM league ORDER BY id;";
         $query = $this->db->query($queryString);
@@ -95,7 +381,7 @@ class Integration_test extends TestCase
 
         $expectedArray = array();
         foreach ($expectedArray as $key=>$value) {
-            $this->assertEquals($value, $resultArray[$key]->league_name );
+            $this->assertEquals($value, $resultArray[$key]->league_name);
         }
 
         $expectedCount = count($expectedArray);
@@ -125,9 +411,11 @@ class Integration_test extends TestCase
     }
 */
 
+
 /*
  * Uncomment later to improve speed
 
+*/
 
     public function test_LeaguesHaveCorrectRegion() {
         $queryString = "SELECT DISTINCT l.short_league_name, r.region_name FROM league l INNER JOIN region r ON l.region_id = r.id ORDER BY l.short_league_name;";
@@ -168,6 +456,74 @@ class Integration_test extends TestCase
         $this->db->close();
     }
 
+    public function test_PermissionsLocalVsProd() {
+        $queryString = "SELECT permission_name FROM permission ORDER BY id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'permission_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
+
+    public function test_PermissionCategorySelectionOrder() {
+        $queryString = "SELECT p.permission_name, ps.category, ps.selection_name
+FROM permission p
+INNER JOIN permission_selection ps ON p.id = ps.permission_id
+ORDER BY p.permission_name, ps.category, ps.display_order;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array(
+            array('permission_name'=>'ADD_NEW_USERS', 'category'=>'General', 'selection_name'=>'All'),
+            array('permission_name'=>'CREATE_PDF', 'category'=>'General', 'selection_name'=>'All'),
+            array('permission_name'=>'IMPORT_FILES', 'category'=>'General', 'selection_name'=>'All'),
+            array('permission_name'=>'MODIFY_EXISTING_USERS', 'category'=>'General', 'selection_name'=>'All'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Seniors'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Reserves'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Colts'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 16'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 12'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'BFL'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GFL'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GDFL'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GJFL'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'CDFNL'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Geelong'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Colac'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Field'),
+            array('permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
+            array('permission_name'=>'VIEW_DATA_TEST', 'category'=>'General', 'selection_name'=>'All'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 1'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 2'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 3'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 4'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 5'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 6'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 7'),
+            array('permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 8'),
+            array('permission_name'=>'VIEW_USER_ADMIN', 'category'=>'General', 'selection_name'=>'All'),
+        );
+
+        foreach ($expectedArray as $key=>$subArray) {
+            $this->assertEquals($subArray['permission_name'], $resultArray[$key]->permission_name);
+            $this->assertEquals($subArray['category'], $resultArray[$key]->category);
+            $this->assertEquals($subArray['selection_name'], $resultArray[$key]->selection_name);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
 
     public function test_ShortLeagueNamesExist() {
         $queryString = "SELECT short_league_name FROM short_league_name ORDER BY id;";
@@ -184,7 +540,18 @@ class Integration_test extends TestCase
         $this->db->close();
     }
 
+    public function test_ShortLeagueNameLocalVsProd() {
+        $queryString = "SELECT short_league_name FROM short_league_name ORDER BY id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'short_league_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
 
+/*
     public function test_FieldNamesExist() {
         $queryString = "SELECT field_name FROM t_field_list ORDER BY field_id;";
         $query = $this->db->query($queryString);
@@ -199,6 +566,7 @@ class Integration_test extends TestCase
         $this->assertEquals($expectedCount, $actualCount);
         $this->db->close();
     }
+*/
 
     public function test_ReportNamesExist() {
         $queryString = "SELECT report_name FROM t_report ORDER BY report_id;";
@@ -212,6 +580,17 @@ class Integration_test extends TestCase
         $expectedCount = count($expectedArray);
         $actualCount = count($resultArray);
         $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_ReportNameLocalVsProd() {
+        $queryString = "SELECT report_name FROM t_report ORDER BY report_id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'report_name');
+        $this->assertEmpty($arrayDifferences);
         $this->db->close();
     }
 
@@ -370,6 +749,47 @@ ORDER BY r.report_id;";
         $this->db->close();
     }
 
+    public function test_ReportValuesLocalVsProd() {
+        $queryString = "SELECT r.report_name, r.report_title, r.no_value_display, 
+r.first_column_format, r.colour_cells, r.region_enabled, 
+r.league_enabled, r.age_group_enabled, r.umpire_type_enabled,
+p.resolution, p.paper_size, p.orientation,
+f.field_name
+FROM t_report  r
+INNER JOIN t_field_list f ON r.value_field_id = f.field_id
+INNER JOIN t_pdf_settings p ON r.pdf_settings_id = p.pdf_settings_id
+ORDER BY r.report_id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'report_title');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'no_value_display');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'first_column_format');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'colour_cells');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'region_enabled');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'league_enabled');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'age_group_enabled');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'umpire_type_enabled');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'resolution');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'paper_size');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'orientation');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'field_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
     public function test_UmpireTypesExist() {
         $queryString = "SELECT umpire_type_name FROM umpire_type ORDER BY id;";
         $query = $this->db->query($queryString);
@@ -382,6 +802,17 @@ ORDER BY r.report_id;";
         $expectedCount = count($expectedArray);
         $actualCount = count($resultArray);
         $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_UmpireTypeLocalVsProd() {
+        $queryString = "SELECT umpire_type_name FROM umpire_type ORDER BY id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'umpire_type_name');
+        $this->assertEmpty($arrayDifferences);
         $this->db->close();
     }
 
@@ -498,6 +929,29 @@ ORDER BY u.id, ps.category, ps.display_order;";
         $this->db->close();
     }
 
+    public function test_UserPermissionsLocalVsProd() {
+        $queryString = "SELECT
+u.user_name, u.role_id, ps.category, ps.selection_name, ps.display_order
+FROM umpire_users u
+INNER JOIN user_permission_selection us ON u.id = us.user_id
+INNER JOIN permission_selection ps ON us.permission_selection_id = ps.id
+WHERE u.active = 1
+ORDER BY u.id, ps.category, ps.display_order;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'user_name');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_id');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'category');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'selection_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
 
     public function test_ValidSelectionCombinationsAreCorrect() {
         $queryString = "SELECT 
@@ -594,6 +1048,28 @@ ORDER BY id;";
         $this->db->close();
     }
 
+    public function test_UsersLocalVsProd() {
+        $queryString = "SELECT 
+user_name, first_name, last_name, role_id, active
+FROM umpire_users
+ORDER BY id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'user_name');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'first_name');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'last_name');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_id');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'active');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
 
     public function test_CheckForDuplicateUsers() {
         $queryString = "SELECT UPPER(user_name)
@@ -608,6 +1084,291 @@ HAVING COUNT(*) > 1;";
         $this->assertEquals($expectedCount, $actualCount);
         $this->db->close();
     }
-*/
+
+    public function test_RegionsExist() {
+        $queryString = "SELECT region_name FROM region ORDER BY id;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array('Geelong', 'Colac');
+        foreach ($expectedArray as $key=>$value) {
+            $this->assertEquals($value, $resultArray[$key]->region_name);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_RegionLocalVsProd() {
+        $queryString = "SELECT region_name FROM region ORDER BY id;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'region_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
+    public function test_ReportSelectionParametersExist() {
+        $queryString = "SELECT p.parameter_name, p.allow_multiple_selections
+            FROM report_selection_parameters p
+            ORDER BY p.parameter_display_order;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array(
+            array('parameter_name'=>'Region', 'allow_multiple_selections'=>'0'),
+            array('parameter_name'=>'League', 'allow_multiple_selections'=>'1'),
+            array('parameter_name'=>'Umpire Discipline', 'allow_multiple_selections'=>'1'),
+            array('parameter_name'=>'Age Group', 'allow_multiple_selections'=>'1')
+        );
+        foreach ($expectedArray as $key=>$subArray) {
+            $this->assertEquals($subArray['parameter_name'], $resultArray[$key]->parameter_name);
+            $this->assertEquals($subArray['allow_multiple_selections'], $resultArray[$key]->allow_multiple_selections);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_ReportSelectionParameterValues() {
+        $queryString = "SELECT p.parameter_name, v.parameter_value_name
+            FROM report_selection_parameter_values v
+            INNER JOIN report_selection_parameters p ON v.parameter_id = p.parameter_id
+            ORDER BY p.parameter_display_order, v.parameter_display_order;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array(
+            array('parameter_name'=>'Region', 'parameter_value_name'=>'Geelong'),
+            array('parameter_name'=>'Region', 'parameter_value_name'=>'Colac'),
+            array('parameter_name'=>'League', 'parameter_value_name'=>'BFL'),
+            array('parameter_name'=>'League', 'parameter_value_name'=>'GFL'),
+            array('parameter_name'=>'League', 'parameter_value_name'=>'GDFL'),
+            array('parameter_name'=>'League', 'parameter_value_name'=>'GJFL'),
+            array('parameter_name'=>'League', 'parameter_value_name'=>'CDFNL'),
+            array('parameter_name'=>'League', 'parameter_value_name'=>'Women'),
+            array('parameter_name'=>'Umpire Discipline', 'parameter_value_name'=>'Field'),
+            array('parameter_name'=>'Umpire Discipline', 'parameter_value_name'=>'Boundary'),
+            array('parameter_name'=>'Umpire Discipline', 'parameter_value_name'=>'Goal'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Seniors'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Reserves'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Colts'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 19'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 17.5'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 17'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 16'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 15'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 14.5'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 14'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 13'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 12'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 19 Girls'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 18 Girls'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 15 Girls'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 12 Girls'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Youth Girls'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Junior Girls')
+        );
+        foreach ($expectedArray as $key=>$subArray) {
+            $this->assertEquals($subArray['parameter_name'], $resultArray[$key]->parameter_name);
+            $this->assertEquals($subArray['parameter_value_name'], $resultArray[$key]->parameter_value_name);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_RoleValues() {
+        $queryString = "SELECT role_name FROM role ORDER BY display_order;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array('Owner', 'Administrator', 'Super User (Geelong)', 'Regular User', 'Super User (Colac)');
+        foreach ($expectedArray as $key=>$value) {
+            $this->assertEquals($value, $resultArray[$key]->role_name);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_RoleLocalVsProd() {
+        $queryString = "SELECT role_name FROM role ORDER BY display_order;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
+    public function test_RolePermissionSelection() {
+        $queryString = "SELECT r.role_name, p.permission_name, ps.category, ps.selection_name
+FROM role_permission_selection rp
+INNER JOIN permission_selection ps ON rp.permission_selection_id = ps.id
+INNER JOIN role r ON rp.role_id = r.id
+INNER JOIN permission p ON ps.permission_id = p.id
+ORDER BY r.display_order, p.permission_name, ps.category, ps.display_order;";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array(
+            array('role_name'=>'Owner', 'permission_name'=>'ADD_NEW_USERS', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Owner', 'permission_name'=>'CREATE_PDF', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Owner', 'permission_name'=>'IMPORT_FILES', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Owner', 'permission_name'=>'MODIFY_EXISTING_USERS', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Seniors'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Reserves'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Colts'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 16'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 12'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'BFL'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GFL'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GDFL'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GJFL'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'CDFNL'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Geelong'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Colac'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Field'),
+            array('role_name'=>'Owner', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
+            array('role_name'=>'Owner', 'permission_name'=>'VIEW_DATA_TEST', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Owner', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 1'),
+            array('role_name'=>'Owner', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 2'),
+            array('role_name'=>'Owner', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 3'),
+            array('role_name'=>'Owner', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 4'),
+            array('role_name'=>'Owner', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 5'),
+            array('role_name'=>'Owner', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 6'),
+            array('role_name'=>'Administrator', 'permission_name'=>'ADD_NEW_USERS', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Administrator', 'permission_name'=>'CREATE_PDF', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Administrator', 'permission_name'=>'IMPORT_FILES', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Administrator', 'permission_name'=>'MODIFY_EXISTING_USERS', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Seniors'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Reserves'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Colts'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 16'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 12'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'BFL'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GFL'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GDFL'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GJFL'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'CDFNL'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Geelong'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Colac'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Field'),
+            array('role_name'=>'Administrator', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
+            array('role_name'=>'Administrator', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 1'),
+            array('role_name'=>'Administrator', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 2'),
+            array('role_name'=>'Administrator', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 3'),
+            array('role_name'=>'Administrator', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 4'),
+            array('role_name'=>'Administrator', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 5'),
+            array('role_name'=>'Administrator', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 6'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'CREATE_PDF', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Seniors'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Reserves'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Colts'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 16'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 12'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'BFL'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GFL'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GDFL'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GJFL'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'CDFNL'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Geelong'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Colac'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Field'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 1'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 2'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 3'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 4'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 5'),
+            array('role_name'=>'Super User (Geelong)', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 6'),
+            array('role_name'=>'Regular User', 'permission_name'=>'CREATE_PDF', 'category'=>'General', 'selection_name'=>'All'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Seniors'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Reserves'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Colts'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 16'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 12'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Age Group', 'selection_name'=>'Under 14'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'BFL'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GFL'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GDFL'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'GJFL'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'League', 'selection_name'=>'CDFNL'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Geelong'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Region', 'selection_name'=>'Colac'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Field'),
+            array('role_name'=>'Regular User', 'permission_name'=>'SELECT_REPORT_OPTION', 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
+            array('role_name'=>'Regular User', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 1'),
+            array('role_name'=>'Regular User', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 2'),
+            array('role_name'=>'Regular User', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 3'),
+            array('role_name'=>'Regular User', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 4'),
+            array('role_name'=>'Regular User', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 5'),
+            array('role_name'=>'Regular User', 'permission_name'=>'VIEW_REPORT', 'category'=>'Report', 'selection_name'=>'Report 6'),
+        );
+        foreach ($expectedArray as $key=>$subArray) {
+            $this->assertEquals($subArray['role_name'], $resultArray[$key]->role_name);
+            $this->assertEquals($subArray['permission_name'], $resultArray[$key]->permission_name);
+            $this->assertEquals($subArray['category'], $resultArray[$key]->category);
+            $this->assertEquals($subArray['selection_name'], $resultArray[$key]->selection_name);
+        }
+
+        $expectedCount = count($expectedArray);
+        $actualCount = count($resultArray);
+        $this->assertEquals($expectedCount, $actualCount);
+        $this->db->close();
+    }
+
+    public function test_RolePermissionSelectionLocalVsProd() {
+        $queryString = "SELECT r.role_name, p.permission_name, ps.category, ps.selection_name
+FROM role_permission_selection rp
+INNER JOIN permission_selection ps ON rp.permission_selection_id = ps.id
+INNER JOIN role r ON rp.role_id = r.id
+INNER JOIN permission p ON ps.permission_id = p.id
+ORDER BY r.display_order, p.permission_name, ps.category, ps.display_order;";
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_name');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'permission_name');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'category');
+        $this->assertEmpty($arrayDifferences);
+        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'selection_name');
+        $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
 
 }

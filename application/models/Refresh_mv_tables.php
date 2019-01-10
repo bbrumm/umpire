@@ -543,8 +543,8 @@ WHERE ti2.date_year = $pSeasonYear;";
             '$pSeasonYear',
             CONCAT(b.last_name, ', ', b.first_name),
             b.games_$pSeasonYear,
-            u.last_name,
-            u.first_name
+            b.last_name,
+            b.first_name
             FROM umpire_match_baseline b
             UNION ALL
             SELECT DISTINCT

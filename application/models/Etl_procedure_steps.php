@@ -605,6 +605,8 @@ CASE short_league_name
 	WHEN 'BFL' THEN 2
 	WHEN 'GDFL' THEN 3
 	WHEN 'CDFNL' THEN 4
+	WHEN 'Women' THEN 5
+	WHEN 'GJFL' THEN 6
 	ELSE 10
 END league_sort_order
 FROM league l

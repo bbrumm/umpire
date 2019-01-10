@@ -7,6 +7,7 @@ include_once("analyticstracking.php");
 $this->load->helper('url');   
 $this->load->model('User');
 $this->load->model('useradmin/User_permission_loader_model');
+$this->load->model('Database_store_user');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
 //$data['reportSelection'] = $this->config->item('reportSelection');
