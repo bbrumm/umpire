@@ -937,10 +937,10 @@ INNER JOIN user_permission_selection us ON u.id = us.user_id
 INNER JOIN permission_selection ps ON us.permission_selection_id = ps.id
 WHERE u.active = 1
 ORDER BY u.id, ps.category, ps.display_order;";
-        $query = $this->db->query($queryString);
-        $resultArray = $query->result();
-        $expectedArray = array('usercount'=>0);
-
+        $queryProd = $this->db->query($queryString);
+        $queryLocal = $this->dbLocal->query($queryString);
+        $resultArrayProd = $queryProd->result();
+        $resultArrayLocal = $queryLocal->result();
         $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'user_name');
         $this->assertEmpty($arrayDifferences);
         $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_id');
@@ -951,6 +951,7 @@ ORDER BY u.id, ps.category, ps.display_order;";
         $this->assertEmpty($arrayDifferences);
         $this->db->close();
     }
+
 
 
     public function test_UserPermissionsArePopulated() {
