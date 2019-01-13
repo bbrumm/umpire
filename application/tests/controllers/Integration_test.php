@@ -935,7 +935,7 @@ ORDER BY u.id, ps.category, ps.display_order;";
         $this->db->close();
     }
 
-    public function test_UserPermissionsLocalVsProd() {
+    /*public function test_UserPermissionsLocalVsProd() {
         $queryString = "SELECT
 u.user_name, u.role_id, ps.category, ps.selection_name, ps.display_order
 FROM umpire_users u
@@ -957,7 +957,7 @@ ORDER BY u.id, ps.category, ps.display_order;";
         $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'selection_name');
         $this->assertEmpty($arrayDifferences);
         $this->db->close();
-    }
+    }*/
 
 
 
