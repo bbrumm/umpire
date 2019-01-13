@@ -27,7 +27,27 @@ CREATE TABLE umpire_users (
 
 
 INSERT INTO umpire_users (id, user_name, user_email, user_password, first_name, last_name, role_id, active)
-VALUES (24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 3, 1);
+VALUES 
+(2, 'bbrumm', 'brummthecar@gmail.com', 'x', 'Ben', 'Brumm', 1, 1),
+(3, 'bbeveridge', 'jbbeveridge@bigpond.com', 'x', 'Brendan', 'Beveridge', 2, 1),
+(4, 'jhillgrove', 'Jock@aflbarwon.com.au', 'x', 'Jason', 'Hillgrove', 2, 1),
+(5, 'gmanager', 'genmanager@gful.com.au', 'x', 'General', 'Manager', 2, 1),
+(6, 'dbaensch', 'None', 'x', 'Darren', 'Baensch', 3, 0),
+(7, 'skeating', 'stevekeating34@icloud.com', 'x', 'Steve', 'Keating', 3, 1),
+(8, 'hphilpott', 'None', 'x', 'Howard', 'Philpott', 3, 0),
+(9, 'rtrotter', 'None', 'x', 'Rohan', 'Trotter', 3, 0),
+(10, 'agrant', 'None', 'x', 'Alan', 'Grant', 3, 0),
+(11, 'chood', 'colin.hood@suncorp.com.au', 'x', 'Colin', 'Hood', 3, 1),
+(12, 'dsantospirito', 'None', 'x', 'Darren', 'Santospirito', 3, 1),
+(13, 'tbrooks', 'None', 'x', 'Tony', 'Brooks', 4, 0),
+(14, 'aedwick', 'None', 'x', 'Adam', 'Edwick', 4, 0),
+(15, 'kmcmaster', 'None', 'x', 'Kevin', 'McMaster', 3, 0),
+(16, 'ldonohue', 'None', 'x', 'Larry', 'Donohue', 3, 0),
+(17, 'dreid', 'reid.davin.d@edumail.vic.gov.au', 'x', 'Davin', 'Reid', 4, 1),
+(18, 'kclissold', 'kelvin@clissold.id.au', 'x', 'Kel', 'Clissold', 4, 1),
+(19, 'rsteel', 'rvnsteel@bigpond.com.au', 'x', 'Robert', 'Steel', 4, 1),
+(21, 'bsmith', 'None', 'x', 'Brad', 'Smith', 6, 1),
+(24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 3, 1);
 
 CREATE TABLE role (
   id int(11) NOT NULL AUTO_INCREMENT,

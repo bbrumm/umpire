@@ -936,6 +936,7 @@ FROM umpire_users u
 INNER JOIN user_permission_selection us ON u.id = us.user_id
 INNER JOIN permission_selection ps ON us.permission_selection_id = ps.id
 WHERE u.active = 1
+AND user_name NOT IN ('bbrummtest')
 ORDER BY u.id, ps.category, ps.display_order;";
         $queryProd = $this->db->query($queryString);
         $queryLocal = $this->dbLocal->query($queryString);
