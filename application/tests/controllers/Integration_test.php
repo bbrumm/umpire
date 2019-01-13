@@ -937,10 +937,10 @@ INNER JOIN user_permission_selection us ON u.id = us.user_id
 INNER JOIN permission_selection ps ON us.permission_selection_id = ps.id
 WHERE u.active = 1
 ORDER BY u.id, ps.category, ps.display_order;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedArray = array('usercount'=>0);
+
         $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'user_name');
         $this->assertEmpty($arrayDifferences);
         $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_id');
@@ -949,6 +949,23 @@ ORDER BY u.id, ps.category, ps.display_order;";
         $this->assertEmpty($arrayDifferences);
         $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'selection_name');
         $this->assertEmpty($arrayDifferences);
+        $this->db->close();
+    }
+
+
+    public function test_UserPermissionsArePopulated() {
+        $queryString = "SELECT COUNT(*) AS usercount
+FROM umpire_users u
+WHERE u.active = 1
+AND u.id NOT IN (
+  SELECT user_id
+  FROM user_permission_selection
+);";
+        $query = $this->db->query($queryString);
+        $resultArray = $query->result();
+        $expectedCount = 0;
+        $actualCount = $resultArray[0]->usercount;
+        $this->assertEquals($expectedCount, $actualCount);
         $this->db->close();
     }
 
