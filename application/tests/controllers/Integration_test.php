@@ -829,6 +829,11 @@ ORDER BY u.id, ps.category, ps.display_order;";
         $expectedArray = array(
             array('user_name'=>'bbrumm', 'role_id'=>1, 'category'=>'General', 'selection_name'=>'All'),
             array('user_name'=>'bbeveridge', 'role_id'=>2, 'category'=>'General', 'selection_name'=>'All'),
+            array('user_name'=>'jhillgrove', 'role_id'=>2, 'category'=>'General', 'selection_name'=>'All'),
+            array('user_name'=>'gmanager', 'role_id'=>2, 'category'=>'General', 'selection_name'=>'All'),
+            array('user_name'=>'skeating', 'role_id'=>3, 'category'=>'General', 'selection_name'=>'All'),
+            array('user_name'=>'chood', 'role_id'=>3, 'category'=>'General', 'selection_name'=>'All'),
+            array('user_name'=>'dsantospirito', 'role_id'=>3, 'category'=>'General', 'selection_name'=>'All'),
             array('user_name'=>'dreid', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Seniors'),
             array('user_name'=>'dreid', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Reserves'),
             array('user_name'=>'dreid', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Colts'),
@@ -914,7 +919,8 @@ ORDER BY u.id, ps.category, ps.display_order;";
             array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 8'),
             array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
             array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Field'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Goal')
+            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
+            array('user_name'=>'bsmith', 'role_id'=>6, 'category'=>'General', 'selection_name'=>'All')
         );
         foreach ($expectedArray as $key=>$subArray) {
             $this->assertEquals($subArray['user_name'], $resultArray[$key]->user_name);
