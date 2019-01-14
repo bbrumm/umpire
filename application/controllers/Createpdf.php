@@ -32,7 +32,7 @@ class CreatePDF extends CI_Controller {
 	        echo "</pre>";
 	        
 	    }
-		//$this->load->helper('pdf_helper');
+
 		$reportParameters = array(
 			'reportName' => $_POST['reportName'], 
 			'season' => $_POST['season'], 
