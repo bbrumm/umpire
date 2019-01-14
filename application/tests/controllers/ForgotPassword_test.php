@@ -24,7 +24,7 @@ class ForgotPassword_test extends TestCase
             'emailAddress'=>'brummthecar@gmail.com'
         );
 
-        $output = $this->request('POST', ['ForgotPassword', 'submitChangePasswordForm', false], $postArray);
+        $output = $this->request('POST', ['ForgotPassword', 'submitChangePasswordForm', true], $postArray);
         $expected = "<h2>Almost Done!</h2>";
 
         $this->assertContains($expected, $output);
@@ -36,7 +36,7 @@ class ForgotPassword_test extends TestCase
             'emailAddress'=>'brummthecar2@gmail.com'
         );
 
-        $output = $this->request('POST', ['ForgotPassword', 'submitChangePasswordForm', false], $postArray);
+        $output = $this->request('POST', ['ForgotPassword', 'submitChangePasswordForm', true], $postArray);
         $expected = "Username or email address not found. Please try again or contact support.";
 
         $this->assertContains($expected, $output);

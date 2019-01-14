@@ -13,14 +13,6 @@ class Ajax_Post_Controller extends CI_Controller
         //include 'application/helpers/phpexcel/Classes/PHPExcel.php';
 
     }
-    
-    // Show view Page
-    /*
-    public function index() {
-        $this->load->helper('form');
-        $this->load->view("ajax_post_view");
-    }
-    */
 
     // This function call from AJAX
     public function user_data_submit() {

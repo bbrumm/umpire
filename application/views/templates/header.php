@@ -120,10 +120,6 @@ if ($showHeader) {
     		    echo anchor("UmpireAdmin/loadPage", $menuUmpireAdmin);
     		}
     		
-    		if ($userPermissionLoader->userCanSeeDataTestPage($currentUser)) {
-    		    echo anchor("datatest", $menuDataTest);
-    		}
-    		
     		echo anchor("UpdateProfile", $menuUpdateProfile);
     		echo anchor("home/logout", $menuLogout);
 

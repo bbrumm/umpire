@@ -12,10 +12,6 @@ class File_loader_import extends CI_Model implements IFile_loader
         return "application/import/" . $pDataArray['upload_data']['file_name'];
     }
 
-    public function getMatchImportData() {
-
-    }
-
     public function clearMatchImportTable() {
         /*
          * No trailing semicolon on DELETE queries, because CI adds a WHERE 1=1 to it.

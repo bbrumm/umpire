@@ -62,5 +62,38 @@ class FileImport_test extends TestCase
     }
     */
 
+    public function test_ImportFile_NewData() {
+
+        $filename = "test_new_data.xlsx";
+        $fileNameFull = "application/tests/import/". $filename;
+        $postArray = array(
+            'userfile'=>$fileNameFull
+        );
+
+        $_FILES['userfile'] = array(
+            //'name'      =>  $fileNameFull,
+            'name'      =>  $filename,
+            'tmp_name'  =>  APPPATH . 'tests/import/' . $filename,
+            //'tmp_name'  =>  $filename,
+            'type'      =>  'xlsx',
+            'size'      =>  10141,
+            'error'     =>  0
+        );
+
+
+        $output = $this->request('POST', ['FileImport', 'do_upload'], $postArray);
+        $expected = "Upload completed!";
+        $this->assertContains($expected, $output);
+        $expected = "Missing Data";
+        $this->assertContains($expected, $output);
+
+        $expected = "<div class='centerText'>Competitions</div>";
+        $this->assertContains($expected, $output);
+        $expected = "<div class='centerText'>Teams</div>";
+        $this->assertContains($expected, $output);
+
+
+    }
+
 
 }
