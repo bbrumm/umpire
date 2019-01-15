@@ -26,7 +26,7 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
 
     public function updateUmpireRecords($pUmpireArray) {
         $queryString = $this->buildUmpireUpdateQueryString($pUmpireArray);
-        $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
 
     private function buildUmpireUpdateQueryString($changedUmpireArray) {
