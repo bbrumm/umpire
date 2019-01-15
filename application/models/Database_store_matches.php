@@ -347,7 +347,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         $queryForReport = $separateReport->getReportDataQuery($reportInstance);
 
         //Run query and store result in array
-        $query = $this->runQuery($queryString);
+        $query = $this->runQuery($queryForReport);
 
         //Transform array to pivot
         $queryResultArray = $query->result_array();
@@ -373,7 +373,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     public function findDistinctColumnHeadings(IReport $separateReport, Report_instance $reportInstance) {
         $columnLabelQuery = $separateReport->getReportColumnQuery($reportInstance);
 
-        $query = $this->runQuery($queryString);
+        $query = $this->runQuery($columnLabelQuery);
         return $query->result_array();
     }    
     
