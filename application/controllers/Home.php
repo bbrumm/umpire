@@ -15,6 +15,7 @@ class Home extends CI_Controller {
 
         if($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
+            $data = array();
             $data['maxDateOutput'] = $this->getLatestImportDateOutput();
             $this->load->view('templates/header', $data);
             
@@ -32,6 +33,10 @@ class Home extends CI_Controller {
         }
     }
     
+    private function runQuery($queryString, $arrayParam = null) {
+        return $this->db->query($queryString, $arrayParam);
+    }
+    
     public function logout() {
         $this->session->unset_userdata('logged_in');
         //$this->session->sess_destroy();
@@ -41,7 +46,7 @@ class Home extends CI_Controller {
     
     private function getLatestImportDate() {
         $queryString = "SELECT MAX(imported_datetime) as MAX_DATE FROM imported_files";
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $maxDate = null;
         foreach ($query->result() as $row) {
             $maxDate = $row->MAX_DATE;         
@@ -62,7 +67,7 @@ class Home extends CI_Controller {
             FROM report_selection_parameters 
             ORDER BY parameter_display_order;";
         
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $allReportSelectionParameters = array();
         foreach ($query->result() as $row) {
             $reportSelectionParameter = Report_selection_parameter::createReportSelectionParameter(
@@ -86,7 +91,7 @@ class Home extends CI_Controller {
             FROM t_report
             ORDER BY report_name ASC;";
         
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $allReports = array();
         
         foreach ($query->result() as $row) {
@@ -104,7 +109,7 @@ class Home extends CI_Controller {
             FROM season
             ORDER BY season_year;";
         
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $allSeasons = array();
         
         foreach ($query->result() as $row) {
@@ -127,7 +132,7 @@ class Home extends CI_Controller {
             INNER JOIN report_selection_parameter_values pvl ON pvl.parameter_value_id = v.pv_league_id
             INNER JOIN report_selection_parameter_values pva ON pva.parameter_value_id = v.pv_age_group_id;";
         
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray;
     }
