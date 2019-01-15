@@ -175,7 +175,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             WHERE user_name = ?
             ) AND permission_selection_id = ?;";
 
-        $query = $this->runQuery($queryString, array(
+        $this->runQuery($queryString, array(
             $username, $permission_selection_id
         ));
         //TODO: Replace magic number 3 with global constant that represents DELETE
@@ -194,7 +194,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             FROM umpire_users u
             WHERE user_name = ?;";
 
-        $query = $this->runQuery($queryString, array(
+        $this->runQuery($queryString, array(
             $permission_selection_id, $username
         ));
         //TODO: Replace magic number 1 with global constant that represents INSERT
@@ -207,7 +207,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             SET role_id = ?
             WHERE user_name = ?";
 
-        $query = $this->runQuery($queryString, array(
+        $this->runQuery($queryString, array(
             $newRoleID, $username
         ));
         //TODO: Replace magic number with global constant that represents UPDATE
@@ -249,7 +249,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             (username_changed, role_changed, role_action, username_changed_by, changed_datetime)
             VALUES (?, ?, ?, ?, NOW());";
 
-        $query = $this->runQuery($queryString, array(
+        $this->runQuery($queryString, array(
             $username, $newRoleID, 2, $currentUsername
         ));
     }
@@ -262,7 +262,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             (username_changed, new_active, role_action, username_changed_by, changed_datetime)
             VALUES (?, ?, ?, ?, NOW());";
 
-        $query = $this->runQuery($queryString, array(
+        $this->runQuery($queryString, array(
             $username, $newActiveValue, 2, $currentUsername
         ));
     }
