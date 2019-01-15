@@ -8,6 +8,10 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
         $this->load->library('Debug_library');
 
     }
+    
+    private function runQuery($queryString, $arrayParam = null) {
+        return $this->db->query($queryString, $arrayParam);
+    }
 
     public function getAllUmpiresAndValues() {
         $queryString = "SELECT u.id, u.first_name, u.last_name,
@@ -16,13 +20,13 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
             ORDER BY u.last_name, u.first_name;";
 
         //Run query and store result in array
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         return $query->result_array();
     }
 
     public function updateUmpireRecords($pUmpireArray) {
         $queryString = $this->buildUmpireUpdateQueryString($pUmpireArray);
-        $query = $this->db->query($queryString);
+        $this->db->query($queryString);
     }
 
     private function buildUmpireUpdateQueryString($changedUmpireArray) {
@@ -60,7 +64,6 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
             new_games_prior, new_games_other_leagues, updated_by, updated_date) VALUES ";
 
         //$this->debug_library->debugOutput("build: pPostArray", $pPostArray);
-
         $session_data = $this->session->userdata('logged_in');
         $username = $session_data['username'];
 
@@ -92,17 +95,12 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
 
         }
         $queryString .= ";";
-        //$this->debug_library->debugOutput("queryString for umpire history insert: ", $queryString);
-        $query = $this->db->query($queryString);
-
+        $this->runQuery($queryString);
     }
-
-
-
 
     public function updateDimUmpireTable() {
         $queryString = "TRUNCATE TABLE dw_dim_umpire;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "INSERT INTO dw_dim_umpire (first_name, last_name, last_first_name, umpire_type, games_prior, games_other_leagues)
             SELECT DISTINCT
@@ -115,13 +113,13 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
             FROM umpire u
             INNER JOIN umpire_name_type unt ON u.id = unt.umpire_id
             INNER JOIN umpire_type ut ON unt.umpire_type_id = ut.ID;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
 
     public function updateMVReport8Table() {
         $queryString = "DELETE FROM dw_mv_report_08
             WHERE season_year IN ('Games Prior', 'Games Other Leagues');";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count)
             SELECT
@@ -135,9 +133,6 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
             u.last_first_name,
             u.games_other_leagues
             FROM dw_dim_umpire u;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
-
-
-
 }
