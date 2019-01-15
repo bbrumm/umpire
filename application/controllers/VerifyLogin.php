@@ -12,18 +12,9 @@ class VerifyLogin extends CI_Controller {
     
      function index() {
          //This method will have the credentials validation
-
          $this->load->library('form_validation');
-         //echo "POST username: " . $_POST['username'];
-         print_r($_POST);
-    
          $this->form_validation->set_rules('username', 'Username', 'trim|required');
          $this->form_validation->set_rules('password', 'Password', 'trim|required|callback_check_database');
-         //$this->form_validation->set_rules('password', 'Password', 'trim|required');
-
-         //echo "test run ";
-         //echo "POST:<pre>". print_r($_POST) ."</pre>";
-
          if($this->form_validation->run() == FALSE) {
              //echo "test failed ";
              //Field validation failed.  User redirected to login page
@@ -35,21 +26,6 @@ class VerifyLogin extends CI_Controller {
              //Go to private area
              redirect('home', 'refresh');
          }
-
-
-
-
-         /*
-         $userAuth = new User_authentication_model();
-         if ($userAuth->isFormInputValid()) {
-             $this->load->view('templates/header');
-             $this->load->view('login_view');
-             $this->load->view('templates/footer');
-         } else {
-             //Go to private area
-             redirect('home', 'refresh');
-         }
-         */
      }
     
      function check_database($password) {
@@ -64,7 +40,6 @@ class VerifyLogin extends CI_Controller {
              //query the database
              $result = $userAuth->login($dbStore, $username, $password);
              if($result) {
-                 $sess_array = array();
                  foreach($result as $row) {
                      $sess_array = array(
                          'id' => $row->id,
@@ -72,19 +47,15 @@ class VerifyLogin extends CI_Controller {
                      );
                      $this->session->set_userdata('logged_in', $sess_array);
                  }
-                 return TRUE;
+                 return true;
               } else {
                   $this->form_validation->set_message('check_database', 'Invalid username or password.');
                   return false;
               }
-         
-         
          } else {
              //User is not active
              $this->form_validation->set_message('check_database', 'User is not active. Please contact support or the administrator.');
              return false;
          }
-         
      }
 }
-?>
