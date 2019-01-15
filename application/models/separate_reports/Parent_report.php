@@ -34,13 +34,10 @@ class Parent_report extends CI_Model {
         switch (count($pReportColumnFields)) {
             case 1:
                 return $this->isFieldMatchingOneColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                break;
             case 2:
                 return $this->isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                break;
             case 3:
                 return $this->isFieldMatchingThreeColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                break;
             default:
                 throw new InvalidArgumentException("Count of report column fields needs to be between 1 and 3.");
         }
@@ -105,7 +102,8 @@ class Parent_report extends CI_Model {
         private function addTableHeaderCellsToOutput($pReportDisplayOptions, $pTHClassNameToUse, $pLoopIteration) {
             $thOutput = "";
             $arrReportRowGroup = $pReportDisplayOptions->getRowGroup(); //Array of ReportGroupingStructure objects
-            for ($r = 0; $r < count($arrReportRowGroup); $r++) {
+            $countRecords = count($arrReportRowGroup);
+            for ($r = 0; $r < $countRecords; $r++) {
                 $thOutput .= "<th class='" . $pTHClassNameToUse . "'>";
                 if ($pLoopIteration == 0) {
                     $thOutput .= $arrReportRowGroup[$r]->getGroupHeading();
@@ -152,6 +150,7 @@ class Parent_report extends CI_Model {
 
 
         private function determineHeadingColspan($pColumnLabels, $pArrReportColumnGroup, $columnCountForHeadingCells, $pLoopIteration, $pSubLoopIteration) {
+            $colspanForCell = 1;
             if ($pColumnLabels[$pLoopIteration]->getFieldName() == 'club_name') {
                 $colspanForCell = 1;
             } else {
@@ -161,7 +160,7 @@ class Parent_report extends CI_Model {
                     $colspanForCell = 1;
                 }
             }
-
+            return $colspanForCell;
         }
 
 
@@ -201,6 +200,7 @@ class Parent_report extends CI_Model {
             } else {
                 $cellClassToUse = "cellNormal";
             }
+            return $cellClassToUse;
 
         }
 
@@ -220,6 +220,7 @@ class Parent_report extends CI_Model {
             } else {
                 $cellValue = "";
             }
+            return $cellValue;
         }
 
 
