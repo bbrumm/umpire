@@ -85,25 +85,25 @@ class Umpire extends CI_Model
     }
 
     private function setGamesPlayedPrior($pValue) {
-        if ($this->validateGamesPlayedValue($pValue) == true) {
+        if ($this->validateGamesPlayedValue($pValue) === true) {
             $this->gamesPlayedPrior= $pValue;
         }
     }
 
     private function setGamesPlayedOtherLeagues($pValue) {
-        if ($this->validateGamesPlayedValue($pValue) == true) {
+        if ($this->validateGamesPlayedValue($pValue) === true) {
             $this->gamesPlayedOtherLeagues= $pValue;
         }
     }
 
     private function setOldGamesPlayedPrior($pValue) {
-        if ($this->validateGamesPlayedValue($pValue) == true) {
+        if ($this->validateGamesPlayedValue($pValue) === true) {
             $this->oldGamesPlayedPrior= $pValue;
         }
     }
 
     private function setOldGamesPlayedOtherLeagues($pValue) {
-        if ($this->validateGamesPlayedValue($pValue) == true) {
+        if ($this->validateGamesPlayedValue($pValue) === true) {
             $this->oldGamesPlayedOtherLeagues= $pValue;
         }
     }
