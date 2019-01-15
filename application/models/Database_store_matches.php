@@ -9,6 +9,10 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
 
     }
     
+    private function runQuery($queryString) {
+        return $this->db->query($queryString);
+    }
+    
     public function loadAllReportParameters($pReportNumber) {
         $queryString = "SELECT
             t.report_name,
@@ -24,7 +28,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             INNER JOIN t_pdf_settings p ON t.pdf_settings_id = p.pdf_settings_id
             WHERE t.report_id = ". $pReportNumber .";";
         
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $queryResultArray = $query->result_array();
         $countResultsFound = count($queryResultArray);
         
@@ -55,9 +59,10 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             "WHERE rt.report_name = ". $pReportNumber ." " .
             "ORDER BY rgs.grouping_type, rgs.field_group_order;";
         
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $queryResultArray = $query->result();
         $countResultsFound = count($queryResultArray);
+        $reportGroupingStructureArray = array();
         
         if ($countResultsFound > 0) {
             //Create report param and report grouping objects for this report
@@ -84,7 +89,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     }
     
     private function getResultArrayFromQuery($queryString) {
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         
         if (mysqli_more_results($this->db->conn_id)) {
             mysqli_next_result($this->db->conn_id);
@@ -159,7 +164,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         $queryString = "UPDATE competition_lookup
             SET league_id = ?
             WHERE id = ?;";
-        $query = $this->db->query($queryString, array($pLeagueIDToUse, $pCompetitionData['competition_id']));
+        $this->db->query($queryString, array($pLeagueIDToUse, $pCompetitionData['competition_id']));
         return true;
     }
 
@@ -176,7 +181,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             AND d.id = '". $competitionData['division']."'
             AND ag.id = '". $competitionData['age_group']."';";
 
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
 
         if (mysqli_more_results($this->db->conn_id)) {
             mysqli_next_result($this->db->conn_id);
@@ -251,7 +256,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             $queryString = "INSERT INTO age_group_division(age_group_id, division_id)
                 VALUES (?, ?);";
 
-            $query = $this->db->query($queryString, array(
+            $this->db->query($queryString, array(
                 $competitionData['age_group'],
                 $competitionData['division']
             ));
@@ -269,7 +274,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     
     public function insertNewClub($pClubName) {
         $queryString = "INSERT INTO club (club_name) VALUES (?);";
-        $query = $this->db->query($queryString, array($pClubName));
+        $this->db->query($queryString, array($pClubName));
         return $this->db->insert_id();
     }
     
@@ -278,7 +283,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             SET club_id = ?
             WHERE id = ?;";
         //$this->debug_library->debugOutput("updateTeamTable", $pTeamID);
-        $query = $this->db->query($queryString, array($pClubID, $pTeamID));
+        $this->db->query($queryString, array($pClubID, $pTeamID));
     }
     
     //Match_import
@@ -288,7 +293,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         $queryString = "SELECT MAX(season.ID) AS season_id " .
             "FROM season " .
             "INNER JOIN match_import ON season.season_year = match_import.season;";
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $resultArray = $query->result_array();
         return $resultArray[0]['season_id'];
     }
@@ -296,21 +301,15 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     public function findLatestImportedFile() {
         $queryString = "SELECT MAX(imported_file_id) AS imported_file_id
             FROM table_operations";
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $resultArray = $query->result_array();
         return $resultArray[0]['imported_file_id'];
     }
     
     public function runETLProcedure($pSeason, $pImportedFileID) {
-        //$queryString = "CALL `RunETLProcess`(". $pSeason->getSeasonID() .", ". $pImportedFileID .")";
-        //$query = $this->db->query($queryString);
-
         $etlSteps = new Etl_procedure_steps();
         $etlSteps->runETLProcess($pSeason, $pImportedFileID);
     }
-    
-    
-
     
     public function loadSelectableReportOptions($pParameterID) {
         $queryString = "SELECT parameter_value_name, parameter_display_order " .
@@ -318,7 +317,8 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             "WHERE parameter_id = $pParameterID " .
             "ORDER BY parameter_display_order;";
         
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
+        $selectableReportOptionsForParameter = array();
         
         foreach ($query->result() as $row) {
             //TODO: change this to a custom constructor
@@ -330,9 +330,6 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         }
         return $selectableReportOptionsForParameter;
     }
-
-
-
 
     public function getUserNameFromActivationID(User $pUser) {
         
@@ -349,10 +346,8 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     public function loadReportData(Parent_report $separateReport, Report_instance $reportInstance) {
         $queryForReport = $separateReport->getReportDataQuery($reportInstance);
 
-        //$this->debug_library->debugOutput("queryForReport:",  $queryForReport);
-
         //Run query and store result in array
-        $query = $this->db->query($queryForReport);
+        $query = $this->runQuery($queryString);
 
         //Transform array to pivot
         $queryResultArray = $query->result_array();
@@ -360,7 +355,6 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         if (!isset($queryResultArray[0])) {
             throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for the report.<BR />Query:<BR />" . $queryForReport);
         }
-
         return $queryResultArray;
     }
 
@@ -371,7 +365,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             INNER JOIN season ON season.id = round.season_id 
             WHERE season.season_year = ". $requestedReport->getSeason() .";";
 
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray[0]['last_date'];
     }
@@ -379,11 +373,8 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     public function findDistinctColumnHeadings(IReport $separateReport, Report_instance $reportInstance) {
         $columnLabelQuery = $separateReport->getReportColumnQuery($reportInstance);
 
-        $query = $this->db->query($columnLabelQuery);
+        $query = $this->runQuery($queryString);
         return $query->result_array();
-
-    }
-
-    
+    }    
     
 }
