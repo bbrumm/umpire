@@ -9,8 +9,8 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
 
     }
     
-    private function runQuery($queryString) {
-        return $this->db->query($queryString);
+    private function runQuery($queryString, $arrayParam = null) {
+        return $this->db->query($queryString, $arrayParam);
     }
     
     public function loadAllReportParameters($pReportNumber) {
@@ -164,7 +164,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         $queryString = "UPDATE competition_lookup
             SET league_id = ?
             WHERE id = ?;";
-        $this->db->query($queryString, array($pLeagueIDToUse, $pCompetitionData['competition_id']));
+        $this->runQuery($queryString, array($pLeagueIDToUse, $pCompetitionData['competition_id']));
         return true;
     }
 
@@ -223,7 +223,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             WHERE ag.id = ?
             AND d.id = ?;";
 
-        $query = $this->db->query($queryString, array(
+        $query = $this-runQuery($queryString, array(
             $competitionData['short_league_name'],
             $competitionData['region'],
             $competitionData['age_group'],
@@ -239,7 +239,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             FROM age_group_division agd
             WHERE agd.age_group_id = ?
             AND agd.division_id = ?";
-        $query = $this->db->query($queryString, array(
+        $query = $this->runQuery($queryString, array(
             $competitionData['age_group'],
             $competitionData['division']
         ));
@@ -256,7 +256,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             $queryString = "INSERT INTO age_group_division(age_group_id, division_id)
                 VALUES (?, ?);";
 
-            $this->db->query($queryString, array(
+            $this->runQuery($queryString, array(
                 $competitionData['age_group'],
                 $competitionData['division']
             ));
@@ -274,7 +274,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     
     public function insertNewClub($pClubName) {
         $queryString = "INSERT INTO club (club_name) VALUES (?);";
-        $this->db->query($queryString, array($pClubName));
+        $this->runQuery($queryString, array($pClubName));
         return $this->db->insert_id();
     }
     
@@ -283,7 +283,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             SET club_id = ?
             WHERE id = ?;";
         //$this->debug_library->debugOutput("updateTeamTable", $pTeamID);
-        $this->db->query($queryString, array($pClubID, $pTeamID));
+        $this->runQuery($queryString, array($pClubID, $pTeamID));
     }
     
     //Match_import
