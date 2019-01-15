@@ -1,30 +1,26 @@
 <?php
 class FileImport extends CI_Controller {
-    
-    private $showSuccessPageWithoutImporting;
-	
 	public function __construct() {
-		parent::__construct();
+	    parent::__construct();
 		
-		$this->load->model('Report_instance');
-		$this->load->helper('url_helper');
-		$this->load->model('Match_import');
-		$this->load->model('Run_etl_stored_proc');
-		$this->load->model('Missing_data_updater');
-		$this->load->model('Database_store_matches');
-		$this->load->helper('form');
+	    $this->load->model('Report_instance');
+	    $this->load->helper('url_helper');
+	    $this->load->model('Match_import');
+	    $this->load->model('Run_etl_stored_proc');
+	    $this->load->model('Missing_data_updater');
+	    $this->load->model('Database_store_matches');
+	    $this->load->helper('form');
 	}
 
-	function do_upload()
-	{
+	function do_upload() {
 	    $config['upload_path'] = './application/import/';
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
 	    $this->load->library('upload', $config);
 
 	    //Calls a CI method to upload the file from I think the POST variable
-        $uploadPassed = $this->upload->do_upload();
-
+            $uploadPassed = $this->upload->do_upload();
+            $data = array();
 	    if ( ! $uploadPassed) {
 	        $error = array('error' => $this->upload->display_errors());
 	        $data['test'] = "Test Report";
@@ -33,15 +29,15 @@ class FileImport extends CI_Controller {
 	        $this->load->view('upload_form', $error);
 	        $this->load->view('templates/footer');
 	    } else {
-            $data = array('upload_data' => $this->upload->data());
-            //$data['progress_pct'] = 10;
-            //Import the data from the imported spreadsheet
-            $fileLoader = new File_loader_import();
-            $dataStore = new Database_store_matches();
-            $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
-            if ($fileImportStatus) {
-                $this->showUploadComplete();
-            }
+                $data = array('upload_data' => $this->upload->data());
+                //$data['progress_pct'] = 10;
+                //Import the data from the imported spreadsheet
+                $fileLoader = new File_loader_import();
+                $dataStore = new Database_store_matches();
+                $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
+                if ($fileImportStatus) {
+                    $this->showUploadComplete();
+                }
 	    }
 	}
 	
@@ -53,7 +49,8 @@ class FileImport extends CI_Controller {
 	}
 	
 	private function showUploadComplete() {
-        $dataStore = new Database_store_matches();
+       	    $dataStore = new Database_store_matches();
+	    $data = array();
 	    $data['missing_data'] = $this->Match_import->findMissingDataOnImport();
 	    $data['possibleLeaguesForComp'] = $this->Missing_data_updater->loadPossibleLeaguesForComp($dataStore);
 	    $data['possibleClubsForTeam'] = $this->Missing_data_updater->loadPossibleClubsForTeam($dataStore);
