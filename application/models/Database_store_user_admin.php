@@ -273,7 +273,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             WHERE u.user_name = '". $pUser->getUsername() ."';";
 
         //Run query and store result in array
-        $query = $this-runQuery($queryString);
+        $query = $this->runQuery($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray[0]['usercount'];
     }
