@@ -149,8 +149,9 @@ class Report_instance extends CI_Model {
 
 	private function extractGroupFromGroupingStructure($pReportGroupingStructureArray, $pGroupingType) {
 	    //$reportGroupingStructure = new Report_grouping_structure();
-        $outputReportGroupingStructure = [];
-	    for($i=0; $i<count($pReportGroupingStructureArray); $i++) {
+            $outputReportGroupingStructure = [];
+	    $rowCount = count($pReportGroupingStructureArray);
+	    for($i=0; $i<$rowCount; $i++) {
 	        if ($pReportGroupingStructureArray[$i]->getGroupingType() == $pGroupingType) {
 	           $outputReportGroupingStructure[] = $pReportGroupingStructureArray[$i];
 	        }
@@ -188,7 +189,9 @@ class Report_instance extends CI_Model {
                 )
      *
      */
-	public function setResultArray(IReport $pSeparateReport, $pResultArray) {
+    public function setResultArray(IReport $pSeparateReport, $pResultArray) {
+	$columnLabelArray = array();
+	$rowLabelField = array();
         foreach ($this->reportDisplayOptions->getColumnGroup() as $columnGroupItem) {
             $columnLabelArray[] = $columnGroupItem->getFieldName();
         }
@@ -239,15 +242,9 @@ class Report_instance extends CI_Model {
 	    $columnLabelResults = $this->columnLabelResultArray;
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
 
-	    echo "test columnLabels";
-	    print_r($columnLabels);
-
-
-	    //$columnCountLabels = [];
-
-        //$currentIterationReportGroupFieldName = "";
 	    //Loop through the possible labels
-	    for ($i=0; $i < count($columnLabels); $i++) {
+	    $columnCount = count($columnLabels);
+	    for ($i=0; $i < $columnCount; $i++) {
 	        if ($i == 0) {
 	            $this->columnCountLabels[0] = [];
 	        }
@@ -261,7 +258,8 @@ class Report_instance extends CI_Model {
 	        $arrayKeyNumber = 0;
 	         
 	        //Loop through columnLabelResults
-	        for ($j=0; $j < count($columnLabelResults); $j++) {
+		$columnLabelResultCount = count($columnLabelResults);
+	        for ($j=0; $j < $columnLabelResultCount; $j++) {
                 $currentIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	            if ($i == 0) {
 	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $i, $j)) {
