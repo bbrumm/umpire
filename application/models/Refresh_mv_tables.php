@@ -39,6 +39,9 @@ class Refresh_mv_tables extends CI_Model
         
     }
     
+    /*
+    * @property array $this->db
+    */
     private function getSeasonYear($pSeason) {
         $queryString = "SELECT MAX(season_year) AS season_year
             FROM season
@@ -137,11 +140,19 @@ class Refresh_mv_tables extends CI_Model
         $this->updateKeyStatus("dw_mv_report_08", 1);
     }
     
+    /*
+    * @property array $this->db
+    */
+    private function runQuery($queryString) {
+        return $this->db->query($queryString);
+    }
+    
+    
     private function updateKeyStatus($pTable, $pStatus) {
         if ($pStatus == 0) {
-            $this->db->query("ALTER TABLE $pTable DISABLE KEYS;");
+            $this->runQuery("ALTER TABLE $pTable DISABLE KEYS;");
         } elseif ($pStatus == 1) {
-            $this->db->query("ALTER TABLE $pTable ENABLE KEYS;");
+            $this->runQuery("ALTER TABLE $pTable ENABLE KEYS;");
         } else {
             throw new Exception("Invalid status for disabling a key.");
         }
@@ -150,11 +161,11 @@ class Refresh_mv_tables extends CI_Model
     private function logTableOperation($pImportedFileID, $pTableName, $pOperation) {
         $etlProc = new Etl_procedure_steps();
         $etlProc->logTableOperation($pImportedFileID, $pTableName, $pOperation);
-
-        //$queryString = "CALL LogTableOperation($pImportedFileID, (SELECT id FROM processed_table WHERE table_name = '$pTableName'), $pOperation, ROW_COUNT());";
-        //$query = $this->db->query($queryString);
     }
     
+    /*
+    * @property array $this->db
+    */
     private function updateTableMV1($pSeasonYear) {
         $queryString = "INSERT INTO dw_mv_report_01 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, season_year, match_count)
             SELECT
@@ -174,8 +185,9 @@ class Refresh_mv_tables extends CI_Model
             INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
             WHERE ti.date_year = $pSeasonYear
             GROUP BY u.last_first_name, l.short_league_name, te.club_name, a.age_group, l.region_name, u.umpire_type, ti.date_year;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
+    
     
     private function updateTableMV2($pSeasonYear) {
         $queryString = "INSERT INTO dw_mv_report_02 (last_first_name, short_league_name, age_group, age_sort_order, league_sort_order, two_ump_flag, region_name, umpire_type, season_year, match_count)
@@ -232,7 +244,7 @@ class Refresh_mv_tables extends CI_Model
             AND a.age_group = 'Seniors'
             AND ti.date_year = $pSeasonYear
             GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.region_name, u.umpire_type, ti.date_year;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
     
     private function updateTableMV4($pSeasonYear) {
@@ -311,7 +323,7 @@ class Refresh_mv_tables extends CI_Model
         )
         AND ti.date_year = $pSeasonYear
         GROUP BY te.club_name, a.age_group, l.short_league_name;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
     
     private function updateTableMV5($pSeasonYear) {
@@ -367,7 +379,7 @@ class Refresh_mv_tables extends CI_Model
         AND ua.age_group = sub_match_count.age_group
         AND ua.short_league_name = sub_match_count.short_league_name
         WHERE sub_total_matches.date_year = $pSeasonYear;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
     
     private function updateTableMV6Staging($pSeasonYear) {
@@ -388,7 +400,7 @@ class Refresh_mv_tables extends CI_Model
             INNER JOIN dw_dim_league l ON m.league_key = l.league_key
             INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
             WHERE dti.date_year = $pSeasonYear;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
 
     private function updateTableMV6StagingPart2($pSeasonYear, $pUmpireType) {
@@ -409,7 +421,7 @@ class Refresh_mv_tables extends CI_Model
                 AND s.league_key = s2.league_key
             WHERE s.umpire_type = '". $pUmpireType ."'
             AND s.last_first_name > s2.last_first_name;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
     
     private function updateTableMV6StagingPart2Opposite() {
@@ -426,8 +438,7 @@ class Refresh_mv_tables extends CI_Model
             s.date_year,
             s.match_id
             FROM dw_rpt06_stg2 s";
-        $query = $this->db->query($queryString);
-        
+        $this->runQuery($queryString);
     }
 
     private function updateTableMV6($pSeasonYear) {
@@ -443,12 +454,12 @@ class Refresh_mv_tables extends CI_Model
         COUNT(DISTINCT s.match_id) AS match_count
         FROM dw_rpt06_stg2 s
         GROUP BY s.umpire_type, s.age_group, s.region_name, s.short_league_name, s.first_umpire, s.second_umpire, s.date_year;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
 
     private function updateTableMV7Staging($pSeasonYear) {
         $queryString = "TRUNCATE TABLE mv_report_07_stg1;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "INSERT INTO mv_report_07_stg1(match_id, umpire_type, age_group, short_league_name, umpire_key, region_name, sort_order, league_sort_order)
 SELECT
@@ -467,9 +478,7 @@ INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
 INNER JOIN dw_dim_time ti2 ON m2.time_key = ti2.time_key
 WHERE ti2.date_year = $pSeasonYear;";
 
-        $query = $this->db->query($queryString);
-
-
+        $this->runQuery($queryString);
     }
 
     private function updateTableMV7($pSeasonYear) {
@@ -501,7 +510,7 @@ WHERE ti2.date_year = $pSeasonYear;";
             AND m.umpire_type = sub.umpire_type
             AND m.age_group = sub.age_group
             GROUP BY m.short_league_name, m.age_group, m.region_name, m.umpire_type, m.sort_order, sub.umpire_count, m.league_sort_order;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
 
     private function updateTableMV8($pSeasonYear) {
@@ -563,7 +572,7 @@ WHERE ti2.date_year = $pSeasonYear;";
             u.first_name
             FROM dw_dim_umpire u;";
         }
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
 
     private function updateTableMV8Totals() {
@@ -575,7 +584,7 @@ WHERE ti2.date_year = $pSeasonYear;";
                 GROUP BY s.full_name
             ) AS grp ON d.full_name = grp.full_name
             SET d.total_match_count = grp.total_match_count;";
-        $query = $this->db->query($queryString);
+        $this->runQuery($queryString);
     }
 }
     
