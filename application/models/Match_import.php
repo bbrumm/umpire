@@ -62,8 +62,10 @@ class Match_import extends CI_Model
     private function updateKeysToUseColumnNames($sheetData, $pColumns) {
         $newSheetData = [];
         //foreach($sheet as $row) {
-        for($j=0; $j<count($sheetData); $j++) {
-            for($i=0; $i<count($sheetData[$j]); $i++) {
+        $rowCount = count($sheetData);
+        for($j=0; $j < $rowCount; $j++) {
+            $colCount = count($sheetData[$j]);
+            for($i=0; $i < $colCount; $i++) {
                 if($pColumns[$i]['found'] == true) {
                     $newSheetData[$j][$pColumns[$i]['column_name']] = $sheetData[$j][$i];
                 }
