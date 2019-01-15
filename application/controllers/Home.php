@@ -42,6 +42,7 @@ class Home extends CI_Controller {
     private function getLatestImportDate() {
         $queryString = "SELECT MAX(imported_datetime) as MAX_DATE FROM imported_files";
         $query = $this->db->query($queryString);
+        $maxDate = null;
         foreach ($query->result() as $row) {
             $maxDate = $row->MAX_DATE;         
         }
@@ -62,6 +63,7 @@ class Home extends CI_Controller {
             ORDER BY parameter_display_order;";
         
         $query = $this->db->query($queryString);
+        $allReportSelectionParameters = array();
         foreach ($query->result() as $row) {
             $reportSelectionParameter = Report_selection_parameter::createReportSelectionParameter(
                 $row->parameter_id, $row->parameter_name, 
@@ -85,6 +87,7 @@ class Home extends CI_Controller {
             ORDER BY report_name ASC;";
         
         $query = $this->db->query($queryString);
+        $allReports = array();
         
         foreach ($query->result() as $row) {
             $reportSelection = Report_selection::createNewReportSelection(
@@ -102,6 +105,7 @@ class Home extends CI_Controller {
             ORDER BY season_year;";
         
         $query = $this->db->query($queryString);
+        $allSeasons = array();
         
         foreach ($query->result() as $row) {
             $season = new Season();
@@ -128,4 +132,3 @@ class Home extends CI_Controller {
         return $queryResultArray;
     }
 }
-?>
