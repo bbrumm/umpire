@@ -6,8 +6,10 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     public function __construct() {
         $this->load->database();
         $this->load->library('Debug_library');
-
-
+    }
+    
+    private function runQuery($queryString, $arrayValues = null) {
+        return $this->db->query($queryString, $arrayValues);
     }
 
     public function getAllUsers() {
@@ -19,9 +21,9 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             WHERE u.user_name NOT IN ('bbrumm');";
 
         //Run query and store result in array
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $queryResultArray = $query->result_array();
-        $userArray = [];
+        $userArray = array();
         $arrayCount = count($queryResultArray);
 
         for($i=0; $i<$arrayCount; $i++) {
@@ -36,7 +38,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     private function getArrayFromQuery($queryString) {
-        $query = $this->db->query($queryString);
+        $query = $this->runQuery($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray;
     }
@@ -83,7 +85,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         (first_name, last_name, user_name, user_email, user_password, role_id, active)
         VALUES (?, ?, ?, 'None', ?, 6, 1);";
 
-        $query = $this->db->query($queryString, array(
+        $this->runQuery($queryString, array(
             $pUser->getFirstName(), $pUser->getLastName(), $pUser->getUsername(), $pUser->getPassword()
         ));
 
@@ -118,7 +120,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     private function translatePermissionArray($resultArray) {
-        $translatedArray = [];
+        $translatedArray = array();
         foreach ($resultArray as $rowItem) {
             $translatedArray[$rowItem['user_name']][$rowItem['id']] = 'on';
         }
@@ -137,7 +139,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     private function translateRoleArray($resultArray) {
-        $translatedArray = [];
+        $translatedArray = array();
         foreach ($resultArray as $rowItem) {
             $translatedArray[$rowItem['user_name']] = $rowItem['role_id'];
         }
@@ -157,7 +159,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     private function translateActiveArray($resultArray) {
-        $translatedArray = [];
+        $translatedArray = array();
         foreach ($resultArray as $rowItem) {
             $translatedArray[$rowItem['user_name']] = $rowItem['active'];
         }
@@ -173,7 +175,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             WHERE user_name = ?
             ) AND permission_selection_id = ?;";
 
-        $query = $this->db->query($queryString, array(
+        $query = $this->runQuery($queryString, array(
             $username, $permission_selection_id
         ));
         //TODO: Replace magic number 3 with global constant that represents DELETE
@@ -192,7 +194,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             FROM umpire_users u
             WHERE user_name = ?;";
 
-        $query = $this->db->query($queryString, array(
+        $query = $this->runQuery($queryString, array(
             $permission_selection_id, $username
         ));
         //TODO: Replace magic number 1 with global constant that represents INSERT
@@ -205,7 +207,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             SET role_id = ?
             WHERE user_name = ?";
 
-        $query = $this->db->query($queryString, array(
+        $query = $this->runQuery($queryString, array(
             $newRoleID, $username
         ));
         //TODO: Replace magic number with global constant that represents UPDATE
@@ -217,7 +219,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             SET active = ?
             WHERE user_name = ?";
 
-        $query = $this->db->query($queryString, array(
+        $this->runQuery($queryString, array(
             $setValue, $username
         ));
         //TODO: Replace magic number with global constant that represents UPDATE
@@ -232,7 +234,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             (username_changed, privilege_changed, privilege_action, username_changed_by, changed_datetime)
             VALUES (?, ?, ?, ?, NOW());";
 
-        $query = $this->db->query($queryString, array(
+        $this->runQuery($queryString, array(
             $username, $permission_selection_id, $operation_ref, $currentUsername
         ));
     }
@@ -247,7 +249,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             (username_changed, role_changed, role_action, username_changed_by, changed_datetime)
             VALUES (?, ?, ?, ?, NOW());";
 
-        $query = $this->db->query($queryString, array(
+        $query = $this->runQuery($queryString, array(
             $username, $newRoleID, 2, $currentUsername
         ));
     }
@@ -260,7 +262,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             (username_changed, new_active, role_action, username_changed_by, changed_datetime)
             VALUES (?, ?, ?, ?, NOW());";
 
-        $query = $this->db->query($queryString, array(
+        $query = $this->runQuery($queryString, array(
             $username, $newActiveValue, 2, $currentUsername
         ));
     }
@@ -271,11 +273,8 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             WHERE u.user_name = '". $pUser->getUsername() ."';";
 
         //Run query and store result in array
-        $query = $this->db->query($queryString);
+        $query = $this-runQuery($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray[0]['usercount'];
     }
-
-
-
 }
