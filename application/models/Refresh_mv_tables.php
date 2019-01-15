@@ -40,7 +40,7 @@ class Refresh_mv_tables extends CI_Model
     }
     
     /*
-    * @property array $this->db
+    * @property array $db
     */
     private function getSeasonYear($pSeason) {
         $queryString = "SELECT MAX(season_year) AS season_year
