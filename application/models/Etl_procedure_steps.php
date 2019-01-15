@@ -71,23 +71,26 @@ class Etl_procedure_steps extends CI_Model
         $this->insertNewGrounds($pImportedFileID);
     }
 
+    /*
+    * @property array $this->db
+    */
     private function runQuery($pQueryString) {
         return $this->db->query($pQueryString);
     }
 
     private function disableKeys($pTableName) {
         $queryString = "ALTER TABLE ". $pTableName ." DISABLE KEYS;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
     }
 
     private function enableKeys($pTableName) {
         $queryString = "ALTER TABLE ". $pTableName ." ENABLE KEYS;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
     }
 
     private function setupScript() {
         $queryString = "SET group_concat_max_len = 15000;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
     }
 
     private function lookupSeasonYear($pSeason) {
@@ -104,7 +107,7 @@ WHERE id = ". $pSeason->getSeasonID() . ";";
 INNER JOIN match_played ON umpire_name_type_match.match_ID = match_played.ID
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE round.season_id = ". $pSeason->getSeasonID() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "umpire_name_type_match", self::OPERATION_DELETE);
     }
@@ -112,14 +115,14 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
     public function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
 VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
     }
 
     private function deleteMatchPlayed($pSeason, $pImportedFileID) {
         $queryString = "DELETE match_played FROM match_played
         INNER JOIN round ON match_played.round_id = round.ID 
 WHERE round.season_id = ". $pSeason->getSeasonID() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "match_played", self::OPERATION_DELETE);
     }
@@ -127,56 +130,56 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
     private function deleteRound($pSeason, $pImportedFileID) {
         $queryString = "DELETE round FROM round 
 WHERE round.season_id = ". $pSeason->getSeasonID() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "round", self::OPERATION_DELETE);
     }
 
     private function deleteMatchStaging($pImportedFileID) {
         $queryString = "TRUNCATE match_staging;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "match_staging", self::OPERATION_DELETE);
     }
 
     private function deleteMVReport1($pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM dw_mv_report_01 rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_mv_report_01", self::OPERATION_DELETE);
     }
 
     private function deleteMVReport2($pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM dw_mv_report_02 rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_mv_report_02", self::OPERATION_DELETE);
     }
 
     private function deleteMVReport4($pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM dw_mv_report_04 rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_mv_report_04", self::OPERATION_DELETE);
     }
 
     private function deleteMVReport5($pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM dw_mv_report_05 rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_mv_report_05", self::OPERATION_DELETE);
     }
 
     private function deleteMVReport6($pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM dw_mv_report_06 rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_mv_report_06", self::OPERATION_DELETE);
     }
 
     private function deleteMVReport7($pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM dw_mv_report_07 rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_mv_report_07", self::OPERATION_DELETE);
     }
 
     private function deleteMVReport8($pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM dw_mv_report_08 rec 
 WHERE rec.season_year IN(CONVERT(". $pSeason->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_mv_report_08", self::OPERATION_DELETE);
     }
 
@@ -184,7 +187,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeason->getSeasonYear() .", CHAR), 'Games 
         $queryString = "DELETE rec FROM dw_fact_match rec
 INNER JOIN dw_dim_time t ON rec.time_key = t.time_key
 WHERE t.date_year = ". $pSeason->getSeasonYear() .";";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "dw_fact_match", self::OPERATION_DELETE);
     }
 
@@ -198,7 +201,7 @@ INNER JOIN season ON match_import.season = season.season_year
 INNER JOIN competition_lookup ON (season.ID = competition_lookup.season_id) AND (match_import.competition_name = competition_lookup.competition_name)
 INNER JOIN league ON league.ID = competition_lookup.league_id
 ORDER BY match_import.Round, match_import.Date;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "round", self::OPERATION_INSERT);
         $this->enableKeys("round");
 
@@ -249,7 +252,7 @@ SELECT 1
 FROM umpire u 
 WHERE u.first_name = sub.first_name 
 AND u.last_name = sub.last_name);";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "umpire", self::OPERATION_INSERT);
     }
 
@@ -305,7 +308,7 @@ AND u.last_name = sub.last_name);";
 			SELECT umpire_id, umpire_type_id
             FROM umpire_name_type
         );";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "umpire_name_type", self::OPERATION_INSERT);
         $this->enableKeys("umpire_name_type");
@@ -380,7 +383,7 @@ AND u.last_name = sub.last_name);";
         INNER JOIN age_group_division ON league.age_group_division_id = age_group_division.ID 
         INNER JOIN age_group ON age_group.ID = age_group_division.age_group_id 
         INNER JOIN division ON division.ID = age_group_division.division_id;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "match_staging", self::OPERATION_INSERT);
         $this->enableKeys("match_staging");
@@ -397,7 +400,7 @@ WHERE
     AND m1.appointments_time = m2.appointments_time
     AND m1.home_team_id = m2.home_team_id
     AND m1.away_team_id = m2.away_team_id;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
         $this->logTableOperation($pImportedFileID, "match_staging", self::OPERATION_DELETE);
     }
 
@@ -409,7 +412,7 @@ SELECT match_staging.round_ID, match_staging.ground_id, match_staging.home_team_
 match_staging.away_team_id, match_staging.appointments_time,
 match_staging.match_staging_id
 FROM match_staging;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "match_played", self::OPERATION_INSERT);
         $this->enableKeys("match_played");
@@ -531,7 +534,7 @@ INNER JOIN round ON match_played.round_id = round.ID
 WHERE umpire_type.umpire_type_name = 'Goal' 
 AND round.season_id = ". $pSeason->getSeasonID() ."
 ) AS ump;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "umpire_name_type_match", self::OPERATION_INSERT);
         $this->enableKeys("umpire_name_type_match");
@@ -539,34 +542,34 @@ AND round.season_id = ". $pSeason->getSeasonID() ."
 
     private function truncateDimFact() {
         $queryString = "TRUNCATE TABLE dw_dim_age_group;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE TABLE dw_dim_league;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE TABLE dw_dim_team;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE TABLE dw_dim_time;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE TABLE dw_dim_umpire;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE staging_match;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE staging_no_umpires;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE staging_all_ump_age_league;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE dw_rpt06_stg2;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $queryString = "TRUNCATE dw_rpt06_staging;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
     }
 
     private function insertDimUmpire($pImportedFileID) {
@@ -588,7 +591,7 @@ FROM umpire u
 LEFT JOIN umpire_name_type unt ON u.id = unt.umpire_id
 LEFT JOIN umpire_type ut ON unt.umpire_type_id = ut.ID;
 ";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "dw_dim_umpire", self::OPERATION_INSERT);
         $this->enableKeys("dw_dim_umpire");
@@ -607,7 +610,7 @@ FROM age_group ag
 INNER JOIN age_group_division agd ON ag.id = agd.age_group_id
 INNER JOIN division d ON agd.division_id = d.ID
 ORDER BY ag.display_order;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "dw_dim_age_group", self::OPERATION_INSERT);
         $this->enableKeys("dw_dim_age_group");
@@ -636,7 +639,7 @@ FROM league l
 INNER JOIN region r ON l.region_id = r.id
 INNER JOIN competition_lookup c ON l.ID = c.league_id
 INNER JOIN season s ON c.season_id = s.id;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "dw_dim_league", self::OPERATION_INSERT);
         $this->enableKeys("dw_dim_league");
@@ -652,7 +655,7 @@ c.club_name
 FROM team t
 INNER JOIN club c ON t.club_id = c.id
 ORDER BY t.team_name, c.club_name;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "dw_dim_team", self::OPERATION_INSERT);
         $this->enableKeys("dw_dim_team");
@@ -678,7 +681,7 @@ DAY(ADDDATE(r.round_date, (5-Weekday(r.round_date)))) AS weekend_day
 FROM match_played m
 INNER JOIN round r ON m.round_id = r.id
 ORDER BY m.match_time;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "dw_dim_time", self::OPERATION_INSERT);
         $this->enableKeys("dw_dim_time");
@@ -729,7 +732,7 @@ LEFT JOIN    umpire_type ut ON ut.ID = unt.umpire_type_id
 LEFT JOIN    umpire u ON u.ID = unt.umpire_id
 INNER JOIN    season s ON s.id = rn.season_id AND cl.season_id = s.id
 INNER JOIN    region r ON r.id = l.region_id;";
-        $query = $this->runQuery($queryString);
+        $this->runQuery($queryString);
 
         $this->logTableOperation($pImportedFileID, "staging_match", self::OPERATION_INSERT);
         $this->enableKeys("staging_match");
@@ -757,8 +760,8 @@ INNER JOIN age_group_division agd ON ag.ID = agd.age_group_id
 INNER JOIN league l ON l.age_group_division_id = agd.ID
 CROSS JOIN umpire_type ut
 INNER JOIN region r ON l.region_id = r.id;";
-        $query = $this->runQuery($queryString);
-
+        $this->runQuery($queryString);
+	    
         $this->logTableOperation($pImportedFileID, "staging_all_ump_age_league", self::OPERATION_INSERT);
         $this->enableKeys("staging_all_ump_age_league");
     }
@@ -804,8 +807,8 @@ INNER JOIN dw_dim_time dt ON (
     AND s.season_year = dl.league_year
     AND s.season_year = ". $pSeason->getSeasonYear() ."
 );";
-        $query = $this->runQuery($queryString);
-
+        $this->runQuery($queryString);
+	
         $this->logTableOperation($pImportedFileID, "dw_fact_match", self::OPERATION_INSERT);
         $this->enableKeys("dw_fact_match");
     }
@@ -894,16 +897,16 @@ WHERE m.match_id NOT IN (
 	WHERE u2.umpire_type = 'Goal'
 );
 ";
-        $query = $this->runQuery($queryString);
-
+        $this->runQuery($queryString);
+	
         $this->logTableOperation($pImportedFileID, "staging_no_umpires", self::OPERATION_INSERT);
         $this->enableKeys("staging_no_umpires");
     }
 
     private function deleteCompetitionsWithMissingLeague($pImportedFileID) {
         $queryString = "DELETE FROM competition_lookup WHERE league_id IS NULL;";
-        $query = $this->runQuery($queryString);
-        $this->logTableOperation($pImportedFileID, "competition_lookup", self::OPERATION_DELETE);
+        $this->runQuery($queryString);
+	$this->logTableOperation($pImportedFileID, "competition_lookup", self::OPERATION_DELETE);
     }
 
     private function insertCompetitionLookup($pSeason, $pImportedFileID) {
@@ -914,8 +917,8 @@ WHERE competition_name NOT IN (
 	SELECT competition_name
     FROM competition_lookup
 );";
-        $query = $this->runQuery($queryString);
-        $this->logTableOperation($pImportedFileID, "competition_lookup", self::OPERATION_INSERT);
+        $this->runQuery($queryString);
+	$this->logTableOperation($pImportedFileID, "competition_lookup", self::OPERATION_INSERT);
     }
 
     private function insertNewTeams($pImportedFileID) {
@@ -933,8 +936,8 @@ WHERE away_team NOT IN (
 	SELECT team_name
     FROM team
 );";
-        $query = $this->runQuery($queryString);
-        $this->logTableOperation($pImportedFileID, "team", self::OPERATION_INSERT);
+        $this->runQuery($queryString);
+	$this->logTableOperation($pImportedFileID, "team", self::OPERATION_INSERT);
     }
 
     private function insertNewGrounds($pImportedFileID) {
@@ -945,19 +948,8 @@ WHERE ground NOT IN (
 	SELECT alternative_name
 	FROM ground
 );";
-        $query = $this->runQuery($queryString);
-        $this->logTableOperation($pImportedFileID, "ground", self::OPERATION_INSERT);
+        $this->runQuery($queryString);
+	$this->logTableOperation($pImportedFileID, "ground", self::OPERATION_INSERT);
     }
 
-/*
-
-    private function doSomething() {
-        $this->disableKeys("");
-
-        $queryString = "";
-        $query = $this->runQuery($queryString);
-
-        $this->enableKeys("");
-    }
- */
 }
