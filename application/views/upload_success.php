@@ -172,7 +172,7 @@ if (!empty($missing_data)) {
             
             $isTeamMatchFound = false;
             foreach ($possibleClubsForTeam as $possibleTeamItem) {
-                if ($isTeamMatchFound == false && strpos($missing_data['team'][$i]['source_value'], $possibleTeamItem['club_name']) !== FALSE) {
+                if ($isTeamMatchFound === false && strpos($missing_data['team'][$i]['source_value'], $possibleTeamItem['club_name']) !== FALSE) {
                     echo "<option selected ";
                     $isTeamMatchFound = true;
                     //echo "value='". $possibleTeamItem['id'] ."'>(". $possibleTeamItem['club_name'] .") CHECKED ((". $missing_data['team'][$i]['source_value'] .") ". strpos($missing_data['team'][$i]['source_value'], $possibleTeamItem['club_name']).")</option>";
