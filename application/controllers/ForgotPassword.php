@@ -38,6 +38,7 @@ class ForgotPassword extends CI_Controller {
     }
     
     private function showPasswordResetNextStepsPage($sendStatusInfo) {
+        $data = array();
         $data['sendStatus'] = $sendStatusInfo['status'];
         $data['sendStatusMessage'] = $sendStatusInfo['message'];
         $data['passwordResetURL'] = $sendStatusInfo['passwordResetURL'];
@@ -48,6 +49,7 @@ class ForgotPassword extends CI_Controller {
     }
     
     private function showPasswordResetPage($sendStatusInfo) {
+        $data = array();
         $data['sendStatus'] = $sendStatusInfo['status'];
         $data['sendStatusMessage'] = $sendStatusInfo['message'];
         
@@ -64,7 +66,8 @@ class ForgotPassword extends CI_Controller {
         $userMaintenance = new User_maintenance_model();
         $userPermissionLoader = new User_permission_loader_model();
         $dbStore = new Database_store_user();
-
+        
+        $data = array();
         $data['activation_id'] = random_string('alnum',15);
         $data['request_datetime'] = date('Y-m-d H:i:s');
         $data['client_ip'] = $this->input->ip_address();
@@ -92,6 +95,7 @@ class ForgotPassword extends CI_Controller {
                 }
                 
                 if($sendStatus){
+                    $sendStatusInfo = array();
                     $sendStatusInfo['status'] = "sent";
                     $sendStatusInfo['message'] = 
                         "Please check your email for a link to reset your password.";
@@ -149,9 +153,5 @@ Ben - UmpireReporting";
             //show_error($this->email->print_debugger());
             return false; 
         }
-        
-        
-        return true;
     }   
 }
-?>
