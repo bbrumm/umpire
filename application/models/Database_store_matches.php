@@ -223,7 +223,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             WHERE ag.id = ?
             AND d.id = ?;";
 
-        $query = $this-runQuery($queryString, array(
+        $query = $this->runQuery($queryString, array(
             $competitionData['short_league_name'],
             $competitionData['region'],
             $competitionData['age_group'],
