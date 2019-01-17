@@ -6,15 +6,15 @@ services:
 jobs:
   include:
     - stage: install
-      mysql -e 'CREATE DATABASE IF NOT EXISTS databas6;'
-      echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+      #mysql -e 'CREATE DATABASE IF NOT EXISTS databas6;'
+      #echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
       composer install
-      cd application/tests
-      mysql -u root -proot < data_setup.sql
+      #cd application/tests
+      #mysql -u root -proot < data_setup.sql
     - stage: testing
       script: "../../vendor/phpunit/phpunit/phpunit --coverage-clover build/logs/clover.xml"
-      cd ../../
-      php vendor/bin/php-coveralls -v --coverage_clover build/logs/clover.xml
+      #cd ../../
+      #php vendor/bin/php-coveralls -v --coverage_clover build/logs/clover.xml
     - stage: deploy
       provider: heroku
       app: fathomless-meadow-31769
