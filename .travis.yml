@@ -5,21 +5,22 @@ services:
 - mysql
 before_install:
 - mysql -e 'CREATE DATABASE IF NOT EXISTS databas6;'
+before_script:
+- echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+- composer install
+- cd application/tests
+- mysql -u root -proot < data_setup.sql
 jobs:
   include:
-    - stage: unit test
-      echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
-      composer install
-      cd application/tests
-      mysql -u root -proot < data_setup.sql
+    - stage: unit tests
       script: "../../vendor/phpunit/phpunit/phpunit --testsuite unittests --coverage-clover build/logs/clover.xml"
-    - stage: integration test
+    - stage: integration tests
       script: "../../vendor/phpunit/phpunit/phpunit --testsuite integration --coverage-clover build/logs/clover.xml"
-    - stage: coveralls
-      cd ../../
-      php vendor/bin/php-coveralls -v --coverage_clover build/logs/clover.xml
-    - stage: deploy:
-      provider: heroku
-      app: fathomless-meadow-31769
-      api_key:
-      secure: peUmEWQUnObBVKbpKrzEC1fwczEjOZIJOnYMh19HBtUidTkG8yUvyle1+SFN5b4l/P02ShFjLGeBo2ienl/4R9gOw5HM02KggATsGjPAsF5hjJPN+D3QUWohYHU7jFep5nbCL8miHHjXo5hbljR1zDAGwjkAcDcxdmiR/jQbN6G89Da+P+g8O6fhyF25VHiK3M09ZLDS4ajOYyTRPDaFEocm/UlT+Umyz+gFVI9cms1H55TG6ZgY8Xyp0EMfAsHV0pzuTvw38tyeZUsyveYy31ODjrDPjhdAcmXb7LHC10pOOSPW0merzdp1eXUuUacPZEwAtJfxUJMbat0jhVZjyBZtK6epVU2jMz/gV3z+la7XnG4hqmyJV4VFbA3o/HnuHcdcYEMPphebfusC0rEqf+1F0wb3RkXKeYumeEkHSvqlbvIYT1Q5NwvRYSthN22fIqx+XAEfr8YRF5bP/X1agO6+dEoHtwF8JheIAPfXIDmjWiOq+f8XeV1bSfJriYVk0XOUjJsjBpVcq8Oybqf0Qi7xZonGFzVuLoT8ggA6dgh5u1nHteq56TRmgxoyoWTAIb9YivoWmL8H3mIQdw9+OAInYg4P8BqurQf62eRxlLnVbsu2L2fpBYW5tdu+2Np4FillJkoRgFTiPJjhiLXoMColaRrzxuSEVBIch1vfyrQ=
+after_success:
+- cd ../../
+- php vendor/bin/php-coveralls -v --coverage_clover build/logs/clover.xml
+deploy:
+  provider: heroku
+  app: fathomless-meadow-31769
+  api_key:
+    secure: peUmEWQUnObBVKbpKrzEC1fwczEjOZIJOnYMh19HBtUidTkG8yUvyle1+SFN5b4l/P02ShFjLGeBo2ienl/4R9gOw5HM02KggATsGjPAsF5hjJPN+D3QUWohYHU7jFep5nbCL8miHHjXo5hbljR1zDAGwjkAcDcxdmiR/jQbN6G89Da+P+g8O6fhyF25VHiK3M09ZLDS4ajOYyTRPDaFEocm/UlT+Umyz+gFVI9cms1H55TG6ZgY8Xyp0EMfAsHV0pzuTvw38tyeZUsyveYy31ODjrDPjhdAcmXb7LHC10pOOSPW0merzdp1eXUuUacPZEwAtJfxUJMbat0jhVZjyBZtK6epVU2jMz/gV3z+la7XnG4hqmyJV4VFbA3o/HnuHcdcYEMPphebfusC0rEqf+1F0wb3RkXKeYumeEkHSvqlbvIYT1Q5NwvRYSthN22fIqx+XAEfr8YRF5bP/X1agO6+dEoHtwF8JheIAPfXIDmjWiOq+f8XeV1bSfJriYVk0XOUjJsjBpVcq8Oybqf0Qi7xZonGFzVuLoT8ggA6dgh5u1nHteq56TRmgxoyoWTAIb9YivoWmL8H3mIQdw9+OAInYg4P8BqurQf62eRxlLnVbsu2L2fpBYW5tdu+2Np4FillJkoRgFTiPJjhiLXoMColaRrzxuSEVBIch1vfyrQ=
