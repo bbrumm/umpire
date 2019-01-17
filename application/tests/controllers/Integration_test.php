@@ -14,10 +14,6 @@ class Integration_test extends TestCase
 
     }
 
-    public function test_Dummy() {
-        $this->assertEquals(1, 1);
-    }
-
 /*
  * Uncomment later to improve speed
  * */
@@ -44,7 +40,9 @@ class Integration_test extends TestCase
         $queryLocal = $this->dbLocal->query($queryString);
         $resultArrayProd = $queryProd->result();
         $resultArrayLocal = $queryLocal->result();
+
         $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'season_year');
+
         $this->assertEmpty($arrayDifferences);
         $this->db->close();
     }
