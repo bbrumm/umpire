@@ -13,9 +13,9 @@ before_script:
 jobs:
   include:
     - stage: unit tests
-      script: "../../vendor/phpunit/phpunit/phpunit unittests --coverage-clover build/logs/clover.xml"
+      script: "../../vendor/phpunit/phpunit/phpunit --testsuite unittests --coverage-clover build/logs/clover.xml"
     - stage: integration tests
-      script: "../../vendor/phpunit/phpunit/phpunit integration --coverage-clover build/logs/clover.xml"
+      script: "../../vendor/phpunit/phpunit/phpunit --testsuite integration --coverage-clover build/logs/clover.xml"
 after_success:
 - cd ../../
 - ls -l
