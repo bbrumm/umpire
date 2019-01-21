@@ -30,7 +30,8 @@ class User_permission_loader_model extends CI_Model {
     private function findPermissionInArray(User $pUser, $permissionName, $selectionName) {
         $permissionArray = $pUser->getPermissionArray();
         $permissionFound = false;
-        for($i=0; $i<count($permissionArray); $i++) {
+        $permissionArrayCount = count($permissionArray);
+        for($i=0; $i<$permissionArrayCount; $i++) {
             $userRolePermission = new User_role_permission();
             $userRolePermission = $permissionArray[$i];
             if ($userRolePermission->getPermissionName() == $permissionName &&

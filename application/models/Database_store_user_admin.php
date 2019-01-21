@@ -3,13 +3,17 @@ require_once 'IData_store_user_admin.php';
 class Database_store_user_admin extends CI_Model implements IData_store_user_admin
 {
 
+    const ROLE_REGULAR_USER = 4;
+
     public function __construct() {
         $this->load->database();
         $this->load->library('Debug_library');
+        $this->load->model('Database_store_user');
     }
     
     private function runQuery($queryString, $arrayValues = null) {
         return $this->db->query($queryString, $arrayValues);
+        $this->db->close();
     }
 
     public function getAllUsers() {
@@ -83,7 +87,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         //TODO: Replace the default role with a user selection, once it is built into the UI.
         $queryString = "INSERT INTO umpire_users
         (first_name, last_name, user_name, user_email, user_password, role_id, active)
-        VALUES (?, ?, ?, 'None', ?, 6, 1);";
+        VALUES (?, ?, ?, 'None', ?, 4, 1);";
 
         $this->runQuery($queryString, array(
             $pUser->getFirstName(), $pUser->getLastName(), $pUser->getUsername(), $pUser->getPassword()

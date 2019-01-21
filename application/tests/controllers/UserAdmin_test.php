@@ -64,6 +64,14 @@ class UserAdmin_test extends TestCase
 
         $this->assertContains($message, $output);
 
+        //Check database
+        $queryString = "SELECT COUNT(*) AS rowcount FROM umpire_users WHERE user_name = '". $newUserName ."'";
+        $query = $this->dbLocal->query($queryString);
+        $queryResultArray = $query->result_array();
+        $expectedCount = 1;
+        $actualCount = $queryResultArray[0]['rowcount'];
+        $this->assertEquals($expectedCount, $actualCount);
+
     }
 
 

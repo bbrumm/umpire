@@ -10,7 +10,7 @@ class UserAdmin extends CI_Controller
         $this->load->helper('url_helper');
         $this->load->helper(array('form', 'url'));
         $this->load->model('Useradminmodel');
-        $this->load->model('Database_store_user');
+        $this->load->model('Database_store_user_admin');
         $this->load->library('Debug_library');
         $this->load->library('Array_library');
     }
