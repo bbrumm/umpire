@@ -7,10 +7,11 @@ function updatePageFromCheckboxSelection() {
 	updateControlSelection("chkUmpireDiscipline[]", reportList[reportID].umpire_type_enabled);
 	updateControlSelection("chkAgeGroup[]", reportList[reportID].age_group_enabled)
 	//console.log("valid combination 1: " + validCombinations[1]['region']);
+	//console.log("League Enabled? " + reportList[reportID].league_enabled);
 }
 
 function updateControlSelection(elementName, controlEnabled) {
-	//console.log("league enabled inside funciton:" + )
+	//console.log("league enabled inside function:" + )
 	var groupOfCheckboxes = document.getElementsByName(elementName);
 	//console.log("report name: " + document.getElementById('reportName').value);
 	//console.log("count: " + document.getElementsByName("chkLeague[]").length);
@@ -29,12 +30,18 @@ function updateControlSelection(elementName, controlEnabled) {
 		var controlToUpdate = document.getElementById(groupOfCheckboxes[i].id);
 		//Then check if it is a valid combination
 		if(elementName == "chkLeague[]") {
-			if (validLeagueList.indexOf(controlToUpdate.id) != -1) {
+            //console.log("league index: " + validLeagueList.indexOf(controlToUpdate.id));
+            //console.log("controlEnabled: " + controlEnabled);
+            //console.log("controlEnabled Check: " + (controlEnabled == 1));
+			if (validLeagueList.indexOf(controlToUpdate.id) !== -1) {
 				//Valid.
 				//console.log("valid league: " + controlToUpdate.id);
-				if (controlEnabled === 1) {
+				//This is a double equals == because controlEnabled is a string and the value below is a number
+				if (controlEnabled == 1) {
+                    //console.log("control enabled: " + controlToUpdate.id);
 					singleControlEnabled = true;
 				} else {
+                    //console.log("control NOT enabled: " + controlToUpdate.id);
 					singleControlEnabled = false;
 				}
 			} else {
@@ -45,7 +52,7 @@ function updateControlSelection(elementName, controlEnabled) {
 			if (validAgeGroupList.indexOf(controlToUpdate.id) != -1) {
 				//Valid.
 				//console.log("valid age group: " + controlToUpdate.id);
-				if (controlEnabled === 1) {
+				if (controlEnabled == 1) {
 					singleControlEnabled = true;
 				} else {
 					singleControlEnabled = false;
@@ -54,7 +61,7 @@ function updateControlSelection(elementName, controlEnabled) {
 				singleControlEnabled = false;
 			}
 		} else {
-			if (controlEnabled === 0) {
+			if (controlEnabled == 0) {
 				singleControlEnabled = false;
 			} else {
 				singleControlEnabled = true;
@@ -94,7 +101,7 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 	 * Run the validation on all checkboxes too
 	 */
 	
-	//console.log("select all: " + selectAllCheckbox.id);
+	console.log("select all: " + selectAllCheckbox.id);
 	//console.log("select all group: " + matchingElementName);
 	
 	var relatedCheckboxes = document.getElementsByName(matchingElementName);
@@ -198,7 +205,7 @@ function findValidLeagues() {
 	
 	//Find the selected region:
 	var selectedRegionValue = findSelectedRegion();
-	//console.log("Selected region: " + selectedRegionValue);
+	console.log("Selected region: " + selectedRegionValue);
 	//Variable validCombinations is initialised in report_home.php.
     /** global: validCombinations */
 	for(var i=0; i < validCombinations.length; i++) {

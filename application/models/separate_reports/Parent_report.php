@@ -62,11 +62,16 @@ class Parent_report extends CI_Model {
 
     public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
-        $outputArray = [];
+
+        //echo "formatOutputArrayForView <BR />";
+
+        $outputArray = array();
         //Set up header
         $countItemsInColumnHeadingSet = count($pLoadedColumnGroupings[0]);
         $columnCountForHeadingCells = $pColumnCountForHeadingCells;
         $thOutput = "<thead>";
+        $outputRowNumber = 0;
+        //First add heading cells
         for ($i = 0; $i < $countItemsInColumnHeadingSet; $i++) {
             $thOutput .= "<tr class='header'>";
 
@@ -74,20 +79,23 @@ class Parent_report extends CI_Model {
             $thOutput .= $this->addTableHeaderCellsToOutput($pReportDisplayOptions, $thClassNameToUse, $i);
             $thOutput .= $this->addTableHeaderMergedCells($columnCountForHeadingCells, $pReportDisplayOptions, $i);
 
-
-            $thOutput .= "</thead>";
-            $outputArray[0] = $thOutput;
-            //Set up table body
-            $countRows = count($pResultOutputArray);
-
-
-            for ($rowCounter = 0; $rowCounter < $countRows; $rowCounter++) {
-
-                $outputArray[$rowCounter + 1] = $this->constructTableRowOutput($pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions, $rowCounter);
-
-            }
-            return $outputArray;
         }
+
+        $thOutput .= "</thead>";
+        $outputArray[0] = $thOutput;
+        //echo "outputArray: " . $outputArray[$outputRowNumber] . "<BR />";
+        $outputRowNumber++;
+        //Set up table body
+        $countRows = count($pResultOutputArray);
+
+        //Then add data cells
+        for ($rowCounter = 0; $rowCounter < $countRows; $rowCounter++) {
+            $outputArray[$outputRowNumber] = $this->constructTableRowOutput($pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions, $rowCounter);
+            //echo "outputArray: " . $outputArray[$outputRowNumber] . "<BR />";
+            $outputRowNumber++;
+
+        }
+        return $outputArray;
     }
 
 
@@ -112,6 +120,8 @@ class Parent_report extends CI_Model {
                 $thOutput .= "</th>";
             }
 
+            return $thOutput;
+
         }
 
 
@@ -122,14 +132,16 @@ class Parent_report extends CI_Model {
             $thOutput = "";
             for ($j = 0; $j < $countLoadedColumnGroupings; $j++) {
                 //Check if cell should be merged
-                if ($j == 0) {
+                //if ($j == 0) {
                     $cellClass = $this->determineHeadingCellClass($columnLabels, $pLoopIteration);
                     $divClass = $this->determineHeadingDivClass($columnLabels, $pLoopIteration);
                     $colspanForCell = $this->determineHeadingColspan($columnLabels, $arrReportColumnGroup, $columnCountForHeadingCells, $pLoopIteration, $j);
 
                     $thOutput .= "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>" . $columnCountForHeadingCells[$pLoopIteration][$j]["label"] . "</div></th>";
-                }
+                //}
             }
+
+            return $thOutput;
         }
 
         private function determineHeadingCellClass($pColumnLabels, $pLoopIteration) {
@@ -176,6 +188,7 @@ class Parent_report extends CI_Model {
                 $tableRowOutput .= "<td class='$cellClassToUse'>$cellValue</td>";
             }
             $tableRowOutput .= "</tr>";
+            return $tableRowOutput;
 
         }
 

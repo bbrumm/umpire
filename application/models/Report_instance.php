@@ -130,10 +130,10 @@ class Report_instance extends CI_Model {
 	public function loadReportResults($pDataStore) {
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryResultArray = $pDataStore->loadReportData($separateReport, $this);
-        /*
-        echo "loadReportResults: " . count($queryResultArray);
-        echo "<pre>". print_r($queryResultArray) ."</pre>";
-        */
+
+        //echo "loadReportResults: " . count($queryResultArray);
+        //echo "<pre>". print_r($queryResultArray) ."</pre>";
+
         $this->setResultArray($separateReport, $queryResultArray);
 
         //echo "getResultArray: " . count($this->getResultArray());
@@ -218,9 +218,15 @@ class Report_instance extends CI_Model {
     }
 
     public function getFormattedResultsForOutput() {
+        /*
+        $this->debug_library->debugOutput("getResultOutputArray: ", $this->getResultOutputArray());
+        $this->debug_library->debugOutput("getColumnLabelResultArray: ", $this->getColumnLabelResultArray());
+        $this->debug_library->debugOutput("getDisplayOptions: ", $this->getDisplayOptions());
+        $this->debug_library->debugOutput("getColumnCountForHeadingCells: ", $this->getColumnCountForHeadingCells());
+        */
 	    $this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
             $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());
-        //$this->debug_library->debugOutput("formattedOutputArray:", $this->formattedOutputArray);
+        //$this->debug_library->debugOutput("formattedOutputArray: ", $this->formattedOutputArray);
 	    return $this->formattedOutputArray;
     }
 

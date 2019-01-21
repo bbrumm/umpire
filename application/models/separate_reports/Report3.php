@@ -105,7 +105,7 @@ class Report3 extends Parent_report implements IReport {
                 foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
                     //Loop through each row and column intersection in the result array
                     //Match the column headings to the values in the array
-                    if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
+                    if ($this->isFieldMatchingColumnReport3($columnItem, $columnHeadingSet, $pReportColumnFields)) {
                             if ($columnHeadingSet['short_league_name'] == 'Total') {
                                 //Output the Total column values for report 3
                                 $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
@@ -136,7 +136,12 @@ class Report3 extends Parent_report implements IReport {
                 return $this->isFieldMatchingOneColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
                 break;
             case 2:
-                return $this->isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
+                if ($pColumnHeadingSet[$pReportColumnFields[1]] == 'Total') {
+                    return $this->isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
+                } else {
+                    return $this->isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
+                }
+
                 break;
             case 3:
                 return $this->isFieldMatchingThreeColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);

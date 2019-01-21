@@ -17,7 +17,7 @@ echo "<br />";
      -->
 <div id='panelBelow'>
 <div id='moveLeftDown'>
-<table class='reportTable tableWithFloatingHeader'	>
+<table class='reportTable tableWithFloatingHeader'>
 
 <?php
     $countRows = $loadedReportItem->getRowCount();
