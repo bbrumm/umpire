@@ -94,6 +94,8 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         ));
 
         if ($this->db->affected_rows() == 1) {
+            //One user was added. Add their default privileges
+            $this->addDefaultUserPrivileges($pUser->getUsername());
             return true;
         } else {
             throw new exception("There was an error when inserting the user. Please contact support.");
@@ -204,6 +206,55 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         //TODO: Replace magic number 1 with global constant that represents INSERT
         $this->logPrivilegeChange($username, $permission_selection_id, 1);
 
+    }
+
+    public function addDefaultUserPrivileges($username) {
+        //Get ID for username
+        $userID = $this->getUserIDFromUsername($username);
+
+        $queryString = "INSERT INTO user_permission_selection
+            (user_id, permission_selection_id)
+            VALUES
+            ($userID, 2),
+            ($userID, 6),
+            ($userID, 7),
+            ($userID, 8),
+            ($userID, 9),
+            ($userID, 10),
+            ($userID, 11),
+            ($userID, 12),
+            ($userID, 13),
+            ($userID, 14),
+            ($userID, 15),
+            ($userID, 16),
+            ($userID, 17),
+            ($userID, 18),
+            ($userID, 19),
+            ($userID, 20),
+            ($userID, 21),
+            ($userID, 22),
+            ($userID, 23),
+            ($userID, 24),
+            ($userID, 25),
+            ($userID, 26),
+            ($userID, 27),
+            ($userID, 28),
+            ($userID, 29),
+            ($userID, 30),
+            ($userID, 32),
+            ($userID, 33),
+            ($userID, 34);";
+
+        $this->runQuery($queryString);
+    }
+
+    public function getUserIDFromUsername($username) {
+        $queryString = "SELECT id FROM umpire_users WHERE user_name = ?";
+        $query = $this->runQuery($queryString, array(
+            $username
+        ));
+        $queryResultArray = $query->result_array();
+        return $queryResultArray[0]['id'];
     }
 
     public function updateUserRole($username, $newRoleID) {

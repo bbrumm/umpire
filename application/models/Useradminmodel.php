@@ -139,9 +139,6 @@ class Useradminmodel extends CI_Model {
         return $translatedArray;
     }
     
-
-
-    
     public function removePrivileges(IData_store_user_admin $pDataStore, $permissionArray) {
         foreach ($permissionArray as $username=>$userPermissionArray) {
             //Remove permission and log removal
@@ -158,6 +155,11 @@ class Useradminmodel extends CI_Model {
                 $pDataStore->addUserPrivilege($username, $permission_selection_id);
             }
         }
+    }
+
+    public function addDefaultPrivileges(IData_store_user_admin $pDataStore, $pSubmittedData) {
+        $username = $pSubmittedData['username'];
+        $pDataStore->addDefaultUserPrivileges($username);
     }
     
     public function updateUserRoles(IData_store_user_admin $pDataStore, $userRoleArray) {

@@ -114,6 +114,11 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
 
     }
 
+    public function addDefaultUserPrivileges($username) {
+
+
+    }
+
     public function getAllUserPermissionsFromDB() {
         /*$testData = array (
             "jsmith" => array (1=>"on", 4=>"on"),

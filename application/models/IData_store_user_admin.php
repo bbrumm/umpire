@@ -20,6 +20,8 @@ interface IData_store_user_admin {
 
     public function insertNewUser(User $pUser);
 
+    public function addDefaultUserPrivileges($username);
+
     public function getAllUserPermissionsFromDB();
 
     public function getAllUserRolesFromDB();
