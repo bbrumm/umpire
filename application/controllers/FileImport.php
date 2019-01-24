@@ -1,4 +1,6 @@
 <?php
+
+
 class FileImport extends CI_Controller {
 	public function __construct() {
 	    parent::__construct();
@@ -7,6 +9,7 @@ class FileImport extends CI_Controller {
 	    $this->load->helper('url_helper');
 	    $this->load->model('Match_import');
 	    $this->load->model('Run_etl_stored_proc');
+        $this->load->model('File_loader_import');
 	    $this->load->model('Missing_data_updater');
 	    $this->load->model('Database_store_matches');
 	    $this->load->helper('form');

@@ -626,16 +626,9 @@ l.league_name,
 r.region_name,
 c.competition_name,
 s.season_year,
-CASE short_league_name
-	WHEN 'GFL' THEN 1
-	WHEN 'BFL' THEN 2
-	WHEN 'GDFL' THEN 3
-	WHEN 'CDFNL' THEN 4
-	WHEN 'Women' THEN 5
-	WHEN 'GJFL' THEN 6
-	ELSE 10
-END league_sort_order
+sl.display_order AS league_sort_order
 FROM league l
+INNER JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
 INNER JOIN region r ON l.region_id = r.id
 INNER JOIN competition_lookup c ON l.ID = c.league_id
 INNER JOIN season s ON c.season_id = s.id;";
