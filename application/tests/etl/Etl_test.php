@@ -946,6 +946,577 @@ WHERE q2.last_first_name IS NULL;";
         $this->dbLocal->close();
     }
 
+    public function test_MatchImportToMV04() {
+        $queryStringDWNotInMatchImport = "SELECT q1.*
+        FROM (
+            SELECT
+            club_name,
+            age_group,
+            short_league_name,
+            region_name,
+            umpire_type,
+            age_sort_order,
+            league_sort_order,
+            match_count
+            FROM dw_mv_report_04
+            WHERE season_year = 2018
+        ) q1 LEFT JOIN (
+            SELECT
+            cl.club_name,
+            a.age_group,
+            sl.short_league_name,
+            r.region_name,
+            sub.umpire_type,
+            a.display_order AS age_sort_order,
+            sl.display_order AS league_sort_order,
+            COUNT(DISTINCT sub.id) AS match_count
+            FROM (
+                SELECT
+                m.id,
+                m.competition_name,
+                m.home_team AS team_name,
+                'Field' AS umpire_type
+                FROM match_import m
+                WHERE m.field_umpire_1 IS NULL
+                AND m.field_umpire_2 IS NULL
+                AND m.field_umpire_3 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.away_team AS team,
+                'Field'
+                FROM match_import m
+                WHERE m.field_umpire_1 IS NULL
+                AND m.field_umpire_2 IS NULL
+                AND m.field_umpire_3 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.home_team AS team,
+                'Boundary'
+                FROM match_import m
+                WHERE m.boundary_umpire_1 IS NULL
+                AND m.boundary_umpire_2 IS NULL
+                AND m.boundary_umpire_3 IS NULL
+                AND m.boundary_umpire_4 IS NULL
+                AND m.boundary_umpire_5 IS NULL
+                AND m.boundary_umpire_6 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.away_team AS team,
+                'Boundary'
+                FROM match_import m
+                WHERE m.boundary_umpire_1 IS NULL
+                AND m.boundary_umpire_2 IS NULL
+                AND m.boundary_umpire_3 IS NULL
+                AND m.boundary_umpire_4 IS NULL
+                AND m.boundary_umpire_5 IS NULL
+                AND m.boundary_umpire_6 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.home_team AS team,
+                'Goal'
+                FROM match_import m
+                WHERE m.goal_umpire_1 IS NULL
+                AND m.goal_umpire_2 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.away_team AS team,
+                'Goal'
+                FROM match_import m
+                WHERE m.goal_umpire_1 IS NULL
+                AND m.goal_umpire_2 IS NULL
+                AND season = 2018
+            ) AS sub
+            LEFT JOIN competition_lookup c ON sub.competition_name = c.competition_name
+            LEFT JOIN league l ON c.league_id = l.ID
+            LEFT JOIN region r ON l.region_id = r.id
+            LEFT JOIN age_group_division agd ON l.age_group_division_id = agd.ID
+            LEFT JOIN age_group a ON agd.age_group_id = a.id
+            LEFT JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
+            LEFT JOIN team t ON sub.team_name = t.team_name
+            LEFT JOIN club cl ON t.club_id = cl.id
+            GROUP BY cl.club_name, a.age_group, sl.short_league_name, r.region_name, sub.umpire_type, a.display_order, sl.display_order
+        ) q2
+        ON q1.club_name = q2.club_name
+        AND q1.age_group = q2.age_group
+        AND q1.short_league_name = q2.short_league_name
+        AND q1.region_name = q2.region_name
+        AND q1.umpire_type = q2.umpire_type
+        AND q1.match_count = q2.match_count
+        WHERE q2.club_name IS NULL;";
+
+        $queryStringMatchImportNotInDW = "SELECT q1.*
+        FROM (
+            SELECT
+            club_name,
+            age_group,
+            short_league_name,
+            region_name,
+            umpire_type,
+            age_sort_order,
+            league_sort_order,
+            match_count
+            FROM dw_mv_report_04
+            WHERE season_year = 2018
+        ) q1 RIGHT JOIN (
+            SELECT
+            cl.club_name,
+            a.age_group,
+            sl.short_league_name,
+            r.region_name,
+            sub.umpire_type,
+            a.display_order AS age_sort_order,
+            sl.display_order AS league_sort_order,
+            COUNT(DISTINCT sub.id) AS match_count
+            FROM (
+                SELECT
+                m.id,
+                m.competition_name,
+                m.home_team AS team_name,
+                'Field' AS umpire_type
+                FROM match_import m
+                WHERE m.field_umpire_1 IS NULL
+                AND m.field_umpire_2 IS NULL
+                AND m.field_umpire_3 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.away_team AS team,
+                'Field'
+                FROM match_import m
+                WHERE m.field_umpire_1 IS NULL
+                AND m.field_umpire_2 IS NULL
+                AND m.field_umpire_3 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.home_team AS team,
+                'Boundary'
+                FROM match_import m
+                WHERE m.boundary_umpire_1 IS NULL
+                AND m.boundary_umpire_2 IS NULL
+                AND m.boundary_umpire_3 IS NULL
+                AND m.boundary_umpire_4 IS NULL
+                AND m.boundary_umpire_5 IS NULL
+                AND m.boundary_umpire_6 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.away_team AS team,
+                'Boundary'
+                FROM match_import m
+                WHERE m.boundary_umpire_1 IS NULL
+                AND m.boundary_umpire_2 IS NULL
+                AND m.boundary_umpire_3 IS NULL
+                AND m.boundary_umpire_4 IS NULL
+                AND m.boundary_umpire_5 IS NULL
+                AND m.boundary_umpire_6 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.home_team AS team,
+                'Goal'
+                FROM match_import m
+                WHERE m.goal_umpire_1 IS NULL
+                AND m.goal_umpire_2 IS NULL
+                AND season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                m.away_team AS team,
+                'Goal'
+                FROM match_import m
+                WHERE m.goal_umpire_1 IS NULL
+                AND m.goal_umpire_2 IS NULL
+                AND season = 2018
+            ) AS sub
+            LEFT JOIN competition_lookup c ON sub.competition_name = c.competition_name
+            LEFT JOIN league l ON c.league_id = l.ID
+            LEFT JOIN region r ON l.region_id = r.id
+            LEFT JOIN age_group_division agd ON l.age_group_division_id = agd.ID
+            LEFT JOIN age_group a ON agd.age_group_id = a.id
+            LEFT JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
+            LEFT JOIN team t ON sub.team_name = t.team_name
+            LEFT JOIN club cl ON t.club_id = cl.id
+            GROUP BY cl.club_name, a.age_group, sl.short_league_name, r.region_name, sub.umpire_type, a.display_order, sl.display_order
+        ) q2
+        ON q1.club_name = q2.club_name
+        AND q1.age_group = q2.age_group
+        AND q1.short_league_name = q2.short_league_name
+        AND q1.region_name = q2.region_name
+        AND q1.umpire_type = q2.umpire_type
+        AND q1.match_count = q2.match_count
+        WHERE q1.club_name IS NULL;";
+
+        $queryDWNotInMatchImport =$this->dbLocal->query($queryStringDWNotInMatchImport);
+        $queryMatchImportNotInDW =$this->dbLocal->query($queryStringMatchImportNotInDW);
+
+        $resultArrayDWNotInMatchImport = $queryDWNotInMatchImport->result();
+        $resultArrayMatchImportNotInDW = $queryMatchImportNotInDW->result();
+
+        $this->assertEquals(0, count($resultArrayDWNotInMatchImport));
+        $this->assertEquals(0, count($resultArrayMatchImportNotInDW));
+
+        $this->dbLocal->close();
+    }
+
+    public function test_MatchImportToMV05() {
+        $queryStringDWNotInMatchImport = "SELECT q1.*
+        FROM (
+            SELECT t.umpire_type, t.age_group, t.short_league_name, t.region_name, t.match_no_ump, t.total_match_count, t.match_pct
+            FROM dw_mv_report_05 t
+            WHERE t.season_year = 2018
+        ) q1 LEFT JOIN (
+            SELECT
+            sub.umpire_type,
+            a.age_group,
+            sl.short_league_name,
+            r.region_name,
+            SUM(sub.missing_umps) AS match_no_ump,
+            COUNT(DISTINCT sub.id) AS total_match_count,
+            FLOOR(SUM(sub.missing_umps) / COUNT(DISTINCT sub.id) * 100) AS match_pct
+            FROM (
+                SELECT
+                m.id,
+                m.competition_name,
+                'Field' AS umpire_type,
+                CASE WHEN m.field_umpire_1 IS NULL
+                    AND m.field_umpire_2 IS NULL
+                    AND m.field_umpire_3 IS NULL
+                    THEN 1 ELSE 0 END AS missing_umps
+                FROM match_import m
+                WHERE season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                'Boundary',
+                CASE WHEN m.boundary_umpire_1 IS NULL
+                    AND m.boundary_umpire_2 IS NULL
+                    AND m.boundary_umpire_3 IS NULL
+                    AND m.boundary_umpire_4 IS NULL
+                    AND m.boundary_umpire_5 IS NULL
+                    AND m.boundary_umpire_6 IS NULL
+                    THEN 1 ELSE 0 END
+                FROM match_import m
+                WHERE season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                'Goal',
+                CASE WHEN m.goal_umpire_1 IS NULL
+                    AND m.goal_umpire_2 IS NULL
+                    THEN 1 ELSE 0 END
+                FROM match_import m
+                WHERE season = 2018
+            ) AS sub
+            LEFT JOIN competition_lookup c ON sub.competition_name = c.competition_name
+            LEFT JOIN league l ON c.league_id = l.ID
+            LEFT JOIN region r ON l.region_id = r.id
+            LEFT JOIN age_group_division agd ON l.age_group_division_id = agd.ID
+            LEFT JOIN age_group a ON agd.age_group_id = a.id
+            LEFT JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
+            GROUP BY a.age_group, sl.short_league_name, r.region_name, sub.umpire_type
+        ) q2
+        ON q1.umpire_type = q2.umpire_type
+        AND q1.age_group = q2.age_group
+        AND q1.short_league_name = q2.short_league_name
+        AND q1.region_name = q2.region_name
+        AND q1.match_no_ump = q2.match_no_ump
+        AND q1.total_match_count = q2.total_match_count
+        AND q1.match_pct = q2.match_pct
+        WHERE q2.umpire_type IS NULL;";
+
+        $queryStringMatchImportNotInDW = "SELECT q1.*
+        FROM (
+            SELECT t.umpire_type, t.age_group, t.short_league_name, t.region_name, t.match_no_ump, t.total_match_count, t.match_pct
+            FROM dw_mv_report_05 t
+            WHERE t.season_year = 2018
+        ) q1 RIGHT JOIN (
+            SELECT
+            sub.umpire_type,
+            a.age_group,
+            sl.short_league_name,
+            r.region_name,
+            SUM(sub.missing_umps) AS match_no_ump,
+            COUNT(DISTINCT sub.id) AS total_match_count,
+            FLOOR(SUM(sub.missing_umps) / COUNT(DISTINCT sub.id) * 100) AS match_pct
+            FROM (
+                SELECT
+                m.id,
+                m.competition_name,
+                'Field' AS umpire_type,
+                CASE WHEN m.field_umpire_1 IS NULL
+                    AND m.field_umpire_2 IS NULL
+                    AND m.field_umpire_3 IS NULL
+                    THEN 1 ELSE 0 END AS missing_umps
+                FROM match_import m
+                WHERE season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                'Boundary',
+                CASE WHEN m.boundary_umpire_1 IS NULL
+                    AND m.boundary_umpire_2 IS NULL
+                    AND m.boundary_umpire_3 IS NULL
+                    AND m.boundary_umpire_4 IS NULL
+                    AND m.boundary_umpire_5 IS NULL
+                    AND m.boundary_umpire_6 IS NULL
+                    THEN 1 ELSE 0 END
+                FROM match_import m
+                WHERE season = 2018
+                UNION ALL
+                SELECT
+                m.id,
+                m.competition_name,
+                'Goal',
+                CASE WHEN m.goal_umpire_1 IS NULL
+                    AND m.goal_umpire_2 IS NULL
+                    THEN 1 ELSE 0 END
+                FROM match_import m
+                WHERE season = 2018
+            ) AS sub
+            LEFT JOIN competition_lookup c ON sub.competition_name = c.competition_name
+            LEFT JOIN league l ON c.league_id = l.ID
+            LEFT JOIN region r ON l.region_id = r.id
+            LEFT JOIN age_group_division agd ON l.age_group_division_id = agd.ID
+            LEFT JOIN age_group a ON agd.age_group_id = a.id
+            LEFT JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
+            GROUP BY a.age_group, sl.short_league_name, r.region_name, sub.umpire_type
+        ) q2
+        ON q1.umpire_type = q2.umpire_type
+        AND q1.age_group = q2.age_group
+        AND q1.short_league_name = q2.short_league_name
+        AND q1.region_name = q2.region_name
+        AND q1.match_no_ump = q2.match_no_ump
+        AND q1.total_match_count = q2.total_match_count
+        AND q1.match_pct = q2.match_pct
+        WHERE q1.umpire_type IS NULL;";
+
+        $queryDWNotInMatchImport =$this->dbLocal->query($queryStringDWNotInMatchImport);
+        $queryMatchImportNotInDW =$this->dbLocal->query($queryStringMatchImportNotInDW);
+
+        $resultArrayDWNotInMatchImport = $queryDWNotInMatchImport->result();
+        $resultArrayMatchImportNotInDW = $queryMatchImportNotInDW->result();
+
+        $this->assertEquals(0, count($resultArrayDWNotInMatchImport));
+        $this->assertEquals(0, count($resultArrayMatchImportNotInDW));
+
+        $this->dbLocal->close();
+    }
+
+    public function test_MatchImportToMV06() {
+        $queryStringTempTable1 = "CREATE TEMPORARY TABLE umpire_list_rpt6
+SELECT
+	sub.id,
+	sub.umpire_type,
+	a.age_group,
+	r.region_name,
+	sl.short_league_name,
+	CONCAT(RIGHT(sub.umpire_name,Length(sub.umpire_name)-InStr(sub.umpire_name,' ')),', ',LEFT(sub.umpire_name,InStr(sub.umpire_name,' ')-1)) AS umpire_name
+	FROM (
+		SELECT 
+		m.id, m.competition_name, 'Field' AS umpire_type, m.field_umpire_1 AS umpire_name
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Field', m.field_umpire_2
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Field', m.field_umpire_3
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_1
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_2
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_3
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_4
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_5
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_6
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Goal', m.goal_umpire_1
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Goal', m.goal_umpire_2
+		FROM match_import m
+	) AS sub
+	LEFT JOIN competition_lookup c ON sub.competition_name = c.competition_name
+	LEFT JOIN league l ON c.league_id = l.ID
+	LEFT JOIN region r ON l.region_id = r.id
+	LEFT JOIN age_group_division agd ON l.age_group_division_id = agd.ID
+	LEFT JOIN age_group a ON agd.age_group_id = a.id
+	LEFT JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
+	WHERE sub.umpire_name IS NOT NULL;";
+
+        $queryStringTempTable2 = "CREATE TEMPORARY TABLE umpire_list_rpt6_b
+SELECT
+	sub.id,
+	sub.umpire_type,
+	a.age_group,
+	r.region_name,
+	sl.short_league_name,
+	CONCAT(RIGHT(sub.umpire_name,Length(sub.umpire_name)-InStr(sub.umpire_name,' ')),', ',LEFT(sub.umpire_name,InStr(sub.umpire_name,' ')-1)) AS umpire_name
+	FROM (
+		SELECT 
+		m.id, m.competition_name, 'Field' AS umpire_type, m.field_umpire_1 AS umpire_name
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Field', m.field_umpire_2
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Field', m.field_umpire_3
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_1
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_2
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_3
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_4
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_5
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Boundary', m.boundary_umpire_6
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Goal', m.goal_umpire_1
+		FROM match_import m
+		UNION ALL
+		SELECT m.id, m.competition_name, 'Goal', m.goal_umpire_2
+		FROM match_import m
+	) AS sub
+	LEFT JOIN competition_lookup c ON sub.competition_name = c.competition_name
+	LEFT JOIN league l ON c.league_id = l.ID
+	LEFT JOIN region r ON l.region_id = r.id
+	LEFT JOIN age_group_division agd ON l.age_group_division_id = agd.ID
+	LEFT JOIN age_group a ON agd.age_group_id = a.id
+	LEFT JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
+	WHERE sub.umpire_name IS NOT NULL;";
+
+        $queryStringDWNotInMatchImport = "SELECT q1.*
+        FROM (
+            SELECT t.umpire_type, t.age_group, t.region_name, t.short_league_name, t.first_umpire, t.second_umpire, t.match_count
+            FROM dw_mv_report_06 t
+            WHERE t.season_year = 2018
+        ) q1 LEFT JOIN (
+            SELECT
+            ump1.umpire_type,
+            ump1.age_group,
+            ump1.region_name,
+            ump1.short_league_name,
+            ump1.umpire_name AS first_umpire,
+            ump2.umpire_name AS second_umpire,
+            COUNT(*) AS match_count
+            FROM umpire_list_rpt6 AS ump1
+            INNER JOIN umpire_list_rpt6_b AS ump2  
+            ON ump1.id = ump2.id
+            AND ump1.umpire_type = ump2.umpire_type
+            AND ump1.age_group = ump2.age_group
+            AND ump1.region_name = ump2.region_name
+            AND ump1.short_league_name = ump2.short_league_name
+            AND ump1.umpire_name <> ump2.umpire_name
+            GROUP BY ump1.umpire_type, ump1.age_group, ump1.region_name, ump1.short_league_name, ump1.umpire_name, ump2.umpire_name
+        ) q2
+        ON q1.umpire_type = q2.umpire_type
+        AND q1.age_group = q2.age_group
+        AND q1.region_name = q2.region_name
+        AND q1.short_league_name = q2.short_league_name
+        AND q1.first_umpire = q2.first_umpire
+        AND q1.second_umpire = q2.second_umpire
+        AND q1.match_count = q2.match_count
+        WHERE q2.umpire_type IS NULL;";
+
+
+        $queryStringMatchImportNotInDW = "SELECT q1.*
+        FROM (
+            SELECT t.umpire_type, t.age_group, t.region_name, t.short_league_name, t.first_umpire, t.second_umpire, t.match_count
+            FROM dw_mv_report_06 t
+            WHERE t.season_year = 2018
+        ) q1 RIGHT JOIN (
+            SELECT
+            ump1.umpire_type,
+            ump1.age_group,
+            ump1.region_name,
+            ump1.short_league_name,
+            ump1.umpire_name AS first_umpire,
+            ump2.umpire_name AS second_umpire,
+            COUNT(*) AS match_count
+            FROM umpire_list_rpt6 AS ump1
+            INNER JOIN umpire_list_rpt6_b AS ump2  
+            ON ump1.id = ump2.id
+            AND ump1.umpire_type = ump2.umpire_type
+            AND ump1.age_group = ump2.age_group
+            AND ump1.region_name = ump2.region_name
+            AND ump1.short_league_name = ump2.short_league_name
+            AND ump1.umpire_name <> ump2.umpire_name
+            GROUP BY ump1.umpire_type, ump1.age_group, ump1.region_name, ump1.short_league_name, ump1.umpire_name, ump2.umpire_name
+        ) q2
+        ON q1.umpire_type = q2.umpire_type
+        AND q1.age_group = q2.age_group
+        AND q1.region_name = q2.region_name
+        AND q1.short_league_name = q2.short_league_name
+        AND q1.first_umpire = q2.first_umpire
+        AND q1.second_umpire = q2.second_umpire
+        AND q1.match_count = q2.match_count
+        WHERE q1.umpire_type IS NULL;";
+
+        //Create and populate temp tables first
+        $this->dbLocal->query($queryStringTempTable1);
+        $this->dbLocal->query($queryStringTempTable2);
+
+        $queryDWNotInMatchImport =$this->dbLocal->query($queryStringDWNotInMatchImport);
+        $queryMatchImportNotInDW =$this->dbLocal->query($queryStringMatchImportNotInDW);
+
+        $resultArrayDWNotInMatchImport = $queryDWNotInMatchImport->result();
+        $resultArrayMatchImportNotInDW = $queryMatchImportNotInDW->result();
+
+        $this->assertEquals(0, count($resultArrayDWNotInMatchImport));
+        $this->assertEquals(0, count($resultArrayMatchImportNotInDW));
+
+        $this->dbLocal->close();
+    }
+
+    //Deliberately not testing reports 7 and 8. Tests from the other reports should identify any issues with these
 
 
 
