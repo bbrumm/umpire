@@ -53,7 +53,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     }
 
     public function getReportArray() {
-        $queryString = "SELECT report_table_id, report_title FROM report_table;";
+        $queryString = "SELECT report_id, report_name FROM t_report;";
         return $this->getArrayFromQuery($queryString);
     }
 

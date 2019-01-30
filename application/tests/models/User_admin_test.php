@@ -67,13 +67,13 @@ class User_admin_model_test extends TestCase
         $arrayStore = new Array_store_user_admin();
         $actualArray= $this->obj->getReportArray($arrayStore);
         $expectedArray = array (
-            array("report_table_id"=>1, "report_title"=>"Report 1"),
-            array("report_table_id"=>2, "report_title"=>"Report 2"),
-            array("report_table_id"=>3, "report_title"=>"Report 3")
+            array("report_id"=>1, "report_title"=>"01 - Umpires and Clubs"),
+            array("report_id"=>2, "report_title"=>"02 - Umpire Names by League"),
+            array("report_id"=>3, "report_title"=>"03 - Summary")
         );
 
         $this->assertEquals(count($expectedArray ), count($actualArray));
-        $this->assertEquals($expectedArray[0]["report_table_id"], $actualArray[0]["report_table_id"]);
+        $this->assertEquals($expectedArray[0]["report_id"], $actualArray[0]["report_id"]);
         $this->assertEquals($expectedArray[1]["report_title"], $actualArray[1]["report_title"]);
 
     }

@@ -374,15 +374,6 @@ CREATE TABLE valid_selection_combinations (
 
 INSERT INTO valid_selection_combinations VALUES (1,1,3,11),(2,1,3,12),(3,1,4,11),(4,1,4,12),(5,1,5,11),(6,1,5,12),(7,1,24,11),(8,1,24,12),(9,1,6,13),(10,1,6,15),(11,1,6,17),(12,1,6,18),(13,1,6,20),(14,1,6,19),(15,1,6,21),(16,1,6,22),(17,1,6,23),(18,2,7,11),(19,2,7,12),(20,2,7,14),(21,2,7,16),(22,1,6,25),(23,1,6,26),(24,1,6,27),(25,1,6,28),(26,1,6,29);
 
-CREATE TABLE report_table (
-  report_table_id int(11) NOT NULL,
-  report_name varchar(40) DEFAULT NULL,
-  table_name varchar(40) DEFAULT NULL,
-  report_title varchar(100) DEFAULT NULL,
-  PRIMARY KEY (report_table_id)
-);
-
-INSERT INTO report_table VALUES (1,'1','mv_report_01','Report 1'),(2,'2','mv_report_02','Report 2'),(3,'3','mv_report_03','Report 3'),(4,'4','mv_report_04','Report 4'),(5,'5','mv_report_05','Report 5'),(6,'6','mv_report_06','Report 6'),(7,'7','mv_report_07','Report 7'),(8,'8','mv_report_08','Report 8');
 
 CREATE TABLE report_grouping_structure (
   report_grouping_structure_id int(11) NOT NULL AUTO_INCREMENT,

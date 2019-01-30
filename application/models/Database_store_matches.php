@@ -51,13 +51,13 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     }
     
     public function loadAllGroupingStructures($pReportNumber) {
-        $queryString = "SELECT rgs.report_grouping_structure_id, rgs.grouping_type, " .
-            "fl.field_name, rgs.field_group_order, rgs.merge_field, rgs.group_heading, rgs.group_size_text " .
-            "FROM report_table rt " .
-            "INNER JOIN report_grouping_structure rgs ON rt.report_name = rgs.report_id " .
-            "INNER JOIN field_list fl ON rgs.field_id = fl.field_id " .
-            "WHERE rt.report_name = ". $pReportNumber ." " .
-            "ORDER BY rgs.grouping_type, rgs.field_group_order;";
+        $queryString = "SELECT rgs.report_grouping_structure_id, rgs.grouping_type, 
+fl.field_name, rgs.field_group_order, rgs.merge_field, rgs.group_heading, rgs.group_size_text 
+FROM t_report rt 
+INNER JOIN report_grouping_structure rgs ON rt.report_name = rgs.report_id 
+INNER JOIN field_list fl ON rgs.field_id = fl.field_id 
+WHERE rt.report_id = ". $pReportNumber ."
+ORDER BY rgs.grouping_type, rgs.field_group_order;";
         
         $query = $this->runQuery($queryString);
         $queryResultArray = $query->result();

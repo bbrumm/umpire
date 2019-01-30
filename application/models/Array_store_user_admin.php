@@ -37,9 +37,9 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
 
     public function getReportArray() {
         $testData = array (
-            array("report_table_id"=>1, "report_title"=>"Report 1"),
-            array("report_table_id"=>2, "report_title"=>"Report 2"),
-            array("report_table_id"=>3, "report_title"=>"Report 3")
+            array("report_id"=>1, "report_title"=>"01 - Umpires and Clubs"),
+            array("report_id"=>2, "report_title"=>"02 - Umpire Names by League"),
+            array("report_id"=>3, "report_title"=>"03 - Summary")
         );
 
         return $testData;
