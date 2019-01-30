@@ -88,7 +88,7 @@ class Home extends CI_Controller {
             league_enabled,
             age_group_enabled,
             umpire_type_enabled
-            FROM t_report
+            FROM report
             ORDER BY report_name ASC;";
         
         $query = $this->runQuery($queryString);

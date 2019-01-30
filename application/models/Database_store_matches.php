@@ -24,7 +24,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
             p.orientation,
             p.paper_size,
             p.resolution
-            FROM t_report t
+            FROM report t
             INNER JOIN t_pdf_settings p ON t.pdf_settings_id = p.pdf_settings_id
             WHERE t.report_id = ". $pReportNumber .";";
         
@@ -53,7 +53,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     public function loadAllGroupingStructures($pReportNumber) {
         $queryString = "SELECT rgs.report_grouping_structure_id, rgs.grouping_type, 
 fl.field_name, rgs.field_group_order, rgs.merge_field, rgs.group_heading, rgs.group_size_text 
-FROM t_report rt 
+FROM report rt 
 INNER JOIN report_grouping_structure rgs ON rt.report_name = rgs.report_id 
 INNER JOIN field_list fl ON rgs.field_id = fl.field_id 
 WHERE rt.report_id = ". $pReportNumber ."

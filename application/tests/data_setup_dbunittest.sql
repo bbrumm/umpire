@@ -325,7 +325,7 @@ CREATE TABLE t_pdf_settings (
 INSERT INTO t_pdf_settings VALUES (1,200,'a3','Landscape'),(2,200,'a3','Portrait'),(3,100,'a3','Landscape'),(4,200,'a4','Landscape');
 
 
-CREATE TABLE t_report (
+CREATE TABLE report (
   report_id int(3) NOT NULL AUTO_INCREMENT,
   report_name varchar(100) NOT NULL,
   report_title varchar(200) NOT NULL,
@@ -346,7 +346,7 @@ CREATE TABLE t_report (
 );
 
 
-INSERT INTO t_report VALUES
+INSERT INTO report VALUES
 (1,'01 - Umpires and Clubs','01 - Umpires and Clubs (%seasonYear)',1,' ','text',1,1,1,1,1,1),
 (2,'02 - Umpire Names by League','02 - Umpire Names by League (%seasonYear)',1,' ','text',0,2,1,1,1,1),
 (3,'03 - Summary','03 - Summary by Week (Matches Where No Umpires Are Recorded) (%seasonYear)',1,' ','date',0,1,1,0,0,0),

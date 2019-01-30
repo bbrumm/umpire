@@ -567,7 +567,7 @@ ORDER BY p.permission_name, ps.category, ps.display_order;";
 */
 
     public function test_ReportNamesExist() {
-        $queryString = "SELECT report_name FROM t_report ORDER BY report_id;";
+        $queryString = "SELECT report_name FROM report ORDER BY report_id;";
         $query = $this->db->query($queryString);
         $resultArray = $query->result();
         $expectedArray = array('01 - Umpires and Clubs', '02 - Umpire Names by League', '03 - Summary', '04 - Summary by Club', '05 - Summary by League', '06 - Pairings', '07 - 2 and 3 Field Umpires',  '08 - Umpire Games Tally');
@@ -582,7 +582,7 @@ ORDER BY p.permission_name, ps.category, ps.display_order;";
     }
 
     public function test_ReportNameLocalVsProd() {
-        $queryString = "SELECT report_name FROM t_report ORDER BY report_id;";
+        $queryString = "SELECT report_name FROM report ORDER BY report_id;";
         $queryProd = $this->db->query($queryString);
         $queryLocal = $this->dbLocal->query($queryString);
         $resultArrayProd = $queryProd->result();
@@ -598,7 +598,7 @@ r.first_column_format, r.colour_cells, r.region_enabled,
 r.league_enabled, r.age_group_enabled, r.umpire_type_enabled,
 p.resolution, p.paper_size, p.orientation,
 f.field_name
-FROM t_report  r
+FROM report  r
 INNER JOIN t_field_list f ON r.value_field_id = f.field_id
 INNER JOIN t_pdf_settings p ON r.pdf_settings_id = p.pdf_settings_id
 ORDER BY r.report_id;";
@@ -753,7 +753,7 @@ r.first_column_format, r.colour_cells, r.region_enabled,
 r.league_enabled, r.age_group_enabled, r.umpire_type_enabled,
 p.resolution, p.paper_size, p.orientation,
 f.field_name
-FROM t_report  r
+FROM report  r
 INNER JOIN t_field_list f ON r.value_field_id = f.field_id
 INNER JOIN t_pdf_settings p ON r.pdf_settings_id = p.pdf_settings_id
 ORDER BY r.report_id;";
