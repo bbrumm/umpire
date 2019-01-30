@@ -11,7 +11,7 @@ class Etl_test extends TestCase
         $this->dbLocal = $this->CI->load->database('default', TRUE);
 
         //Uncomment this when I run the full suite
-        //$this->importData();
+        $this->importData();
     }
 
     private function importData() {
