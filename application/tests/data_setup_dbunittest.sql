@@ -366,7 +366,7 @@ CREATE TABLE season (
   PRIMARY KEY (ID)
 );
 
-INSERT INTO season VALUES (1,2015),(2,2016),(3,2017),(4,2018);
+INSERT INTO season VALUES (1,2015),(2,2016),(3,2017),(4,2018),(5, 2019);
 
 CREATE TABLE valid_selection_combinations (
   id int(11) DEFAULT NULL,
