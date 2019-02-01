@@ -5,6 +5,7 @@
 	<testsuites>
 		<testsuite name="unittests">
             <directory suffix="test.php">/Applications/MAMP/htdocs/umpire/application/tests/models</directory>
+			<directory suffix="test.php">/Applications/MAMP/htdocs/umpire/application/tests/helpers</directory>
 			<exclude>./_ci_phpunit_test/</exclude>
 		</testsuite>
 		<testsuite name="integration">

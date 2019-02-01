@@ -11,15 +11,18 @@ class Debug_library {
     }
 
     public function debugOutput($beforeMessage, $pOutputValue) {
+        $outputText = "";
         if ($this->ci->config->item('debug_mode')) {
             if (is_array($pOutputValue)) {
-                echo "$beforeMessage<pre>";
-                print_r($pOutputValue);
-                echo "</pre><BR />";
+
+                $outputText = "$beforeMessage<pre>";
+                $outputText .= print_r($pOutputValue, true);
+                $outputText .= "</pre><BR />";
             } else {
-                echo $beforeMessage . " " . $pOutputValue . "<BR />";
+                $outputText = $beforeMessage . " " . $pOutputValue . "<BR />";
             }
         }
+        return $outputText;
     }
 
 }
