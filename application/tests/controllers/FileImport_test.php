@@ -53,14 +53,14 @@ class FileImport_test extends TestCase
         $this->assertContains($expected, $output);
     }
 
-
+/*
     public function test_RunETLProcess() {
         $output = $this->request('POST', ['FileImport', 'runETLProcess']);
         $expected = "Upload completed!";
         $this->assertContains($expected, $output);
 
     }
-
+*/
 
     public function test_ImportFile_NewData() {
 

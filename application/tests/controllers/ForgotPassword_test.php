@@ -114,6 +114,7 @@ class ForgotPassword_test extends TestCase
         $this->assertContains($expected, $output);
     }
 
+    /*
     public function test_SubmitChangePasswordForm_ValidButNotSent() {
         $postArray = array(
             'username'=>'bbtest2',
@@ -137,6 +138,7 @@ class ForgotPassword_test extends TestCase
 
         $this->assertContains($expected, $output);
     }
+    */
 
 
 }
