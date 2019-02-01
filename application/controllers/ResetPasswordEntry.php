@@ -24,9 +24,7 @@ class ResetPasswordEntry extends CI_Controller {
         $userMaintenance = new User_maintenance_model();
         $dataStore = new Database_store_user();
         $umpireUser = $userMaintenance->createUserFromActivationID($dataStore, $pActivationID);
-        //$umpireUser->setActivationID($pActivationID);
         //TODO check that this works and refactor. Repeated in function below.
-        $data['activationIDMatches'] = isset($umpireUser);
         $data['activationID'] = $umpireUser->getActivationID();
         $data['username'] = $umpireUser->getUsername();
 

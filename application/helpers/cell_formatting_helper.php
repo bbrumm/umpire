@@ -28,9 +28,6 @@ function getCellClassNameFromOutputValue($valueToCheck, $isTable) {
             case ($valueToCheck > $limitLevel3):
                 return "cellNumber cellLevel4";
                 break;
-            default:
-                return "cellNumber cellNormal";
-                break;
            }
 	} else {
 	    switch ($valueToCheck) {
@@ -51,9 +48,6 @@ function getCellClassNameFromOutputValue($valueToCheck, $isTable) {
     	        break;
     	    case ($valueToCheck > $limitLevel3):
     	        return "divCell divCellNumber cellLevel4";
-    	        break;
-    	    default:
-    	        return "divCell divCellNumber";
     	        break;
     	}
 	}

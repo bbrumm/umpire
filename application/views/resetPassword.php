@@ -5,9 +5,7 @@
  </head>
  <body>
 	<h2>Password Reset</h2>
-	<?php 
-	//Check if activation ID matches
-	if ($activationIDMatches == true) {
+	<?php
 	   //TODO: Look up how to disable "variable not declared" for CodeIgniter
     	echo form_open('ResetPasswordEntry/submitNewPassword'); 
     	/*echo "activation ID: ". $activationID ."<br />";
@@ -38,14 +36,8 @@
     	 
     
     <?php
-    
-    echo form_close(); 
-
-	} else {
-	    //Show error - activation ID does not match
-	    echo "<div class='validationError'>Unable to validate password reset request.</div>";
-	}
-?>
+    echo form_close();
+    ?>
 
  </body>
 </html>

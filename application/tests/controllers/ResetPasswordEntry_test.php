@@ -172,5 +172,4 @@ class ResetPasswordEntry_test extends TestCase
         }
     }
 
-
 }

@@ -67,7 +67,7 @@ class UpdateProfile_test extends TestCase
         $this->CI->session->set_userdata($sessionArray);
 
         $output = $this->request('POST', ['UpdateProfile', 'updateEmail'], $postArray);
-        $expected = "Email address updated successfully.";
+        $expected = "Email address not updated. Length must be greater than 0.";
         $this->assertContains($expected, $output);
 
         //Reset email address

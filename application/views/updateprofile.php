@@ -42,11 +42,8 @@
     		<br />
     	</div>
     	 <br />
-    <?php 
-    
-    
-    echo form_close(); 
-    
+    <?php
+    echo form_close();
     echo form_open('ResetPasswordEntry/submitNewPassword');
     echo "<input type='hidden' name='username' id='username' value='". $username ."' />";
     ?>
@@ -65,13 +62,9 @@
     		<input type="submit" value="Change Password" class="btn" />
     		<br />
     	</div>
-    	 
-    
     <?php
-    
-    echo form_close(); 
-
-?>
+    echo form_close();
+    ?>
 
  </body>
 </html>
