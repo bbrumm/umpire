@@ -1,12 +1,8 @@
 <?php
 function getCellClassNameFromOutputValue($valueToCheck, $isTable) {
-    $limitGenericLevel1 = 3;
-    $limitGenericLevel2 = 4;
-    $limitGenericLevel3 = 5;
-
-    $limitLevel1 = $limitGenericLevel1;
-    $limitLevel2 = $limitGenericLevel2;
-    $limitLevel3 = $limitGenericLevel3;
+    $limitLevel1 = 3;
+    $limitLevel2 = 4;
+    $limitLevel3 = 5;
 
     if ($isTable) {
         switch ($valueToCheck) {
