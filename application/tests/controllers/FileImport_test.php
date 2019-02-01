@@ -53,14 +53,15 @@ class FileImport_test extends TestCase
         $this->assertContains($expected, $output);
     }
 
-
+/*
+ * TODO: This test takes >10 minutes to run on Travis. Look into why it takes so long.
     public function test_RunETLProcess() {
         $output = $this->request('POST', ['FileImport', 'runETLProcess']);
         $expected = "Upload completed!";
         $this->assertContains($expected, $output);
 
     }
-
+*/
 
     public function test_ImportFile_NewData() {
 

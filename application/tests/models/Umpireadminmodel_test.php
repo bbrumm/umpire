@@ -29,12 +29,14 @@ class Umpireadminmodel_test extends TestCase
 
     }
 
+    /*
     public function test_GetAllUmpiresAndValues_NoRecords() {
         $this->expectException(Exception::class);
         $arrayStore = new Array_store_umpire_admin_empty();
         $actualUmpireArray = $this->obj->getAllUmpiresAndValues($arrayStore);
 
     }
+    */
 
     public function test_UpdateUmpireValues_Valid() {
         $arrayStore = new Array_store_umpire_admin();

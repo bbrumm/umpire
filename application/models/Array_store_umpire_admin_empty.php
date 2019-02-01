@@ -15,23 +15,12 @@ class Array_store_umpire_admin_empty extends CI_Model implements IData_store_ump
         return $umpireArray;
     }
 
-    public function updateUmpireRecords($pUmpireArray) {
+    public function updateUmpireRecords($pUmpireArray) {}
 
-    }
+    public function logUmpireGamesHistory($pChangedUmpireArray) {}
 
-    public function logUmpireGamesHistory($pChangedUmpireArray) {
+    public function updateDimUmpireTable() {}
 
-
-    }
-
-    public function updateDimUmpireTable() {
-
-    }
-
-    public function updateMVReport8Table() {
-
-    }
-
-
+    public function updateMVReport8Table() {}
 
 }
