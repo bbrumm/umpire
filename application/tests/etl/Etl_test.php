@@ -1517,7 +1517,7 @@ SELECT
     }
 
     //Deliberately not testing reports 7 and 8. Tests from the other reports should identify any issues with these
-/*
+
     public function test_DisplayReport01() {
         $postArray = array(
             'reportName'=>'1',
@@ -1654,6 +1654,6 @@ SELECT
         $expected = "<h1>08 - Umpire Games Tally</h1>";
         $this->assertContains($expected, $output);
     }
-*/
+
 
 }
