@@ -7,7 +7,6 @@ class Array_store_umpire_admin_empty extends CI_Model implements IData_store_ump
         $this->load->database();
         $this->load->library('Debug_library');
         $this->load->model('Umpire');
-
     }
 
     public function getAllUmpiresAndValues() {
