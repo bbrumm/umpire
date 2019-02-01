@@ -114,7 +114,7 @@ class ForgotPassword_test extends TestCase
         $this->assertContains($expected, $output);
     }
 
-    /*
+
     public function test_SubmitChangePasswordForm_ValidButNotSent() {
         $postArray = array(
             'username'=>'bbtest2',
@@ -129,16 +129,16 @@ class ForgotPassword_test extends TestCase
 
     public function test_SubmitChangePasswordForm_ValidButSendFalse() {
         $postArray = array(
-            'username'=>'bbrummtest',
-            'emailAddress'=>'brummthecar@gmail.com'
+            'username' => 'bbrummtest',
+            'emailAddress' => 'brummthecar@gmail.com'
         );
 
         $output = $this->request('POST', ['ForgotPassword', 'submitChangePasswordForm', false], $postArray);
         $expected = "You should now receive an email to confirm your password reset.";
 
         $this->assertContains($expected, $output);
+
     }
-    */
 
 
 }
