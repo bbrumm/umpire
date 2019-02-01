@@ -47,7 +47,8 @@ VALUES
 (18, 'kclissold', 'kelvin@clissold.id.au', 'x', 'Kel', 'Clissold', 4, 1),
 (19, 'rsteel', 'rvnsteel@bigpond.com.au', 'x', 'Robert', 'Steel', 4, 1),
 (21, 'bsmith', 'None', 'x', 'Brad', 'Smith', 6, 1),
-(24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 3, 1);
+(24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 3, 1),
+(25, 'bbtest2', 'None', '81dc9bdb52d04dc20036dbd8313ed055', 'bb1F', 'bb1L', NULL, 1);
 
 CREATE TABLE role (
   id int(11) NOT NULL AUTO_INCREMENT,
