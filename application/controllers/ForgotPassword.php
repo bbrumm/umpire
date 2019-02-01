@@ -75,52 +75,51 @@ class ForgotPassword extends CI_Controller {
         $data['email_address_entered'] = $umpireUser->getEmailAddress();
 
         $logRequest = $userMaintenance->logPasswordResetRequest($dbStore, $data);
-        
+
         //Check user data entered: user exists, email matches user
-        if($userMaintenance->checkUserExistsForReset($dbStore, $umpireUser)) {
-            
+        $userExists = $userMaintenance->checkUserExistsForReset($dbStore, $umpireUser);
+        if($userExists) {
             $encoded_email = urlencode($pEmailAddress);
             //TODO: Move this into a separate function
-            if($logRequest) {
-                $userPermissionLoader->getUserFromUsername($dbStore, $pUserName);
-                $umpireUser->setPasswordResetURL(base_url() . "index.php/ResetPasswordEntry/load/" . $data['activation_id']);
+            $userPermissionLoader->getUserFromUsername($dbStore, $pUserName);
+            $umpireUser->setPasswordResetURL(base_url() . "index.php/ResetPasswordEntry/load/" . $data['activation_id']);
+            $userMaintenance->storeActivationID($dbStore, $umpireUser, $data['activation_id']);
 
-                $userMaintenance->storeActivationID($dbStore, $umpireUser, $data['activation_id']);
-
-                //Send the email only if the flag is set. Flag is set to false for component testing.
-                if ($pSendEmail) {
-                    $sendStatus = $this->sendPasswordResetEmail($umpireUser);
-                } else {
-                    $sendStatus = true;
-                }
-                
-                if($sendStatus){
-                    $sendStatusInfo = array();
-                    $sendStatusInfo['status'] = "sent";
-                    $sendStatusInfo['message'] = 
-                        "Please check your email for a link to reset your password.";
-                    $sendStatusInfo['passwordResetURL'] = $umpireUser->getPasswordResetURL();
-                } else {
-                    $sendStatusInfo['status'] = "not sent";
-                    $sendStatusInfo['message'] = 
-                        "The email has failed to send. Please check the data you have entered and try again, or contact support.";
-                }
+            //Send the email only if the flag is set. Flag is set to false for component testing.
+            if ($pSendEmail) {
+                $sendStatus = $this->sendPasswordResetEmail($umpireUser);
             } else {
-                $sendStatusInfo['status'] = "unable";
-                $sendStatusInfo['message'] = 
-                    "There was an error while attempting to generate the password reset request. Please try again or contact support.";
+                $sendStatus = true;
             }
-               
+        } else {
+            $sendStatus = false;
+        }
+        $sendStatusInfo = $this->getSendStatusInfo($umpireUser, $sendStatus, $userExists);
+        return $sendStatusInfo;
+    }
+
+    private function getSendStatusInfo(User $pUmpireUser, $pSendStatus, $pUserExists) {
+        if ($pUserExists) {
+            if ($pSendStatus) {
+                $sendStatusInfo['status'] = "sent";
+                $sendStatusInfo['message'] =
+                    "Please check your email for a link to reset your password.";
+                $sendStatusInfo['passwordResetURL'] = $pUmpireUser->getPasswordResetURL();
+            } else {
+                $sendStatusInfo['status'] = "not sent";
+                $sendStatusInfo['message'] =
+                    "The email has failed to send. Please check the data you have entered and try again, or contact support.";
+            }
         } else {
             $sendStatusInfo['status'] = "incorrect";
             $sendStatusInfo['message'] =
                 "Username or email address not found. Please try again or contact support.";
         }
-        
+
         return $sendStatusInfo;
     }
     
-    private function sendPasswordResetEmail($pUser) {
+    private function sendPasswordResetEmail(User $pUser) {
         $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://umpirereporting.com',
@@ -142,7 +141,7 @@ Ben - UmpireReporting";
         
         $this->load->library('email', $config);
         $this->email->from('support@umpirereporting.com', 'Umpire Reporting');
-        $this->email->to('brummthecar@gmail.com');
+        $this->email->to($pUser->getEmailAddress());
         
         $this->email->subject('Umpire Reporting: Password Reset');
         $this->email->message($emailMessage);
