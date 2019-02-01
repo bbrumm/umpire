@@ -264,13 +264,9 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
         }
     }
 
-    public function insertAgeGroupDivision($competitionData) {
+    public function insertAgeGroupDivision($competitionData) {}
 
-    }
-
-    public function updateTeamAndClubTables(IData_store_matches $pDataStore, array $pPostData) {
-
-    }
+    public function updateTeamAndClubTables(IData_store_matches $pDataStore, array $pPostData) {}
     
     public function insertNewClub($pClubName) {
         $queryString = "INSERT INTO club (club_name) VALUES (?);";
@@ -331,17 +327,11 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
         return $selectableReportOptionsForParameter;
     }
 
-    public function getUserNameFromActivationID(User $pUser) {
-        
-    }
+    public function getUserNameFromActivationID(User $pUser) {}
 
-    public function findOldUserPassword(User $pUser) {
+    public function findOldUserPassword(User $pUser) {}
 
-    }
-
-    public function checkUserFoundForUsername($pUsername) {
-
-    }
+    public function checkUserFoundForUsername($pUsername) {}
 
     public function loadReportData(Parent_report $separateReport, Report_instance $reportInstance) {
         $queryForReport = $separateReport->getReportDataQuery($reportInstance);

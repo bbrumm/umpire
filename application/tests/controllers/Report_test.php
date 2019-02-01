@@ -205,5 +205,30 @@ VALUES (2018, 'Smith, John', 10, 12, 'Smith', 'John');";
         $this->assertContains($expected, $output);
     }
 
+    public function test_ReportNumberNotFound() {
+        $this->expectException(Exception::class);
+        $postArray = array(
+            'reportName'=>'12',
+            'season'=>2018,
+            //'rdRegion'=>'Geelong',
+            'chkRegionHidden'=>'Geelong',
+            //'chkAgeGroup'=>array('Seniors'),
+            'chkAgeGroupHidden'=>'Seniors',
+            //'chkUmpireDiscipline'=>array('Field'),
+            'chkUmpireDisciplineHidden'=>'Field',
+            //'chkLeague'=>array('GFL'),
+            'chkLeagueHidden'=>'GFL'
+        );
+
+        //Load page
+        //This is done to prevent this error message:
+        //"Test code or tested code did not (only) close its own output buffers"
+        try {
+            $output = $this->request('POST', ['Report', 'index'], $postArray);
+        } finally {
+            $output = ob_get_clean();
+        }
+    }
+
 
 }

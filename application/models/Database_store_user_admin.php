@@ -191,6 +191,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
 
     public function getUserPrivileges() {
 
+
     }
 
     public function addUserPrivilege($username, $permission_selection_id) {
