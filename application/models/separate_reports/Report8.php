@@ -96,10 +96,11 @@ class Report8 extends Parent_report implements IReport {
     }
     
 
-
+    /*
     private function isFieldMatchingSeasonYear($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
         return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet['season_year']);
     }
+
 
     public function isFieldMatchingColumnReport8($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
         switch (count($pReportColumnFields)) {
@@ -116,7 +117,7 @@ class Report8 extends Parent_report implements IReport {
                 throw new InvalidArgumentException("Count of report column fields needs to be between 1 and 3.");
         }
     }
-
+    */
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
         $pivotedArray = array();

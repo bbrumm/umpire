@@ -44,7 +44,7 @@ class UserAdmin_test extends TestCase
         //Delete any users with this name first
         $newUserName = 'bbrummtest_newvalid';
         $queryString = "DELETE FROM umpire_users WHERE user_name = '". $newUserName ."'";
-        $query = $this->dbLocal->query($queryString);
+        $this->dbLocal->query($queryString);
 
 
         $sessionArray['logged_in'] = array('username' => 'bbrummtest');
@@ -71,6 +71,10 @@ class UserAdmin_test extends TestCase
         $expectedCount = 1;
         $actualCount = $queryResultArray[0]['rowcount'];
         $this->assertEquals($expectedCount, $actualCount);
+
+        //Delete user now we are finished with it
+        $queryString = "DELETE FROM umpire_users WHERE user_name = '". $newUserName ."'";
+        $this->dbLocal->query($queryString);
 
     }
 

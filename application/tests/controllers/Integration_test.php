@@ -21,7 +21,7 @@ class Integration_test extends TestCase
         $queryString = "SELECT season_year FROM season ORDER BY id;";
         $query = $this->db->query($queryString);
         $resultArray = $query->result();
-        $expectedArray = array(2015, 2016, 2017, 2018);
+        $expectedArray = array(2015, 2016, 2017, 2018, 2019);
         foreach ($expectedArray as $key=>$value) {
             $this->assertEquals($value, $resultArray[$key]->season_year);
         }
@@ -1100,9 +1100,11 @@ ORDER BY id;";
     }
 
     public function test_UsersLocalVsProd() {
+        //Query excludes test users that are used to test user login scenarios
         $queryString = "SELECT 
 user_name, first_name, last_name, role_id, active
 FROM umpire_users
+WHERE user_name NOT IN ('bbrummtest', 'bbtest2')
 ORDER BY id;";
         $queryProd = $this->db->query($queryString);
         $queryLocal = $this->dbLocal->query($queryString);
