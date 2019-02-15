@@ -113,19 +113,16 @@ class Report2 extends Parent_report implements IReport {
                     //Loop through each row and column intersection in the result array
                     //Match the column headings to the values in the array
                     if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
-			if ($columnHeadingSet['short_league_name'] != '2 Umpires') {
-			    $totalForRow = $totalForRow + $columnItem['match_count'];
-			}
-		    	//Set the "2 Umpires" match count to the total so far of rows marked as two_ump_flag=1
-		   	 if ($columnHeadingSet['short_league_name'] == '2 Umpires') {
-				$twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem['match_count'];
-				//$this->debug_library->debugOutput("twoUmpGamesForRow:", $twoUmpGamesForRow);
-				$resultOutputArray[$currentResultArrayRow][$columnNumber] = $twoUmpGamesForRow;
-		 	   }
-
+                        if ($columnHeadingSet['short_league_name'] != '2 Umpires') {
+                            $totalForRow = $totalForRow + $columnItem['match_count'];
+                        }
+                        //Set the "2 Umpires" match count to the total so far of rows marked as two_ump_flag=1
+                        if ($columnHeadingSet['short_league_name'] == '2 Umpires') {
+                            $twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem['match_count'];
+                            //$this->debug_library->debugOutput("twoUmpGamesForRow:", $twoUmpGamesForRow);
+                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $twoUmpGamesForRow;
+                        }
                         $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
-                        
-
                     }
                 }
             }
