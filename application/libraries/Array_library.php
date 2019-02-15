@@ -10,7 +10,6 @@ class Array_library {
         //$this->ci->config->load('mylib');
     
     }
-    
 
     public function in_array_r($needle, $haystack, $strict = false) {
     	foreach ($haystack as $item) {
@@ -21,30 +20,6 @@ class Array_library {
     
     	return false;
     }
-    
-    /*
-    public function sortByOrder($a, $b) {
-    	return $a['1'] - $b['1'];
-    }
-    
-    public function sortArray($a, $b) {
-    	$sortResult = strcasecmp( $a[0], $b[0]);
-    	if ($sortResult === 0 && array_key_exists(1, $a)) {
-    		$sortResult = strcasecmp( $a[1], $b[1]);
-    		if ($sortResult === 0 && array_key_exists(2, $a)) {
-    			$sortResult = strcasecmp( $a[2], $b[2]);
-    		}
-    	}
-    	
-    	return $sortResult;
-    	
-    }
-
-    
-    public function compareStringValues($a, $b) {
-	    return strcmp($a, $b);
-	}
-	*/
 
 	public function findRecursiveArrayDiff($array1, $array2) {
 	    //This function assumes that both arrays have the same keys, which works for the user permissions, but may not work elsewhere.
@@ -82,14 +57,28 @@ class Array_library {
 
     public function findArrayDBObjectDiff($array1, $array2, $pFieldName) {
 	    $arrayDifferences = [];
-        foreach ($array1 as $key=>$subArray) {
-            if($subArray->$pFieldName != $array2[$key]->$pFieldName) {
+        if (count($array1) < count($array2)) {
+            $largerArray = $array2;
+            $smallerArray = $array1;
+        } else {
+            $largerArray = $array1;
+            $smallerArray = $array2;
+        }
+
+        foreach ($largerArray as $key => $subArray) {
+            //Check if the second array has an element in this position.
+            //There's a chance it may be smaller than array1
+            if(isset($smallerArray[$key])) {
+                if ($subArray->$pFieldName != $smallerArray[$key]->$pFieldName) {
+                    $arrayDifferences[] = $subArray->$pFieldName;
+                }
+            } else {
+                //Array2 does not have an element in this position. Mark it as an array difference
                 $arrayDifferences[] = $subArray->$pFieldName;
             }
-
         }
-        return $arrayDifferences;
 
+        return $arrayDifferences;
 
     }
 
