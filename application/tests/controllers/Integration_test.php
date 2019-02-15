@@ -1104,7 +1104,7 @@ ORDER BY id;";
         $queryString = "SELECT 
 user_name, first_name, last_name, role_id, active
 FROM umpire_users
-WHERE user_name NOT IN ('bbrummtest', 'bbtest2')
+WHERE user_name NOT IN ('bbrummtest', 'bbtest2', 'bbrummtest_newvalid')
 ORDER BY id;";
         $queryProd = $this->db->query($queryString);
         $queryLocal = $this->dbLocal->query($queryString);

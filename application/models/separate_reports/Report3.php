@@ -157,14 +157,9 @@ class Report3 extends Parent_report implements IReport {
         $counterForRow = 0;
         $previousRowLabel[0] = "";
         foreach ($pResultArray as $resultRow) {
-
             $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pFieldForRowLabel, $previousRowLabel);
             $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]];
-            if (array_key_exists(1, $pFieldForRowLabel)) {
-                $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]];
-            }
             foreach ($pFieldsForColumnLabel as $columnField) {
-
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, $columnField, $columnField);
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "match_count", "match_count");
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "team_list", "team_list");

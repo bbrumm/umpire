@@ -108,18 +108,14 @@ class Report5 extends Parent_report implements IReport {
         $counterForRow = 0;
         $previousRowLabel[0] = "";
         foreach ($pResultArray as $resultRow) {
-
             $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pFieldForRowLabel, $previousRowLabel);
             $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]];
+            //Check if there is a second row that is being grouped.
+            //This should only exist for report 5, according to the report_grouping_structure table
             if (array_key_exists(1, $pFieldForRowLabel)) {
                 $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]];
             }
             foreach ($pFieldsForColumnLabel as $columnField) {
-
-                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, $columnField, $columnField);
-                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "match_count", "match_count");
-
-
                 $rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[1]];
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "short_league_name");
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "age_group");
@@ -127,7 +123,6 @@ class Report5 extends Parent_report implements IReport {
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "match_no_ump");
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "total_match_count");
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "match_pct");
-
             }
             $counterForRow++;
         }

@@ -97,6 +97,9 @@ class Report_instance_test extends TestCase
 
     }
 
+
+
+
     //TODO Test this later once full app is working and I know the expected array output
     /*
     public function test_FormattedOutput() {
