@@ -94,7 +94,6 @@ class Report2 extends Parent_report implements IReport {
      */
     public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
-
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
 
@@ -113,14 +112,12 @@ class Report2 extends Parent_report implements IReport {
                     //Loop through each row and column intersection in the result array
                     //Match the column headings to the values in the array
                     if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
-                        if ($columnHeadingSet['short_league_name'] != '2 Umpires') {
-                            $totalForRow = $totalForRow + $columnItem['match_count'];
-                        }
-                        //Set the "2 Umpires" match count to the total so far of rows marked as two_ump_flag=1
-                        if ($columnHeadingSet['short_league_name'] == '2 Umpires') {
+                        if($this->isShortLeagueNameSetTo2Umpires($columnHeadingSet)) {
+                            //Set the "2 Umpires" match count to the total so far of rows marked as two_ump_flag=1
                             $twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem['match_count'];
-                            //$this->debug_library->debugOutput("twoUmpGamesForRow:", $twoUmpGamesForRow);
                             $resultOutputArray[$currentResultArrayRow][$columnNumber] = $twoUmpGamesForRow;
+                        } else {
+                            $totalForRow = $totalForRow + $columnItem['match_count'];
                         }
                         $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
                     }
@@ -131,6 +128,14 @@ class Report2 extends Parent_report implements IReport {
             $currentResultArrayRow++;
         }
         return $resultOutputArray;
+    }
+
+    private function isShortLeagueNameSetTo2Umpires($pColumnHeadingSet) {
+        if ($pColumnHeadingSet['short_league_name'] == '2 Umpires') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
