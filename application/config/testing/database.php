@@ -102,6 +102,29 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
+$db['local_dbunittest'] = array(
+    'dsn'	=> '',
+    'hostname' => '127.0.0.1',
+    'username' => 'root',
+    'password' => 'root',
+    'port' => '3306',
+    'database' => 'dbunittest',
+    'dbdriver' => 'mysqli',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
+
 //This group is used to get the Integration Tests to connect to the prod database.
 //$dburl = "mysql://bda094d72cdd29:3a309e78@us-cdbr-iron-east-01.cleardb.net/heroku_41ca7f8990ac2d3?reconnect=true";
 $url = parse_url(getenv("CLEARDB_DATABASE_URL_CI"));
