@@ -69,6 +69,8 @@ class Etl_procedure_steps extends CI_Model
         */
         $this->insertNewTeams($pImportedFileID);
         $this->insertNewGrounds($pImportedFileID);
+
+        $this->commitTransaction();
     }
 
     /*
@@ -76,6 +78,11 @@ class Etl_procedure_steps extends CI_Model
     */
     private function runQuery($pQueryString) {
         return $this->db->query($pQueryString);
+    }
+
+    private function commitTransaction() {
+        $queryString = "COMMIT;";
+        $this->runQuery($queryString);
     }
 
     private function disableKeys($pTableName) {
