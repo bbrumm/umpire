@@ -1,6 +1,6 @@
 <?php
 
-class Report_data_test extends TestCase {
+class Report_data_duplicates extends TestCase {
 
     private $dataImported = false;
 
@@ -17,7 +17,12 @@ class Report_data_test extends TestCase {
         //It's helpful when debugging why something works on localhost but not on Travis
         //$this->dbLocal = $this->CI->load->database('local_dbunittest', TRUE);
 
-        $this->importData();
+        //$this->importData();
+        $this->importDWData();
+
+    }
+
+    private function importDWData() {
 
     }
 

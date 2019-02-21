@@ -516,7 +516,32 @@ WHERE ti2.date_year = $pSeasonYear;";
     private function updateTableMV8($pSeasonYear) {
         //Use the baseline data if the imported year is not 2018
         //This is because annual report/baseline data is more correct than the master spreadsheets
-        if ($pSeasonYear == 2018) {
+        if ($pSeasonYear <= 2017) {
+            $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count, last_name, first_name)
+                SELECT
+                '$pSeasonYear',
+                CONCAT(b.last_name, ', ', b.first_name),
+                b.games_$pSeasonYear,
+                b.last_name,
+                b.first_name
+                FROM umpire_match_baseline b
+                UNION ALL
+                SELECT DISTINCT
+                'Games Prior',
+                u.last_first_name,
+                u.games_prior,
+                u.last_name,
+                u.first_name
+                FROM dw_dim_umpire u
+                UNION ALL
+                SELECT DISTINCT
+                'Games Other Leagues',
+                u.last_first_name,
+                u.games_other_leagues,
+                u.last_name,
+                u.first_name
+                FROM dw_dim_umpire u;";
+        } else {
             $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count, last_name, first_name)
                 SELECT
                 ti.date_year,
@@ -546,31 +571,6 @@ WHERE ti2.date_year = $pSeasonYear;";
                 u.last_name,
                 u.first_name
                 FROM dw_dim_umpire u;";
-        } else {
-            $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count, last_name, first_name)
-            SELECT
-            '$pSeasonYear',
-            CONCAT(b.last_name, ', ', b.first_name),
-            b.games_$pSeasonYear,
-            b.last_name,
-            b.first_name
-            FROM umpire_match_baseline b
-            UNION ALL
-            SELECT DISTINCT
-            'Games Prior',
-            u.last_first_name,
-            u.games_prior,
-            u.last_name,
-            u.first_name
-            FROM dw_dim_umpire u
-            UNION ALL
-            SELECT DISTINCT
-            'Games Other Leagues',
-            u.last_first_name,
-            u.games_other_leagues,
-            u.last_name,
-            u.first_name
-            FROM dw_dim_umpire u;";
         }
         $this->runQuery($queryString);
     }

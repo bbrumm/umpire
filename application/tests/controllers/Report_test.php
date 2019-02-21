@@ -5,17 +5,107 @@ class Report_test extends TestCase
         $this->resetInstance();
         $_POST = array();
         $this->dbLocal = $this->CI->load->database('default', TRUE);
+
+        $this->importDWData();
     }
 
+    private function importDWData() {
+        if ($this->dataAlreadyImported() == false) {
+            //Import data so that these report tests run on real data
+            $this->import2018Data();
+        }
+    }
 
-    //TODO: Insert data into these tables as part of the test, so this criteria is met.
-    //Seems to be dependent on other tests at the moment.
+    private function dataAlreadyImported() {
+        $queryString = "SELECT COUNT(*) AS rec_count FROM dw_mv_report_01 WHERE season_year = 2018;";
+        $query = $this->dbLocal->query($queryString);
+        $resultArrayReal = $query->result();
+
+        $queryString = "SELECT COUNT(*) AS rec_count FROM backup_report_01_2018;";
+        $query = $this->dbLocal->query($queryString);
+        $resultArrayBackup = $query->result();
+
+        $recordsInRealTable = $resultArrayReal[0]->rec_count;
+        $recordsInBackupTable = $resultArrayBackup[0]->rec_count;
+        return ($recordsInRealTable == $recordsInBackupTable);
+    }
+
+    private function import2018Data() {
+        //Import data from each of the backup tables into the real table, using a range of "insert into selects"
+        //Report 1
+        $queryString = "DELETE FROM dw_mv_report_01 WHERE season_year = 2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "INSERT INTO dw_mv_report_01 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, match_count, season_year)
+SELECT last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, match_count, season_year
+FROM backup_report_01_2018;";
+        $this->dbLocal->query($queryString);
+
+        //Report 2
+        $queryString = "DELETE FROM dw_mv_report_02 WHERE season_year = 2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "INSERT INTO dw_mv_report_02 (last_first_name, short_league_name, age_group, age_sort_order, league_sort_order, two_ump_flag, region_name, umpire_type, match_count, season_year)
+SELECT last_first_name, short_league_name, age_group, age_sort_order, league_sort_order, two_ump_flag, region_name, umpire_type, match_count, season_year
+FROM backup_report_02_2018;";
+        $this->dbLocal->query($queryString);
+
+        //Report 3
+        $queryString = "DELETE FROM staging_no_umpires WHERE season_year = 2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "INSERT INTO staging_no_umpires (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
+SELECT weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year
+FROM backup_report_03_2018;";
+        $this->dbLocal->query($queryString);
+
+        //Report 4
+        $queryString = "DELETE FROM dw_mv_report_04 WHERE season_year = 2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "INSERT INTO dw_mv_report_04 (club_name, age_group, short_league_name, region_name, umpire_type, age_sort_order, league_sort_order, match_count, season_year)
+SELECT club_name, age_group, short_league_name, region_name, umpire_type, age_sort_order, league_sort_order, match_count, season_year
+FROM backup_report_04_2018;";
+        $this->dbLocal->query($queryString);
+
+        //Report 5
+        $queryString = "DELETE FROM dw_mv_report_06 WHERE season_year = 2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "INSERT INTO dw_mv_report_05 (umpire_type, age_group, age_sort_order, short_league_name, league_sort_order, region_name, match_no_ump, total_match_count, match_pct, season_year)
+SELECT umpire_type, age_group, age_sort_order, short_league_name, league_sort_order, region_name, match_no_ump, total_match_count, match_pct, season_year
+FROM backup_report_05_2018;";
+        $this->dbLocal->query($queryString);
+
+        //Report 6
+        $queryString = "DELETE FROM dw_mv_report_07 WHERE season_year = 2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "INSERT INTO dw_mv_report_06 (umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count, short_league_name)
+SELECT umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count, short_league_name
+FROM backup_report_06_2018;";
+        $this->dbLocal->query($queryString);
+
+        //Report 7
+        $queryString = "DELETE FROM dw_mv_report_08 WHERE season_year = 2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "INSERT INTO dw_mv_report_07 (umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count)
+SELECT umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count
+FROM backup_report_07_2018;";
+        $this->dbLocal->query($queryString);
+
+        $queryString = "COMMIT;";
+        $this->dbLocal->query($queryString);
+
+    }
+
     public function test_Report1() {
-        $queryString = "INSERT INTO dw_mv_report_01 
+        /*$queryString = "INSERT INTO dw_mv_report_01
 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, match_count, season_year)
 VALUES ('Smith, John', 'GFL', 'Clubname', 'Seniors', 'Geelong', 'Field', 3, 2018);";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $postArray = array(
             'reportName'=>'1',
             'season'=>2018,
@@ -35,11 +125,11 @@ VALUES ('Smith, John', 'GFL', 'Clubname', 'Seniors', 'Geelong', 'Field', 3, 2018
     }
 
     public function test_Report2() {
-        $queryString = "INSERT INTO dw_mv_report_02
+        /*$queryString = "INSERT INTO dw_mv_report_02
 (last_first_name, short_league_name, age_group, age_sort_order, league_sort_order, two_ump_flag, region_name, umpire_type, match_count, season_year)
 VALUES ('Smith, John', 'GFL', 'Seniors', 1, 1, 0, 'Geelong', 'Field', 3, 2018);";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $postArray = array(
             'reportName'=>'2',
             'season'=>2018,
@@ -59,11 +149,11 @@ VALUES ('Smith, John', 'GFL', 'Seniors', 1, 1, 0, 'Geelong', 'Field', 3, 2018);"
     }
 
     public function test_Report3() {
-        $queryString = "INSERT INTO staging_no_umpires 
+        /*$queryString = "INSERT INTO staging_no_umpires
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $queryString = "INSERT INTO staging_all_ump_age_league VALUES ('Seniors','Goal','Women','Geelong',1,1);";
         $query = $this->dbLocal->query($queryString);
 
@@ -86,11 +176,11 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
     }
 
     public function test_Report4() {
-        $queryString = "INSERT INTO dw_mv_report_04 
+        /*$queryString = "INSERT INTO dw_mv_report_04
 (club_name, age_group, short_league_name, region_name, umpire_type, age_sort_order, league_sort_order, match_count, season_year)
 VALUES ('Club name', 'Seniors', 'GFL', 'Geelong', 'Field', 1, 1, 5, 2018);";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $postArray = array(
             'reportName'=>'4',
             'season'=>2018,
@@ -110,11 +200,11 @@ VALUES ('Club name', 'Seniors', 'GFL', 'Geelong', 'Field', 1, 1, 5, 2018);";
     }
 
     public function test_Report5() {
-        $queryString = "INSERT INTO dw_mv_report_05
+        /*$queryString = "INSERT INTO dw_mv_report_05
 (umpire_type, age_group, age_sort_order, short_league_name, league_sort_order, region_name, match_no_ump, total_match_count, match_pct, season_year)
 VALUES ('Field', 'Seniors', 1, 'GFL', 2, 'Geelong', 4, 8, 50, 2018);";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $postArray = array(
             'reportName'=>'5',
             'season'=>2018,
@@ -134,11 +224,11 @@ VALUES ('Field', 'Seniors', 1, 'GFL', 2, 'Geelong', 4, 8, 50, 2018);";
     }
 
     public function test_Report6() {
-        $queryString = "INSERT INTO dw_mv_report_06
+        /*$queryString = "INSERT INTO dw_mv_report_06
 (umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count, short_league_name)
 VALUES ('Field', 'Seniors', 'Geelong', 'Smith, John', 'Jones, Susan', 2018, 6, 'GFL');";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $postArray = array(
             'reportName'=>'6',
             'season'=>2018,
@@ -158,11 +248,11 @@ VALUES ('Field', 'Seniors', 'Geelong', 'Smith, John', 'Jones, Susan', 2018, 6, '
     }
 
     public function test_Report7() {
-        $queryString = "INSERT INTO dw_mv_report_07
+        /*$queryString = "INSERT INTO dw_mv_report_07
 (umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count)
 VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $postArray = array(
             'reportName'=>'7',
             'season'=>2018,
@@ -182,11 +272,11 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
     }
 
     public function test_Report8() {
-        $queryString = "INSERT INTO dw_mv_report_08
+        /*$queryString = "INSERT INTO dw_mv_report_08
 (season_year, full_name, match_count, total_match_count, last_name, first_name)
 VALUES (2018, 'Smith, John', 10, 12, 'Smith', 'John');";
         $query = $this->dbLocal->query($queryString);
-
+        */
         $postArray = array(
             'reportName'=>'8',
             'season'=>2018,
@@ -229,7 +319,5 @@ VALUES (2018, 'Smith, John', 10, 12, 'Smith', 'John');";
             $output = ob_get_clean();
         }
     }
-
-
 
 }

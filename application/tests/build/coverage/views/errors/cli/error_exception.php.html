@@ -52,14 +52,9 @@
       <td class=" small"><div align="right">n/a</div></td>
       <td class=" small"><div align="right">0&nbsp;/&nbsp;0</div></td>
       <td class=" small"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></td>
-      <td class="danger big">       <div class="progress">
-         <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0.00" aria-valuemin="0" aria-valuemax="100" style="width: 0.00%">
-           <span class="sr-only">0.00% covered (danger)</span>
-         </div>
-       </div>
-</td>
-      <td class="danger small"><div align="right">0.00%</div></td>
-      <td class="danger small"><div align="right">0&nbsp;/&nbsp;2</div></td>
+      <td class=" big"></td>
+      <td class=" small"><div align="right">n/a</div></td>
+      <td class=" small"><div align="right">0&nbsp;/&nbsp;0</div></td>
      </tr>
 
 
@@ -69,7 +64,7 @@
     <tbody>
      <tr><td><div align="right"><a name="1"></a><a href="#1">1</a></div></td><td class="codeLine"><span class="default">&lt;?php&nbsp;</span><span class="default">defined</span><span class="keyword">(</span><span class="default">'BASEPATH'</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">OR</span><span class="default">&nbsp;</span><span class="keyword">exit</span><span class="keyword">(</span><span class="default">'No&nbsp;direct&nbsp;script&nbsp;access&nbsp;allowed'</span><span class="keyword">)</span><span class="keyword">;</span><span class="default">&nbsp;</span><span class="default">?&gt;</span></td></tr>
      <tr><td><div align="right"><a name="2"></a><a href="#2">2</a></div></td><td class="codeLine"></td></tr>
-     <tr class="danger"><td><div align="right"><a name="3"></a><a href="#3">3</a></div></td><td class="codeLine"><span class="html">An&nbsp;uncaught&nbsp;Exception&nbsp;was&nbsp;encountered</span></td></tr>
+     <tr><td><div align="right"><a name="3"></a><a href="#3">3</a></div></td><td class="codeLine"><span class="html">An&nbsp;uncaught&nbsp;Exception&nbsp;was&nbsp;encountered</span></td></tr>
      <tr><td><div align="right"><a name="4"></a><a href="#4">4</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="5"></a><a href="#5">5</a></div></td><td class="codeLine"><span class="html">Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">&lt;?php&nbsp;</span><span class="keyword">echo</span><span class="default">&nbsp;</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$exception</span><span class="keyword">)</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">&quot;\n&quot;</span><span class="keyword">;</span><span class="default">&nbsp;</span><span class="default">?&gt;</span></td></tr>
      <tr><td><div align="right"><a name="6"></a><a href="#6">6</a></div></td><td class="codeLine"><span class="html">Message:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">&lt;?php&nbsp;</span><span class="keyword">echo</span><span class="default">&nbsp;</span><span class="default">$message</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">&quot;\n&quot;</span><span class="keyword">;</span><span class="default">&nbsp;</span><span class="default">?&gt;</span></td></tr>
@@ -78,7 +73,7 @@
      <tr><td><div align="right"><a name="9"></a><a href="#9">9</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="10"></a><a href="#10">10</a></div></td><td class="codeLine"><span class="default">&lt;?php&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">defined</span><span class="keyword">(</span><span class="default">'SHOW_DEBUG_BACKTRACE'</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="default">&amp;&amp;</span><span class="default">&nbsp;</span><span class="default">SHOW_DEBUG_BACKTRACE</span><span class="default">&nbsp;</span><span class="default">===</span><span class="default">&nbsp;</span><span class="default">TRUE</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="default">?&gt;</span></td></tr>
      <tr><td><div align="right"><a name="11"></a><a href="#11">11</a></div></td><td class="codeLine"></td></tr>
-     <tr class="danger"><td><div align="right"><a name="12"></a><a href="#12">12</a></div></td><td class="codeLine"><span class="html">Backtrace:</span></td></tr>
+     <tr><td><div align="right"><a name="12"></a><a href="#12">12</a></div></td><td class="codeLine"><span class="html">Backtrace:</span></td></tr>
      <tr><td><div align="right"><a name="13"></a><a href="#13">13</a></div></td><td class="codeLine"><span class="default">&lt;?php&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">foreach</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$exception</span><span class="default">-&gt;</span><span class="default">getTrace</span><span class="keyword">(</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">as</span><span class="default">&nbsp;</span><span class="default">$error</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="default">?&gt;</span></td></tr>
      <tr><td><div align="right"><a name="14"></a><a href="#14">14</a></div></td><td class="codeLine"><span class="default">&lt;?php&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="keyword">isset</span><span class="keyword">(</span><span class="default">$error</span><span class="keyword">[</span><span class="default">'file'</span><span class="keyword">]</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="default">&amp;&amp;</span><span class="default">&nbsp;</span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$error</span><span class="keyword">[</span><span class="default">'file'</span><span class="keyword">]</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">realpath</span><span class="keyword">(</span><span class="default">BASEPATH</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="default">!==</span><span class="default">&nbsp;</span><span class="default">0</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="default">?&gt;</span></td></tr>
      <tr><td><div align="right"><a name="15"></a><a href="#15">15</a></div></td><td class="codeLine"><span class="html">&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;</span><span class="default">&lt;?php&nbsp;</span><span class="keyword">echo</span><span class="default">&nbsp;</span><span class="default">$error</span><span class="keyword">[</span><span class="default">'file'</span><span class="keyword">]</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">&quot;\n&quot;</span><span class="keyword">;</span><span class="default">&nbsp;</span><span class="default">?&gt;</span></td></tr>
@@ -100,7 +95,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 5.3.2</a> using <a href="https://secure.php.net/" target="_top">PHP 7.2.8</a> with <a href="https://xdebug.org/">Xdebug 2.6.1</a> and <a href="https://phpunit.de/">PHPUnit 6.5.13</a> at Tue Nov 27 7:01:27 AEDT 2018.</small>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 5.3.2</a> using <a href="https://secure.php.net/" target="_top">PHP 7.2.8</a> with <a href="https://xdebug.org/">Xdebug 2.6.1</a> and <a href="https://phpunit.de/">PHPUnit 6.5.13</a> at Thu Feb 21 15:49:42 AEDT 2019.</small>
     </p>
     <a title="Back to the top" id="toplink" href="#"><span class="glyphicon glyphicon-arrow-up"></span></a>
    </footer>
