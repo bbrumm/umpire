@@ -189,33 +189,41 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
         $this->setUserPrivileges($testData);
     }
 
-
-
     public function addUserPrivilege($username, $permission_selection_id) {
-        $testData = $this->getUserPrivileges();
-        $usernameFound = false;
-        $privilegeAlreadyExists = false;
-        foreach ($testData as $key => $value) {
-            if($value["username"] == $username) {
-                $usernameFound = true;
-                if ($value["permission_selection_id"] == $permission_selection_id) {
-                    $privilegeAlreadyExists = true;
-                    break;
-                }
-                break;
-            }
-        }
-
-        if (!$privilegeAlreadyExists && $usernameFound) {
-            $testData[] = array(
-                "username" => $username,
-                "permission_selection_id" => $permission_selection_id
-            );
-            $this->setUserPrivileges($testData);
+        if (! $this->isPrivilegeExistsInUserPrivileges($username, $permission_selection_id)
+            && $this->isUsernameFoundInUserPrivileges($username) ) {
+            $this->addNewUserPrivilege($username, $permission_selection_id);
         }
     }
 
-    private $testUserRoleData = array (
+    private function  addNewUserPrivilege( $username, $permission_selection_id ) {
+        $privilegeList = $this->getUserPrivileges();
+        $privilegeList[] = array(
+            "username" => $username,
+            "permission_selection_id" => $permission_selection_id
+        );
+        $this->setUserPrivileges($privilegeList);
+    }
+
+    private function isUsernameFoundInUserPrivileges($username) {
+        foreach($this->getUserPrivileges() as $key => $value) {
+            if($value["username"] == $username) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function isPrivilegeExistsInUserPrivileges($username, $permission_selection_id) {
+        foreach($this->getUserPrivileges() as $key => $value) {
+            if($value["username"] == $username &&  $value["permission_selection_id"] == $permission_selection_id ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+private $testUserRoleData = array (
         array ("username"=>"john", "role_id"=>2),
         array ("username"=>"ringo", "role_id"=>2),
         array ("username"=>"paul", "role_id"=>3),

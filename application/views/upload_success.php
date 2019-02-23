@@ -1,42 +1,73 @@
 <?php
 if (!function_exists('outputSelectionRow')) {
+    //TODO: Move all this code to a Model object and pass an array of output to this file. Logic should not go in the View.
     function outputSelectionRow($pMissingData, $pIterationNumber, $pPossibleSelections, $pLabel, $pCboBoxName, $pValueFieldName) {
-
         echo "<div class='divSubTableRow'>";
         echo "<div class='divSubTableCellInvisible'>$pLabel:</div>";
         echo "<div class='divSubTableCellInvisible'>";
         echo "<select class='newData' name='" . $pCboBoxName . "[" . $pMissingData['competition'][$pIterationNumber]['source_id'] . "]' ";
         echo "id='" . $pCboBoxName . "[" . $pMissingData['competition'][$pIterationNumber]['source_id'] . "]'>";
-        foreach ($pPossibleSelections as $possibleSelectionItem) {
-            //This IF statement checks if the value in the drop-down box is contained within the Competition Name.
-            //If it is found, the option is automatically selected.
-            if (strpos($pMissingData['competition'][$pIterationNumber]['source_value'], $possibleSelectionItem[$pValueFieldName]) !== FALSE) {
-                echo "<option selected ";
-            } elseif ($pLabel == "League" && $possibleSelectionItem[$pValueFieldName] == "GJFL") {
-                /*
-                 *Set the default league to GJFL. This is because most new age groups seem to be Juniors,
-                 *and only the Seniors and Reserves have BFL. We want to avoid users just leaving the default as BFL and messing up their reports.
-                 *TODO: Improve this logic to make it not dependent on a specific value, somehow.
-                 */
-                echo "<option selected ";
-            } else {
-                echo "<option ";
-            }
-
-            $valueToUse = "";
-            if ($pLabel == "League") {
-                $valueToUse = $possibleSelectionItem[$pValueFieldName];
-            } else {
-                $valueToUse = $possibleSelectionItem['id'];
-            }
-
-            echo "value='" . $valueToUse . "'>" . $possibleSelectionItem[$pValueFieldName];
-            echo "</option>";
-        }
+        echo outputAllOptionTags($pMissingData, $pIterationNumber,  $pPossibleSelections , $pValueFieldName, $pLabel );
         echo "</select></div>";
-        //echo "(" . $pMissingData['competition'][$pIterationNumber]['source_value'] . ")";
         echo "</div>";
     }
+
+    function  outputAllOptionTags( $pMissingData, $pIterationNumber, $pPossibleSelections, $pValueFieldName, $pLabel) {
+        $allTags = "";
+        foreach ($pPossibleSelections as $possibleSelectionItem) {
+            $allTags .= outputOptionTag($pMissingData, $pIterationNumber, $possibleSelectionItem, $pValueFieldName, $pLabel);
+
+        }
+        return  $allTags;
+    }
+
+    function isDropDownValueInCompetitionName($pMissingData, $pIterationNumber, $possibleSelectionItem, $pValueFieldName) {
+        if (strpos($pMissingData['competition'][$pIterationNumber]['source_value'], $possibleSelectionItem[$pValueFieldName]) !== FALSE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+    *Set the default league to GJFL. This is because most new age groups seem to be Juniors,
+    *and only the Seniors and Reserves have BFL. We want to avoid users just leaving the default as BFL and messing up their reports.
+    */
+    function isLabelLeagueAndContainsGJFL($pLabel, $possibleSelectionItem, $pValueFieldName) {
+        if($pLabel == "League" && $possibleSelectionItem[$pValueFieldName] == "GJFL") {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    function outputOptionOpenTag($pMissingData, $pIterationNumber, $possibleSelectionItem, $pValueFieldName, $pLabel) {
+        if (isDropDownValueInCompetitionName($pMissingData, $pIterationNumber, $possibleSelectionItem, $pValueFieldName)
+            ||  isLabelLeagueAndContainsGJFL($pLabel, $possibleSelectionItem, $pValueFieldName) ) {
+            return "<option selected ";
+        } else {
+            return "<option ";
+        }
+    }
+
+    function determineValueToUse($pLabel, $possibleSelectionItem, $pValueFieldName) {
+        if ($pLabel == "League") {
+            return $possibleSelectionItem[$pValueFieldName];
+        } else {
+            return $possibleSelectionItem['id'];
+            }
+    }
+
+    function outputOptionTag ($pMissingData, $pIterationNumber, $possibleSelectionItem, $pValueFieldName, $pLabel) {
+        $optionTag = outputOptionOpenTag($pMissingData, $pIterationNumber, $possibleSelectionItem, $pValueFieldName, $pLabel);
+        $valueToUse = determineValueToUse($pLabel, $possibleSelectionItem, $pValueFieldName);
+        $optionTag .= "value='" . $valueToUse . "'>" . $possibleSelectionItem[$pValueFieldName];
+        $optionTag .= "</option>";
+
+        return $optionTag;
+    }
+
 }
 ?>
 
