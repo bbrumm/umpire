@@ -244,13 +244,26 @@ class Report_instance extends CI_Model {
 	     * Then the result will be BFL=3, GFL=1, GDFL=1.
 	     */
 
-	    $arrayLibrary = new Array_library();
+	    //columnLabelResults: an array of all possible values for each of the column headings.
+        //these will be the values shown on all column headings. It's a unique list.
+        //E.g.: [0]short_league_name=GFL,club_name='Geelong'[1]...
 	    $columnLabelResults = $this->columnLabelResultArray;
+
+	    //columnLabels: an array of Report_grouping_structure objects, each of which is a record that has the columns
+        //that a report is grouped by. The array could have 1, 2, or 3 objects.
 	    $columnLabels = $this->getDisplayOptions()->getColumnGroup();
+
+        //$this->columnCountLabels = array(array(),array(),array());
+
+        /*
+         * New pseudocode:
+         * ??
+         */
 
 	    //Loop through the possible labels
 	    $columnCount = count($columnLabels);
 	    for ($i=0; $i < $columnCount; $i++) {
+
 	        if ($i == 0) {
 	            $this->columnCountLabels[0] = [];
 	        }
@@ -260,74 +273,73 @@ class Report_instance extends CI_Model {
 	        if ($i == 2) {
                 $this->columnCountLabels[2] = [];
 	        }
+
 	         
 	        $arrayKeyNumber = 0;
 	         
 	        //Loop through columnLabelResults
-		$columnLabelResultCount = count($columnLabelResults);
+		    $columnLabelResultCount = count($columnLabelResults);
 	        for ($j=0; $j < $columnLabelResultCount; $j++) {
                 $currentIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i]->getFieldName()];
 	            if ($i == 0) {
 	                if ($this->isFirstColumnLabelInArray($columnLabels, $columnLabelResults, $i, $j)) {
 	                    //Value found in array. Increment counter value
 	                    //Find the array that stores this value
-	                    $currentArrayKey = $arrayLibrary->findKeyFromValue(
-                            $this->columnCountLabels[$i], $currentIterationReportGroupFieldName, "unique label");
+                        $currentArrayKey = $this->findColumnLabelArrayThatHasHeading($currentIterationReportGroupFieldName, $i);
                         $this->incrementArrayColumnCount($i, $currentArrayKey);
 	               } else {
 	                    //Value not found. Add to array.
-                        $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
-                        $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
-                        $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
+                        $this->setArrayColumnValues($i, $arrayKeyNumber, $currentIterationReportGroupFieldName, $currentIterationReportGroupFieldName);
 	                    $arrayKeyNumber++;
 	                }
 	            }
 	            if ($i == 1) {
                     $previousIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()];
-                    //if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $this->columnCountLabels, $i, $j)) {
-                    //TODO text that this new line is working
+                    $uniqueLabel = $previousIterationReportGroupFieldName . "|" .$currentIterationReportGroupFieldName;
                     if ($this->isFirstAndSecondColumnLabelInArray($columnLabels, $columnLabelResults, $i, $j)) {
                         //Value found in array. Increment counter value
                         //Check if the value on the first row matches
                         if ($this->isFirstRowMatching($columnLabels, $columnLabelResults, $i, $j)) {
-                            $currentArrayKey = $arrayLibrary->findKeyFromValue($this->columnCountLabels[$i],
-                                $previousIterationReportGroupFieldName . "|" .
-                                $currentIterationReportGroupFieldName, "unique label");
+                            $currentArrayKey = $this->findColumnLabelArrayThatHasHeading($uniqueLabel, $i);
                             $this->incrementArrayColumnCount($i, $currentArrayKey);
                         } else {
-                            $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
-                            $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $previousIterationReportGroupFieldName . "|" .
-                                $currentIterationReportGroupFieldName);
-                            $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
+                            $this->setArrayColumnValues($i, $arrayKeyNumber, $currentIterationReportGroupFieldName, $uniqueLabel);
                             $arrayKeyNumber++;
                         }
                     } else {
                         //Value not found. Add to array.
-                        $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
-                        $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $previousIterationReportGroupFieldName . "|" .
+                        $this->setArrayColumnValues($i, $arrayKeyNumber, $currentIterationReportGroupFieldName, $previousIterationReportGroupFieldName . "|" .
                             $currentIterationReportGroupFieldName);
-                        $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
                         $arrayKeyNumber++;
                     }
 	            }
 	            if ($i == 2) {
                     $previousIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i-1]->getFieldName()];
                     $previousTwoIterationReportGroupFieldName = $columnLabelResults[$j][$columnLabels[$i-2]->getFieldName()];
+                    $uniqueLabel = $previousTwoIterationReportGroupFieldName . "|" .
+                        $previousIterationReportGroupFieldName . "|" .
+                        $currentIterationReportGroupFieldName;
 	                //Set all count values to 1 for this level, as it is not likely that the third row
                     //will need to be merged/have a higher than 1 colspan.
-
-                    $this->setArrayColumnLabel($i, $arrayKeyNumber, $currentIterationReportGroupFieldName);
-                    $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $previousTwoIterationReportGroupFieldName . "|" .
-                        $previousIterationReportGroupFieldName . "|" .
-                        $currentIterationReportGroupFieldName);
-                    $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
+                    $this->setArrayColumnValues($i, $arrayKeyNumber, $currentIterationReportGroupFieldName, $uniqueLabel);
 	            }
 	        }
 	    }
-	    //$this->debug_library->debugOutput("ColumnCountLabels:", $columnCountLabels);
 	    return $this->columnCountLabels;
 	     
 	}
+
+	private function findColumnLabelArrayThatHasHeading($pHeadingValue, $i) {
+        $arrayLibrary = new Array_library();
+        return $arrayLibrary->findKeyFromValue(
+            $this->columnCountLabels[$i], $pHeadingValue, "unique label");
+    }
+
+    private function setArrayColumnValues($i, $arrayKeyNumber, $columnLabel, $uniqueLabel) {
+        $this->setArrayColumnLabel($i, $arrayKeyNumber, $columnLabel);
+        $this->setArrayColumnUniqueLabel($i, $arrayKeyNumber, $uniqueLabel);
+        $this->setArrayColumnCount($i, $arrayKeyNumber, 1);
+    }
 
     private function setArrayColumnLabel($pIteration, $pArrayKeyNumber, $pValue) {
         $this->columnCountLabels[$pIteration][$pArrayKeyNumber]["label"] = $pValue;
