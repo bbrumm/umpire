@@ -74,18 +74,19 @@ class Report_instance_test extends TestCase
         $expectedResultArray =
             Array (
                 'john' => Array (
-                    Array (
-                        'short_league_name' => 'GFL',
-                        'match_count' => 2,
-                        'club_name' => 'Geelong'
-                    )
+                    Array ('short_league_name' => 'GFL', 'match_count' => 2, 'club_name' => 'Geelong'),
+                    Array ('short_league_name' => 'BFL', 'match_count' => 1, 'club_name' => 'Hawthorn')
                 ),
                 'sue' => Array (
-                    Array (
-                        'short_league_name' => 'GFL',
-                        'match_count' => 5,
-                        'club_name' => 'Geelong'
-                    )
+                    Array ('short_league_name' => 'GFL','match_count' => 5, 'club_name' => 'Melbourne'),
+                    Array ('short_league_name' => 'BFL','match_count' => 7, 'club_name' => 'Hawthorn')
+                ),
+                'mark' => Array (
+                    Array ('short_league_name' => 'BFL','match_count' => 7, 'club_name' => 'Hawthorn')
+                ),
+                'matt' => Array (
+                    Array ('short_league_name' => 'BFL','match_count' => 7, 'club_name' => 'Essendon'),
+                    Array ('short_league_name' => 'GFL','match_count' => 7, 'club_name' => 'Carlton')
                 )
             );
 
