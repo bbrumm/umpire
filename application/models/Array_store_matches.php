@@ -21,6 +21,8 @@ class Array_store_matches extends CI_Model implements IData_store_matches
             'Report 4', 4, 0, 'text', false, 'landscape', 'a3', 200);
         $reportParameterArray[5] = Report_parameter::createNewReportParameter(
             'Siuerbibdfkvj', 5, 0, 'text', true, 'landscape', 'a4', 300);
+        $reportParameterArray[6] = Report_parameter::createNewReportParameter(
+            'something', 6, 0, 'text', true, 'landscape', 'a4', 300);
 
         if (array_key_exists($pReportNumber, $reportParameterArray)) {
             return $reportParameterArray[$pReportNumber];
@@ -35,6 +37,10 @@ class Array_store_matches extends CI_Model implements IData_store_matches
         $groupingStructureArray[1] = array(1, 2, 'Column', 'club_name', 2, 0, null, null);
         $groupingStructureArray[2] = array(1, 3, 'Row', 'last_first_name', 1, 0, 'Name', 'Umpire_Name_First_Last');
         $groupingStructureArray[3] = array(2, 2, 'Column', 'age_group', 2, 0, null, null);
+        $groupingStructureArray[4] = array(6, 2, 'Column', 'last_first_name', 1, 0, null, null);
+        $groupingStructureArray[5] = array(4, 2, 'Column', 'umpire_type', 1, 0, null, null);
+        $groupingStructureArray[6] = array(4, 2, 'Column', 'age_group', 2, 0, null, null);
+        $groupingStructureArray[7] = array(4, 2, 'Column', 'short_league_name', 3, 0, null, null);
 
         $countArraySize = count($groupingStructureArray);
         $groupingStructureArrayForReport = [];
@@ -237,8 +243,13 @@ class Array_store_matches extends CI_Model implements IData_store_matches
 
     public function loadReportData(Parent_report $separateReport, Report_instance $reportInstance) {
         $resultArray = array (
-            array('last_first_name'=>'john', 'short_league_name'=>'GFL', 'club_name'=>'Geelong', 'age_group'=>'Under 18', 'match_count'=>2),
-            array('last_first_name'=>'sue', 'short_league_name'=>'GFL', 'club_name'=>'Geelong', 'age_group'=>'Under 18', 'match_count'=>5)
+            array('last_first_name'=>'john', 'short_league_name'=>'GFL', 'club_name'=>'Geelong', 'age_group'=>'Under 18', 'umpire_type'=>'Field', 'match_count'=>2),
+            array('last_first_name'=>'john', 'short_league_name'=>'BFL', 'club_name'=>'Hawthorn', 'age_group'=>'Under 18', 'umpire_type'=>'Field', 'match_count'=>1),
+            array('last_first_name'=>'sue', 'short_league_name'=>'GFL', 'club_name'=>'Melbourne', 'age_group'=>'Under 18', 'umpire_type'=>'Field', 'match_count'=>5),
+            array('last_first_name'=>'sue', 'short_league_name'=>'BFL', 'club_name'=>'Hawthorn', 'age_group'=>'Under 18', 'umpire_type'=>'Field', 'match_count'=>7),
+            array('last_first_name'=>'mark', 'short_league_name'=>'BFL', 'club_name'=>'Hawthorn', 'age_group'=>'Under 18', 'umpire_type'=>'Field', 'match_count'=>7),
+            array('last_first_name'=>'matt', 'short_league_name'=>'BFL', 'club_name'=>'Essendon', 'age_group'=>'Under 18', 'umpire_type'=>'Field', 'match_count'=>7),
+            array('last_first_name'=>'matt', 'short_league_name'=>'GFL', 'club_name'=>'Carlton', 'age_group'=>'Seniors', 'umpire_type'=>'Field', 'match_count'=>7)
 
         );
 
@@ -250,15 +261,39 @@ class Array_store_matches extends CI_Model implements IData_store_matches
     }
 
     public function findDistinctColumnHeadings(IReport $separateReport, Report_instance $reportInstance) {
-        /*
-        $testData = array(
-            'short_league_name', 'club_name'
-        );
-        */
-        $testData = array(
-            array('short_league_name' => 'GFL', 'club_name' => 'Geelong')
-        );
-        return $testData;
+        switch ($reportInstance->requestedReport->getReportNumber()) {
+            case 1:
+                return array(
+                    array('short_league_name' => 'GFL', 'club_name' => 'Geelong'),
+                    array('short_league_name' => 'GFL', 'club_name' => 'Melbourne'),
+                    array('short_league_name' => 'GFL', 'club_name' => 'Carlton'),
+                    array('short_league_name' => 'BFL', 'club_name' => 'Hawthorn'),
+                    array('short_league_name' => 'BFL', 'club_name' => 'Essendon')
+
+                );
+            case 6:
+                return array(
+                    array('last_first_name' => 'john'),
+                    array('last_first_name' => 'mark'),
+                    array('last_first_name' => 'matt'),
+                    array('last_first_name' => 'sue')
+                );
+            case 4:
+                return array(
+                    array('umpire_type' => 'Field', 'age_group' => 'Under 18', 'short_league_name' => 'GFL'),
+                    array('umpire_type' => 'Field', 'age_group' => 'Under 18', 'short_league_name' => 'BFL'),
+                    array('umpire_type' => 'Field', 'age_group' => 'Seniors', 'short_league_name' => 'GFL')
+
+                );
+            default:
+                return array(
+                    array('short_league_name' => 'GFL', 'club_name' => 'Geelong'),
+                    array('short_league_name' => 'GFL', 'club_name' => 'Melbourne'),
+                    array('short_league_name' => 'GFL', 'club_name' => 'Carlton'),
+                    array('short_league_name' => 'BFL', 'club_name' => 'Hawthorn'),
+                    array('short_league_name' => 'BFL', 'club_name' => 'Essendon')
+                );
+        }
 
     }
 

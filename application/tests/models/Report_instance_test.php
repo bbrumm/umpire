@@ -97,6 +97,118 @@ class Report_instance_test extends TestCase
 
     }
 
+    public function test_getColumnCountForHeadingCells_TwoHeadings() {
+        //Set up data
+        $reportNumber = 1;
+        $season = 2018;
+        $region = 'Geelong';
+        $ageGroup = array('Under 18');
+        $umpireType = array('Senior');
+        $league = array('GFL', 'BFL');
+        $pdfMode = false;
+
+        $requestedReport = Requested_report_model::createRequestedReportFromValues(
+            $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
+        );
+        $dataStore = new Array_store_matches();
+
+        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->loadReportResults($dataStore);
+
+        //Get data
+        $actualArray = $this->obj->getColumnCountForHeadingCells();
+        $expectedArray = array(
+            array(
+                array('label' => 'GFL', 'unique label' => 'GFL', 'count' => 3),
+                array('label' => 'BFL', 'unique label' => 'BFL', 'count' => 2)
+            ),
+            array(
+                array('label' => 'Geelong', 'unique label' => 'GFL|Geelong', 'count' => 1),
+                array('label' => 'Melbourne', 'unique label' => 'GFL|Melbourne', 'count' => 1),
+                array('label' => 'Carlton', 'unique label' => 'GFL|Carlton', 'count' => 1),
+                array('label' => 'Hawthorn', 'unique label' => 'BFL|Hawthorn', 'count' => 1),
+                array('label' => 'Essendon', 'unique label' => 'BFL|Essendon', 'count' => 1)
+
+            )
+        );
+
+        $this->assertEquals($expectedArray, $actualArray);
+
+
+    }
+
+    public function test_getColumnCountForHeadingCells_OneHeading() {
+        //Set up data
+        $reportNumber = 6;
+        $season = 2018;
+        $region = 'Geelong';
+        $ageGroup = array('Under 18');
+        $umpireType = array('Senior');
+        $league = array('GFL', 'BFL');
+        $pdfMode = false;
+
+        $requestedReport = Requested_report_model::createRequestedReportFromValues(
+            $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
+        );
+        $dataStore = new Array_store_matches();
+
+        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->loadReportResults($dataStore);
+
+        //Get data
+        $actualArray = $this->obj->getColumnCountForHeadingCells();
+        $expectedArray = array(
+            array(
+                array('label' => 'john', 'unique label' => 'john', 'count' => 1),
+                array('label' => 'mark', 'unique label' => 'mark', 'count' => 1),
+                array('label' => 'matt', 'unique label' => 'matt', 'count' => 1),
+                array('label' => 'sue', 'unique label' => 'sue', 'count' => 1)
+            )
+        );
+
+        $this->assertEquals($expectedArray, $actualArray);
+    }
+
+    public function test_getColumnCountForHeadingCells_ThreeHeadings() {
+        //Set up data
+        $reportNumber = 4;
+        $season = 2018;
+        $region = 'Geelong';
+        $ageGroup = array('Under 18');
+        $umpireType = array('Senior');
+        $league = array('GFL', 'BFL');
+        $pdfMode = false;
+
+        $requestedReport = Requested_report_model::createRequestedReportFromValues(
+            $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
+        );
+        $dataStore = new Array_store_matches();
+
+        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->loadReportResults($dataStore);
+
+        //Get data
+        $actualArray = $this->obj->getColumnCountForHeadingCells();
+        $expectedArray = array(
+            array(
+                array('label' => 'Field', 'unique label' => 'Field', 'count' => 3)
+            ),
+            array(
+                array('label' => 'Under 18', 'unique label' => 'Field|Under 18', 'count' => 2),
+                array('label' => 'Seniors', 'unique label' => 'Field|Seniors', 'count' => 1)
+
+            ),
+            array(
+                array('label' => 'GFL', 'unique label' => 'Field|Seniors|GFL', 'count' => 1)
+                //array('label' => 'GFL', 'unique label' => 'Field|Under 18|GFL', 'count' => 1),
+                //array('label' => 'BFL', 'unique label' => 'Field|Under 18|BFL', 'count' => 1)
+
+            )
+        );
+
+        $this->assertEquals($expectedArray, $actualArray);
+    }
+
 
 
 

@@ -24,10 +24,6 @@ class Integration_test extends TestCase
 
 
 
-
-/*
- * Uncomment later to improve speed
- * */
     public function test_SeasonsExist() {
         $queryString = "SELECT season_year FROM season ORDER BY id;";
         $query = $this->dbLocal->query($queryString);
