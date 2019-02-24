@@ -38,9 +38,11 @@ class Array_store_matches extends CI_Model implements IData_store_matches
         $groupingStructureArray[2] = array(1, 3, 'Row', 'last_first_name', 1, 0, 'Name', 'Umpire_Name_First_Last');
         $groupingStructureArray[3] = array(2, 2, 'Column', 'age_group', 2, 0, null, null);
         $groupingStructureArray[4] = array(6, 2, 'Column', 'last_first_name', 1, 0, null, null);
-        $groupingStructureArray[5] = array(4, 2, 'Column', 'umpire_type', 1, 0, null, null);
-        $groupingStructureArray[6] = array(4, 2, 'Column', 'age_group', 2, 0, null, null);
-        $groupingStructureArray[7] = array(4, 2, 'Column', 'short_league_name', 3, 0, null, null);
+        $groupingStructureArray[5] = array(6, 2, 'Row', 'umpire_type', 1, 0, null, null);
+        $groupingStructureArray[6] = array(4, 2, 'Column', 'umpire_type', 1, 0, null, null);
+        $groupingStructureArray[7] = array(4, 2, 'Column', 'age_group', 2, 0, null, null);
+        $groupingStructureArray[8] = array(4, 2, 'Column', 'short_league_name', 3, 0, null, null);
+        $groupingStructureArray[9] = array(4, 2, 'Row', 'last_first_name', 1, 0, null, null);
 
         $countArraySize = count($groupingStructureArray);
         $groupingStructureArrayForReport = [];
