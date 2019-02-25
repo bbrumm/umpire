@@ -9,7 +9,7 @@ class CreatePDF extends CI_Controller {
 	    $this->load->model('user','',TRUE);
 	    $this->load->model('report_model');
 	    $this->load->helper('url_helper');
-	    $this->load->helper('cell_formatting_helper');
+	    $this->load->helper('Cell_formatting_helper');
 	}
 	 
 	 function writeToFile($outputText) {

@@ -5,7 +5,7 @@ class Report extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Report_populator_model');
 		$this->load->helper('url_helper');
-		$this->load->helper('cell_formatting_helper');
+		$this->load->helper('Cell_formatting_helper');
 		$this->load->model('Requested_report_model');
 		$this->load->library('Debug_library');
 	}
