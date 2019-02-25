@@ -1,6 +1,9 @@
 <?php
 require_once 'IFile_loader.php';
-
+/*
+* @property Object db
+* @property Object session
+*/
 class File_loader_import extends CI_Model implements IFile_loader
 {
 
@@ -18,7 +21,7 @@ class File_loader_import extends CI_Model implements IFile_loader
          * See mysqli_driver: protected function _prep_query (line 318)
          */
         $queryString = "DELETE FROM match_import";
-        $query = $this->db->query($queryString);
+        $this->db->query($queryString);
     }
 
     public function insertMatchImportTable($data, $pColumnArray) {
@@ -36,7 +39,7 @@ class File_loader_import extends CI_Model implements IFile_loader
             'etl_status' => 2 //2 = not yet started
         );
 
-        $queryStatus = $this->db->insert('imported_files', $data);
+        $this->db->insert('imported_files', $data);
         return $this->db->insert_id();
     }
 
