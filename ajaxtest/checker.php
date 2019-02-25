@@ -22,4 +22,3 @@ if (file_exists($file)) {
 else {
     echo json_encode(array("percent" => null, "message" => null));
 }
-?>
