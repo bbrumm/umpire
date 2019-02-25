@@ -25,7 +25,6 @@ class Report_display_options extends CI_Model {
 	    
 	    //TODO: Refactor this object or this function as it seems to be duplicating the Report_Parameter object
 	    $instance = new Report_display_options();
-	    $reportParameter = new Report_parameter();
 	    $reportParameter = $pReportInstance->reportParamLoader->getReportParameter();
 	    $instance->setNoDataValue($reportParameter->getNoValueDisplay());
 	    $instance->setFirstColumnFormat($reportParameter->getFirstColumnFormat());
