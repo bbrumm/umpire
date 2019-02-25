@@ -64,6 +64,7 @@ class Report5 extends Parent_report implements IReport {
         $resultOutputArray = [];
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
+        $totalForRow = 0;
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
             $resultOutputArray[$currentResultArrayRow][0] = $currentRowItem[0]['umpire_type'];
