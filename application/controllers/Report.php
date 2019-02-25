@@ -11,7 +11,6 @@ class Report extends CI_Controller {
 	}
 	
 	public function index() {
-	    $error = "";
 	    $reportPopulator = new Report_populator_model();
 	    
 	    $requestedReport = Requested_report_model::createRequestedReportFromValues(
@@ -44,6 +43,7 @@ class Report extends CI_Controller {
 	        $requestedReport->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'));
 	    */
 	    $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
+		$data = array();
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
 		$data['debugLibrary'] = new Debug_library();
