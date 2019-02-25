@@ -1,5 +1,8 @@
 <?php
-
+/*
+* @property Object security
+* @property Object session
+*/
 class User_maintenance_model extends CI_Model {
 
     public function __construct() {
@@ -60,7 +63,7 @@ class User_maintenance_model extends CI_Model {
             'reset_datetime' => date('Y-m-d H:i:s', time())
         );
 
-        $queryStatus = $pDataStore->logPasswordReset($data);
+        $pDataStore->logPasswordReset($data);
     }
 
     public function validatePassword($pNewPassword, $pConfirmPassword) {
