@@ -13,10 +13,9 @@ class User_permission_loader_model extends CI_Model {
     }
 
     public function setPermissionArrayForUser(IData_store_user $pDataStore, User $pUser) {
-
         $userPermissionArray = $pDataStore->findPermissionsForUser($pUser);
         $countNumberOfPermissions = count($userPermissionArray);
-
+        $permissionArray = array();
         if ($countNumberOfPermissions > 0) {
             for($i=0; $i<$countNumberOfPermissions; $i++) {
                 $userRolePermission = User_role_permission::createFromRow($userPermissionArray[$i]);
@@ -31,8 +30,8 @@ class User_permission_loader_model extends CI_Model {
         $permissionArray = $pUser->getPermissionArray();
         $permissionFound = false;
         $permissionArrayCount = count($permissionArray);
+        $userRolePermission = new User_role_permission();
         for($i=0; $i<$permissionArrayCount; $i++) {
-            $userRolePermission = new User_role_permission();
             $userRolePermission = $permissionArray[$i];
             if ($userRolePermission->getPermissionName() == $permissionName &&
                 $userRolePermission->getSelectionName() == $selectionName) {
