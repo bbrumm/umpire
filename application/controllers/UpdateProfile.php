@@ -1,5 +1,9 @@
 <?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
-
+/*
+* @property Object session
+* @property Object security
+* @property Object input
+*/
 class UpdateProfile extends CI_Controller {
 
     function __construct() {
@@ -25,6 +29,7 @@ class UpdateProfile extends CI_Controller {
         $umpireUser->setUsername($sessionData['username']);
         $umpireUser = $this->lookupUserData($umpireUser);
 
+        $data = array();
         $data['username'] = $umpireUser->getUsername();
         $data['email_address'] = $umpireUser->getEmailAddress();
         $data['userAddedMessage'] = $pUserAddedMessage;
