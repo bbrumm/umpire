@@ -170,7 +170,7 @@ class Match_import extends CI_Model
 
     public function findMissingDataOnImport() {
         $queryString = "CALL `FindMissingData`()";
-        $query = $this->db->query($queryString);
+        $this->db->query($queryString);
 
         $queryString = "SELECT DISTINCT record_type, source_id, source_value
             FROM incomplete_records
