@@ -134,18 +134,14 @@ class Report3 extends Parent_report implements IReport {
         switch (count($pReportColumnFields)) {
             case 1:
                 return $this->isFieldMatchingOneColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                break;
             case 2:
                 if ($pColumnHeadingSet[$pReportColumnFields[1]] == 'Total') {
                     return $this->isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
                 } else {
                     return $this->isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
                 }
-
-                break;
             case 3:
                 return $this->isFieldMatchingThreeColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                break;
             default:
                 throw new InvalidArgumentException("Count of report column fields needs to be between 1 and 3.");
         }
@@ -154,6 +150,7 @@ class Report3 extends Parent_report implements IReport {
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
         $pivotedArray = array();
+        $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
         foreach ($pResultArray as $resultRow) {
