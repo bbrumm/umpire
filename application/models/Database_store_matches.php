@@ -1,5 +1,8 @@
 <?php
 require_once 'IData_store_matches.php';
+/*
+* @property Object db
+*/
 class Database_store_matches extends CI_Model implements IData_store_matches {
     
     public function __construct() {
@@ -223,7 +226,7 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
             WHERE ag.id = ?
             AND d.id = ?;";
 
-        $query = $this->runQuery($queryString, array(
+        $this->runQuery($queryString, array(
             $competitionData['short_league_name'],
             $competitionData['region'],
             $competitionData['age_group'],
