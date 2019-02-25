@@ -1,5 +1,9 @@
 <?php
 require_once 'IData_store_user.php';
+/*
+* @property Object $this->db
+* @property Object db
+*/
 class Database_store_user extends CI_Model implements IData_store_user
 {
 
