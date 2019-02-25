@@ -1,6 +1,9 @@
 <?php
-
-
+/*
+* @property Object upload
+* @property Object Match_import
+* @property Object Missing_data_updater
+*/
 class FileImport extends CI_Controller {
 	public function __construct() {
 	    parent::__construct();
@@ -16,6 +19,7 @@ class FileImport extends CI_Controller {
 	}
 
 	function do_upload() {
+	    $config = array();
 	    $config['upload_path'] = './application/import/';
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
