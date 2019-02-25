@@ -1,4 +1,9 @@
 <?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
+/*
+* @property Object input
+* @property Object security
+* @property Object email
+*/
 class ForgotPassword extends CI_Controller {
     
     function __construct()
@@ -74,12 +79,12 @@ class ForgotPassword extends CI_Controller {
         $data['username_entered'] = $umpireUser->getUsername();
         $data['email_address_entered'] = $umpireUser->getEmailAddress();
 
-        $logRequest = $userMaintenance->logPasswordResetRequest($dbStore, $data);
+        $userMaintenance->logPasswordResetRequest($dbStore, $data);
 
         //Check user data entered: user exists, email matches user
         $userExists = $userMaintenance->checkUserExistsForReset($dbStore, $umpireUser);
         if($userExists) {
-            $encoded_email = urlencode($pEmailAddress);
+            urlencode($pEmailAddress);
             //TODO: Move this into a separate function
             $userPermissionLoader->getUserFromUsername($dbStore, $pUserName);
             $umpireUser->setPasswordResetURL(base_url() . "index.php/ResetPasswordEntry/load/" . $data['activation_id']);
@@ -101,6 +106,7 @@ class ForgotPassword extends CI_Controller {
     private function getSendStatusInfo(User $pUmpireUser, $pSendStatus, $pUserExists) {
         if ($pUserExists) {
             if ($pSendStatus) {
+                $sendStatusInfo = array();
                 $sendStatusInfo['status'] = "sent";
                 $sendStatusInfo['message'] =
                     "Please check your email for a link to reset your password.";
