@@ -1,4 +1,7 @@
 <?php
+/*
+* @property Object db
+*/
 class Match_import extends CI_Model
 {
 
