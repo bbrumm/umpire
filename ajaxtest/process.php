@@ -23,4 +23,3 @@ for($i=1; $i<=$total; $i++){
     // Sleep one second so we can see the delay
     sleep(1);
 }
-?>
