@@ -75,9 +75,6 @@ class Etl_procedure_steps extends CI_Model
         $this->commitTransaction();
     }
 
-    /*
-    * @property array $this->db
-    */
     private function runQuery($pQueryString) {
         return $this->db->query($pQueryString);
     }
