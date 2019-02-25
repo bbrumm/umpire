@@ -177,7 +177,6 @@ class Parent_report extends CI_Model {
 
 
         private function constructTableRowOutput($pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions, $pRowCounter) {
-            $cellClassToUse = "";
             $tableRowOutput = "<tr class='altRow'>";
             $countColumns = count($pLoadedColumnGroupings);
             for ($columnCounter=0; $columnCounter <= $countColumns; $columnCounter++) {
@@ -194,6 +193,7 @@ class Parent_report extends CI_Model {
 
 
         private function determineCellClassToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
+            $cellClassToUse = "";
             if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
                 if ($columnCounter == 0) { //First column
                     if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
@@ -219,6 +219,7 @@ class Parent_report extends CI_Model {
 
 
         private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
+            $cellValue = "";
             if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
                 if ($columnCounter == 0) { //First column
                     if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
