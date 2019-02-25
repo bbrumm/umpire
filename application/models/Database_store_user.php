@@ -177,7 +177,7 @@ class Database_store_user extends CI_Model implements IData_store_user
     }
 
     public function logPasswordReset($pData) {
-        $queryStatus = $this->db->insert('password_reset_log', $pData);
+        $this->db->insert('password_reset_log', $pData);
     }
 
 
