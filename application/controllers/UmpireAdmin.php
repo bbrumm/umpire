@@ -17,7 +17,7 @@ class UmpireAdmin extends CI_Controller
         $umpireAdmin = new Umpireadminmodel();
         $dataStore = new Database_store_umpire_admin();
         $umpireArray = $umpireAdmin->getAllUmpiresAndValues($dataStore);
-
+        $data = array();
         $data['umpireArray'] = $umpireArray;
         $data['dataUpdatedMessage'] = "Data updated.";
         $data['userAddedMessage'] = $pUserAddedMessage;
