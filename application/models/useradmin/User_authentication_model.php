@@ -1,5 +1,7 @@
 <?php
-
+/*
+* @property Object security
+*/
 class User_authentication_model extends CI_Model {
 
     function __construct() {
