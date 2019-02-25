@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
-
+/*
+* @property Object input
+*/
 class Ajax_Post_Controller extends CI_Controller
 {
 
