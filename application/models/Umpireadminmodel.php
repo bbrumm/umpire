@@ -73,8 +73,8 @@ class Umpireadminmodel extends CI_Model {
     
     private function findUmpireFromArrayUsingID($pUmpireArray, $pIDValue) {
         $matchedUmpire = new Umpire();
-        
-        for ($i=0; $i < count($pUmpireArray); $i++) {
+        $arrayCount = count($pUmpireArray);
+        for ($i=0; $i < $arrayCount; $i++) {
             if ($pUmpireArray[$i]->getID() == $pIDValue) {
                 $matchedUmpire = $pUmpireArray[$i];
             }
