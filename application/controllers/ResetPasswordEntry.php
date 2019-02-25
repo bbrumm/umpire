@@ -25,6 +25,7 @@ class ResetPasswordEntry extends CI_Controller {
         $dataStore = new Database_store_user();
         $umpireUser = $userMaintenance->createUserFromActivationID($dataStore, $pActivationID);
         //TODO check that this works and refactor. Repeated in function below.
+        $data = array();
         $data['activationID'] = $umpireUser->getActivationID();
         $data['username'] = $umpireUser->getUsername();
 
@@ -33,19 +34,6 @@ class ResetPasswordEntry extends CI_Controller {
         $this->load->view('templates/footer');
         
     }
-
-    /*
-     * Remove this later as it may already be covered by the load() function
-    function index() {
-        $data['$activationIDMatches'] = true;
-        
-        $this->load->view('templates/header');
-        $this->load->view('resetPassword', $data);
-        $this->load->view('templates/footer');
-        
-        
-    }
-    */
     
     private function showPasswordResetDonePage() {
         $this->load->view('templates/header');
@@ -55,6 +43,7 @@ class ResetPasswordEntry extends CI_Controller {
     
     private function showPasswordResetEntryPage($pStatusMessage) {
         $dataStore = new Database_store_user();
+        $data = array();
         $data['statusMessage'] = $pStatusMessage;
         $userMaintenance = new User_maintenance_model();
         //TODO check that this works and refactor. Repeated in function above
@@ -84,35 +73,5 @@ class ResetPasswordEntry extends CI_Controller {
                 "Please ensure that both passwords you have entered are the same, and they are at least 6 characters long.";
             $this->showPasswordResetEntryPage($statusMessage);
         }
-
-        /*
-        $userName = $_POST['username'];
-        $userMaintenance = new User_maintenance_model();
-        $newPassword= $this->security->xss_clean($this->input->post('password'));
-        $confirmNewPassword= $this->security->xss_clean($this->input->post('confirmPassword'));
-        
-        $umpireUser = new User();
-        
-        $validPassword = $userMaintenance->validatePassword($newPassword, $confirmNewPassword);
-        
-        if ($validPassword) {
-            
-            $umpireUser->setUsername($userName);
-            $umpireUser->setPassword(MD5($newPassword));
-            $userMaintenance->updatePassword($dbStore, $umpireUser);
-            $this->showPasswordResetDonePage();
-        } else {
-            $statusMessage = "Passwords do not match or are less than 6 characters. ".
-                "Please ensure that both passwords you have entered are the same, and they are at least 6 characters long.";
-            $this->showPasswordResetEntryPage($statusMessage);
-        }
-        */
     }
-    
-    
-    
-    
-    
 }
-
-?>
