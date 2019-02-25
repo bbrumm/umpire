@@ -16,8 +16,6 @@ class Array_store_user extends CI_Model implements IData_store_user
             array("username"=>"george", "first_name"=>"george", "last_name"=>"smith")
         );
 
-        $userRow = [];
-
         $arrayCount = count($existingData);
         for($i=0; $i<$arrayCount; $i++) {
             if ($existingData[$i]["username"] == $pUsername) {
@@ -27,12 +25,7 @@ class Array_store_user extends CI_Model implements IData_store_user
                 return $user;
             }
         }
-
-
     }
-
-
-
 
     public function findPermissionsForUser(User $pUser) {
         $permissionArrayJohn = array (
@@ -212,13 +205,10 @@ class Array_store_user extends CI_Model implements IData_store_user
 
         foreach ($testData as $key => $subArray) {
             if ($subArray["username"] == $pUsername && $subArray["password"] == MD5($pPassword)) {
-                return User::createUserFromNameAndPW($subArray["username"], null, null, $subArray["password"], $subArray["id"]);
+                return User::createUserFromNameAndPW($subArray["username"], null, null, $subArray["password"]);
             }
         }
-
-
     }
-
 
     public function checkUserActive($pUsername) {
         $testData = array(
