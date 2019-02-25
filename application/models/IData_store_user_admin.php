@@ -38,5 +38,7 @@ interface IData_store_user_admin {
 
     public function getCountOfMatchingUsers(User $pUser);
 
+    public function getAllUserActiveFromDB();
+
 
 }

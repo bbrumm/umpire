@@ -17,7 +17,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     
     private function runQuery($queryString, $arrayValues = null) {
         return $this->db->query($queryString, $arrayValues);
-        $this->db->close();
+        //$this->db->close();
     }
 
     public function getAllUsers() {

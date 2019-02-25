@@ -12,5 +12,7 @@ interface IReport {
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells);
 
     public function isFieldMatchingColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
+
+    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel);
     
 }

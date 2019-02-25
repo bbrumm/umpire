@@ -25,7 +25,7 @@ class User_permission_loader_model_test extends TestCase
         $arrayStore = new Array_store_user;
         $username = "john20";
         $actual = $this->obj->getUserFromUsername($arrayStore, $username);
-        $expected = false;
+        $expected = null;
         $this->assertEquals($expected, $actual);
     }
 

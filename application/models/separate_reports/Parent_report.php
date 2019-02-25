@@ -3,8 +3,10 @@
 class Parent_report extends CI_Model {
     
     public function __construct() {
-
+        $this->load->helper('Cell_formatting_helper');
     }
+
+    public function getReportDataQuery(Report_instance $pReportInstance) {}
 
 
     /* Explanation:
@@ -194,6 +196,7 @@ class Parent_report extends CI_Model {
 
         private function determineCellClassToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
             $cellClassToUse = "";
+            $cellFormatter = new Cell_formatting_helper();
             if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
                 if ($columnCounter == 0) { //First column
                     if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
@@ -203,7 +206,8 @@ class Parent_report extends CI_Model {
                     }
                 } else {
                     if ($pReportDisplayOptions->getColourCells() == 1) {
-                        $cellClassToUse = getCellClassNameFromOutputValue($pResultOutputArray[$pRowCounter][$columnCounter], TRUE);
+                        //TODO: Refactor this to remove boolean parameter and use two different functions
+                        $cellClassToUse = $cellFormatter->getCellClassNameForTableFromOutputValue($pResultOutputArray[$pRowCounter][$columnCounter], TRUE);
                     } elseif(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
                         $cellClassToUse = "cellNumber cellNormal";
                     } else {
@@ -242,13 +246,13 @@ class Parent_report extends CI_Model {
 
         public function resetCounterForRow($pCurrentCounterForRow, $pResultRow, $pFieldForRowLabel, $pPreviousRowLabel) {
             /*
-                      *IMPORTANT: If the SQL query DOES NOT order by the row labels (e.g. the umpire name),
-                      *then this loop structure will cause all values to be set to the last column,
-                      *and show incorrect data in the report.
-                      *If this happens, ensure the SELECT query inside the Report_data_query object for this report (e.g. Report8.php)
-                      *orders by the correct column
-                      *
-                      */
+            *IMPORTANT: If the SQL query DOES NOT order by the row labels (e.g. the umpire name),
+            *then this loop structure will cause all values to be set to the last column,
+            *and show incorrect data in the report.
+            *If this happens, ensure the SELECT query inside the Report_data_query object for this report (e.g. Report8.php)
+            *orders by the correct column
+            *
+            */
             if ($pResultRow[$pFieldForRowLabel[0]] != $pPreviousRowLabel[0]) {
                 //New row label, so reset counter
                 return 0;

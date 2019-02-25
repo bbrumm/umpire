@@ -37,7 +37,7 @@ function updateControlSelection(elementName, controlEnabled) {
 				//Valid.
 				//console.log("valid league: " + controlToUpdate.id);
 				//This is a double equals == because controlEnabled is a string and the value below is a number
-				if (controlEnabled == 1) {
+				if (controlEnabled === 1) {
                     //console.log("control enabled: " + controlToUpdate.id);
 					singleControlEnabled = true;
 				} else {
@@ -101,7 +101,7 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 	 * Run the validation on all checkboxes too
 	 */
 	
-	console.log("select all: " + selectAllCheckbox.id);
+	//console.log("select all: " + selectAllCheckbox.id);
 	//console.log("select all group: " + matchingElementName);
 	
 	var relatedCheckboxes = document.getElementsByName(matchingElementName);
@@ -205,9 +205,9 @@ function findValidLeagues() {
 	
 	//Find the selected region:
 	var selectedRegionValue = findSelectedRegion();
-	console.log("Selected region: " + selectedRegionValue);
+	//console.log("Selected region: " + selectedRegionValue);
 	//Variable validCombinations is initialised in report_home.php.
-    /** global: validCombinations */
+	// /** global: validCombinations */
 	for(var i=0; i < validCombinations.length; i++) {
 		//console.log("Valid league: " + validCombinations[i]['region']);
 		//console.log("Region value: " + regionValue);

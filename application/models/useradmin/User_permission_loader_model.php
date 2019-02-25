@@ -8,7 +8,7 @@ class User_permission_loader_model extends CI_Model {
             $this->setPermissionArrayForUser($pDataStore, $user);
             return $user;
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -30,7 +30,6 @@ class User_permission_loader_model extends CI_Model {
         $permissionArray = $pUser->getPermissionArray();
         $permissionFound = false;
         $permissionArrayCount = count($permissionArray);
-        $userRolePermission = new User_role_permission();
         for($i=0; $i<$permissionArrayCount; $i++) {
             $userRolePermission = $permissionArray[$i];
             if ($userRolePermission->getPermissionName() == $permissionName &&
