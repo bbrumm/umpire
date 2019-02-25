@@ -1,5 +1,9 @@
 <?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
 //session_start(); //we need to call PHP's session object to access it through CI
+/*
+* @property Object db
+* @property Object session
+*/
 class Home extends CI_Controller {
 
     function __construct() {
@@ -14,7 +18,7 @@ class Home extends CI_Controller {
         $this->load->model('Database_store_matches');
 
         if($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
+            $this->session->userdata('logged_in');
             $data = array();
             $data['maxDateOutput'] = $this->getLatestImportDateOutput();
             $this->load->view('templates/header', $data);
