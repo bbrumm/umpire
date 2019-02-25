@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
-
+/*
+* @property Object session
+*/
 class UserAdmin extends CI_Controller
 {
 
@@ -20,17 +22,12 @@ class UserAdmin extends CI_Controller
     }
     
     public function addNewUser() {
-        //$this->debug_library->debugOutput("POST from AddNewUser", $_POST);
         $dataStore = new Database_store_user_admin();
-        $data = "";
         $userAdminModel = new Useradminmodel();
         $userAddSuccess = $userAdminModel->addNewUser($dataStore, $_POST);
         
-        //$this->debug_library->debugOutput("UserAddSuccess", $userAddSuccess);
-        
         if ($userAddSuccess) {
             $userAddedMessage = "User ". $_POST['username'] ." successfully added.";
-            //$this->debug_library->debugOutput("userAddedMessage", $userAddedMessage);
             $this->loadPage($userAddedMessage);
         }
     }
@@ -55,8 +52,8 @@ class UserAdmin extends CI_Controller
             
             $this->load->view('templates/header');
             
+            $data = array();
             $data['userAddedMessage'] = $pUserAddedMessage;
-            
             $data['userArray'] = $userArray;
             $data['roleArray'] = $roleArray;
             //$data['subRoleArray'] = $subRoleArray;
@@ -87,6 +84,4 @@ class UserAdmin extends CI_Controller
         }
 
     }
-
-    
 }
