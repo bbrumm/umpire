@@ -4,7 +4,6 @@
 */
 class Etl_procedure_steps extends CI_Model
 {
-
     const OPERATION_INSERT = 1;
     const OPERATION_UPDATE = 2;
     const OPERATION_DELETE = 3;
@@ -54,7 +53,6 @@ class Etl_procedure_steps extends CI_Model
         $this->insertStagingUmpAgeLeague($pImportedFileID);
         $this->insertFactMatch($pSeason, $pImportedFileID);
         $this->insertStagingNoUmpires($pImportedFileID);
-
 
         /*
         Insert New Competitions
