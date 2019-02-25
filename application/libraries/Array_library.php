@@ -1,10 +1,11 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+* @property Object ci
+*/
 class Array_library {
 
     public function __construct() {
-        $ci = "";
         $this->ci =& get_instance();
         $this->ci->load->config('config');
         //$this->ci->config->load('mylib');
@@ -46,7 +47,8 @@ class Array_library {
 
     public function findKeyFromValue($pArray, $pValueToFind, $pKeyToLookAt) {
         $arrayKeyFound = 0;
-        for ($i=0; $i < count($pArray); $i++) {
+	$arrayCount = count($pArray);
+        for ($i=0; $i < $arrayCount; $i++) {
             if ($pArray[$i][$pKeyToLookAt] == $pValueToFind) {
                 $arrayKeyFound = $i;
             }
@@ -90,7 +92,4 @@ class Array_library {
         }
         return $sumOfValues;
     }
-
-
 }
-?>
