@@ -3,7 +3,6 @@ class Report_filter_parameter extends CI_Model {
     
     private $filterSQLValues;
     private $filterDisplayValues;
-    private $useStrReplaceForSQL; //Used only for setting Region SQL values when PDF Mode is false
     
     public function __construct() {
         $this->load->library('Debug_library');
