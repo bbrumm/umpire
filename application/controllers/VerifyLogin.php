@@ -1,5 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+/*
+* @property Object form_validation
+* @property Object input
+* @property Object session
+*/
 class VerifyLogin extends CI_Controller {
 
      function __construct() {
