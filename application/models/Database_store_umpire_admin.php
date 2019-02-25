@@ -1,5 +1,9 @@
 <?php
 require_once 'IData_store_umpire_admin.php';
+/*
+* @property Object db
+* @property Object session
+*/
 class Database_store_umpire_admin extends CI_Model implements IData_store_umpire_admin
 {
 
