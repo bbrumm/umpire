@@ -1,13 +1,13 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+* @property Object ci
+* @property Object config
+*/
 class Debug_library {
     
     public function __construct() {
-        $ci = "";
         $this->ci =& get_instance();
         $this->ci->load->config('config');
-        //$this->ci->config->load('mylib');
-
     }
 
     public function debugOutput($beforeMessage, $pOutputValue) {
@@ -24,7 +24,4 @@ class Debug_library {
         }
         return $outputText;
     }
-
 }
-
-?>
