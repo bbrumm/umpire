@@ -104,9 +104,9 @@ class ForgotPassword extends CI_Controller {
     }
 
     private function getSendStatusInfo(User $pUmpireUser, $pSendStatus, $pUserExists) {
+        $sendStatusInfo = array();
         if ($pUserExists) {
             if ($pSendStatus) {
-                $sendStatusInfo = array();
                 $sendStatusInfo['status'] = "sent";
                 $sendStatusInfo['message'] =
                     "Please check your email for a link to reset your password.";
