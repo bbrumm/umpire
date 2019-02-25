@@ -83,27 +83,7 @@ class Database_store_user extends CI_Model implements IData_store_user
         $resultArray = $query->result_array();
 
         return $resultArray;
-        /*
-        if (isset($row)) {
-
-            $row = $query->row();
-            $user = User::createUserFromNameAndRole($row->id, $row->user_name,
-                $row->first_name, $row->last_name, $row->role_name, 1, $row->user_email);
-
-
-
-
-            return $resultArray;
-        } else {
-            return null;
-        }
-        */
-
     }
-
-
-
-
 
     public function checkUserExistsForReset(User $pUser) {
         $this->db->select('id');
