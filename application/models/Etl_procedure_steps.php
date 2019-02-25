@@ -1,5 +1,7 @@
 <?php
-
+/*
+* @property Object db
+*/
 class Etl_procedure_steps extends CI_Model
 {
 
