@@ -4,7 +4,7 @@ class CellFormattingHelper_test extends TestCase
     public function setUp() {
         $this->resetInstance();
         $_POST = array();
-        $this->CI->load->helper('Cell_formatting_helper');
+        $this->CI->load->model('Cell_formatting_helper');
         $this->obj = new Cell_formatting_helper();
 
     }

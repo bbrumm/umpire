@@ -3,7 +3,7 @@
 class Parent_report extends CI_Model {
     
     public function __construct() {
-        $this->load->helper('Cell_formatting_helper');
+        $this->load->model('Cell_formatting_helper');
     }
 
     public function getReportDataQuery(Report_instance $pReportInstance) {}
