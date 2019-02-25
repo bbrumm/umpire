@@ -1,5 +1,8 @@
 <?php
-
+/*
+* @property Object Match_import
+* @property Object Run_etl_stored_proc
+*/
 class Missing_data_updater extends CI_Model {
     
     public function __construct() {
