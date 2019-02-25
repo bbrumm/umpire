@@ -8,7 +8,9 @@
  * So this model object will run the commands to refresh these tables as individual SQL queries.
  */
 
-
+/*
+* @property Object db
+*/
 class Refresh_mv_tables extends CI_Model
 {
     function __construct() {
