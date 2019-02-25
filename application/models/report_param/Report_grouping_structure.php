@@ -29,7 +29,6 @@ class Report_grouping_structure
     }
 
     private $reportGroupingStructureID;
-    private $reportID;
     private $groupingType;
     private $fieldName;
     private $fieldGroupOrder;
