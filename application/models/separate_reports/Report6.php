@@ -85,6 +85,7 @@ class Report6 extends Parent_report implements IReport {
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
         $pivotedArray = array();
+        $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
         foreach ($pResultArray as $resultRow) {
