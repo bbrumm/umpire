@@ -32,14 +32,18 @@ class User_permission_loader_model extends CI_Model {
         $permissionArrayCount = count($permissionArray);
         for($i=0; $i<$permissionArrayCount; $i++) {
             $userRolePermission = $permissionArray[$i];
-            if ($userRolePermission->getPermissionName() == $permissionName &&
-                $userRolePermission->getSelectionName() == $selectionName) {
+            if ($this->permissionAndSelectionNamesMatchProvided($userRolePermission, $permissionName, $selectionName) {
                 //Permission found.
                 $permissionFound = true;
                 break;
             }
         }
         return $permissionFound;
+    }
+    
+    private function permissionAndSelectionNamesMatchProvided($userRolePermission, $permissionName, $selectionName) {
+        return ($userRolePermission->getPermissionName() == $permissionName &&
+                $userRolePermission->getSelectionName() == $selectionName);
     }
 
     public function userHasImportFilePermission(User $pUser) {
