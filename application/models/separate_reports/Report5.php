@@ -82,15 +82,16 @@ class Report5 extends Parent_report implements IReport {
                     }
                     
                     //Match the column headings to the values in the array
+                    $subtotalToColumnMap = array(
+                        'Games'=>'match_no_ump',
+                        'Total'=>'total_match_count',
+                        'Pct'=>'match_pct'
+                    );
+                    
                     if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
-                            //TODO: Clean this code up
-                            if ($columnHeadingSet['subtotal'] == 'Games') {
-                                $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_no_ump'];
+                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem[$subtotalToColumnMap[$columnHeadingSet['subtotal']]];
+                            if ($this->isSubtotalGames($columnHeadingSet)) {
                                 $totalForRow = $totalForRow + $columnItem['match_no_ump'];
-                            } elseif ($columnHeadingSet['subtotal'] == 'Total') {
-                                $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['total_match_count'];
-                            } elseif ($columnHeadingSet['subtotal'] == 'Pct') {
-                                $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_pct'];
                             }
                     }
                 }
@@ -101,7 +102,10 @@ class Report5 extends Parent_report implements IReport {
         }
         return $resultOutputArray;
     }
-        
+    
+private function isSubtotalGames($columnHeadingSet) {
+    return ($columnHeadingSet['subtotal'] == 'Games');
+}
 
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
