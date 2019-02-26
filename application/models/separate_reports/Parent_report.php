@@ -223,7 +223,7 @@ private function getCellClassFromFirstColumnFormat($pReportDisplayOptions) {
 }
 
 private function isFirstColumn($pColumnCounter) {
-    return (pColumnCounter == 0);
+    return ($pColumnCounter == 0);
 }
 
 private function shouldCellBeColouredForReport($pReportDisplayOptions) {
