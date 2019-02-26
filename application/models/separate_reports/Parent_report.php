@@ -66,7 +66,7 @@ class Parent_report extends CI_Model {
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
         $outputArray = array();
         //First add heading cells
-	$outputArray[0] .= $this->addHeadingCellsToOutput($pReportDisplayOptions, $pColumnCountForHeadingCells, $pLoadedColumnGroupings);
+	$outputArray[0] = $this->addHeadingCellsToOutput($pReportDisplayOptions, $pColumnCountForHeadingCells, $pLoadedColumnGroupings);
         //Then add data cells
 	$outputArray = $this->addDataCellsToOutput($outputArray, $pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions);
         return $outputArray;
