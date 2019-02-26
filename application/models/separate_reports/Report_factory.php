@@ -11,36 +11,25 @@ include 'Report8.php';
 class Report_factory {
     
     public static function createReport($pReportNumber) {
-        $report = null;
-        
         switch ($pReportNumber) {
             case 1:
-                $report = new Report1();
-                break;
+                return new Report1();
             case 2:
-                $report = new Report2();
-                break;
+                return new Report2();
             case 3:
-                $report = new Report3();
-                break;
+                return new Report3();
             case 4:
-                $report = new Report4();
-                break;
+                return new Report4();
             case 5:
-                $report = new Report5();
-                break;
+                return new Report5();
             case 6:
-                $report = new Report6();
-                break;
+                return new Report6();
             case 7:
-                $report = new Report7();
-                break;
+                return new Report7();
             case 8:
-                $report = new Report8();
-                break;
+                return new Report8();
             default:
                 throw new InvalidArgumentException ("Specified report number does not match a required report. Value provided was " . $pReportNumber);
         }
-        return $report;
     }
 }
