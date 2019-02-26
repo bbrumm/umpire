@@ -64,41 +64,36 @@ class Parent_report extends CI_Model {
 
     public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
-
-        //echo "formatOutputArrayForView <BR />";
-
         $outputArray = array();
-        //Set up header
-        $countItemsInColumnHeadingSet = count($pLoadedColumnGroupings[0]);
-        $columnCountForHeadingCells = $pColumnCountForHeadingCells;
-        $thOutput = "<thead>";
-        $outputRowNumber = 0;
         //First add heading cells
-        for ($i = 0; $i < $countItemsInColumnHeadingSet; $i++) {
-            $thOutput .= "<tr class='header'>";
-
-            $thClassNameToUse = $this->determineClassNameToUse($pReportDisplayOptions);
-            $thOutput .= $this->addTableHeaderCellsToOutput($pReportDisplayOptions, $thClassNameToUse, $i);
-            $thOutput .= $this->addTableHeaderMergedCells($columnCountForHeadingCells, $pReportDisplayOptions, $i);
-
-        }
-
-        $thOutput .= "</thead>";
-        $outputArray[0] = $thOutput;
-        //echo "outputArray: " . $outputArray[$outputRowNumber] . "<BR />";
-        $outputRowNumber++;
-        //Set up table body
-        $countRows = count($pResultOutputArray);
-
+	$outputArray[0] .= $this->addHeadingCellsToOutput($pReportDisplayOptions, $pColumnCountForHeadingCells);
         //Then add data cells
-        for ($rowCounter = 0; $rowCounter < $countRows; $rowCounter++) {
-            $outputArray[$outputRowNumber] = $this->constructTableRowOutput($pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions, $rowCounter);
-            //echo "outputArray: " . $outputArray[$outputRowNumber] . "<BR />";
-            $outputRowNumber++;
-
-        }
+	$outputArray = $this->addDataCellsToOutput($outputArray, $pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions);
         return $outputArray;
     }
+	
+	private function addHeadingCellsToOutput($pReportDisplayOptions, $pColumnCountForHeadingCells) {
+		$thOutput = "<thead>";
+		$countItemsInColumnHeadingSet = count($pLoadedColumnGroupings[0]);
+		    for ($i = 0; $i < $countItemsInColumnHeadingSet; $i++) {
+			$thOutput .= "<tr class='header'>";
+			$thClassNameToUse = $this->determineClassNameToUse($pReportDisplayOptions);
+			$thOutput .= $this->addTableHeaderCellsToOutput($pReportDisplayOptions, $thClassNameToUse, $i);
+			$thOutput .= $this->addTableHeaderMergedCells($pColumnCountForHeadingCells, $pReportDisplayOptions, $i);
+		    }
+		    $thOutput .= "</thead>";
+		    return $thOutput;
+	}
+	
+	private function addDataCellsToOutput($outputArray, $pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions) {
+	    $countRows = count($pResultOutputArray);
+	    $outputRowNumber = 1;
+            for ($rowCounter = 0; $rowCounter < $countRows; $rowCounter++) {
+                $outputArray[$outputRowNumber] = $this->constructTableRowOutput($pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions, $rowCounter);
+                $outputRowNumber++;
+            }
+	    return $outputArray;
+	}
 
 
         private function determineClassNameToUse($pReportDisplayOptions) {
