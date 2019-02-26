@@ -194,41 +194,58 @@ class Parent_report extends CI_Model {
         }
 
 
-        private function determineCellClassToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
+       private function determineCellClassToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
             $cellClassToUse = "";
             $cellFormatter = new Cell_formatting_helper();
             if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
-                if ($columnCounter == 0) { //First column
-                    if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
-                        $cellClassToUse = "cellText cellNormal";
-                    } elseif ($pReportDisplayOptions->getFirstColumnFormat() == "date") {
-                        $cellClassToUse = "cellNumber cellNormal";
-                    }
+                if ($this->isFirstColumn($columnCounter)) {
+                    $cellClassToUse = $this->getCellClassFromFirstColumnFormat($pReportDisplayOptions);
+                } elseif ($this->shouldCellBeColouredForReport($pReportDisplayOptions)) {
+                    $cellClassToUse = $cellFormatter->getCellClassNameForTableFromOutputValue(
+				        $pResultOutputArray[$pRowCounter][$columnCounter]);
+                } elseif(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
+                    $cellClassToUse = "cellNumber cellNormal";
                 } else {
-                    if ($pReportDisplayOptions->getColourCells() == 1) {
-                        //TODO: Refactor this to remove boolean parameter and use two different functions
-                        $cellClassToUse = $cellFormatter->getCellClassNameForTableFromOutputValue($pResultOutputArray[$pRowCounter][$columnCounter], TRUE);
-                    } elseif(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
-                        $cellClassToUse = "cellNumber cellNormal";
-                    } else {
-                        $cellClassToUse = "cellText cellNormal";
-                    }
+                    $cellClassToUse = "cellText cellNormal";
                 }
             } else {
                 $cellClassToUse = "cellNormal";
             }
             return $cellClassToUse;
-
         }
+
+private function getCellClassFromFirstColumnFormat($pReportDisplayOptions) {
+    if ($this->isFirstColumnFormatText($pReportDisplayOptions)) {
+        return "cellText cellNormal";
+    } elseif ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
+        return "cellNumber cellNormal";
+    }
+}
+
+private function isFirstColumn($pColumnCounter) {
+    return (pColumnCounter == 0);
+}
+
+private function shouldCellBeColouredForReport($pReportDisplayOptions) {
+    return ($pReportDisplayOptions->getColourCells() == 1);
+}
+    
+    private function isFirstColumnFormatText($pReportDisplayOptions) {
+        return ($pReportDisplayOptions->getFirstColumnFormat() == "text");
+    }
+    
+    private function isFirstColumnFormatDate($pReportDisplayOptions) {
+        return ($pReportDisplayOptions->getFirstColumnFormat() == "date");
+    }
 
 
         private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
             $cellValue = "";
             if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
                 if ($columnCounter == 0) { //First column
-                    if ($pReportDisplayOptions->getFirstColumnFormat() == "text") {
+                    if ($this->isFirstColumnFormatText($pReportDisplayOptions)) {
                         $cellValue = $pResultOutputArray[$pRowCounter][$columnCounter];
-                    } elseif ($pReportDisplayOptions->getFirstColumnFormat() == "date") {
+                    } elseif ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
                         $weekDate = date_create($pResultOutputArray[$pRowCounter][$columnCounter]);
                         $cellValue = date_format($weekDate, 'd/m/Y');
                     }
