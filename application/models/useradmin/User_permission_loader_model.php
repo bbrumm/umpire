@@ -32,7 +32,7 @@ class User_permission_loader_model extends CI_Model {
         $permissionArrayCount = count($permissionArray);
         for($i=0; $i<$permissionArrayCount; $i++) {
             $userRolePermission = $permissionArray[$i];
-            if ($this->permissionAndSelectionNamesMatchProvided($userRolePermission, $permissionName, $selectionName) {
+            if ($this->permissionAndSelectionNamesMatchProvided($userRolePermission, $permissionName, $selectionName)) {
                 //Permission found.
                 $permissionFound = true;
                 break;
