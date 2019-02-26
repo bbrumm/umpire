@@ -103,7 +103,7 @@ class Report8 extends Parent_report implements IReport {
 
     private function seasonYearNeedsTotal($columnItem) {
         $validSeasonArray = array('Games Prior', '2015', '2016', '2017', '2018', '2019');
-        return (in_array($columnItem['season_year'], $validSeasonArray);
+        return (in_array($columnItem['season_year'], $validSeasonArray));
     }
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
