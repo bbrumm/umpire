@@ -102,16 +102,8 @@ class Report8 extends Parent_report implements IReport {
     }
 
     private function seasonYearNeedsTotal($columnItem) {
-        if ($columnItem['season_year'] == 'Games Prior' ||
-            $columnItem['season_year'] == '2015' ||
-            $columnItem['season_year'] == '2016' ||
-            $columnItem['season_year'] == '2017' ||
-            $columnItem['season_year'] == '2018' ||
-            $columnItem['season_year'] == '2019') {
-            return true;
-        } else {
-            return false;
-        }
+        $validSeasonArray = array('Games Prior', '2015', '2016', '2017', '2018', '2019');
+        return (in_array($columnItem['season_year'], $validSeasonArray);
     }
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
