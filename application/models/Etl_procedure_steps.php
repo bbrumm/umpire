@@ -148,7 +148,7 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
 	    $this->logTableOperation($pTableName, self::OPERATION_DELETE);
 	}
 
-    public function logTableOperation($pTableName, $pOperationType) {
+    private function logTableOperation($pTableName, $pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
 VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $this->runQuery($queryString);
