@@ -43,7 +43,7 @@ const TABLE_GROUND = "ground";
         $this->setupScript();
 	$this->importFileID = $pImportedFileID;
 	$this->currentSeason = $pSeason;
-	$queryBuilder->setSeason($pSeason);
+	$this->queryBuilder->setSeason($pSeason);
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
 
         $pSeason->setSeasonYear($this->lookupSeasonYear());
