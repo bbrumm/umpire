@@ -12,7 +12,7 @@ class Etl_query_builder extends CI_Model
         $this->load->model('Season');
     }
 
-    public setSeason($pSeason) {
+    public function setSeason($pSeason) {
         $this->season = $pSeason;
     }
 
