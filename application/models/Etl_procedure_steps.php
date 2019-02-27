@@ -340,7 +340,7 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
     private function insertStagingUmpAgeLeague() {
         $this->disableKeys(self::TABLE_STAGING_UMP_AGE_LG);
 
-        $queryString = $this->queryBuilder->getInsertStagingUmpAgeLeagueQuery();
+        $queryString = $this->queryBuilder->getInsertStagingAllUmpAgeLeagueQuery();
         $this->runQuery($queryString);
 	    
         $this->logTableInsertOperation(self::TABLE_STAGING_UMP_AGE_LG);
