@@ -193,8 +193,7 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
 
 	//Report8 table delete is done differently as it contains more data
     private function deleteMVReport8() {
-        $queryString = "DELETE rec FROM dw_mv_report_08 rec 
-WHERE rec.season_year IN(CONVERT(". $this->currentSeason->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');;";
+        $queryString = $this->queryBuilder->getDeleteMVReport8Query();
         $this->runQuery($queryString);
         $this->logTableDeleteOperation("dw_mv_report_08");
     }
@@ -206,9 +205,7 @@ WHERE rec.season_year IN(CONVERT(". $this->currentSeason->getSeasonYear() .", CH
     }
 
     private function deleteDWFactMatch() {
-        $queryString = "DELETE rec FROM dw_fact_match rec
-INNER JOIN dw_dim_time t ON rec.time_key = t.time_key
-WHERE t.date_year = ". $this->currentSeason->getSeasonYear() .";";
+        $queryString = $this->queryBuilder->getDeleteDWFactMatchQuery();
         $this->runQuery($queryString);
         $this->logTableDeleteOperation("dw_fact_match");
     }
@@ -313,13 +310,7 @@ WHERE t.date_year = ". $this->currentSeason->getSeasonYear() .";";
     private function insertDimTeam() {
         $this->disableKeys(self::TABLE_DW_DIM_TEAM);
 
-        $queryString = "INSERT INTO dw_dim_team (team_name, club_name)
-SELECT
-t.team_name,
-c.club_name
-FROM team t
-INNER JOIN club c ON t.club_id = c.id
-ORDER BY t.team_name, c.club_name;";
+        $queryString = $this->queryBuilder->getInsertDimTeamQuery();
         $this->runQuery($queryString);
 
         $this->logTableInsertOperation(self::TABLE_DW_DIM_TEAM);
@@ -329,23 +320,7 @@ ORDER BY t.team_name, c.club_name;";
     private function insertDimTime() {
         $this->disableKeys(self::TABLE_DW_DIM_TIME);
 
-        $queryString = "INSERT INTO dw_dim_time (match_date, date_year, date_month, date_day, date_hour, date_minute, weekend_date, weekend_year, weekend_month, weekend_day)
-SELECT
-DISTINCT
-/*r.round_number,*/
-m.match_time,
-YEAR(m.match_time) AS date_year,
-MONTH(m.match_time) AS date_month,
-DAY(m.match_time) AS date_day,
-HOUR(m.match_time) AS date_hour,
-MINUTE(m.match_time) AS date_minute,
-ADDDATE(r.round_date, (5-Weekday(r.round_date))) AS weekend_date,
-YEAR(ADDDATE(r.round_date, (5-Weekday(r.round_date)))) AS weekend_year,
-MONTH(ADDDATE(r.round_date, (5-Weekday(r.round_date)))) AS weekend_month,
-DAY(ADDDATE(r.round_date, (5-Weekday(r.round_date)))) AS weekend_day
-FROM match_played m
-INNER JOIN round r ON m.round_id = r.id
-ORDER BY m.match_time;";
+        $queryString = $this->queryBuilder->getInsertDimTimeQuery();
         $this->runQuery($queryString);
 
         $this->logTableInsertOperation(self::TABLE_DW_DIM_TIME);
@@ -365,25 +340,7 @@ ORDER BY m.match_time;";
     private function insertStagingUmpAgeLeague() {
         $this->disableKeys(self::TABLE_STAGING_UMP_AGE_LG);
 
-        $queryString = "INSERT INTO staging_all_ump_age_league (age_group, umpire_type, short_league_name, region_name, age_sort_order, league_sort_order)
-SELECT DISTINCT
-ag.age_group,
-ut.umpire_type_name,
-l.short_league_name,
-r.region_name,
-ag.display_order,
-CASE short_league_name
-	WHEN 'GFL' THEN 1
-	WHEN 'BFL' THEN 2
-	WHEN 'GDFL' THEN 3
-	WHEN 'CDFNL' THEN 4
-	ELSE 10
-END league_sort_order
-FROM age_group ag
-INNER JOIN age_group_division agd ON ag.ID = agd.age_group_id
-INNER JOIN league l ON l.age_group_division_id = agd.ID
-CROSS JOIN umpire_type ut
-INNER JOIN region r ON l.region_id = r.id;";
+        $queryString = $this->queryBuilder->getInsertStagingUmpAgeLeagueQuery();
         $this->runQuery($queryString);
 	    
         $this->logTableInsertOperation(self::TABLE_STAGING_UMP_AGE_LG);
@@ -413,44 +370,19 @@ INNER JOIN region r ON l.region_id = r.id;";
     }
 
     private function insertCompetitionLookup() {
-        $queryString = "INSERT INTO competition_lookup (competition_name, season_id, league_id)
-SELECT DISTINCT competition_name, ". $this->currentSeason->getSeasonID() .", NULL
-FROM match_import
-WHERE competition_name NOT IN (
-	SELECT competition_name
-    FROM competition_lookup
-);";
+        $queryString = $this->queryBuilder->getInsertCompetitionLookupQuery();
         $this->runQuery($queryString);
 	$this->logTableInsertOperation(self::TABLE_COMPETITION_LOOKUP);
     }
 
     private function insertNewTeams() {
-        $queryString = "INSERT INTO team (team_name, club_id)
-SELECT home_team, NULL
-FROM match_import
-WHERE home_team NOT IN (
-	SELECT team_name
-    FROM team
-)
-UNION
-SELECT away_team, NULL
-FROM match_import
-WHERE away_team NOT IN (
-	SELECT team_name
-    FROM team
-);";
+        $queryString = $this->queryBuilder->getInsertTeamQuery();
         $this->runQuery($queryString);
 	$this->logTableInsertOperation(self::TABLE_TEAM);
     }
 
     private function insertNewGrounds() {
-        $queryString = "INSERT INTO ground (main_name, alternative_name)
-SELECT DISTINCT ground, ground
-FROM match_import
-WHERE ground NOT IN (
-	SELECT alternative_name
-	FROM ground
-);";
+        $queryString = $this->queryBuilder->getInsertNewGroundsQuery();
         $this->runQuery($queryString);
 	$this->logTableInsertOperation(self::TABLE_GROUND);
     }
