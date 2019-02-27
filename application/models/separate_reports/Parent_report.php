@@ -253,6 +253,31 @@ private function shouldCellBeColouredForReport($pReportDisplayOptions) {
             return $cellValue;
         }
 
+private function NEW_determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
+
+  if ($this->isValueInResults($columnCounter, $pResultOutputArray[$pRowCounter])  == false) {
+    return "";
+  }
+
+  if ($isFirstColumn($columnCounter) == false) {
+    return $pResultOutputArray[$pRowCounter][$columnCounter];
+  }
+
+  if ($this->isFirstColumnFormatText($pReportDisplayOptions)) {
+    return  $pResultOutputArray[$pRowCounter][$columnCounter];
+  }
+
+  if ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
+     $weekDate = date_create($pResultOutputArray[$pRowCounter][$columnCounter]);
+    return  date_format($weekDate, 'd/m/Y');
+  }
+
+
+}
+
+private function isValueInResults($columnCounter, $pResultOutputArray[$pRowCounter]) {
+  return array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter]);
+}
 
 
 
