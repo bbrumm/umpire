@@ -449,7 +449,7 @@ INNER JOIN    region r ON r.id = l.region_id;";
     }
 
     public function getInsertDWFactMatchQuery() {
-        "INSERT INTO dw_fact_match (match_id, umpire_key, age_group_key, league_key, time_key, home_team_key, away_team_key)
+        return "INSERT INTO dw_fact_match (match_id, umpire_key, age_group_key, league_key, time_key, home_team_key, away_team_key)
 SELECT 
 s.match_id,
 du.umpire_key,
