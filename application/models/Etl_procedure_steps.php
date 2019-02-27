@@ -176,27 +176,27 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
     }
 
     private function deleteMVReport1($pSeason) {
-	$this->deleteMVReportTable("dw_mv_report_01", $pSeason, $pImportedFileID);
+	$this->deleteMVReportTable("dw_mv_report_01", $pSeason);
     }
 
     private function deleteMVReport2($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_02", $pSeason, $pImportedFileID);
+        $this->deleteMVReportTable("dw_mv_report_02", $pSeason);
     }
 
     private function deleteMVReport4($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_04", $pSeason, $pImportedFileID);
+        $this->deleteMVReportTable("dw_mv_report_04", $pSeason);
     }
 
     private function deleteMVReport5($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_05", $pSeason, $pImportedFileID);
+        $this->deleteMVReportTable("dw_mv_report_05", $pSeason);
     }
 
     private function deleteMVReport6($pSeason) {
-       $this->deleteMVReportTable("dw_mv_report_06", $pSeason, $pImportedFileID);
+       $this->deleteMVReportTable("dw_mv_report_06", $pSeason);
     }
 
     private function deleteMVReport7($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_07", $pSeason, $pImportedFileID);
+        $this->deleteMVReportTable("dw_mv_report_07", $pSeason);
     }
 
 	//Report8 table delete is done differently as it contains more data
@@ -345,7 +345,7 @@ AND u.last_name = sub.last_name);";
 
     }
 
-    private function insertMatchStaging($pImportedFileID) {
+    private function insertMatchStaging() {
 
         $this->disableKeys(self::TABLE_MATCH_STAGING);
 
@@ -614,7 +614,7 @@ LEFT JOIN umpire_type ut ON unt.umpire_type_id = ut.ID;
     }
 
 
-    private function insertDimAgeGroup($pImportedFileID) {
+    private function insertDimAgeGroup() {
         $this->disableKeys(self::TABLE_DW_DIM_AGE_GROUP);
 
         $queryString = "INSERT INTO dw_dim_age_group (age_group, sort_order, division)
@@ -632,7 +632,7 @@ ORDER BY ag.display_order;";
         $this->enableKeys(self::TABLE_DW_DIM_AGE_GROUP);
     }
 
-    private function insertDimLeague($pImportedFileID) {
+    private function insertDimLeague() {
         $this->disableKeys(self::TABLE_DW_DIM_LEAGUE);
 
         $queryString = "INSERT INTO dw_dim_league (short_league_name, full_name, region_name, competition_name, league_year, league_sort_order)
