@@ -7,6 +7,16 @@ class Etl_procedure_steps extends CI_Model
     const OPERATION_INSERT = 1;
     const OPERATION_UPDATE = 2;
     const OPERATION_DELETE = 3;
+    const TABLE_DW_DIM_AGE_GROUP = "dw_dim_age_group";
+    const TABLE_DW_DIM_LEAGUE = "dw_dim_league";
+    const TABLE_DW_DIM_TEAM = "dw_dim_team";
+    const TABLE_DW_DIM_TIME = "dw_dim_time";
+    const TABLE_DW_DIM_UMPIRE = "dw_dim_umpire";
+    const TABLE_STAGING_MATCH = "staging_match";
+    const TABLE_STAGING_NO_UMP = "staging_no_umpires";
+    const TABLE_STAGING_UMP_AGE_LG = "staging_all_ump_age_league";
+    const TABLE_DW_RPT06_STG2 = "dw_rpt06_stg2";
+    const TABLE_DW_RPT06_STG = "dw_rpt06_staging";
 
     function __construct() {
         parent::__construct();
@@ -545,35 +555,21 @@ AND round.season_id = ". $pSeason->getSeasonID() ."
     }
 
     private function truncateDimFact() {
-        $queryString = "TRUNCATE TABLE dw_dim_age_group;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE TABLE dw_dim_league;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE TABLE dw_dim_team;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE TABLE dw_dim_time;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE TABLE dw_dim_umpire;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE staging_match;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE staging_no_umpires;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE staging_all_ump_age_league;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE dw_rpt06_stg2;";
-        $this->runQuery($queryString);
-
-        $queryString = "TRUNCATE dw_rpt06_staging;";
-        $this->runQuery($queryString);
+	$this->truncateTable(self::TABLE_DW_DIM_AGE_GROUP);
+	$this->truncateTable(self::TABLE_DW_DIM_LEAGUE);
+	$this->truncateTable(self::TABLE_DW_DIM_TEAM);
+	$this->truncateTable(self::TABLE_DW_DIM_TIME);
+	$this->truncateTable(self::TABLE_DW_DIM_UMPIRE);
+	$this->truncateTable(self::TABLE_STAGING_MATCH);
+	$this->truncateTable(self::TABLE_STAGING_NO_UMP);
+	$this->truncateTable(self::TABLE_STAGING_UMP_AGE_LG);
+	$this->truncateTable(self::TABLE_DW_RPT06_STG2);
+	$this->truncateTable(self::TABLE_DW_RPT06_STG);
+    }
+	
+    private function truncateTable($pTableName) {
+	$queryString = "TRUNCATE ". $pTableName .";";
+        $this->runQuery($queryString);	
     }
 
     private function insertDimUmpire($pImportedFileID) {
