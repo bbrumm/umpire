@@ -161,7 +161,7 @@ class Refresh_mv_tables extends CI_Model
         }
     }
     
-    private function logTableOperation($pImportedFileID, $pTableName, $pOperation) {
+    private function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
          $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
 VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $this->runQuery($queryString);
