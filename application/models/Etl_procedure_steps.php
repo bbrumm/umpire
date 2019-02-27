@@ -126,15 +126,15 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
     }
 	
 	private function logTableInsertOperation($pImportedFileID, $pTableName) {
-	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION::INSERT);
+	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION_INSERT);
 	}
 	
 	private function logTableUpdateOperation($pImportedFileID, $pTableName) {
-	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION::UPDATE);
+	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION_UPDATE);
 	}
 	
 	private function logTableDeleteOperation($pImportedFileID, $pTableName) {
-	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION::DELETE);
+	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION_DELETE);
 	}
 
     public function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
