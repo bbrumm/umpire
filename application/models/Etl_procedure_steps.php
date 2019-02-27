@@ -161,7 +161,7 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
     }
 
     private function deleteMatchPlayed() {
-        $queryString = $queryBuilder->getDeleteMatchPlayedQuery();
+        $queryString = $this->queryBuilder->getDeleteMatchPlayedQuery();
         $this->runQuery($queryString);
         $this->logTableDeleteOperation(self::TABLE_MATCH_PLAYED);
     }
