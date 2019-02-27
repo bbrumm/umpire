@@ -692,7 +692,7 @@ INNER JOIN round r ON m.round_id = r.id
 ORDER BY m.match_time;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation(, self::TABLE_DW_DIM_TIME);
+        $this->logTableInsertOperation(self::TABLE_DW_DIM_TIME);
         $this->enableKeys(self::TABLE_DW_DIM_TIME);
     }
 
