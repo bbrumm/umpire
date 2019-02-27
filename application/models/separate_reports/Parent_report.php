@@ -208,6 +208,7 @@ class Parent_report extends CI_Model {
             }
             return $cellClassToUse;
         }
+	
 
 private function getCellClassFromFirstColumnFormat($pReportDisplayOptions) {
     if ($this->isFirstColumnFormatText($pReportDisplayOptions)) {
@@ -233,7 +234,7 @@ private function shouldCellBeColouredForReport($pReportDisplayOptions) {
         return ($pReportDisplayOptions->getFirstColumnFormat() == "date");
     }
 
-
+/*
         private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
             $cellValue = "";
             if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
@@ -252,8 +253,9 @@ private function shouldCellBeColouredForReport($pReportDisplayOptions) {
             }
             return $cellValue;
         }
+	*/
 
-private function NEW_determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
+private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
 
   if ($this->isValueInResults($columnCounter, $pResultOutputArray)  == false) {
     return "";
