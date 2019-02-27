@@ -133,7 +133,7 @@ INNER JOIN round ON match_played.round_id = round.ID
 WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->runQuery($queryString);
 
-        $this->logTableDeleteOperation($pImportedFileID, "umpire_name_type_match");
+        $this->logTableDeleteOperation(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
     }
 	
 	private function logTableInsertOperation($pImportedFileID, $pTableName) {
@@ -160,7 +160,7 @@ VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name
 WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->runQuery($queryString);
 
-        $this->logTableDeleteOperation($pImportedFileID, "match_played");
+        $this->logTableDeleteOperation(self::TABLE_MATCH_PLAYED);
     }
 
     private function deleteRound($pSeason) {
@@ -172,7 +172,7 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
 
     private function deleteMatchStaging($pImportedFileID) {
 	$this->truncateTable(self::TABLE_MATCH_STAGING);
-        $this->logTableDeleteOperation($pImportedFileID, self::TABLE_MATCH_STAGING);
+        $this->logTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
 
     private function deleteMVReport1($pSeason, $pImportedFileID) {
@@ -204,13 +204,13 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $queryString = "DELETE rec FROM dw_mv_report_08 rec 
 WHERE rec.season_year IN(CONVERT(". $pSeason->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');;";
         $this->runQuery($queryString);
-        $this->logTableDeleteOperation($pImportedFileID, "dw_mv_report_08");
+        $this->logTableDeleteOperation("dw_mv_report_08");
     }
 	
     private function deleteMVReportTable($pTableName, $pSeason, $pImportedFileID) {
         $queryString = "DELETE rec FROM ". $pTableName ." rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
         $this->runQuery($queryString);
-        $this->logTableDeleteOperation($pImportedFileID, $pTableName);
+        $this->logTableDeleteOperation($pTableName);
     }
 
     private function deleteDWFactMatch($pSeason, $pImportedFileID) {
@@ -218,7 +218,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeason->getSeasonYear() .", CHAR), 'Games 
 INNER JOIN dw_dim_time t ON rec.time_key = t.time_key
 WHERE t.date_year = ". $pSeason->getSeasonYear() .";";
         $this->runQuery($queryString);
-        $this->logTableDeleteOperation($pImportedFileID, "dw_fact_match");
+        $this->logTableDeleteOperation("dw_fact_match");
     }
 
     private function insertRound($pImportedFileID) {
@@ -431,7 +431,7 @@ WHERE
     AND m1.home_team_id = m2.home_team_id
     AND m1.away_team_id = m2.away_team_id;";
         $this->runQuery($queryString);
-        $this->logTableDeleteOperation($pImportedFileID, self::TABLE_MATCH_STAGING);
+        $this->logTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
 
     private function insertMatchPlayed($pImportedFileID) {
@@ -915,7 +915,7 @@ WHERE m.match_id NOT IN (
     private function deleteCompetitionsWithMissingLeague($pImportedFileID) {
         $queryString = "DELETE FROM competition_lookup WHERE league_id IS NULL;";
         $this->runQuery($queryString);
-	$this->logTableDeleteOperation($pImportedFileID, self::TABLE_COMPETITION_LOOKUP);
+	$this->logTableDeleteOperation(self::TABLE_COMPETITION_LOOKUP);
     }
 
     private function insertCompetitionLookup($pSeason, $pImportedFileID) {
