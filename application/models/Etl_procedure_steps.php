@@ -61,7 +61,7 @@ const TABLE_GROUND = "ground";
         $this->insertMatchStaging();
         $this->deleteDuplicateMatchStagingRecords();
         $this->insertMatchPlayed();
-        $this->insertUmpireNameTypeMatch($pSeason, );
+        $this->insertUmpireNameTypeMatch($pSeason);
 
         $this->truncateDimFact();
         $this->insertDimUmpire();
