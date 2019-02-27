@@ -40,6 +40,108 @@ WHERE round.season_id = ". $this->season->getSeasonID() .";";
         return "DELETE round FROM round 
 WHERE round.season_id = ". $this->season->getSeasonID() .";";
     }
+	
+	public function getDeleteMVReport8Query() {
+		return "DELETE rec FROM dw_mv_report_08 rec 
+WHERE rec.season_year IN(CONVERT(". $this->season->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');";
+	}
+	
+	public function getDeleteDWFactMatchQuery() {
+		
+		return "DELETE rec FROM dw_fact_match rec
+INNER JOIN dw_dim_time t ON rec.time_key = t.time_key
+WHERE t.date_year = ". $this->season->getSeasonYear() .";";
+		
+	}
+	
+	public function getInsertDimTeamQuery() {
+	    return "INSERT INTO dw_dim_team (team_name, club_name)
+SELECT
+t.team_name,
+c.club_name
+FROM team t
+INNER JOIN club c ON t.club_id = c.id
+ORDER BY t.team_name, c.club_name;";	
+	}
+	
+	public function getInsertDimTimeQuery() {
+	return "INSERT INTO dw_dim_time (match_date, date_year, date_month, date_day, date_hour, date_minute, weekend_date, weekend_year, weekend_month, weekend_day)
+SELECT
+DISTINCT
+/*r.round_number,*/
+m.match_time,
+YEAR(m.match_time) AS date_year,
+MONTH(m.match_time) AS date_month,
+DAY(m.match_time) AS date_day,
+HOUR(m.match_time) AS date_hour,
+MINUTE(m.match_time) AS date_minute,
+ADDDATE(r.round_date, (5-Weekday(r.round_date))) AS weekend_date,
+YEAR(ADDDATE(r.round_date, (5-Weekday(r.round_date)))) AS weekend_year,
+MONTH(ADDDATE(r.round_date, (5-Weekday(r.round_date)))) AS weekend_month,
+DAY(ADDDATE(r.round_date, (5-Weekday(r.round_date)))) AS weekend_day
+FROM match_played m
+INNER JOIN round r ON m.round_id = r.id
+ORDER BY m.match_time;";	
+	}
+	
+	public function getInsertStagingAllUmpAgeLeagueQuery() {
+	return "INSERT INTO staging_all_ump_age_league (age_group, umpire_type, short_league_name, region_name, age_sort_order, league_sort_order)
+SELECT DISTINCT
+ag.age_group,
+ut.umpire_type_name,
+l.short_league_name,
+r.region_name,
+ag.display_order,
+CASE short_league_name
+	WHEN 'GFL' THEN 1
+	WHEN 'BFL' THEN 2
+	WHEN 'GDFL' THEN 3
+	WHEN 'CDFNL' THEN 4
+	ELSE 10
+END league_sort_order
+FROM age_group ag
+INNER JOIN age_group_division agd ON ag.ID = agd.age_group_id
+INNER JOIN league l ON l.age_group_division_id = agd.ID
+CROSS JOIN umpire_type ut
+INNER JOIN region r ON l.region_id = r.id;";	
+	}
+	
+	public function getInsertCompetitionLookupQuery() {
+	return "INSERT INTO competition_lookup (competition_name, season_id, league_id)
+SELECT DISTINCT competition_name, ". $this->season->getSeasonID() .", NULL
+FROM match_import
+WHERE competition_name NOT IN (
+	SELECT competition_name
+    FROM competition_lookup
+);";	
+	}
+	
+	public function getInsertNewGroundsQuery() {
+	    return  "INSERT INTO ground (main_name, alternative_name)
+SELECT DISTINCT ground, ground
+FROM match_import
+WHERE ground NOT IN (
+	SELECT alternative_name
+	FROM ground
+);";	
+	}
+	
+	public function getInsertTeamQuery() {
+	    return  "INSERT INTO team (team_name, club_id)
+SELECT home_team, NULL
+FROM match_import
+WHERE home_team NOT IN (
+	SELECT team_name
+    FROM team
+)
+UNION
+SELECT away_team, NULL
+FROM match_import
+WHERE away_team NOT IN (
+	SELECT team_name
+    FROM team
+);";	
+	}
 
     public function getInsertRoundQuery() {
         return "INSERT INTO round ( round_number, round_date, season_id, league_id )
