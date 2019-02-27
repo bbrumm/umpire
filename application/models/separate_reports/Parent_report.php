@@ -257,7 +257,7 @@ private function shouldCellBeColouredForReport($pReportDisplayOptions) {
 
 private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
 
-  if ($this->isValueInResults($columnCounter, $pResultOutputArray)  == false) {
+  if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  == false) {
     return "";
   }
 
@@ -277,7 +277,7 @@ private function determineCellValueToUse($columnCounter, $pResultOutputArray, $p
 
 }
 
-private function isValueInResults($columnCounter, $pResultOutputArray) {
+private function isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter) {
   return array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter]);
 }
 
