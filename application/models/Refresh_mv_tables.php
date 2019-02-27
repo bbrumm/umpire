@@ -19,6 +19,7 @@ class Refresh_mv_tables extends CI_Model
         $this->load->model('Etl_procedure_steps');
     }
     
+    //TODO: A lot of this code is duplicated in model/Etl_procedure_steps.
     public function refreshMVTables(IData_store_matches $pDataStore, $season, $importedFileID) {
 
         //$pDataStore->runETLProcedure($season, $importedFileID);
@@ -161,8 +162,9 @@ class Refresh_mv_tables extends CI_Model
     }
     
     private function logTableOperation($pImportedFileID, $pTableName, $pOperation) {
-        $etlProc = new Etl_procedure_steps();
-        $etlProc->logTableOperation($pImportedFileID, $pTableName, $pOperation);
+         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
+VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
+        $this->runQuery($queryString);
     }
     
     /*
