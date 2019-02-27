@@ -41,38 +41,38 @@ const TABLE_GROUND = "ground";
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
 
         $pSeason->setSeasonYear($this->lookupSeasonYear($pSeason));
-        $this->deleteUmpireNameTypeMatch($pSeason, $pImportedFileID);
+        $this->deleteUmpireNameTypeMatch($pSeason);
 
-        $this->deleteMatchPlayed($pSeason, $pImportedFileID);
+        $this->deleteMatchPlayed($pSeason);
         $this->deleteRound($pSeason);
-        $this->deleteMatchStaging($pImportedFileID);
-        $this->deleteMVReport1($pSeason, $pImportedFileID);
-        $this->deleteMVReport2($pSeason, $pImportedFileID);
-        $this->deleteMVReport4($pSeason, $pImportedFileID);
-        $this->deleteMVReport5($pSeason, $pImportedFileID);
-        $this->deleteMVReport6($pSeason, $pImportedFileID);
-        $this->deleteMVReport7($pSeason, $pImportedFileID);
-        $this->deleteMVReport8($pSeason, $pImportedFileID);
-        $this->deleteDWFactMatch($pSeason, $pImportedFileID);
+        $this->deleteMatchStaging();
+        $this->deleteMVReport1($pSeason);
+        $this->deleteMVReport2($pSeason);
+        $this->deleteMVReport4($pSeason);
+        $this->deleteMVReport5($pSeason);
+        $this->deleteMVReport6($pSeason);
+        $this->deleteMVReport7($pSeason);
+        $this->deleteMVReport8($pSeason);
+        $this->deleteDWFactMatch($pSeason);
 
-        $this->insertRound($pImportedFileID);
-        $this->insertUmpire($pImportedFileID);
-        $this->insertUmpireNameType($pImportedFileID);
-        $this->insertMatchStaging($pImportedFileID);
-        $this->deleteDuplicateMatchStagingRecords($pImportedFileID);
-        $this->insertMatchPlayed($pImportedFileID);
-        $this->insertUmpireNameTypeMatch($pSeason, $pImportedFileID);
+        $this->insertRound();
+        $this->insertUmpire();
+        $this->insertUmpireNameType();
+        $this->insertMatchStaging();
+        $this->deleteDuplicateMatchStagingRecords();
+        $this->insertMatchPlayed();
+        $this->insertUmpireNameTypeMatch($pSeason, );
 
         $this->truncateDimFact();
-        $this->insertDimUmpire($pImportedFileID);
-        $this->insertDimAgeGroup($pImportedFileID);
-        $this->insertDimLeague($pImportedFileID);
-        $this->insertDimTeam($pImportedFileID);
-        $this->insertDimTime($pImportedFileID);
-        $this->insertStagingMatch($pImportedFileID);
-        $this->insertStagingUmpAgeLeague($pImportedFileID);
-        $this->insertFactMatch($pSeason, $pImportedFileID);
-        $this->insertStagingNoUmpires($pImportedFileID);
+        $this->insertDimUmpire();
+        $this->insertDimAgeGroup();
+        $this->insertDimLeague();
+        $this->insertDimTeam();
+        $this->insertDimTime();
+        $this->insertStagingMatch();
+        $this->insertStagingUmpAgeLeague();
+        $this->insertFactMatch($pSeason);
+        $this->insertStagingNoUmpires();
 
         /*
         Insert New Competitions
@@ -82,13 +82,13 @@ const TABLE_GROUND = "ground";
 
         First, delete the competitions which are still NULL from previous imports
         */
-        $this->deleteCompetitionsWithMissingLeague($pImportedFileID);
-        $this->insertCompetitionLookup($pSeason, $pImportedFileID);
+        $this->deleteCompetitionsWithMissingLeague();
+        $this->insertCompetitionLookup($pSeason);
         /*
         Insert new teams. Clubs are added manually by the person importing the data
         */
-        $this->insertNewTeams($pImportedFileID);
-        $this->insertNewGrounds($pImportedFileID);
+        $this->insertNewTeams();
+        $this->insertNewGrounds();
 
         $this->commitTransaction();
     }
@@ -126,7 +126,7 @@ WHERE id = ". $pSeason->getSeasonID() . ";";
         return $queryResultArray[0]['season_year'];
     }
 
-    private function deleteUmpireNameTypeMatch($pSeason, $pImportedFileID) {
+    private function deleteUmpireNameTypeMatch($pSeason) {
         $queryString = "DELETE umpire_name_type_match FROM umpire_name_type_match
 INNER JOIN match_played ON umpire_name_type_match.match_ID = match_played.ID
 INNER JOIN round ON match_played.round_id = round.ID 
@@ -136,25 +136,25 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->logTableDeleteOperation(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
     }
 	
-	private function logTableInsertOperation($pImportedFileID, $pTableName) {
-	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION_INSERT);
+	private function logTableInsertOperation($pTableName) {
+	    $this->logTableOperation($pTableName, self::OPERATION_INSERT);
 	}
 	
-	private function logTableUpdateOperation($pImportedFileID, $pTableName) {
-	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION_UPDATE);
+	private function logTableUpdateOperation($pTableName) {
+	    $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
 	}
 	
 	private function logTableDeleteOperation($pTableName) {
-	    $this->logTableOperation($this->importFileID, $pTableName, self::OPERATION_DELETE);
+	    $this->logTableOperation($pTableName, self::OPERATION_DELETE);
 	}
 
-    public function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
+    public function logTableOperation($pTableName, $pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
-VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
+VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $this->runQuery($queryString);
     }
 
-    private function deleteMatchPlayed($pSeason, $pImportedFileID) {
+    private function deleteMatchPlayed($pSeason) {
         $queryString = "DELETE match_played FROM match_played
         INNER JOIN round ON match_played.round_id = round.ID 
 WHERE round.season_id = ". $pSeason->getSeasonID() .";";
@@ -170,50 +170,50 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->logTableDeleteOperation(self::TABLE_ROUND);
     }
 
-    private function deleteMatchStaging($pImportedFileID) {
+    private function deleteMatchStaging() {
 	$this->truncateTable(self::TABLE_MATCH_STAGING);
         $this->logTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
 
-    private function deleteMVReport1($pSeason, $pImportedFileID) {
+    private function deleteMVReport1($pSeason) {
 	$this->deleteMVReportTable("dw_mv_report_01", $pSeason, $pImportedFileID);
     }
 
-    private function deleteMVReport2($pSeason, $pImportedFileID) {
+    private function deleteMVReport2($pSeason) {
         $this->deleteMVReportTable("dw_mv_report_02", $pSeason, $pImportedFileID);
     }
 
-    private function deleteMVReport4($pSeason, $pImportedFileID) {
+    private function deleteMVReport4($pSeason) {
         $this->deleteMVReportTable("dw_mv_report_04", $pSeason, $pImportedFileID);
     }
 
-    private function deleteMVReport5($pSeason, $pImportedFileID) {
+    private function deleteMVReport5($pSeason) {
         $this->deleteMVReportTable("dw_mv_report_05", $pSeason, $pImportedFileID);
     }
 
-    private function deleteMVReport6($pSeason, $pImportedFileID) {
+    private function deleteMVReport6($pSeason) {
        $this->deleteMVReportTable("dw_mv_report_06", $pSeason, $pImportedFileID);
     }
 
-    private function deleteMVReport7($pSeason, $pImportedFileID) {
+    private function deleteMVReport7($pSeason) {
         $this->deleteMVReportTable("dw_mv_report_07", $pSeason, $pImportedFileID);
     }
 
 	//Report8 table delete is done differently as it contains more data
-    private function deleteMVReport8($pSeason, $pImportedFileID) {
+    private function deleteMVReport8($pSeason) {
         $queryString = "DELETE rec FROM dw_mv_report_08 rec 
 WHERE rec.season_year IN(CONVERT(". $pSeason->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');;";
         $this->runQuery($queryString);
         $this->logTableDeleteOperation("dw_mv_report_08");
     }
 	
-    private function deleteMVReportTable($pTableName, $pSeason, $pImportedFileID) {
+    private function deleteMVReportTable($pTableName, $pSeason) {
         $queryString = "DELETE rec FROM ". $pTableName ." rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
         $this->runQuery($queryString);
         $this->logTableDeleteOperation($pTableName);
     }
 
-    private function deleteDWFactMatch($pSeason, $pImportedFileID) {
+    private function deleteDWFactMatch($pSeason) {
         $queryString = "DELETE rec FROM dw_fact_match rec
 INNER JOIN dw_dim_time t ON rec.time_key = t.time_key
 WHERE t.date_year = ". $pSeason->getSeasonYear() .";";
@@ -221,7 +221,7 @@ WHERE t.date_year = ". $pSeason->getSeasonYear() .";";
         $this->logTableDeleteOperation("dw_fact_match");
     }
 
-    private function insertRound($pImportedFileID) {
+    private function insertRound() {
         $this->disableKeys(self::TABLE_ROUND);
 
         $queryString = "INSERT INTO round ( round_number, round_date, season_id, league_id )
@@ -232,12 +232,12 @@ INNER JOIN competition_lookup ON (season.ID = competition_lookup.season_id) AND 
 INNER JOIN league ON league.ID = competition_lookup.league_id
 ORDER BY match_import.Round, match_import.Date;";
         $this->runQuery($queryString);
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_ROUND);
+        $this->logTableInsertOperation(self::TABLE_ROUND);
         $this->enableKeys(self::TABLE_ROUND);
 
     }
 
-    private function insertUmpire($pImportedFileID) {
+    private function insertUmpire() {
         $queryString = "INSERT INTO umpire (first_name, last_name) 
 SELECT first_name, last_name FROM (
 SELECT LEFT(UMPIRE_FULLNAME,InStr(UMPIRE_FULLNAME,' ')-1) AS FIRST_NAME, 
@@ -283,10 +283,10 @@ FROM umpire u
 WHERE u.first_name = sub.first_name 
 AND u.last_name = sub.last_name);";
         $this->runQuery($queryString);
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_UMPIRE);
+        $this->logTableInsertOperation(self::TABLE_UMPIRE);
     }
 
-    private function insertUmpireNameType($pImportedFileID) {
+    private function insertUmpireNameType() {
         $this->disableKeys(self::TABLE_UMPIRE_NAME_TYPE);
 
         $queryString = "INSERT INTO umpire_name_type (umpire_id, umpire_type_id) 
@@ -340,7 +340,7 @@ AND u.last_name = sub.last_name);";
         );";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_UMPIRE_NAME_TYPE);
+        $this->logTableInsertOperation(self::TABLE_UMPIRE_NAME_TYPE);
         $this->enableKeys(self::TABLE_UMPIRE_NAME_TYPE);
 
     }
@@ -415,12 +415,12 @@ AND u.last_name = sub.last_name);";
         INNER JOIN division ON division.ID = age_group_division.division_id;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_MATCH_STAGING);
+        $this->logTableInsertOperation(self::TABLE_MATCH_STAGING);
         $this->enableKeys(self::TABLE_MATCH_STAGING);
 
     }
 
-    private function deleteDuplicateMatchStagingRecords($pImportedFileID) {
+    private function deleteDuplicateMatchStagingRecords() {
         $queryString = "DELETE m1 FROM match_staging m1,
     match_staging m2 
 WHERE
@@ -434,7 +434,7 @@ WHERE
         $this->logTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
 
-    private function insertMatchPlayed($pImportedFileID) {
+    private function insertMatchPlayed() {
         $this->disableKeys(self::TABLE_MATCH_PLAYED);
 
         $queryString = "INSERT INTO match_played (round_ID, ground_id, home_team_id, away_team_id, match_time, match_staging_id)
@@ -444,11 +444,11 @@ match_staging.match_staging_id
 FROM match_staging;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_MATCH_PLAYED);
+        $this->logTableInsertOperation(self::TABLE_MATCH_PLAYED);
         $this->enableKeys(self::TABLE_MATCH_PLAYED);
     }
 
-    private function insertUmpireNameTypeMatch($pSeason, $pImportedFileID) {
+    private function insertUmpireNameTypeMatch($pSeason) {
         $this->disableKeys(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
 
         $queryString = "INSERT INTO umpire_name_type_match ( umpire_name_type_id, match_id ) 
@@ -566,7 +566,7 @@ AND round.season_id = ". $pSeason->getSeasonID() ."
 ) AS ump;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_UMPIRE_NAME_TYPE_MATCH);
+        $this->logTableInsertOperation(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
         $this->enableKeys(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
     }
 
@@ -588,7 +588,7 @@ AND round.season_id = ". $pSeason->getSeasonID() ."
         $this->runQuery($queryString);	
     }
 
-    private function insertDimUmpire($pImportedFileID) {
+    private function insertDimUmpire() {
         $this->disableKeys(self::TABLE_DW_DIM_UMPIRE);
 
         /*
@@ -609,7 +609,7 @@ LEFT JOIN umpire_type ut ON unt.umpire_type_id = ut.ID;
 ";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_DW_DIM_UMPIRE);
+        $this->logTableInsertOperation(self::TABLE_DW_DIM_UMPIRE);
         $this->enableKeys(self::TABLE_DW_DIM_UMPIRE);
     }
 
@@ -628,7 +628,7 @@ INNER JOIN division d ON agd.division_id = d.ID
 ORDER BY ag.display_order;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_DW_DIM_AGE_GROUP);
+        $this->logTableInsertOperation(self::TABLE_DW_DIM_AGE_GROUP);
         $this->enableKeys(self::TABLE_DW_DIM_AGE_GROUP);
     }
 
@@ -650,11 +650,11 @@ INNER JOIN competition_lookup c ON l.ID = c.league_id
 INNER JOIN season s ON c.season_id = s.id;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_DW_DIM_LEAGUE);
+        $this->logTableInsertOperation(self::TABLE_DW_DIM_LEAGUE);
         $this->enableKeys(self::TABLE_DW_DIM_LEAGUE);
     }
 
-    private function insertDimTeam($pImportedFileID) {
+    private function insertDimTeam() {
         $this->disableKeys(self::TABLE_DW_DIM_TEAM);
 
         $queryString = "INSERT INTO dw_dim_team (team_name, club_name)
@@ -666,11 +666,11 @@ INNER JOIN club c ON t.club_id = c.id
 ORDER BY t.team_name, c.club_name;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_DW_DIM_TEAM);
+        $this->logTableInsertOperation(self::TABLE_DW_DIM_TEAM);
         $this->enableKeys(self::TABLE_DW_DIM_TEAM);
     }
 
-    private function insertDimTime($pImportedFileID) {
+    private function insertDimTime() {
         $this->disableKeys(self::TABLE_DW_DIM_TIME);
 
         $queryString = "INSERT INTO dw_dim_time (match_date, date_year, date_month, date_day, date_hour, date_minute, weekend_date, weekend_year, weekend_month, weekend_day)
@@ -692,11 +692,11 @@ INNER JOIN round r ON m.round_id = r.id
 ORDER BY m.match_time;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_DW_DIM_TIME);
+        $this->logTableInsertOperation(, self::TABLE_DW_DIM_TIME);
         $this->enableKeys(self::TABLE_DW_DIM_TIME);
     }
 
-    private function insertStagingMatch($pImportedFileID) {
+    private function insertStagingMatch() {
         $this->disableKeys(self::TABLE_STAGING_MATCH);
 
         $queryString = "INSERT INTO staging_match (season_id, season_year, umpire_id, umpire_first_name, umpire_last_name,
@@ -743,11 +743,11 @@ INNER JOIN    season s ON s.id = rn.season_id AND cl.season_id = s.id
 INNER JOIN    region r ON r.id = l.region_id;";
         $this->runQuery($queryString);
 
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_STAGING_MATCH);
+        $this->logTableInsertOperation(self::TABLE_STAGING_MATCH);
         $this->enableKeys(self::TABLE_STAGING_MATCH);
     }
 
-    private function insertStagingUmpAgeLeague($pImportedFileID) {
+    private function insertStagingUmpAgeLeague() {
         $this->disableKeys(self::TABLE_STAGING_UMP_AGE_LG);
 
         $queryString = "INSERT INTO staging_all_ump_age_league (age_group, umpire_type, short_league_name, region_name, age_sort_order, league_sort_order)
@@ -771,11 +771,11 @@ CROSS JOIN umpire_type ut
 INNER JOIN region r ON l.region_id = r.id;";
         $this->runQuery($queryString);
 	    
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_STAGING_UMP_AGE_LG);
+        $this->logTableInsertOperation(self::TABLE_STAGING_UMP_AGE_LG);
         $this->enableKeys(self::TABLE_STAGING_UMP_AGE_LG);
     }
 
-    private function insertFactMatch($pSeason, $pImportedFileID) {
+    private function insertFactMatch($pSeason) {
         $this->disableKeys(self::TABLE_DW_FACT_MATCH);
 
         $queryString = "INSERT INTO dw_fact_match (match_id, umpire_key, age_group_key, league_key, time_key, home_team_key, away_team_key)
@@ -818,11 +818,11 @@ INNER JOIN dw_dim_time dt ON (
 );";
         $this->runQuery($queryString);
 	
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_DW_FACT_MATCH);
+        $this->logTableInsertOperation(self::TABLE_DW_FACT_MATCH);
         $this->enableKeys(self::TABLE_DW_FACT_MATCH);
     }
 
-    private function insertStagingNoUmpires($pImportedFileID) {
+    private function insertStagingNoUmpires() {
         $this->disableKeys(self::TABLE_STAGING_NO_UMP);
 
         $queryString = "INSERT INTO staging_no_umpires (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
@@ -908,17 +908,17 @@ WHERE m.match_id NOT IN (
 ";
         $this->runQuery($queryString);
 	
-        $this->logTableInsertOperation($pImportedFileID, self::TABLE_STAGING_NO_UMP);
+        $this->logTableInsertOperation(self::TABLE_STAGING_NO_UMP);
         $this->enableKeys(self::TABLE_STAGING_NO_UMP);
     }
 
-    private function deleteCompetitionsWithMissingLeague($pImportedFileID) {
+    private function deleteCompetitionsWithMissingLeague() {
         $queryString = "DELETE FROM competition_lookup WHERE league_id IS NULL;";
         $this->runQuery($queryString);
 	$this->logTableDeleteOperation(self::TABLE_COMPETITION_LOOKUP);
     }
 
-    private function insertCompetitionLookup($pSeason, $pImportedFileID) {
+    private function insertCompetitionLookup($pSeason) {
         $queryString = "INSERT INTO competition_lookup (competition_name, season_id, league_id)
 SELECT DISTINCT competition_name, ". $pSeason->getSeasonID() .", NULL
 FROM match_import
@@ -927,10 +927,10 @@ WHERE competition_name NOT IN (
     FROM competition_lookup
 );";
         $this->runQuery($queryString);
-	$this->logTableInsertOperation($pImportedFileID, self::TABLE_COMPETITION_LOOKUP);
+	$this->logTableInsertOperation(self::TABLE_COMPETITION_LOOKUP);
     }
 
-    private function insertNewTeams($pImportedFileID) {
+    private function insertNewTeams() {
         $queryString = "INSERT INTO team (team_name, club_id)
 SELECT home_team, NULL
 FROM match_import
@@ -946,10 +946,10 @@ WHERE away_team NOT IN (
     FROM team
 );";
         $this->runQuery($queryString);
-	$this->logTableInsertOperation($pImportedFileID, self::TABLE_TEAM);
+	$this->logTableInsertOperation(self::TABLE_TEAM);
     }
 
-    private function insertNewGrounds($pImportedFileID) {
+    private function insertNewGrounds() {
         $queryString = "INSERT INTO ground (main_name, alternative_name)
 SELECT DISTINCT ground, ground
 FROM match_import
@@ -958,7 +958,6 @@ WHERE ground NOT IN (
 	FROM ground
 );";
         $this->runQuery($queryString);
-	$this->logTableInsertOperation($pImportedFileID, self::TABLE_GROUND);
+	$this->logTableInsertOperation(self::TABLE_GROUND);
     }
-
 }
