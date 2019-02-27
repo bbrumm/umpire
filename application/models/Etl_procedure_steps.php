@@ -28,6 +28,8 @@ const TABLE_COMPETITION_LOOKUP = "competition_lookup";
 const TABLE_TEAM = "team";
 const TABLE_GROUND = "ground";
 	
+    private $importFileID;
+	
     function __construct() {
         parent::__construct();
         $this->load->model('Season');
@@ -35,13 +37,14 @@ const TABLE_GROUND = "ground";
 
     public function runETLProcess($pSeason, $pImportedFileID) {
         $this->setupScript();
+	$this->importFileID = $pImportedFileID;
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
 
         $pSeason->setSeasonYear($this->lookupSeasonYear($pSeason));
         $this->deleteUmpireNameTypeMatch($pSeason, $pImportedFileID);
 
         $this->deleteMatchPlayed($pSeason, $pImportedFileID);
-        $this->deleteRound($pSeason, $pImportedFileID);
+        $this->deleteRound($pSeason);
         $this->deleteMatchStaging($pImportedFileID);
         $this->deleteMVReport1($pSeason, $pImportedFileID);
         $this->deleteMVReport2($pSeason, $pImportedFileID);
@@ -141,8 +144,8 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
 	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION_UPDATE);
 	}
 	
-	private function logTableDeleteOperation($pImportedFileID, $pTableName) {
-	    $this->logTableOperation($pImportedFileID, $pTableName, self::OPERATION_DELETE);
+	private function logTableDeleteOperation($pTableName) {
+	    $this->logTableOperation($this->importFileID, $pTableName, self::OPERATION_DELETE);
 	}
 
     public function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
@@ -160,11 +163,11 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->logTableDeleteOperation($pImportedFileID, "match_played");
     }
 
-    private function deleteRound($pSeason, $pImportedFileID) {
+    private function deleteRound($pSeason) {
         $queryString = "DELETE round FROM round 
 WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->runQuery($queryString);
-        $this->logTableDeleteOperation($pImportedFileID, "round");
+        $this->logTableDeleteOperation(self::TABLE_ROUND);
     }
 
     private function deleteMatchStaging($pImportedFileID) {
