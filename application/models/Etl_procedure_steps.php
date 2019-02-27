@@ -30,16 +30,20 @@ const TABLE_GROUND = "ground";
 	
     private $importFileID;
     private $currentSeason;
+    private $queryBuilder;
 	
     function __construct() {
         parent::__construct();
         $this->load->model('Season');
+	    $this->load->model('Etl_query_builder');
+	    $this->queryBuilder = new Etl_query_builder();
     }
 
     public function runETLProcess($pSeason, $pImportedFileID) {
         $this->setupScript();
 	$this->importFileID = $pImportedFileID;
 	$this->currentSeason = $pSeason;
+	$queryBuilder->setSeason($pSeason);
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
 
         $pSeason->setSeasonYear($this->lookupSeasonYear());
@@ -157,11 +161,8 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
     }
 
     private function deleteMatchPlayed() {
-        $queryString = "DELETE match_played FROM match_played
-        INNER JOIN round ON match_played.round_id = round.ID 
-WHERE round.season_id = ". $this->currentSeason->getSeasonID() .";";
+        $queryString = $queryBuilder->getDeleteMatchPlayedQuery();
         $this->runQuery($queryString);
-
         $this->logTableDeleteOperation(self::TABLE_MATCH_PLAYED);
     }
 
