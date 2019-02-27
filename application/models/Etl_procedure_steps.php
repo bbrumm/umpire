@@ -29,6 +29,7 @@ const TABLE_TEAM = "team";
 const TABLE_GROUND = "ground";
 	
     private $importFileID;
+    private $currentSeason;
 	
     function __construct() {
         parent::__construct();
@@ -38,22 +39,23 @@ const TABLE_GROUND = "ground";
     public function runETLProcess($pSeason, $pImportedFileID) {
         $this->setupScript();
 	$this->importFileID = $pImportedFileID;
+	$this->currentSeason = $pSeason;
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
 
-        $pSeason->setSeasonYear($this->lookupSeasonYear($pSeason));
-        $this->deleteUmpireNameTypeMatch($pSeason);
+        $pSeason->setSeasonYear($this->lookupSeasonYear());
+        $this->deleteUmpireNameTypeMatch();
 
-        $this->deleteMatchPlayed($pSeason);
-        $this->deleteRound($pSeason);
+        $this->deleteMatchPlayed();
+        $this->deleteRound();
         $this->deleteMatchStaging();
-        $this->deleteMVReport1($pSeason);
-        $this->deleteMVReport2($pSeason);
-        $this->deleteMVReport4($pSeason);
-        $this->deleteMVReport5($pSeason);
-        $this->deleteMVReport6($pSeason);
-        $this->deleteMVReport7($pSeason);
-        $this->deleteMVReport8($pSeason);
-        $this->deleteDWFactMatch($pSeason);
+        $this->deleteMVReport1();
+        $this->deleteMVReport2();
+        $this->deleteMVReport4();
+        $this->deleteMVReport5();
+        $this->deleteMVReport6();
+        $this->deleteMVReport7();
+        $this->deleteMVReport8();
+        $this->deleteDWFactMatch();
 
         $this->insertRound();
         $this->insertUmpire();
@@ -83,7 +85,7 @@ const TABLE_GROUND = "ground";
         First, delete the competitions which are still NULL from previous imports
         */
         $this->deleteCompetitionsWithMissingLeague();
-        $this->insertCompetitionLookup($pSeason);
+        $this->insertCompetitionLookup();
         /*
         Insert new teams. Clubs are added manually by the person importing the data
         */
@@ -117,20 +119,20 @@ const TABLE_GROUND = "ground";
         $this->runQuery($queryString);
     }
 
-    private function lookupSeasonYear($pSeason) {
+    private function lookupSeasonYear() {
         $queryString = "SELECT MAX(season_year) AS season_year
 FROM season
-WHERE id = ". $pSeason->getSeasonID() . ";";
+WHERE id = ". $this->currentSeason->getSeasonID() . ";";
         $query = $this->runQuery($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray[0]['season_year'];
     }
 
-    private function deleteUmpireNameTypeMatch($pSeason) {
+    private function deleteUmpireNameTypeMatch() {
         $queryString = "DELETE umpire_name_type_match FROM umpire_name_type_match
 INNER JOIN match_played ON umpire_name_type_match.match_ID = match_played.ID
 INNER JOIN round ON match_played.round_id = round.ID 
-WHERE round.season_id = ". $pSeason->getSeasonID() .";";
+WHERE round.season_id = ". $this->currentSeason->getSeasonID() .";";
         $this->runQuery($queryString);
 
         $this->logTableDeleteOperation(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
@@ -154,18 +156,18 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
         $this->runQuery($queryString);
     }
 
-    private function deleteMatchPlayed($pSeason) {
+    private function deleteMatchPlayed() {
         $queryString = "DELETE match_played FROM match_played
         INNER JOIN round ON match_played.round_id = round.ID 
-WHERE round.season_id = ". $pSeason->getSeasonID() .";";
+WHERE round.season_id = ". $this->currentSeason->getSeasonID() .";";
         $this->runQuery($queryString);
 
         $this->logTableDeleteOperation(self::TABLE_MATCH_PLAYED);
     }
 
-    private function deleteRound($pSeason) {
+    private function deleteRound() {
         $queryString = "DELETE round FROM round 
-WHERE round.season_id = ". $pSeason->getSeasonID() .";";
+WHERE round.season_id = ". $this->currentSeason->getSeasonID() .";";
         $this->runQuery($queryString);
         $this->logTableDeleteOperation(self::TABLE_ROUND);
     }
@@ -175,48 +177,48 @@ WHERE round.season_id = ". $pSeason->getSeasonID() .";";
         $this->logTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
 
-    private function deleteMVReport1($pSeason) {
-	$this->deleteMVReportTable("dw_mv_report_01", $pSeason);
+    private function deleteMVReport1() {
+	$this->deleteMVReportTable("dw_mv_report_01");
     }
 
-    private function deleteMVReport2($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_02", $pSeason);
+    private function deleteMVReport2() {
+        $this->deleteMVReportTable("dw_mv_report_02");
     }
 
-    private function deleteMVReport4($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_04", $pSeason);
+    private function deleteMVReport4() {
+        $this->deleteMVReportTable("dw_mv_report_04");
     }
 
-    private function deleteMVReport5($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_05", $pSeason);
+    private function deleteMVReport5() {
+        $this->deleteMVReportTable("dw_mv_report_05");
     }
 
-    private function deleteMVReport6($pSeason) {
-       $this->deleteMVReportTable("dw_mv_report_06", $pSeason);
+    private function deleteMVReport6() {
+       $this->deleteMVReportTable("dw_mv_report_06");
     }
 
-    private function deleteMVReport7($pSeason) {
-        $this->deleteMVReportTable("dw_mv_report_07", $pSeason);
+    private function deleteMVReport7() {
+        $this->deleteMVReportTable("dw_mv_report_07");
     }
 
 	//Report8 table delete is done differently as it contains more data
-    private function deleteMVReport8($pSeason) {
+    private function deleteMVReport8() {
         $queryString = "DELETE rec FROM dw_mv_report_08 rec 
-WHERE rec.season_year IN(CONVERT(". $pSeason->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');;";
+WHERE rec.season_year IN(CONVERT(". $this->currentSeason->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');;";
         $this->runQuery($queryString);
         $this->logTableDeleteOperation("dw_mv_report_08");
     }
 	
-    private function deleteMVReportTable($pTableName, $pSeason) {
-        $queryString = "DELETE rec FROM ". $pTableName ." rec WHERE rec.season_year = ". $pSeason->getSeasonYear() .";";
+    private function deleteMVReportTable($pTableName) {
+        $queryString = "DELETE rec FROM ". $pTableName ." rec WHERE rec.season_year = ". $this->currentSeason->getSeasonYear() .";";
         $this->runQuery($queryString);
         $this->logTableDeleteOperation($pTableName);
     }
 
-    private function deleteDWFactMatch($pSeason) {
+    private function deleteDWFactMatch() {
         $queryString = "DELETE rec FROM dw_fact_match rec
 INNER JOIN dw_dim_time t ON rec.time_key = t.time_key
-WHERE t.date_year = ". $pSeason->getSeasonYear() .";";
+WHERE t.date_year = ". $this->currentSeason->getSeasonYear() .";";
         $this->runQuery($queryString);
         $this->logTableDeleteOperation("dw_fact_match");
     }
@@ -448,7 +450,7 @@ FROM match_staging;";
         $this->enableKeys(self::TABLE_MATCH_PLAYED);
     }
 
-    private function insertUmpireNameTypeMatch($pSeason) {
+    private function insertUmpireNameTypeMatch() {
         $this->disableKeys(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
 
         $queryString = "INSERT INTO umpire_name_type_match ( umpire_name_type_id, match_id ) 
@@ -462,7 +464,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Field' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -472,7 +474,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Field' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -482,7 +484,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Field' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -492,7 +494,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -502,7 +504,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -512,7 +514,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -522,7 +524,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -532,7 +534,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -542,7 +544,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Boundary' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -552,7 +554,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Goal' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 UNION ALL 
 SELECT umpire_name_type.ID as umpire_name_type_id, match_played.ID as match_id 
 FROM match_played 
@@ -562,7 +564,7 @@ INNER JOIN umpire_name_type ON umpire.ID = umpire_name_type.umpire_id
 INNER JOIN umpire_type ON umpire_type.ID = umpire_name_type.umpire_type_id 
 INNER JOIN round ON match_played.round_id = round.ID 
 WHERE umpire_type.umpire_type_name = 'Goal' 
-AND round.season_id = ". $pSeason->getSeasonID() ."
+AND round.season_id = ". $this->currentSeason->getSeasonID() ."
 ) AS ump;";
         $this->runQuery($queryString);
 
@@ -775,7 +777,7 @@ INNER JOIN region r ON l.region_id = r.id;";
         $this->enableKeys(self::TABLE_STAGING_UMP_AGE_LG);
     }
 
-    private function insertFactMatch($pSeason) {
+    private function insertFactMatch() {
         $this->disableKeys(self::TABLE_DW_FACT_MATCH);
 
         $queryString = "INSERT INTO dw_fact_match (match_id, umpire_key, age_group_key, league_key, time_key, home_team_key, away_team_key)
@@ -814,7 +816,7 @@ INNER JOIN dw_dim_team dta ON (
 INNER JOIN dw_dim_time dt ON (
 	s.match_time = dt.match_date
     AND s.season_year = dl.league_year
-    AND s.season_year = ". $pSeason->getSeasonYear() ."
+    AND s.season_year = ". $this->currentSeason->getSeasonYear() ."
 );";
         $this->runQuery($queryString);
 	
@@ -918,9 +920,9 @@ WHERE m.match_id NOT IN (
 	$this->logTableDeleteOperation(self::TABLE_COMPETITION_LOOKUP);
     }
 
-    private function insertCompetitionLookup($pSeason) {
+    private function insertCompetitionLookup() {
         $queryString = "INSERT INTO competition_lookup (competition_name, season_id, league_id)
-SELECT DISTINCT competition_name, ". $pSeason->getSeasonID() .", NULL
+SELECT DISTINCT competition_name, ". $this->currentSeason->getSeasonID() .", NULL
 FROM match_import
 WHERE competition_name NOT IN (
 	SELECT competition_name
