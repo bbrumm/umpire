@@ -333,4 +333,243 @@ AND round.season_id = ". $this->season->getSeasonID() ."
 ) AS ump;";
     }
 
+    public function getDeleteDuplicateMatchStagingRecordsQuery() {
+        return "DELETE m1 FROM match_staging m1,
+    match_staging m2 
+WHERE
+    m1.appointments_id > m2.appointments_id
+    AND m1.ground_id = m2.ground_id
+    AND m1.round_id = m2.round_id
+    AND m1.appointments_time = m2.appointments_time
+    AND m1.home_team_id = m2.home_team_id
+    AND m1.away_team_id = m2.away_team_id;";
+    }
+
+    public function getInsertMatchPlayedQuery() {
+        return "INSERT INTO match_played (round_ID, ground_id, home_team_id, away_team_id, match_time, match_staging_id)
+SELECT match_staging.round_ID, match_staging.ground_id, match_staging.home_team_id, 
+match_staging.away_team_id, match_staging.appointments_time,
+match_staging.match_staging_id
+FROM match_staging;";
+    }
+
+    /*
+    Populate DimUmpire
+    Uses LEFT JOIN to cater for umpires who haven't been imported (those that were pre-2015) as we want to include them in report 8
+    */
+    public function getInsertDimUmpireQuery() {
+        return "INSERT INTO dw_dim_umpire (first_name, last_name, last_first_name, umpire_type, games_prior, games_other_leagues)
+SELECT DISTINCT
+u.first_name,
+u.last_name,
+CONCAT(u.last_name, ', ', u.first_name) AS last_first_name,
+ut.umpire_type_name AS umpire_type,
+u.games_prior,
+u.games_other_leagues
+FROM umpire u
+LEFT JOIN umpire_name_type unt ON u.id = unt.umpire_id
+LEFT JOIN umpire_type ut ON unt.umpire_type_id = ut.ID;";
+    }
+
+    public function getInsertDimAgeGroupQuery() {
+        return "INSERT INTO dw_dim_age_group (age_group, sort_order, division)
+SELECT
+ag.age_group,
+ag.display_order AS sort_order,
+d.division_name
+FROM age_group ag
+INNER JOIN age_group_division agd ON ag.id = agd.age_group_id
+INNER JOIN division d ON agd.division_id = d.ID
+ORDER BY ag.display_order;";
+    }
+
+    public function getInsertDimLeagueQuery() {
+        return "INSERT INTO dw_dim_league (short_league_name, full_name, region_name, competition_name, league_year, league_sort_order)
+SELECT DISTINCT
+l.short_league_name,
+l.league_name,
+r.region_name,
+c.competition_name,
+s.season_year,
+sl.display_order AS league_sort_order
+FROM league l
+INNER JOIN short_league_name sl ON l.short_league_name = sl.short_league_name
+INNER JOIN region r ON l.region_id = r.id
+INNER JOIN competition_lookup c ON l.ID = c.league_id
+INNER JOIN season s ON c.season_id = s.id;";
+    }
+
+
+
+
+
+    public function getInsertStagingMatchQuery() {
+        return "INSERT INTO staging_match (season_id, season_year, umpire_id, umpire_first_name, umpire_last_name,
+home_club, home_team, away_club, away_team, short_league_name, league_name, age_group_id, age_group_name, 
+umpire_type_name, match_id, match_time, region_id, region_name, division_name, competition_name)
+SELECT 
+    s.id,
+    s.season_year,
+    u.id,
+    u.first_name,
+    u.last_name,
+    hmc.club_name AS home_club,
+    hmt.team_name AS home_team_name,
+    awc.club_name AS away_club,
+    awt.team_name AS away_team_name,
+    l.short_league_name,
+    l.league_name,
+    ag.id,
+    ag.age_group,
+    ut.umpire_type_name,
+    m.ID,
+    m.match_time,
+    r.id,
+    r.region_name,
+    d.division_name,
+    cl.competition_name
+FROM
+match_played m
+INNER JOIN    round rn ON rn.ID = m.round_id
+INNER JOIN    league l ON l.ID = rn.league_id
+INNER JOIN    age_group_division agd ON agd.ID = l.age_group_division_id
+INNER JOIN    age_group ag ON ag.ID = agd.age_group_id
+INNER JOIN    team hmt ON hmt.ID = m.home_team_id
+INNER JOIN    club hmc ON hmc.ID = hmt.club_id
+INNER JOIN    team awt ON awt.ID = m.away_team_id
+INNER JOIN    club awc ON awc.ID = awt.club_id
+INNER JOIN    division d ON agd.division_id = d.id
+INNER JOIN    competition_lookup cl ON cl.league_id = l.ID
+LEFT JOIN    umpire_name_type_match untm ON m.ID = untm.match_id
+LEFT JOIN    umpire_name_type unt ON unt.ID = untm.umpire_name_type_id
+LEFT JOIN    umpire_type ut ON ut.ID = unt.umpire_type_id
+LEFT JOIN    umpire u ON u.ID = unt.umpire_id
+INNER JOIN    season s ON s.id = rn.season_id AND cl.season_id = s.id
+INNER JOIN    region r ON r.id = l.region_id;";
+    }
+
+    public function getInsertDWFactMatchQuery() {
+        "INSERT INTO dw_fact_match (match_id, umpire_key, age_group_key, league_key, time_key, home_team_key, away_team_key)
+SELECT 
+s.match_id,
+du.umpire_key,
+dag.age_group_key,
+dl.league_key,
+dt.time_key,
+dth.team_key AS home_team_key,
+dta.team_key AS away_team_key
+FROM
+staging_match s
+LEFT JOIN dw_dim_umpire du ON (s.umpire_first_name = du.first_name
+	AND s.umpire_last_name = du.last_name
+	AND s.umpire_type_name = du.umpire_type
+)
+INNER JOIN dw_dim_age_group dag ON (
+	s.age_group_name = dag.age_group
+	AND s.division_name = dag.division
+)
+INNER JOIN dw_dim_league dl ON (
+	s.short_league_name = dl.short_league_name
+	AND s.league_name = dl.full_name
+	AND s.region_name = dl.region_name
+    AND s.competition_name = dl.competition_name
+)
+INNER JOIN dw_dim_team dth ON (
+	s.home_team = dth.team_name
+	AND s.home_club = dth.club_name
+    )
+INNER JOIN dw_dim_team dta ON (
+	s.away_team = dta.team_name
+	AND s.away_club = dta.club_name
+    )
+INNER JOIN dw_dim_time dt ON (
+	s.match_time = dt.match_date
+    AND s.season_year = dl.league_year
+    AND s.season_year = ". $this->season->getSeasonYear() ."
+);";
+    }
+
+    public function getInsertStagingNoUmpiresQuery() {
+        return "INSERT INTO staging_no_umpires (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Field',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id,
+ti.date_year
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Field'
+)
+UNION ALL
+
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Boundary',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id,
+ti.date_year
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Boundary'
+)
+UNION ALL
+
+SELECT DISTINCT
+ti.weekend_date,
+a.age_group,
+'Goal',
+l.short_league_name,
+CONCAT(th.team_name, ' vs ', ta.team_name) AS team_names,
+m.match_id,
+ti.date_year
+FROM dw_fact_match m
+LEFT JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
+INNER JOIN dw_dim_league l ON m.league_key = l.league_key
+INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
+INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
+INNER JOIN dw_dim_team th ON m.home_team_key = th.team_key
+INNER JOIN dw_dim_team ta ON m.away_team_key = ta.team_key
+WHERE m.match_id NOT IN (
+	SELECT
+	DISTINCT
+	m2.match_id
+	FROM dw_fact_match m2
+	LEFT JOIN dw_dim_umpire u2 ON m2.umpire_key = u2.umpire_key
+	INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
+	INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
+	WHERE u2.umpire_type = 'Goal'
+);";
+    }
+
 }
