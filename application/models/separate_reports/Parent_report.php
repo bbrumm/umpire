@@ -257,11 +257,11 @@ private function shouldCellBeColouredForReport($pReportDisplayOptions) {
 
 private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
 
-  if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  == false) {
+  if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  === false) {
     return "";
   }
 
-  if ($isFirstColumn($columnCounter) == false) {
+  if ($this->isFirstColumn($columnCounter) === false) {
     return $pResultOutputArray[$pRowCounter][$columnCounter];
   }
 
