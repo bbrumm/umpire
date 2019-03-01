@@ -194,25 +194,25 @@ class Parent_report extends CI_Model {
 	   if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  === false) {
                return "";
            }
-	       
+	   /*    
 	   if ($this->isFirstColumn($columnCounter) === false) {
 	       return "cellText cellNormal";
 	   }
-	       
+	   */    
 	   if ($this->isFirstColumn($columnCounter)) {
 	       return $this->getCellClassFromFirstColumnFormat($pReportDisplayOptions);
 	   }
 	   
 	   if ($this->shouldCellBeColouredForReport($pReportDisplayOptions)) {
-	       return $cellClassToUse = $cellFormatter->getCellClassNameForTableFromOutputValue(
+	       return $cellFormatter->getCellClassNameForTableFromOutputValue(
 				        $pResultOutputArray[$pRowCounter][$columnCounter]);      
 	   }
 	       
 	   if(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
-	      return $cellClassToUse = "cellNumber cellNormal";      
+	      return "cellNumber cellNormal";      
 	   }
 	       
-	   return $cellClassToUse = "cellText cellNormal";
+	   return "cellText cellNormal";
 	       
 	       
 	      /* 
