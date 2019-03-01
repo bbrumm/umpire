@@ -67,7 +67,7 @@ class Etl_procedure_steps extends CI_Model
         $this->insertMatchStaging();
         $this->deleteDuplicateMatchStagingRecords();
         $this->insertMatchPlayed();
-        $this->insertUmpireNameTypeMatch($pSeason);
+        $this->insertUmpireNameTypeMatch();
 
         $this->truncateDimFact();
         $this->insertDimUmpire();
@@ -77,7 +77,7 @@ class Etl_procedure_steps extends CI_Model
         $this->insertDimTime();
         $this->insertStagingMatch();
         $this->insertStagingUmpAgeLeague();
-        $this->insertFactMatch($pSeason);
+        $this->insertFactMatch();
         $this->insertStagingNoUmpires();
 
         /*
