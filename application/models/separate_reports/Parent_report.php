@@ -190,8 +190,33 @@ class Parent_report extends CI_Model {
 
 
        private function determineCellClassToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
-            $cellClassToUse = "";
-            $cellFormatter = new Cell_formatting_helper();
+           $cellFormatter = new Cell_formatting_helper();
+	   if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  === false) {
+               return "";
+           }
+	       
+	   if ($this->isFirstColumn($columnCounter) === false) {
+	       return "cellText cellNormal";
+	   }
+	       
+	   if ($this->isFirstColumn($columnCounter)) {
+	       return $this->getCellClassFromFirstColumnFormat($pReportDisplayOptions);
+	   }
+	   
+	   if ($this->shouldCellBeColouredForReport($pReportDisplayOptions)) {
+	       return $cellClassToUse = $cellFormatter->getCellClassNameForTableFromOutputValue(
+				        $pResultOutputArray[$pRowCounter][$columnCounter]);      
+	   }
+	       
+	   if(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
+	      return $cellClassToUse = "cellNumber cellNormal";      
+	   }
+	       
+	   return $cellClassToUse = "cellText cellNormal";
+	       
+	       
+	      /* 
+
             if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
                 if ($this->isFirstColumn($columnCounter)) {
                     $cellClassToUse = $this->getCellClassFromFirstColumnFormat($pReportDisplayOptions);
@@ -204,9 +229,10 @@ class Parent_report extends CI_Model {
                     $cellClassToUse = "cellText cellNormal";
                 }
             } else {
-                $cellClassToUse = "cellNormal";
+                $cellClassToUse = "cellNormal"; //done
             }
-            return $cellClassToUse;
+            return $cellClassToUse; //done
+	    */
         }
 	
 
@@ -233,27 +259,6 @@ private function shouldCellBeColouredForReport($pReportDisplayOptions) {
     private function isFirstColumnFormatDate($pReportDisplayOptions) {
         return ($pReportDisplayOptions->getFirstColumnFormat() == "date");
     }
-
-/*
-        private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
-            $cellValue = "";
-            if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
-                if ($columnCounter == 0) { //First column
-                    if ($this->isFirstColumnFormatText($pReportDisplayOptions)) {
-                        $cellValue = $pResultOutputArray[$pRowCounter][$columnCounter];
-                    } elseif ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
-                        $weekDate = date_create($pResultOutputArray[$pRowCounter][$columnCounter]);
-                        $cellValue = date_format($weekDate, 'd/m/Y');
-                    }
-                } else {
-                    $cellValue = $pResultOutputArray[$pRowCounter][$columnCounter];
-                }
-            } else {
-                $cellValue = "";
-            }
-            return $cellValue;
-        }
-	*/
 
 private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
 
