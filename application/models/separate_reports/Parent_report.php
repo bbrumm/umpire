@@ -7,7 +7,7 @@ class Parent_report extends CI_Model {
     }
 
     public function getReportDataQuery(Report_instance $pReportInstance) {}
-
+	
 
     /* Explanation:
      * - pColumnItem: An array that contains values from the report query that could go into a column.
