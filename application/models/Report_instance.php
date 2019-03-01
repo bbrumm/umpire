@@ -45,6 +45,21 @@ class Report_instance extends CI_Model {
 
 	}
 	
+	private $reportResults;
+	
+    public function setReportResults($pValue) {
+        $this->reportResults = $pvalue;
+    }
+	
+    public function getReportResults() {
+	return $this->reportResults();    
+    }
+	
+	public function convertResultArrayToCollection() {
+		
+	}
+	
+	
 	public function getResultArray() {
 	    return $this->resultArray;
 	}
