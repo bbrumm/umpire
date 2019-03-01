@@ -304,16 +304,22 @@ class Report_instance extends CI_Model {
 	//This function will set all count values to 1 for this level, as it is not likely that the third row
             //will need to be merged/have a higher than 1 colspan.
     private function setValuesForThirdColumnGroup() {
-        $this->columnCountLabels[2] = [];
+	    $arrayIndexForThirdGroup = 2;
+        $this->columnCountLabels[$arrayIndexForThirdGroup] = [];
         $columnLabelResultCount = count($this->columnLabelResultArray);
         for ($j=0; $j < $columnLabelResultCount; $j++) {
-            $this->setArrayColumnValues(2, 0, 
-		$this->calculateCurrentIterationReportGroupFieldNameForThreeColumns($j), $uniqueLabel);
+            $this->setArrayColumnValues($arrayIndexForThirdGroup, 0, 
+		$this->calculateCurrentIterationReportGroupFieldName($j, $arrayIndexForThirdGroup),
+		$this->calculateCurrentIterationReportGroupFieldNameForThreeColumns($j));
         }
     }
+	
+	private function calculateCurrentIterationReportGroupFieldName($pLoopCounter, $pColumnLabelCounter) {
+	    return $this->columnLabelResultArray[$pLoopCounter][$this->columnLabels[$pColumnLabelCounter]->getFieldName()];
+	}
 
     private function calculateCurrentIterationReportGroupFieldNameForThreeColumns($pLoopCounter) {
-	    $currentIterationReportGroupFieldName = $this->columnLabelResultArray[$pLoopCounter][$this->columnLabels[2]->getFieldName()];
+	    $currentIterationReportGroupFieldName = $this->calculateCurrentIterationReportGroupFieldName($pLoopCounter, 2);
             $previousIterationReportGroupFieldName = $this->columnLabelResultArray[$pLoopCounter][$this->columnLabels[1]->getFieldName()];
             $previousTwoIterationReportGroupFieldName = $this->columnLabelResultArray[$pLoopCounter][$this->columnLabels[0]->getFieldName()];
             return $previousTwoIterationReportGroupFieldName . "|" .
