@@ -60,8 +60,8 @@ class Report_instance extends CI_Model {
 	public function convertResultArrayToCollection() {
 	    $countRows = count($this->reportResults);
 	    $countColumns = count($this->reportResults[0]);
-		for($rowCounter = 0; $rowCounter < $countRows, $rowCounter++) {
-		    for($columnCounter = 0; $columnCounter < $countColumns, $columnCounter++) {
+		for($rowCounter = 0; $rowCounter < $countRows; $rowCounter++) {
+		    for($columnCounter = 0; $columnCounter < $countColumns; $columnCounter++) {
 			//Create new Report_cell and add it to the array
 			$currentCell = new Report_cell();
 			//TODO Add this into a constructor
