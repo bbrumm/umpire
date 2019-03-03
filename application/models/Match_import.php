@@ -5,7 +5,7 @@
 class Match_import extends CI_Model
 {
     
-    const $COLUMN_TO_TABLE_MATCH = array(
+    const COLUMN_TO_TABLE_MATCH = array(
             'Season' => array('column_name'=>'season', 'required'=>true),
             'Round' => array('column_name'=>'round', 'required'=>true),
             'Date' => array('column_name'=>'date', 'required'=>true),
