@@ -144,7 +144,7 @@ class Match_import extends CI_Model
             This looks up the table's column name from the columnHeaderTableMatchArray above,
             and if it finds a match, adds the column name into the columns array
             */
-            if (array_key_exists($columnHeader, self::$COLUMN_TO_TABLE_MATCH)) {
+            if (array_key_exists($columnHeader, self::COLUMN_TO_TABLE_MATCH)) {
                 $columns[] = $this->addMatchingColumnHeader($columnHeader);
             } else {
                 $columns[] = $this->addNewColumnHeader($columnHeader);
@@ -155,7 +155,7 @@ class Match_import extends CI_Model
     }
     
     private function addMatchingColumnHeader($columnHeader) {
-        return array('column_name'=>self::$COLUMN_TO_TABLE_MATCH[$columnHeader]['column_name'],
+        return array('column_name'=>self::COLUMN_TO_TABLE_MATCH[$columnHeader]['column_name'],
                     'found'=>true);
     }
     
@@ -173,7 +173,7 @@ class Match_import extends CI_Model
         $missingColumnCount = 0;
         $missingColumnNames = "";
 
-        foreach (self::$COLUMN_TO_TABLE_MATCH as $expectedColumnHeaderLabel=>$expectedColumnHeaderProperties) {
+        foreach (self::COLUMN_TO_TABLE_MATCH as $expectedColumnHeaderLabel=>$expectedColumnHeaderProperties) {
             if ($expectedColumnHeaderProperties['required']) {
                 if (!in_array($expectedColumnHeaderLabel, $pSheetColumnHeaderArray)) {
                     $missingColumnCount++;
