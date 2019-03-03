@@ -73,6 +73,12 @@ class Report_instance extends CI_Model {
 		}
 	}
 	
+	/*
+	I probably don't need public setters and getters for the array of cells, as all of the processing
+	is likely to be internal to this object. I would just return an array that contains the formatted
+	results, as currently done in one of the functions in this class already.
+	*/
+	
 	
 	public function getResultArray() {
 	    return $this->resultArray;
@@ -213,6 +219,8 @@ class Report_instance extends CI_Model {
                 )
      *
      */
+	
+	//TODO: Possibly refactor this now that I am using an array of cells
     public function setResultArray(IReport $pSeparateReport, $pResultArray) {
 	$columnLabelArray = array();
 	$rowLabelField = array();
@@ -232,6 +240,7 @@ class Report_instance extends CI_Model {
         $this->columnLabelResultArray = $pDataStore->findDistinctColumnHeadings($separateReport, $this);
     }
 
+	//TODO: I think there is some refactoring here if I am using a collection of objects
     private function setResultOutputArray(IReport $separateReport) {
         $columnLabelResultArray = $this->getColumnLabelResultArray();
         $resultArray = $this->getResultArray();
@@ -239,6 +248,7 @@ class Report_instance extends CI_Model {
             $resultArray, $columnLabelResultArray, $this->getReportColumnFields());
     }
 
+	//TODO: I think there is some refactoring here if I am using a collection of objects
     public function getFormattedResultsForOutput() {
 	$this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
         $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());
@@ -246,6 +256,7 @@ class Report_instance extends CI_Model {
 	    return $this->formattedOutputArray;
     }
 
+	//TODO: Possibly refactor this now that I am using an array of cells
     public function getRowCount() {
         //$this->debug_library->debugOutput("getRowCount:", $this->formattedOutputArray);
 	    return count($this->formattedOutputArray);
@@ -283,7 +294,7 @@ class Report_instance extends CI_Model {
 
         return $this->columnCountLabels;   
     }
-
+//TODO: Possibly refactor this now that I am using an array of cells
     private function setValuesForFirstColumnGroup() {
         $this->columnCountLabels[0] = [];
 	$arrayKeyNumber = 0;
@@ -302,7 +313,7 @@ class Report_instance extends CI_Model {
             }
         }
     }
-
+//TODO: Possibly refactor this now that I am using an array of cells
     private function setValuesForSecondColumnGroup() {
         $this->columnCountLabels[1] = [];
 	$arrayKeyNumber = 0;
@@ -330,6 +341,7 @@ class Report_instance extends CI_Model {
         }
     }
 
+	//TODO: Possibly refactor this now that I am using an array of cells
 	//This function will set all count values to 1 for this level, as it is not likely that the third row
             //will need to be merged/have a higher than 1 colspan.
     private function setValuesForThirdColumnGroup() {
