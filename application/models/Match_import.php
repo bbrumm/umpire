@@ -4,6 +4,27 @@
 */
 class Match_import extends CI_Model
 {
+    
+    const $COLUMN_TO_TABLE_MATCH = array(
+            'Season' => array('column_name'=>'season', 'required'=>true),
+            'Round' => array('column_name'=>'round', 'required'=>true),
+            'Date' => array('column_name'=>'date', 'required'=>true),
+            'Competition Name' => array('column_name'=>'competition_name', 'required'=>true),
+            'Ground' => array('column_name'=>'ground', 'required'=>true),
+            'Time' => array('column_name'=>'time', 'required'=>true),
+            'Home Team' => array('column_name'=>'home_team', 'required'=>true),
+            'Away Team' => array('column_name'=>'away_team', 'required'=>true),
+            'Field Umpire 1' => array('column_name'=>'field_umpire_1', 'required'=>true),
+            'Field Umpire 2' => array('column_name'=>'field_umpire_2', 'required'=>true),
+            'Field Umpire 3' => array('column_name'=>'field_umpire_3', 'required'=>true),
+            'Boundary Umpire 1' => array('column_name'=>'boundary_umpire_1', 'required'=>true),
+            'Boundary Umpire 2' => array('column_name'=>'boundary_umpire_2', 'required'=>true),
+            'Boundary Umpire 3' => array('column_name'=>'boundary_umpire_3', 'required'=>true),
+            'Boundary Umpire 4' => array('column_name'=>'boundary_umpire_4', 'required'=>false),
+            'Boundary Umpire 5' => array('column_name'=>'boundary_umpire_5', 'required'=>false),
+            'Goal Umpire 1' => array('column_name'=>'goal_umpire_1', 'required'=>true),
+            'Goal Umpire 2' => array('column_name'=>'goal_umpire_2', 'required'=>true)
+        );
 
     public function __construct() {
         parent::__construct();
@@ -84,6 +105,7 @@ class Match_import extends CI_Model
         }
 
         //TODO: Move this to a constant on this object
+        /*
         $columnHeaderToTableMatchArray = array(
             'Season' => array('column_name'=>'season', 'required'=>true),
             'Round' => array('column_name'=>'round', 'required'=>true),
@@ -104,25 +126,26 @@ class Match_import extends CI_Model
             'Goal Umpire 1' => array('column_name'=>'goal_umpire_1', 'required'=>true),
             'Goal Umpire 2' => array('column_name'=>'goal_umpire_2', 'required'=>true)
         );
+        */
 
-        $columns = $this->populateColumnsArray($sheetColumnHeaderArray, $columnHeaderToTableMatchArray);
+        $columns = $this->populateColumnsArray($sheetColumnHeaderArray);
 
         //Check if all required columns are in the imported spreadsheet
-        $this->checkAllRequiredColumnsFound($sheetColumnHeaderArray[0], $columnHeaderToTableMatchArray);
+        $this->checkAllRequiredColumnsFound($sheetColumnHeaderArray[0]);
 
         return $columns;
     }
 
     
-    private function populateColumnsArray($sheetColumnHeaderArray, $columnHeaderToTableMatchArray) {
+    private function populateColumnsArray($sheetColumnHeaderArray) {
         $columns = array();
         foreach ($sheetColumnHeaderArray[0] as $columnHeader) {
             /*
             This looks up the table's column name from the columnHeaderTableMatchArray above,
             and if it finds a match, adds the column name into the columns array
             */
-            if (array_key_exists($columnHeader, $columnHeaderToTableMatchArray)) {
-                $columns[] = $this->addMatchingColumnHeader($columnHeaderToTableMatchArray, $columnHeader);
+            if (array_key_exists($columnHeader, self::$COLUMN_TO_TABLE_MATCH)) {
+                $columns[] = $this->addMatchingColumnHeader($columnHeader);
             } else {
                 $columns[] = $this->addNewColumnHeader($columnHeader);
             }
@@ -131,8 +154,8 @@ class Match_import extends CI_Model
          return $columns;
     }
     
-    private function addMatchingColumnHeader($columnHeaderToTableMatchArray, $columnHeader) {
-        return array('column_name'=>$columnHeaderToTableMatchArray[$columnHeader]['column_name'],
+    private function addMatchingColumnHeader($columnHeader) {
+        return array('column_name'=>self::$COLUMN_TO_TABLE_MATCH[$columnHeader]['column_name'],
                     'found'=>true);
     }
     
@@ -146,11 +169,11 @@ class Match_import extends CI_Model
         return ($pSheetColumnHeaderArray[0][0] == "Season");
     }
 
-    private function checkAllRequiredColumnsFound($pSheetColumnHeaderArray, $pColumnHeaderToTableMatchArray) {
+    private function checkAllRequiredColumnsFound($pSheetColumnHeaderArray) {
         $missingColumnCount = 0;
         $missingColumnNames = "";
 
-        foreach ($pColumnHeaderToTableMatchArray as $expectedColumnHeaderLabel=>$expectedColumnHeaderProperties) {
+        foreach (self::$COLUMN_TO_TABLE_MATCH as $expectedColumnHeaderLabel=>$expectedColumnHeaderProperties) {
             if ($expectedColumnHeaderProperties['required']) {
                 if (!in_array($expectedColumnHeaderLabel, $pSheetColumnHeaderArray)) {
                     $missingColumnCount++;
