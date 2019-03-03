@@ -42,10 +42,12 @@ class Report_instance extends CI_Model {
 	    $this->filterParameterRegion = new Report_filter_parameter();
 	    $this->reportParamLoader = new Report_param_loader();
 	    $this->load->model('separate_reports/Report_factory');
+	    $this->load->model('separate_reports/Report_cell');
 
 	}
 	
 	private $reportResults;
+	private $reportResultCells;
 	
     public function setReportResults($pValue) {
         $this->reportResults = $pvalue;
@@ -54,9 +56,21 @@ class Report_instance extends CI_Model {
     public function getReportResults() {
 	return $this->reportResults();    
     }
-	
+	//This function converts the array of report results to a collection of Report_cell objects
 	public function convertResultArrayToCollection() {
-		
+	    $countRows = count($this->reportResults);
+	    $countColumns = count($this->reportResults[0]);
+		for($rowCounter = 0; $rowCounter < $countRows, $rowCounter++) {
+		    for($columnCounter = 0; $columnCounter < $countColumns, $columnCounter++) {
+			//Create new Report_cell and add it to the array
+			$currentCell = new Report_cell();
+			//TODO Add this into a constructor
+			$currentCell->setColumnNumber($columnCounter);
+			$currentCell->setRowNumber($rowCounter);
+			$currentCell->setCellValue($this->reportResults[$rowCounter][$columnCounter]);
+			$this->$reportResultCells[] = $currentCell;
+		    }
+		}
 	}
 	
 	
