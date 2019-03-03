@@ -104,24 +104,7 @@ class Match_import extends CI_Model
             'Goal Umpire 2' => array('column_name'=>'goal_umpire_2', 'required'=>true)
         );
 
-        $columns = array();
-        foreach ($sheetColumnHeaderArray[0] as $columnHeader) {
-            /*
-            This looks up the table's column name from the columnHeaderTableMatchArray above,
-            and if it finds a match, adds the column name into the columns array
-            */
-            if (array_key_exists($columnHeader, $columnHeaderToTableMatchArray)) {
-                $columns[] = array(
-                    'column_name'=>$columnHeaderToTableMatchArray[$columnHeader]['column_name'],
-                    'found'=>true
-                );
-            } else {
-                $columns[] = array(
-                    'column_name'=>$columnHeader,
-                    'found'=>false
-                );
-            }
-        }
+        $columns = $this->populateColumnsArray($columnHeaderToTableMatchArray);
 
         //Check if all required columns are in the imported spreadsheet
         $this->checkAllRequiredColumnsFound($sheetColumnHeaderArray[0], $columnHeaderToTableMatchArray);
@@ -129,8 +112,35 @@ class Match_import extends CI_Model
         return $columns;
     }
 
-
-
+    
+    private function populateColumnsArray($sheetColumnHeaderArray, $columnHeaderToTableMatchArray) {
+        $columns = array();
+        foreach ($sheetColumnHeaderArray[0] as $columnHeader) {
+            /*
+            This looks up the table's column name from the columnHeaderTableMatchArray above,
+            and if it finds a match, adds the column name into the columns array
+            */
+            if (array_key_exists($columnHeader, $columnHeaderToTableMatchArray)) {
+                $columns[] = $this->addMatchingColumnHeader($columnHeaderToTableMatchArray, $columnHeader);
+            } else {
+                $columns[] = $this->addNewColumnHeader($columnHeader);
+            }
+        }
+        
+         return $columns;
+    }
+    
+    private function addMatchingColumnHeader($columnHeaderToTableMatchArray, $columnHeader) {
+        return array('column_name'=>$columnHeaderToTableMatchArray[$columnHeader]['column_name'],
+                    'found'=>true);
+    }
+    
+    private function addNewColumnHeader($columnHeader) {
+        return array('column_name'=>$columnHeader,
+                    'found'=>false);
+    }
+    
+    
     private function isColumnHeaderExist($pSheetColumnHeaderArray) {
         return ($pSheetColumnHeaderArray[0][0] == "Season");
     }
