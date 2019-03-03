@@ -83,6 +83,7 @@ class Match_import extends CI_Model
             throw new Exception("Column headers are missing from the imported file.");
         }
 
+        //TODO: Move this to a constant on this object
         $columnHeaderToTableMatchArray = array(
             'Season' => array('column_name'=>'season', 'required'=>true),
             'Round' => array('column_name'=>'round', 'required'=>true),
@@ -104,7 +105,7 @@ class Match_import extends CI_Model
             'Goal Umpire 2' => array('column_name'=>'goal_umpire_2', 'required'=>true)
         );
 
-        $columns = $this->populateColumnsArray($columnHeaderToTableMatchArray);
+        $columns = $this->populateColumnsArray($sheetColumnHeaderArray, $columnHeaderToTableMatchArray);
 
         //Check if all required columns are in the imported spreadsheet
         $this->checkAllRequiredColumnsFound($sheetColumnHeaderArray[0], $columnHeaderToTableMatchArray);
