@@ -42,31 +42,19 @@ class Match_import extends CI_Model
         $pFileLoader->clearMatchImportTable();
         
         $importedFile = new Import_file();
-        
         $importedFile->setFilename($pFileLoader->getImportedFilename($data));
-        //$importedFilename = $pFileLoader->getImportedFilename($data);
         
         $dataFile = $pFileLoader->getImportedFilePathAndName($data);
 
-        //TODO: Refactor this into an ImportFile object that has each of these attributes
         $objPHPExcel = PHPExcel_IOFactory::load($dataFile);
-        
         $importedFile->setDataSheet($objPHPExcel->getActiveSheet());
-
         $columns = $this->findColumnsFromSpreadsheet($importedFile);
-        //$sheetData = $importedFile->getDataSheet()->rangeToArray('A2:' . $importedFile->getLastColumn() . $importedFile->getLastRow());
-        
         $importedFile->setSheetData($columns);
-
-        //Update array keys in sheetData to use the column headings.
-        //Without this, the keys will just be numbers
-        //$sheetData = $this->updateKeysToUseColumnNames($sheetData, $columns);
 
         $queryStatus = $pFileLoader->insertMatchImportTable($importedFile->getSheetData(), $columns);
 
         if ($queryStatus) {
             //Now the data is imported, extract it into the normalised tables.
-            //echo "test table ";
             $this->prepareNormalisedTables($pFileLoader, $pDataStore, $importedFile->getFilename());
             return true;
         } else {
@@ -82,12 +70,10 @@ class Match_import extends CI_Model
         if (!$this->isColumnHeaderExist($sheetColumnHeaderArray)) {
             throw new Exception("Column headers are missing from the imported file.");
         }
-
         $columns = $this->populateColumnsArray($sheetColumnHeaderArray);
 
         //Check if all required columns are in the imported spreadsheet
         $this->checkAllRequiredColumnsFound($sheetColumnHeaderArray[0]);
-
         return $columns;
     }
 
