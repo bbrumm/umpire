@@ -9,7 +9,7 @@ class Import_file extends CI_Model
   private $lastRow;
   private $lastColumn;
   private $filename;
-  private $sheeData;
+  private $sheetData;
   
   public function setDataSheet($pValue) {
       $this->dataSheet = $pValue;
