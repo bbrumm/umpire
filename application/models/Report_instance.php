@@ -50,11 +50,11 @@ class Report_instance extends CI_Model {
 	private $reportResultCells;
 	
     public function setReportResults($pValue) {
-        $this->reportResults = $pvalue;
+        $this->reportResults = $pValue;
     }
 	
     public function getReportResults() {
-	return $this->reportResults();    
+	return $this->reportResults;    
     }
 	//This function converts the array of report results to a collection of Report_cell objects
 	public function convertResultArrayToCollection() {
@@ -68,7 +68,7 @@ class Report_instance extends CI_Model {
 			$currentCell->setColumnNumber($columnCounter);
 			$currentCell->setRowNumber($rowCounter);
 			$currentCell->setCellValue($this->reportResults[$rowCounter][$columnCounter]);
-			$this->$reportResultCells[] = $currentCell;
+			$this->reportResultCells[] = $currentCell;
 		    }
 		}
 	}
