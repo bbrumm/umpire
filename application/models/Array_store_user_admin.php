@@ -276,12 +276,22 @@ private $testUserRoleData = array (
         $testData = $this->getUserActiveData();
         //print_r($testData);
         foreach ($testData as $key => $value) {
-            if ($value["username"] == $username && ($setValue === 0 || $setValue === 1)) {
+            if ($this->isUserActiveValid($username, $setValue) {
                 $testData[$key]["active"] = $setValue;
             }
         }
         //print_r($testData);
         $this->setUserActiveData($testData);
+    }
+    
+    private function isUserActiveValid($username, $setValue) {
+        if ($value["username"] != $username) {
+            return false;
+        }
+        if ($setValue === 0 || $setValue === 1) {
+            return true;
+        }
+        return false;
     }
 
     public function getCountOfMatchingUsers(User $pUser) {
