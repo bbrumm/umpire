@@ -9,6 +9,7 @@ class Import_file extends CI_Model
   private $lastRow;
   private $lastColumn;
   private $filename;
+  private $sheeData;
   
   public function setDataSheet($pValue) {
       $this->dataSheet = $pValue;
@@ -17,7 +18,34 @@ class Import_file extends CI_Model
       if ($this->sheetHasNoData()) {
           throw new Exception("The imported file contains no rows on the selected sheet.");
       }
+   
   }
+  
+  public function setSheetData($pColumns) {
+    $this->sheetData = $this->dataSheet->rangeToArray('A2:' . $this->lastColumn . $this->lastRow);
+    $this->updateKeysToUseColumnNames($pColumns);
+  }
+  
+   private function updateKeysToUseColumnNames($pColumns) {
+        $newSheetData = [];
+        //foreach($sheet as $row) {
+        $rowCount = count($this->sheetData);
+        for($j=0; $j < $rowCount; $j++) {
+            $colCount = count($this->sheetData[$j]);
+            for($i=0; $i < $colCount; $i++) {
+                if($pColumns[$i]['found'] == true) {
+                    $newSheetData[$j][$pColumns[$i]['column_name']] = $this->sheetData[$j][$i];
+                }
+            }
+        }
+
+        $this->sheetData = $newSheetData;
+    }
+  
+  public function getSheetData() {
+    return $this->sheetData;
+  }
+  
   
   public function getDataSheet() {
       return $this->dataSheet;
