@@ -276,7 +276,7 @@ private $testUserRoleData = array (
         $testData = $this->getUserActiveData();
         //print_r($testData);
         foreach ($testData as $key => $value) {
-            if ($this->isUserActiveValid($username, $setValue)) {
+            if ($this->isUserActiveValid($value, $username, $setValue)) {
                 $testData[$key]["active"] = $setValue;
             }
         }
@@ -284,8 +284,8 @@ private $testUserRoleData = array (
         $this->setUserActiveData($testData);
     }
     
-    private function isUserActiveValid($username, $setValue) {
-        if ($value["username"] != $username) {
+    private function isUserActiveValid($pValue, $username, $setValue) {
+        if ($pValue["username"] != $username) {
             return false;
         }
         if ($setValue === 0 || $setValue === 1) {
@@ -295,17 +295,5 @@ private $testUserRoleData = array (
     }
 
     public function getCountOfMatchingUsers(User $pUser) {
-
     }
-
-    /*private function translateActiveArray($resultArray) {
-        $translatedArray = [];
-        foreach ($resultArray as $rowItem) {
-            $translatedArray[$rowItem['username']][$rowItem['active']] = 1;
-        }
-        return $translatedArray;
-
-    }*/
-
-
 }
