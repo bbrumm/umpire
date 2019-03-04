@@ -44,7 +44,7 @@ class Match_import extends CI_Model
         $importedFile = new Import_file();
         
         $importedFile->setFilename($pFileLoader->getImportedFilename($data));
-        $importedFilename = $pFileLoader->getImportedFilename($data);
+        //$importedFilename = $pFileLoader->getImportedFilename($data);
         
         $dataFile = $pFileLoader->getImportedFilePathAndName($data);
 
@@ -56,10 +56,10 @@ class Match_import extends CI_Model
         
         $sheet = $objPHPExcel->getActiveSheet();
         //TODO: Move these into the Import_file function setDataSheet
-        $lastRow = $sheet->getHighestRow();
-        $lastColumn = $sheet->getHighestColumn();
+        //$lastRow = $sheet->getHighestRow();
+        //$lastColumn = $sheet->getHighestColumn();
 
-        $columns = $this->findColumnsFromSpreadsheet($importedFile->getDataSheet(), $importedFile->getLastColumn());
+        $columns = $this->findColumnsFromSpreadsheet($importedFile);
         $sheetData = $sheet->rangeToArray('A2:' . $importedFile->getLastColumn() . $importedFile->getLastRow());
 
         //Update array keys in sheetData to use the column headings.
@@ -103,8 +103,8 @@ class Match_import extends CI_Model
         return $newSheetData;
     }
 
-    private function findColumnsFromSpreadsheet($pSheet, $pLastColumn) {
-        $sheetColumnHeaderArray = $pSheet->rangeToArray("A1:" . $pLastColumn . "1");
+    private function findColumnsFromSpreadsheet($pImportedFile) {
+        $sheetColumnHeaderArray = $pImportedFile->getDataSheet()->rangeToArray("A1:" . $pImportedFile->getLastColumn() . "1");
         if (!$this->isColumnHeaderExist($sheetColumnHeaderArray)) {
             throw new Exception("Column headers are missing from the imported file.");
         }
