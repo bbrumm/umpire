@@ -32,7 +32,7 @@ class Import_file extends CI_Model
   }
   
   private function sheetHasNoData() {
-      return ($this->dataSheet->lastRow == 1);
+      return ($this->lastRow == 1);
   }
   
   public function setFilename($pValue) {
