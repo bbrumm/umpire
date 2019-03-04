@@ -12,24 +12,13 @@ echo "<br />";
 
 ini_set('memory_limit', '1024M'); // or you could use 1G
 
-?>
-<?php
-
 $columnHeadingLabels = $reportDisplayOptions->getColumnHeadingLabel();
 $columnHeadingSizeText = $reportDisplayOptions->getColumnHeadingSizeText();
 
-//echo "countFirstLoadedColumnGroupings: ". $countFirstLoadedColumnGroupings;
-
 echo "<div class='divTableOuter'>";
 echo "<div class='divTable'>";
-
-
     $countRows = $loadedReportItem->getRowCount();
     for ($rowCounter=0; $rowCounter < $countRows; $rowCounter++) {
         echo $formattedOutputArray[$rowCounter];
     }
-
-
 echo "</div>";
-
-?>
