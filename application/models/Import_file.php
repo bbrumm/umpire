@@ -13,7 +13,7 @@ class Import_file extends CI_Model
   public function setDataSheet($pValue) {
       $this->dataSheet = $pValue;
       $this->lastRow = $this->dataSheet->getHighestRow();
-      $this->$lastColumn = $this->dataSheet->getHighestColumn();
+      $this->lastColumn = $this->dataSheet->getHighestColumn();
       if ($this->sheetHasNoData()) {
           throw new Exception("The imported file contains no rows on the selected sheet.");
       }
@@ -32,15 +32,15 @@ class Import_file extends CI_Model
   }
   
   private function sheetHasNoData() {
-        return ($this->dataSheet->$lastRow == 1);
+      return ($this->dataSheet->lastRow == 1);
   }
   
   private function setFilename($pValue) {
-    $this->filename = $pValue;
+      $this->filename = $pValue;
   }
   
   private function getFilename() {
-    return $this->filename;
+      return $this->filename;
   }
 
 }
