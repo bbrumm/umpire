@@ -42,8 +42,10 @@ class Match_import extends CI_Model
         $pFileLoader->clearMatchImportTable();
         
         $importedFile = new Import_file();
-
+        
+        $importedFile->setFilename($pFileLoader->getImportedFilename($data));
         $importedFilename = $pFileLoader->getImportedFilename($data);
+        
         $dataFile = $pFileLoader->getImportedFilePathAndName($data);
 
         //TODO: Refactor this into an ImportFile object that has each of these attributes
@@ -57,13 +59,8 @@ class Match_import extends CI_Model
         $lastRow = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
 
-        if ($this->sheetHasNoData($sheet)) {
-            throw new Exception("The imported file contains no rows on the selected sheet.");
-        }
-
-        $columns = $this->findColumnsFromSpreadsheet($sheet, $lastColumn);
-        $sheetData = $sheet->rangeToArray('A2:' . $lastColumn . $lastRow);
-
+        $columns = $this->findColumnsFromSpreadsheet($importedFile->getDataSheet(), $importedFile->getLastColumn());
+        $sheetData = $sheet->rangeToArray('A2:' . $importedFile->getLastColumn() . $importedFile->getLastRow());
 
         //Update array keys in sheetData to use the column headings.
         //Without this, the keys will just be numbers
@@ -74,7 +71,7 @@ class Match_import extends CI_Model
         if ($queryStatus) {
             //Now the data is imported, extract it into the normalised tables.
             //echo "test table ";
-            $this->prepareNormalisedTables($pFileLoader, $pDataStore, $importedFilename);
+            $this->prepareNormalisedTables($pFileLoader, $pDataStore, $importedFile->getFilename());
             return true;
         } else {
             $errorArray = $this->db->error();
