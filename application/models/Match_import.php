@@ -33,19 +33,27 @@ class Match_import extends CI_Model
         $this->load->library('Debug_library');
         $this->load->model('Database_store_matches');
         $this->load->model('Run_etl_stored_proc');
+        $this->load->model('Import_file');
     }
 
     public function fileImport($pFileLoader, $pDataStore, $data) {
         date_default_timezone_set("Australia/Melbourne");
         //Remove data from previous load first
         $pFileLoader->clearMatchImportTable();
+        
+        $importedFile = new Import_file();
 
         $importedFilename = $pFileLoader->getImportedFilename($data);
         $dataFile = $pFileLoader->getImportedFilePathAndName($data);
 
         //TODO: Refactor this into an ImportFile object that has each of these attributes
         $objPHPExcel = PHPExcel_IOFactory::load($dataFile);
+        
+        $importedFile->setDataSheet($objPHPExcel->getActiveSheet());
+        
+        
         $sheet = $objPHPExcel->getActiveSheet();
+        //TODO: Move these into the Import_file function setDataSheet
         $lastRow = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
 
