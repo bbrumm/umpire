@@ -276,7 +276,7 @@ private $testUserRoleData = array (
         $testData = $this->getUserActiveData();
         //print_r($testData);
         foreach ($testData as $key => $value) {
-            if ($this->isUserActiveValid($username, $setValue) {
+            if ($this->isUserActiveValid($username, $setValue)) {
                 $testData[$key]["active"] = $setValue;
             }
         }
