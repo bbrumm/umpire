@@ -52,21 +52,17 @@ class Match_import extends CI_Model
         $objPHPExcel = PHPExcel_IOFactory::load($dataFile);
         
         $importedFile->setDataSheet($objPHPExcel->getActiveSheet());
-        
-        
-        $sheet = $objPHPExcel->getActiveSheet();
-        //TODO: Move these into the Import_file function setDataSheet
-        //$lastRow = $sheet->getHighestRow();
-        //$lastColumn = $sheet->getHighestColumn();
 
         $columns = $this->findColumnsFromSpreadsheet($importedFile);
-        $sheetData = $sheet->rangeToArray('A2:' . $importedFile->getLastColumn() . $importedFile->getLastRow());
+        //$sheetData = $importedFile->getDataSheet()->rangeToArray('A2:' . $importedFile->getLastColumn() . $importedFile->getLastRow());
+        
+        $importedFile->setSheetData($columns);
 
         //Update array keys in sheetData to use the column headings.
         //Without this, the keys will just be numbers
-        $sheetData = $this->updateKeysToUseColumnNames($sheetData, $columns);
+        //$sheetData = $this->updateKeysToUseColumnNames($sheetData, $columns);
 
-        $queryStatus = $pFileLoader->insertMatchImportTable($sheetData, $columns);
+        $queryStatus = $pFileLoader->insertMatchImportTable($importedFile->getSheetData(), $columns);
 
         if ($queryStatus) {
             //Now the data is imported, extract it into the normalised tables.
@@ -79,29 +75,7 @@ class Match_import extends CI_Model
         }
     }
 
-    private function sheetHasNoData($sheet) {
-        if ($sheet->getHighestRow() == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function updateKeysToUseColumnNames($sheetData, $pColumns) {
-        $newSheetData = [];
-        //foreach($sheet as $row) {
-        $rowCount = count($sheetData);
-        for($j=0; $j < $rowCount; $j++) {
-            $colCount = count($sheetData[$j]);
-            for($i=0; $i < $colCount; $i++) {
-                if($pColumns[$i]['found'] == true) {
-                    $newSheetData[$j][$pColumns[$i]['column_name']] = $sheetData[$j][$i];
-                }
-            }
-        }
-
-        return $newSheetData;
-    }
+   
 
     private function findColumnsFromSpreadsheet($pImportedFile) {
         $sheetColumnHeaderArray = $pImportedFile->getDataSheet()->rangeToArray("A1:" . $pImportedFile->getLastColumn() . "1");
