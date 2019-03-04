@@ -100,18 +100,25 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
         $existingUsers = array ($user1, $user2);
         $newUsername = $pUser->getUsername();
         $newPassword = $pUser->getPassword();
-        if (!empty($newUsername) && !empty($newPassword)) {
+        if ($this->isUserDetailsValid($newUsername, $newPassword) {
             $existingUsers[] = $pUser;
         }
         $lastIndex = count($existingUsers) - 1;
-
-        if ($existingUsers[$lastIndex]->getUsername() == $pUser->getUsername()
-            && count($existingUsers) == 3) {
+        if ($this->isNewUserInsertedCorrectly($existingUsers, $lastIndex, $pUser) {
             return true;
         } else {
             throw new Exception("There was an error when inserting the user. Please contact support.");
         }
 
+    }
+    
+    private function isUserDetailsValid($pUsername, $pPassword) {
+        return (!empty($pUsername) && !empty($pPassword));
+    }
+            
+    private function isNewUserInsertedCorrectly($existingUsers, $lastIndex, $pUser) {
+        return ($existingUsers[$lastIndex]->getUsername() == $pUser->getUsername()
+            && count($existingUsers) == 3);
     }
 
     public function addDefaultUserPrivileges($username) {
