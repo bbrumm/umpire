@@ -7,7 +7,7 @@ class CreatePDF extends CI_Controller {
 	function __construct() {
 	    parent::__construct();
 	    $this->load->model('user','',TRUE);
-	    $this->load->model('report_model');
+	    $this->load->model('Report_model');
 	    $this->load->helper('url_helper');
 	    $this->load->model('Cell_formatting_helper');
 	}
@@ -24,8 +24,6 @@ class CreatePDF extends CI_Controller {
 	 }
 	
 	function pdf() {
-	    $debugMode = $this->config->item('debug_mode');
-
 		$reportParameters = array(
 			'reportName' => $_POST['reportName'], 
 			'season' => $_POST['season'], 
