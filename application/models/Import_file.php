@@ -35,11 +35,11 @@ class Import_file extends CI_Model
       return ($this->dataSheet->lastRow == 1);
   }
   
-  private function setFilename($pValue) {
+  public function setFilename($pValue) {
       $this->filename = $pValue;
   }
   
-  private function getFilename() {
+  public function getFilename() {
       return $this->filename;
   }
 
