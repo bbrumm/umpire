@@ -121,10 +121,7 @@ class Array_store_user_admin extends CI_Model implements IData_store_user_admin
             && count($existingUsers) == 3);
     }
 
-    public function addDefaultUserPrivileges($username) {
-
-
-    }
+    public function addDefaultUserPrivileges($username) { }
 
     public function getAllUserPermissionsFromDB() {
         /*$testData = array (
