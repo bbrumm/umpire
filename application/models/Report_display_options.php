@@ -35,6 +35,21 @@ class Report_display_options extends CI_Model {
 	    
 	    return $instance;
 	}
+
+    public static function createReportDisplayOptionsNew(Report_result $pReportResult) {
+
+        //TODO: Refactor this object or this function as it seems to be duplicating the Report_Parameter object
+        $instance = new Report_display_options();
+        $reportParameter = $pReportResult->reportParamLoader->getReportParameter();
+        $instance->setNoDataValue($reportParameter->getNoValueDisplay());
+        $instance->setFirstColumnFormat($reportParameter->getFirstColumnFormat());
+        $instance->setColourCells($reportParameter->getColourCells());
+        $instance->setPDFResolution($reportParameter->getPDFResolution());
+        $instance->setPDFPaperSize($reportParameter->getPDFPaperSize());
+        $instance->setPDFOrientation($reportParameter->getPDFOrientation());
+
+        return $instance;
+    }
 	
 	
 	

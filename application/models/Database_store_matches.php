@@ -351,6 +351,21 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
         return $queryResultArray;
     }
 
+    public function loadReportDataNew(Parent_report $separateReport, Report_result $reportInstance) {
+        $queryForReport = $separateReport->getReportDataQuery($reportInstance);
+
+        //Run query and store result in array
+        $query = $this->runQuery($queryForReport);
+
+        //Transform array to pivot
+        $queryResultArray = $query->result_array();
+
+        if (!isset($queryResultArray[0])) {
+            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for the report.<BR />Query:<BR />" . $queryForReport);
+        }
+        return $queryResultArray;
+    }
+
     public function findLastGameDateForSelectedSeason(Requested_report_model $requestedReport) {
         $queryString = "SELECT DATE_FORMAT(MAX(match_time), '%a %d %b %Y, %h:%i %p') AS last_date 
             FROM match_played 

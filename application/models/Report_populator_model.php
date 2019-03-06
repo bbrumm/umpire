@@ -7,8 +7,19 @@ class Report_populator_model extends CI_Model {
 		$this->load->model('Requested_report_model');
 		$this->load->library('Debug_library');
 	}
-	
+
+	private $useNewReport = true;
+
 	public function getReport(Requested_report_model $requestedReport) {
+	    if($this->useNewReport) {
+            return $this->getReportNew($requestedReport);
+        } else {
+	        return $this->getReportOld($requestedReport);
+        }
+
+    }
+	
+	public function getReportOld(Requested_report_model $requestedReport) {
 	    $requestedReport->setPDFMode(isset($_POST['PDFSubmitted']));
 	    
 		$reportToDisplay = new Report_instance();
@@ -23,11 +34,23 @@ class Report_populator_model extends CI_Model {
 		 * of objects.
 		 *  
 		 */
-		
+
+
 		$reportToDisplay->loadReportResults($dataStore);
 		
 		return $reportToDisplay;
 
 	}
+
+	public function getReportNew(Requested_report_model $requestedReport) {
+        $requestedReport->setPDFMode(isset($_POST['PDFSubmitted']));
+
+        $reportResult = new Report_result();
+        $dataStore = new Database_store_matches();
+
+        $reportResult->loadReport($dataStore, $requestedReport);
+
+        return $reportResult;
+    }
 
 }

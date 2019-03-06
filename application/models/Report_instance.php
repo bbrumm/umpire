@@ -57,32 +57,9 @@ class Report_instance extends CI_Model {
 	    return $this->reportResults;
     }
 
-	//This function converts the array of report results to a collection of Report_cell objects
-	public function convertResultArrayToCollection() {
-	    $countRows = count($this->resultArray);
-	    $countColumns = count($this->columnLabelResultArray);
-		for($rowCounter = 0; $rowCounter < $countRows; $rowCounter++) {
-		    for($columnCounter = 0; $columnCounter < $countColumns; $columnCounter++) {
-                //Create new Report_cell and add it to the array
-                $currentCell = new Report_cell();
-                //TODO Add this into a constructor
-                $currentCell->setColumnNumber($columnCounter);
-                $currentCell->setRowNumber($rowCounter);
-                //$currentCell->setCellValue($this->reportResults[$rowCounter][$columnCounter]);
-                $currentCell->setCellValue($this->checkAndReturnValueFromOutputArray($rowCounter, $columnCounter));
-                $this->reportResultCells[] = $currentCell;
-		    }
-		}
-		//echo "test";
-	}
 
-	private function checkAndReturnValueFromOutputArray($rowCounter, $columnCounter) {
-        if (array_key_exists($columnCounter, $this->resultOutputArray[$rowCounter])) {
-            return $this->resultOutputArray[$rowCounter][$columnCounter];
-        } else {
-            return "";
-        }
-    }
+
+
 	
 	/*
 	I probably don't need public setters and getters for the array of cells, as all of the processing
@@ -188,9 +165,6 @@ class Report_instance extends CI_Model {
         //TODO: This function is causing the output values to be misaligned.
         $this->setResultOutputArray($separateReport);
 
-        //Set to new cell collection
-        $this->convertResultArrayToCollection();
-
         $this->separateReport = $separateReport;
 	}
 
@@ -240,8 +214,8 @@ class Report_instance extends CI_Model {
 	
 	//TODO: Possibly refactor this now that I am using an array of cells
     public function setResultArray(IReport $pSeparateReport, $pResultArray) {
-	$columnLabelArray = array();
-	$rowLabelField = array();
+	    $columnLabelArray = array();
+	    $rowLabelField = array();
         foreach ($this->reportDisplayOptions->getColumnGroup() as $columnGroupItem) {
             $columnLabelArray[] = $columnGroupItem->getFieldName();
         }
