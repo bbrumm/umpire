@@ -1,7 +1,7 @@
 <?php
 class Cell_formatting_helper extends CI_Model {
 
-    function getCellClassNameForTableFromOutputValue($valueToCheck) {
+    public function getCellClassNameForTableFromOutputValue($valueToCheck) {
         $limitLevel1 = 3;
         $limitLevel2 = 4;
         $limitLevel3 = 5;
@@ -19,11 +19,12 @@ class Cell_formatting_helper extends CI_Model {
                 return "cellNumber cellLevel3";
             case ($valueToCheck > $limitLevel3):
                 return "cellNumber cellLevel4";
+            default:
+                return "cellNumber cellNormal";
         }
-
     }
 
-    function getCellClassNameForPDFFromOutputValue($valueToCheck) {
+    public function getCellClassNameForPDFFromOutputValue($valueToCheck) {
         $limitLevel1 = 3;
         $limitLevel2 = 4;
         $limitLevel3 = 5;
@@ -41,6 +42,8 @@ class Cell_formatting_helper extends CI_Model {
                 return "divCell divCellNumber cellLevel3";
             case ($valueToCheck > $limitLevel3):
                 return "divCell divCellNumber cellLevel4";
+            default:
+                return "cellNumber cellNormal";
         }
     }
 
