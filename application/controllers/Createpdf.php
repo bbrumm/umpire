@@ -4,12 +4,16 @@
 */
 class CreatePDF extends CI_Controller {
 	
+	private $reportModel;
+	
 	function __construct() {
 	    parent::__construct();
 	    $this->load->model('user','',TRUE);
 	    $this->load->model('Report_model');
 	    $this->load->helper('url_helper');
+	    $this->load->helper('dompdf_helper');
 	    $this->load->model('Cell_formatting_helper');
+	    $this->reportModel = new Report_model();
 	}
 	 
 	 function writeToFile($outputText) {
@@ -33,7 +37,7 @@ class CreatePDF extends CI_Controller {
 			'region' => $_POST['region']);
 		
 		$data = array();
-		$data['loadedReportItem'] = $this->report_model->get_report($reportParameters);
+		$data['loadedReportItem'] = $this->reportModel->get_report($reportParameters);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = TRUE;
 
