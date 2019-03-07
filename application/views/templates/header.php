@@ -5,6 +5,7 @@
 <?php
 include_once("analyticstracking.php");
 $this->load->helper('url');   
+$this->load->helper('utility_helper');
 $this->load->model('User');
 $this->load->model('useradmin/User_permission_loader_model');
 $this->load->model('Database_store_user');
