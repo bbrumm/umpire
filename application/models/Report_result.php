@@ -16,15 +16,15 @@ class Report_result extends CI_Model {
 
     private $reportParamLoader;
     private $reportParameter;
+    private $reportTitle;
 
     public function loadReport(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
         //Load parameters and grouping structire
         $this->loadReportParameters($pRequestedReport);
 
-       
+        $this->setReportTitle($pRequestedReport);
 
-        //Set title
-
+        
         //Create separate report object
 
         //Load data from database
@@ -40,7 +40,9 @@ class Report_result extends CI_Model {
         $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport, $pDataStore);
     }
 
-
+    private function setReportTitle($pRequestedReport) {
+        $this->reportTitle = str_replace("%seasonYear", $pRequestedReport->getSeason(), $this->reportParameter->getReportTitle());
+    }
 
 
     /*
@@ -124,7 +126,7 @@ class Report_result extends CI_Model {
 
     //TODO make these private
 
-    private $reportTitle;
+    
     private $reportColumnFields;
     public $filterParameterUmpireType;
     public $filterParameterAgeGroup;
@@ -158,9 +160,7 @@ class Report_result extends CI_Model {
         $this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason($pDataStore));
     }
 
-    private function setReportTitle($pSeasonYear) {
-        return str_replace("%seasonYear", $pSeasonYear, $this->reportParameter->getReportTitle());
-    }
+    
 
     private function filterParameters() {
         $this->filterParameterUmpireType = new Report_filter_parameter();
