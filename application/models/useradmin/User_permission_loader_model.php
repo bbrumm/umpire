@@ -8,7 +8,7 @@ class User_permission_loader_model extends CI_Model {
             $this->setPermissionArrayForUser($pDataStore, $user);
             return $user;
         } else {
-            return null;
+            throw new Exception("User not found for provided username.");
         }
     }
 
