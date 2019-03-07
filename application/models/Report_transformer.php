@@ -4,14 +4,15 @@ class Report_result extends CI_Model {
     private $reportResultCells;
     private $resultArray;
     private $columnLabelResultArray;
-    private $resultOutputArray;
+    //private $resultOutputArray;
     
     public function __construct() {
         $this->load->model('separate_reports/Report_cell');
     }
     
     public function loadDataForReport($pDataStore, $pSeparateReport) {
-        $queryResultArray = $pDataStore->loadReportData($separateReport, $this);
+        $this->resultArray = $pDataStore->loadReportData($separateReport, $this);
+        $this->convertResultArrayToCollection();
     }
     
      public function convertResultArrayToCollection() {
@@ -32,8 +33,15 @@ class Report_result extends CI_Model {
     }
     
     private function checkAndReturnValueFromOutputArray($rowCounter, $columnCounter) {
-        if (array_key_exists($columnCounter, $this->resultOutputArray[$rowCounter])) {
-            return $this->resultOutputArray[$rowCounter][$columnCounter];
+        //if (array_key_exists($columnCounter, $this->resultOutputArray[$rowCounter])) {
+        //    return $this->resultOutputArray[$rowCounter][$columnCounter];
+        /*
+        TODO: Check that this works. The old code uses reportOutputArray, which may be a transformed version of the report array
+        Ideally there should only be one array, so perhaps I need to transform it first,
+        or update this logic.
+        */
+        if (array_key_exists($columnCounter, $this->resultArray[$rowCounter])) {
+            return $this->resultArray[$rowCounter][$columnCounter];
         } else {
             return "";
         }
