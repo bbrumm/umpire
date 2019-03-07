@@ -1,5 +1,5 @@
 <?php
-class Report_result extends CI_Model {
+class Report_transformer extends CI_Model {
 
     private $reportResultCells;
     private $resultArray;
@@ -11,7 +11,7 @@ class Report_result extends CI_Model {
     }
     
     public function loadDataForReport($pDataStore, $pSeparateReport) {
-        $this->resultArray = $pDataStore->loadReportData($separateReport, $this);
+        $this->resultArray = $pDataStore->loadReportData($pSeparateReport, $this);
         $this->convertResultArrayToCollection();
     }
     
