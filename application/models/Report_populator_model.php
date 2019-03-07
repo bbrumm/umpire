@@ -8,7 +8,8 @@ class Report_populator_model extends CI_Model {
 		$this->load->library('Debug_library');
 	}
 
-	private $useNewReport = true;
+	//TODO Remove this FeatureFlag once done
+	private $useNewReport = false;
 
 	public function getReport(Requested_report_model $requestedReport) {
 	    if($this->useNewReport) {
