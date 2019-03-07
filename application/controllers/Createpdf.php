@@ -9,11 +9,10 @@ class CreatePDF extends CI_Controller {
 	function __construct() {
 	    parent::__construct();
 	    $this->load->model('user','',TRUE);
-	    $this->load->model('Report_model');
+	    $this->load->model('Requested_report_model');
 	    $this->load->helper('url_helper');
 	    $this->load->helper('dompdf_helper');
 	    $this->load->model('Cell_formatting_helper');
-	    $this->reportModel = new Report_model();
 	}
 	 
 	 function writeToFile($outputText) {
@@ -28,16 +27,20 @@ class CreatePDF extends CI_Controller {
 	 }
 	
 	function pdf() {
-		$reportParameters = array(
-			'reportName' => $_POST['reportName'], 
-			'season' => $_POST['season'], 
-			'age' => $_POST['age'], 
-			'umpireType' => $_POST['umpireType'], 
-			'league' => $_POST['league'], 
-			'region' => $_POST['region']);
+
+		$requestedReport = Requested_report_model::createRequestedReportFromValues(
+	        intval($_POST['reportName']),
+	        intval($_POST['season']),
+	        $this->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'),
+	        $this->findValueFromPostOrHidden($_POST, 'chkAgeGroup', 'chkAgeGroupHidden'),
+	        $this->findValueFromPostOrHidden($_POST, 'chkUmpireDiscipline', 'chkUmpireDisciplineHidden'),
+	        $this->findValueFromPostOrHidden($_POST, 'chkLeague', 'chkLeagueHidden'),
+	        false
+	        );
+		
 		
 		$data = array();
-		$data['loadedReportItem'] = $this->reportModel->get_report($reportParameters);
+		$data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = TRUE;
 
@@ -56,5 +59,14 @@ class CreatePDF extends CI_Controller {
 		} else {
 		    echo $html;
 		}
-	}	
+	}
+	
+	//TODO: Remove this duplicate function (Report.php)
+	private function findValueFromPostOrHidden($pPostArray, $pPostKey, $pPostKeyHidden) {
+	    if (array_key_exists($pPostKey, $pPostArray)) {
+	        return $_POST[$pPostKey];
+	    } else {
+	        return explode(",", $_POST[$pPostKeyHidden]);
+	    }
+	}
 }
