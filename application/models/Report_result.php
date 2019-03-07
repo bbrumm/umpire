@@ -21,9 +21,7 @@ class Report_result extends CI_Model {
         //Load parameters and grouping structire
         $this->loadReportParameters($pRequestedReport);
 
-        //Create display options
-
-
+       
 
         //Set title
 
@@ -145,7 +143,8 @@ class Report_result extends CI_Model {
 
         $reportGroupingStructureArray = $this->reportParamLoader->getReportGroupingStructureArray();
 
-        $this->reportDisplayOptions = Report_display_options::createReportDisplayOptionsNew($this);
+        //Removed this because the functionality is already in Report_parameter
+        //$this->reportDisplayOptions = Report_display_options::createReportDisplayOptionsNew($this);
 
         //ReportGroupingStructureArray comes from the database tables
         $this->reportColumnFields = $this->translateRptGrStructureToSimpleArray($reportGroupingStructureArray);
