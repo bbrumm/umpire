@@ -9,8 +9,7 @@ class Report_result extends CI_Model {
 
 
     public function __construct() {
-        $this->load->model('separate_reports/Report_cell');
-        $this->load->model('Report_display_options');
+
     }
 
     private $reportParamLoader;
@@ -97,31 +96,7 @@ class Report_result extends CI_Model {
     }
 
 
-    //This function converts the array of report results to a collection of Report_cell objects
-    public function convertResultArrayToCollection() {
-        $countRows = count($this->resultArray);
-        $countColumns = count($this->columnLabelResultArray);
-        for($rowCounter = 0; $rowCounter < $countRows; $rowCounter++) {
-            for($columnCounter = 0; $columnCounter < $countColumns; $columnCounter++) {
-                //Create new Report_cell and add it to the array
-                $currentCell = new Report_cell();
-                //TODO Add this into a constructor
-                $currentCell->setColumnNumber($columnCounter);
-                $currentCell->setRowNumber($rowCounter);
-                $currentCell->setCellValue($this->checkAndReturnValueFromOutputArray($rowCounter, $columnCounter));
-                $this->reportResultCells[] = $currentCell;
-            }
-        }
-        //echo "test";
-    }
-
-    private function checkAndReturnValueFromOutputArray($rowCounter, $columnCounter) {
-        if (array_key_exists($columnCounter, $this->resultOutputArray[$rowCounter])) {
-            return $this->resultOutputArray[$rowCounter][$columnCounter];
-        } else {
-            return "";
-        }
-    }
+   
 
 
     /*
@@ -132,21 +107,15 @@ class Report_result extends CI_Model {
 
     
     private $reportColumnFields;
-    public $filterParameterUmpireType;
-    public $filterParameterAgeGroup;
-    public $filterParameterLeague;
-    public $filterParameterRegion;
+    private $filterParameterUmpireType;
+    private $filterParameterAgeGroup;
+    private $filterParameterLeague;
+    private $filterParameterRegion;
 
 
     public function setReportType(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
         //RequestedReport values are set in controllers/report.php->index();
-        //$pDataStore = new Database_store_matches();
-        $this->reportParamLoader = new Report_param_loader();
-
-        $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport, $pDataStore);
-        $this->reportParameter = $this->reportParamLoader->getReportParameter();
-        $this->reportParamLoader->loadAllGroupingStructuresForReport($pRequestedReport, $pDataStore);
-
+        
         $reportGroupingStructureArray = $this->reportParamLoader->getReportGroupingStructureArray();
 
         //Removed this because the functionality is already in Report_parameter
@@ -154,8 +123,7 @@ class Report_result extends CI_Model {
 
         //ReportGroupingStructureArray comes from the database tables
         $this->reportColumnFields = $this->translateRptGrStructureToSimpleArray($reportGroupingStructureArray);
-        $this->reportTitle = $this->setReportTitle($pRequestedReport->getSeason());
-
+       
         $this->requestedReport = $pRequestedReport;
 
         //Extract the ReportGroupingStructure into separate arrays for columns and rows
