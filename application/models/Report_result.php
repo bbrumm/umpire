@@ -43,6 +43,21 @@ class Report_result extends CI_Model {
     private function setReportTitle($pRequestedReport) {
         $this->reportTitle = str_replace("%seasonYear", $pRequestedReport->getSeason(), $this->reportParameter->getReportTitle());
     }
+    
+    private function loadReportResultsNew($pDataStore) {
+        $$this->separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
+        
+        //Create a new report transformer (name TBC?) object
+        
+        //Call a function on the transformer that calls dataStore->loadReportData,
+        //and transforms the data into a set of row and cell objects
+        $this->resultArray = array();
+        
+        //No need to create an output array, as the objects can contain methods to display the output.
+        
+        
+        
+    }
 
 
     /*
