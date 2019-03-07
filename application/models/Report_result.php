@@ -4,9 +4,8 @@ class Report_result extends CI_Model {
     private $resultArray;
     private $columnLabelResultArray;
     private $separateReport;
-    //TODO make this private
-    public $reportDisplayOptions;
-    public $requestedReport;
+    //TODO: Decide if this is needed, or if it is just a parameter for other functions
+    private $requestedReport;
 
 
     public function __construct() {
@@ -21,16 +20,9 @@ class Report_result extends CI_Model {
     public function loadReport(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
         //Load parameters and grouping structire
         $this->loadReportParameters($pRequestedReport);
-
         $this->setReportTitle($pRequestedReport);
-
-        
-        //Create separate report object
-
         //Load data from database
-
-        //Convert database results to collection
-
+        $this->loadReportResultsNew($pDataStore);
     }
 
     private function loadReportParameters(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
@@ -45,7 +37,7 @@ class Report_result extends CI_Model {
     }
     
     private function loadReportResultsNew($pDataStore) {
-        $$this->separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
+        $this->separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         
         //Create a new report transformer (name TBC?) object
         
@@ -54,9 +46,6 @@ class Report_result extends CI_Model {
         $this->resultArray = array();
         
         //No need to create an output array, as the objects can contain methods to display the output.
-        
-        
-        
     }
 
 
