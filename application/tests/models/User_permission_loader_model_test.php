@@ -22,11 +22,10 @@ class User_permission_loader_model_test extends TestCase
     }
 
     public function test_getUserFromUsername_UserNotFound() {
+        $this->expectException(Exception::class);
         $arrayStore = new Array_store_user;
         $username = "john20";
         $actual = $this->obj->getUserFromUsername($arrayStore, $username);
-        $expected = null;
-        $this->assertEquals($expected, $actual);
     }
 
     public function test_getUserFromUsername_TwoUsers() {
