@@ -24,32 +24,37 @@ function updateControlSelection(elementName, controlEnabled) {
 		if(elementName == "chkLeague[]") {
 			if (validLeagueList.indexOf(controlToUpdate.id) !== -1) {
 				//Valid.
-				//This is a double equals == because controlEnabled is a string and the value below is a number
-				if (controlEnabled === 1) {
+				singleControlEnabled = (parseInt(controlEnabled) === 1);
+				/*
+				if (parseInt(controlEnabled) === 1) {
 					singleControlEnabled = true;
 				} else {
 					singleControlEnabled = false;
-				}
+				}*/
 			} else {
 				singleControlEnabled = false;
 			}
 		} else if (elementName == "chkAgeGroup[]") {
 			if (validAgeGroupList.indexOf(controlToUpdate.id) != -1) {
 				//Valid.
+				singleControlEnabled = (parseInt(controlEnabled) === 1);
+				/*
 				if (controlEnabled == 1) {
 					singleControlEnabled = true;
 				} else {
 					singleControlEnabled = false;
-				}
+				}*/
 			} else {
 				singleControlEnabled = false;
 			}
 		} else {
+			singleControlEnabled = (parseInt(controlEnabled) === 0);
+			/*
 			if (controlEnabled == 0) {
 				singleControlEnabled = false;
 			} else {
 				singleControlEnabled = true;
-			}
+			}*/
 		}
 		
 		var disabledStatus;
