@@ -82,29 +82,37 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 	var countChecked = 0;
 	var countCheckable = 0;
 	for (i=0; i < relatedCheckboxes.length; i++) {
-		if (relatedCheckboxes[i].disabled !== true) {
-			countCheckable++;
-			if(relatedCheckboxes[i].checked === true) {
-				countChecked++;
-			}
-		}
+		countCheckable = countCheckable + calculateCountCheckableIncrement(relatedCheckboxes, loopCounter);
+		countChecked = countChecked + calculateCountCheckedIncrement(relatedCheckboxes, loopCounter);
 	}
 	var selectAllMakesCheckboxesChecked;
-	if(countChecked == countCheckable) {
-		//All checkable checkboxes are checked. Make them unchecked.
-		selectAllMakesCheckboxesChecked = false;
-	} else {
-		selectAllMakesCheckboxesChecked = true;
-	}
-	
+	selectAllMakesCheckboxesChecked = !(countChecked == countCheckable);
 	for (var i=0; i < relatedCheckboxes.length; i++) {
 		if (relatedCheckboxes[i].disabled !== true) {
 			//Checkbox not disabled. Set it to "checked".
 			document.getElementById(relatedCheckboxes[i].id).checked = selectAllMakesCheckboxesChecked;
 		}
 	}
-	
-	
+}
+
+function isCheckboxEnabled(checkboxItem) {
+	return checkboxItem.disabled !== true;
+}
+
+function calculateCountCheckableIncrement(relatedCheckboxes, loopCounter) {
+	if (isCheckboxEnabled(relatedCheckboxes[loopCounter])) {
+	    return 1;
+	} else {
+		return 0;
+	}
+}
+
+function calculateCountCheckedIncrement(relatedCheckboxes, loopCounter) {
+	if (isCheckboxEnabled(relatedCheckboxes[loopCounter]) && relatedCheckboxes[loopCounter].checked === true) {
+	    return 1;
+	} else {
+		return 0;
+	}
 }
 
 function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
@@ -211,31 +219,26 @@ function findValidAgeGroups() {
 }
 
 function validateReportSelections() {
-    var checkboxesLeague = document.getElementsByName("chkLeague[]");
-    var checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
-    var checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
-    
-    var convertedStringLeague = convertValueArrayToString(checkboxesLeague);
-    var convertedStringUmpireDiscipline = convertValueArrayToString(checkboxesUmpireDiscipline);
-    var convertedStringAgeGroup = convertValueArrayToString(checkboxesAgeGroup);
-    var convertedStringRegion = convertValueArrayToString(document.getElementsByName("rdRegion"));
-    
-    document.getElementById("chkLeagueHidden").value = convertedStringLeague;
-    document.getElementById("chkUmpireDisciplineHidden").value = convertedStringUmpireDiscipline;
-    document.getElementById("chkAgeGroupHidden").value = convertedStringAgeGroup;
-    document.getElementById("chkRegionHidden").value = convertedStringRegion;
+    document.getElementById("chkLeagueHidden").value = calculateConvertedStringValue("chkLeague[]");
+    document.getElementById("chkUmpireDisciplineHidden").value = calculateConvertedStringValue("chkUmpireDiscipline[]");
+    document.getElementById("chkAgeGroupHidden").value = calculateConvertedStringValue("chkAgeGroup[]");
+    document.getElementById("chkRegionHidden").value = calculateConvertedStringValue("rdRegion");
 
     var leagueCheckboxesValid = isCheckboxSelected(checkboxesLeague);
     var umpireDisciplineCheckboxesValid = isCheckboxSelected(checkboxesUmpireDiscipline);
     var ageGroupCheckboxesValid = isCheckboxSelected(checkboxesAgeGroup);
-	
-    var errorHTML;
 
     if (leagueCheckboxesValid && umpireDisciplineCheckboxesValid && ageGroupCheckboxesValid) {
     	submitForm();
     } else {
 	updateErrorMessage(leagueCheckboxesValid, umpireDisciplineCheckboxesValid, ageGroupCheckboxesValid);
     }
+}
+
+function calculateConvertedStringValue(elementName) {
+	var checkboxesElement = document.getElementsByName(elementName);
+	var convertedString = convertValueArrayToString(checkboxesElement);
+	return convertedString;
 }
 
 function submitForm() {
