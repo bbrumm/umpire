@@ -25,12 +25,6 @@ function updateControlSelection(elementName, controlEnabled) {
 			if (validLeagueList.indexOf(controlToUpdate.id) !== -1) {
 				//Valid.
 				singleControlEnabled = (parseInt(controlEnabled) === 1);
-				/*
-				if (parseInt(controlEnabled) === 1) {
-					singleControlEnabled = true;
-				} else {
-					singleControlEnabled = false;
-				}*/
 			} else {
 				singleControlEnabled = false;
 			}
@@ -38,48 +32,36 @@ function updateControlSelection(elementName, controlEnabled) {
 			if (validAgeGroupList.indexOf(controlToUpdate.id) != -1) {
 				//Valid.
 				singleControlEnabled = (parseInt(controlEnabled) === 1);
-				/*
-				if (controlEnabled == 1) {
-					singleControlEnabled = true;
-				} else {
-					singleControlEnabled = false;
-				}*/
 			} else {
 				singleControlEnabled = false;
 			}
 		} else {
 			singleControlEnabled = (parseInt(controlEnabled) === 0);
-			/*
-			if (controlEnabled == 0) {
-				singleControlEnabled = false;
-			} else {
-				singleControlEnabled = true;
-			}*/
 		}
+	
+		controlToUpdate.disabled = calculateDisabledStatus(singleControlEnabled);
 		
-		var disabledStatus;
-		var bgColour;
-		
-		if(singleControlEnabled) {
-			disabledStatus = false;
-			bgColour = "#FFFFFF";
-			
-		} else {
-			disabledStatus = true;
-			bgColour = "#d9d9d9";
-		}
-		
-		
-		controlToUpdate.disabled = disabledStatus;
-    	if(controlToUpdate.type == "checkbox" && disabledStatus && controlEnabled == 0) {
-    		//Only change the checkbox to be checked if it is disabled because the entire control group is disabled
-    		controlToUpdate.checked = true;
-    	}
-		controlToUpdate.parentNode.style.background=bgColour;
+    	        if(controlToUpdate.type == "checkbox" && controlToUpdate.disabled && controlEnabled == 0) {
+    		    //Only change the checkbox to be checked if it is disabled because the entire control group is disabled
+    		    controlToUpdate.checked = true;
+    	        }
+		controlToUpdate.parentNode.style.background = calculatebgColour(singleControlEnabled);
     	
 	}	
 	
 	updateSelectAllCheckboxes(elementName, groupOfCheckboxes);
+}
+
+function calculateDisabledStatus(singleControlEnabled) {
+	return !singleControlEnabled;
+}
+
+function calculatebgColour(singleControlEnabled) {
+    if(singleControlEnabled) {
+        return "#FFFFFF";
+    } else {
+        return "#d9d9d9";
+    }
 }
 
 function selectAll(selectAllCheckbox, matchingElementName) {
