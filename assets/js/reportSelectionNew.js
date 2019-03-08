@@ -82,8 +82,8 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 	var countChecked = 0;
 	var countCheckable = 0;
 	for (i=0; i < relatedCheckboxes.length; i++) {
-		countCheckable = countCheckable + calculateCountCheckableIncrement(relatedCheckboxes, loopCounter);
-		countChecked = countChecked + calculateCountCheckedIncrement(relatedCheckboxes, loopCounter);
+		countCheckable = countCheckable + calculateCountCheckableIncrement(relatedCheckboxes, i);
+		countChecked = countChecked + calculateCountCheckedIncrement(relatedCheckboxes, i);
 	}
 	var selectAllMakesCheckboxesChecked;
 	selectAllMakesCheckboxesChecked = !(countChecked == countCheckable);
@@ -100,24 +100,27 @@ function isCheckboxEnabled(checkboxItem) {
 }
 
 function calculateCountCheckableIncrement(relatedCheckboxes, loopCounter) {
+	var incrementValue;
 	if (isCheckboxEnabled(relatedCheckboxes[loopCounter])) {
-	    return 1;
+	    incrementValue = 1;
 	} else {
-		return 0;
+		incrementValue = 0;
 	}
+	return incrementValue;
 }
 
 function calculateCountCheckedIncrement(relatedCheckboxes, loopCounter) {
+	var incrementValue;
 	if (isCheckboxEnabled(relatedCheckboxes[loopCounter]) && relatedCheckboxes[loopCounter].checked === true) {
-	    return 1;
+	   incrementValue = 1;
 	} else {
-		return 0;
+		incrementValue = 0;
 	}
+	return incrementValue;
 }
 
 function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
-	var selectAllCheckboxId = "";
-	selectAllCheckboxId = calculateCheckboxID(groupName);
+	
 	var countChecked = 0;
 	var countCheckable = 0;
 	for (var i=0; i < groupOfCheckboxes.length; i++) {
@@ -150,6 +153,8 @@ function calculateCheckboxID(groupName) {
 }
 
 function setSelectAllCheckbox(countChecked, countCheckable) {
+	var selectAllCheckboxId = "";
+	selectAllCheckboxId = calculateCheckboxID(groupName);
     if(countChecked == countCheckable) {
 		//All checkable checkboxes are checked. Check the Select All checkbox
 		document.getElementById(selectAllCheckboxId).checked = true;
@@ -219,6 +224,10 @@ function findValidAgeGroups() {
 }
 
 function validateReportSelections() {
+    checkboxesLeague = document.getElementsByName("chkLeague[]");
+	checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
+	checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
+	
     document.getElementById("chkLeagueHidden").value = calculateConvertedStringValue("chkLeague[]");
     document.getElementById("chkUmpireDisciplineHidden").value = calculateConvertedStringValue("chkUmpireDiscipline[]");
     document.getElementById("chkAgeGroupHidden").value = calculateConvertedStringValue("chkAgeGroup[]");
@@ -245,13 +254,13 @@ function submitForm() {
 	document.getElementById("submitForm").submit();
 }
 
-function updateErrorMessage() {
+function updateErrorMessage(leagueCheckboxesValid, umpireDisciplineCheckboxesValid, ageGroupCheckboxesValid) {
         document.getElementById("validationError").innerHTML;
-	document.getElementById("validationError").innerHTML = calculateErrorHTML();
+	document.getElementById("validationError").innerHTML = calculateErrorHTML(leagueCheckboxesValid, umpireDisciplineCheckboxesValid, ageGroupCheckboxesValid);
 }
 
 function calculateErrorHTML(leagueCheckboxesValid, umpireDisciplineCheckboxesValid, ageGroupCheckboxesValid) {
-	var errorHTML;
+	var errorHTML = "";
         if (!leagueCheckboxesValid) {
     		errorHTML = "Please select at least one League. <br />";
     	} 
