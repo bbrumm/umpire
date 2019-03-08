@@ -21,24 +21,7 @@ function updateControlSelection(elementName, controlEnabled) {
 	for (i = 0; i < groupOfCheckboxes.length; i++) {
 		var controlToUpdate = document.getElementById(groupOfCheckboxes[i].id);
 		//Then check if it is a valid combination
-		if(elementName == "chkLeague[]") {
-			if (validLeagueList.indexOf(controlToUpdate.id) !== -1) {
-				//Valid.
-				singleControlEnabled = (parseInt(controlEnabled) === 1);
-			} else {
-				singleControlEnabled = false;
-			}
-		} else if (elementName == "chkAgeGroup[]") {
-			if (validAgeGroupList.indexOf(controlToUpdate.id) != -1) {
-				//Valid.
-				singleControlEnabled = (parseInt(controlEnabled) === 1);
-			} else {
-				singleControlEnabled = false;
-			}
-		} else {
-			singleControlEnabled = (parseInt(controlEnabled) === 0);
-		}
-	
+		singleControlEnabled = calculateSingleControlEnabled(elementName, validLeagueList, validAgeGroupList, controlToUpdate);
 		controlToUpdate.disabled = calculateDisabledStatus(singleControlEnabled);
 		
     	        if(controlToUpdate.type == "checkbox" && controlToUpdate.disabled && controlEnabled == 0) {
@@ -50,6 +33,26 @@ function updateControlSelection(elementName, controlEnabled) {
 	}	
 	
 	updateSelectAllCheckboxes(elementName, groupOfCheckboxes);
+}
+
+function calculateSingleControlEnabled(elementName, validLeagueList, validAgeGroupList, controlToUpdate) {
+	if(elementName == "chkLeague[]") {
+			if (validLeagueList.indexOf(controlToUpdate.id) !== -1) {
+				//Valid.
+				return (parseInt(controlEnabled) === 1);
+			} else {
+				return false;
+			}
+		} else if (elementName == "chkAgeGroup[]") {
+			if (validAgeGroupList.indexOf(controlToUpdate.id) != -1) {
+				//Valid.
+				return (parseInt(controlEnabled) === 1);
+			} else {
+				return false;
+			}
+		} else {
+			return (parseInt(controlEnabled) === 0);
+		}
 }
 
 function calculateDisabledStatus(singleControlEnabled) {
