@@ -87,8 +87,12 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 	}
 	var selectAllMakesCheckboxesChecked;
 	selectAllMakesCheckboxesChecked = !(countChecked == countCheckable);
+	updateSelectAllCheckboxes(relatedCheckboxes, selectAllMakesCheckboxesChecked);
+}
+
+function updateSelectAllCheckboxes(relatedCheckboxes, selectAllMakesCheckboxesChecked) {
 	for (var i=0; i < relatedCheckboxes.length; i++) {
-		if (relatedCheckboxes[i].disabled !== true) {
+		if (isCheckboxEnabled(relatedCheckboxes[i])) {
 			//Checkbox not disabled. Set it to "checked".
 			document.getElementById(relatedCheckboxes[i].id).checked = selectAllMakesCheckboxesChecked;
 		}
@@ -120,7 +124,6 @@ function calculateCountCheckedIncrement(relatedCheckboxes, loopCounter) {
 }
 
 function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
-	
 	var countChecked = 0;
 	var countCheckable = 0;
 	for (var i=0; i < groupOfCheckboxes.length; i++) {
@@ -131,7 +134,7 @@ function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
 			}
 		}
 	}
-	setSelectAllCheckbox(countChecked, countCheckable);
+	setSelectAllCheckbox(countChecked, countCheckable, groupName);
 	return true;
 }
 
@@ -152,7 +155,7 @@ function calculateCheckboxID(groupName) {
 	return selectAllCheckboxId;
 }
 
-function setSelectAllCheckbox(countChecked, countCheckable) {
+function setSelectAllCheckbox(countChecked, countCheckable, groupName) {
 	var selectAllCheckboxId = "";
 	selectAllCheckboxId = calculateCheckboxID(groupName);
     if(countChecked == countCheckable) {
@@ -211,10 +214,10 @@ function findValidAgeGroups() {
 	var selectedLeagueValues = findSelectedLeagues();
 	/** global: validCombinations */
 	for(var i=0; i < validCombinations.length; i++) {
-		
 		for(var j=0; j < selectedLeagueValues.length; j++) {
-			if(validCombinations[i]['region'] == selectedRegionValue &&
-		        validCombinations[i]['league'] == selectedLeagueValues[j]) {
+			if (selectedRegionAndLeagueMatch(i, selectedRegionValue, selectedLeagueValues[j])) {
+			/*if(validCombinations[i]['region'] == selectedRegionValue &&
+		        validCombinations[i]['league'] == selectedLeagueValues[j]) {*/
 				//Add item to array only if it does not exist
 				validAgeGroups.indexOf(validCombinations[i]['age_group']) === -1 ? validAgeGroups.push(validCombinations[i]['age_group']) : null;
 			}
@@ -223,10 +226,19 @@ function findValidAgeGroups() {
 	return validAgeGroups;
 }
 
+function selectedRegionAndLeagueMatch(loopCounter, selectedRegionValue, selectedLeagueValue) {
+	if(validCombinations[loopCounter]['region'] == selectedRegionValue &&
+		        validCombinations[loopCounter]['league'] == selectedLeagueValue) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function validateReportSelections() {
-    checkboxesLeague = document.getElementsByName("chkLeague[]");
-	checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
-	checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
+    var checkboxesLeague = document.getElementsByName("chkLeague[]");
+    var checkboxesUmpireDiscipline = document.getElementsByName("chkUmpireDiscipline[]");
+    var checkboxesAgeGroup = document.getElementsByName("chkAgeGroup[]");
 	
     document.getElementById("chkLeagueHidden").value = calculateConvertedStringValue("chkLeague[]");
     document.getElementById("chkUmpireDisciplineHidden").value = calculateConvertedStringValue("chkUmpireDiscipline[]");
