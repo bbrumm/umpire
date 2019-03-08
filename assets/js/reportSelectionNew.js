@@ -21,10 +21,10 @@ function updateControlSelection(elementName, controlEnabled) {
 	for (i = 0; i < groupOfCheckboxes.length; i++) {
 		var controlToUpdate = document.getElementById(groupOfCheckboxes[i].id);
 		//Then check if it is a valid combination
-		singleControlEnabled = calculateSingleControlEnabled(elementName, validLeagueList, validAgeGroupList, controlToUpdate);
+		singleControlEnabled = calculateSingleControlEnabled(elementName, validLeagueList, validAgeGroupList, controlToUpdate, controlEnabled);
 		controlToUpdate.disabled = calculateDisabledStatus(singleControlEnabled);
 		
-    	        if(controlToUpdate.type == "checkbox" && controlToUpdate.disabled && controlEnabled == 0) {
+    	        if(controlToUpdate.type == "checkbox" && controlToUpdate.disabled && parseInt(controlEnabled) === 0) {
     		    //Only change the checkbox to be checked if it is disabled because the entire control group is disabled
     		    controlToUpdate.checked = true;
     	        }
@@ -35,24 +35,26 @@ function updateControlSelection(elementName, controlEnabled) {
 	updateSelectAllCheckboxes(elementName, groupOfCheckboxes);
 }
 
-function calculateSingleControlEnabled(elementName, validLeagueList, validAgeGroupList, controlToUpdate) {
+function calculateSingleControlEnabled(elementName, validLeagueList, validAgeGroupList, controlToUpdate, controlEnabled) {
+	var singleControlEnabled;
 	if(elementName == "chkLeague[]") {
 			if (validLeagueList.indexOf(controlToUpdate.id) !== -1) {
 				//Valid.
-				return (parseInt(controlEnabled) === 1);
+				singleControlEnabled = (parseInt(controlEnabled) === 1);
 			} else {
-				return false;
+				singleControlEnabled = false;
 			}
 		} else if (elementName == "chkAgeGroup[]") {
 			if (validAgeGroupList.indexOf(controlToUpdate.id) != -1) {
 				//Valid.
-				return (parseInt(controlEnabled) === 1);
+				singleControlEnabled = (parseInt(controlEnabled) === 1);
 			} else {
-				return false;
+				singleControlEnabled = false;
 			}
 		} else {
-			return (parseInt(controlEnabled) === 0);
+			singleControlEnabled = (parseInt(controlEnabled) === 0);
 		}
+        return singleControlEnabled;
 }
 
 function calculateDisabledStatus(singleControlEnabled) {
@@ -60,11 +62,13 @@ function calculateDisabledStatus(singleControlEnabled) {
 }
 
 function calculatebgColour(singleControlEnabled) {
+	var bgColour;
     if(singleControlEnabled) {
-        return "#FFFFFF";
+        bgColour = "#FFFFFF";
     } else {
-        return "#d9d9d9";
+        bgColour = "#d9d9d9";
     }
+	return bgColour;
 }
 
 function selectAll(selectAllCheckbox, matchingElementName) {
@@ -105,6 +109,22 @@ function selectAll(selectAllCheckbox, matchingElementName) {
 
 function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
 	var selectAllCheckboxId = "";
+	selectAllCheckboxId = calculateCheckboxID(groupName);
+	var countChecked = 0;
+	var countCheckable = 0;
+	for (var i=0; i < groupOfCheckboxes.length; i++) {
+		if (groupOfCheckboxes[i].disabled !== true) {
+			countCheckable++;
+			if(groupOfCheckboxes[i].checked === true) {
+				countChecked++;
+			}
+		}
+	}
+	setSelectAllCheckbox(countChecked, countCheckable);
+	return true;
+}
+
+function calculateCheckboxID(groupName) {
 	switch(groupName) {
 		case "chkLeague[]":
 			selectAllCheckboxId = "LeagueSelectAll";
@@ -118,25 +138,16 @@ function updateSelectAllCheckboxes(groupName, groupOfCheckboxes) {
 		default:
 			return null;
 	}
-	
-	var countChecked = 0;
-	var countCheckable = 0;
-	for (var i=0; i < groupOfCheckboxes.length; i++) {
-		if (groupOfCheckboxes[i].disabled !== true) {
-			countCheckable++;
-			if(groupOfCheckboxes[i].checked === true) {
-				countChecked++;
-			}
-		}
-	}
-	
-	if(countChecked == countCheckable) {
+	return selectAllCheckboxId;
+}
+
+function setSelectAllCheckbox(countChecked, countCheckable) {
+    if(countChecked == countCheckable) {
 		//All checkable checkboxes are checked. Check the Select All checkbox
 		document.getElementById(selectAllCheckboxId).checked = true;
 	} else {
 		document.getElementById(selectAllCheckboxId).checked = false;
 	}
-	return true;
 }
 
 function findSelectedRegion() {
@@ -213,29 +224,41 @@ function validateReportSelections() {
     document.getElementById("chkUmpireDisciplineHidden").value = convertedStringUmpireDiscipline;
     document.getElementById("chkAgeGroupHidden").value = convertedStringAgeGroup;
     document.getElementById("chkRegionHidden").value = convertedStringRegion;
-    
-    //console.log("convertedString " + convertValueArrayToString(checkboxesUmpireDiscipline));
-    
-    //Reset the validation error message
-    document.getElementById("validationError").innerHTML = "";
-    
+
     var leagueCheckboxesValid = isCheckboxSelected(checkboxesLeague);
     var umpireDisciplineCheckboxesValid = isCheckboxSelected(checkboxesUmpireDiscipline);
     var ageGroupCheckboxesValid = isCheckboxSelected(checkboxesAgeGroup);
+	
+    var errorHTML;
 
     if (leagueCheckboxesValid && umpireDisciplineCheckboxesValid && ageGroupCheckboxesValid) {
-    	document.getElementById("submitForm").submit();
+    	submitForm();
     } else {
-    	if (!leagueCheckboxesValid) {
-    		document.getElementById("validationError").innerHTML += "Please select at least one League. <br />";
+	updateErrorMessage(leagueCheckboxesValid, umpireDisciplineCheckboxesValid, ageGroupCheckboxesValid);
+    }
+}
+
+function submitForm() {
+	document.getElementById("submitForm").submit();
+}
+
+function updateErrorMessage() {
+        document.getElementById("validationError").innerHTML;
+	document.getElementById("validationError").innerHTML = calculateErrorHTML();
+}
+
+function calculateErrorHTML(leagueCheckboxesValid, umpireDisciplineCheckboxesValid, ageGroupCheckboxesValid) {
+	var errorHTML;
+        if (!leagueCheckboxesValid) {
+    		errorHTML = "Please select at least one League. <br />";
     	} 
     	if (!umpireDisciplineCheckboxesValid) {
-    		document.getElementById("validationError").innerHTML += "Please select at least one Umpire Discipline. <br />";
+    		errorHTML += "Please select at least one Umpire Discipline. <br />";
     	} 
     	if (!ageGroupCheckboxesValid) {
-    		document.getElementById("validationError").innerHTML += "Please select at least one Age Group. <br />";
-    	}
-    }
+    		errorHTML += "Please select at least one Age Group. <br />";
+    	}	
+    return errorHTML;
 }
 
 function isCheckboxSelected(checkboxElements) {
