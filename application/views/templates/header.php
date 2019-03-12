@@ -82,57 +82,57 @@ if ($showHeader) {
     <div class="mainBanner">Umpire Reporting</div>
     <?php
     if($this->session->userdata('logged_in')) {
-        
-    ?>
-    	<div class="menuBar">
-    		
-    		<?php
-    		$session_data = $this->session->userdata('logged_in');
-    		$username = $session_data['username'];
-    		//Get user object, including their role and permissions
-            //$currentUser = User::createUserFromUsername($session_data['username']);
-            $pDataStore = new Database_store_user();
 
-            $currentUser = $userPermissionLoader->getUserFromUsername($pDataStore, $username);
-    		//$currentUser = new User();
-    		//$currentUser->getUserFromUsername($session_data['username']);
+        ?>
+        <div class="menuBar">
 
-    		//$userFirstName = $currentUser->getUsername();
-    		//echo "First Name: " . $currentUser->getFirstName();
-    		$menuHome = "<div class='menuBarLink'>Home Page</div>";
-    		$menuImportFile = "<div class='menuBarLink'>Import File</div>";
-    		$menuUserAdmin = "<div class='menuBarLink'>User Admin</div>";
-    		$menuUmpireAdmin = "<div class='menuBarLink'>Umpire Admin</div>";
-    		$menuDataTest = "<div class='menuBarLink'>Data Test</div>";
-    		$menuUpdateProfile = "<div class='menuBarLink'>Update Profile</div>";
-    		$menuLogout = "<div class='menuBarLink'>Logout</div>";
-    		/*
-    		echo "<pre>";
-    		print_r($currentUser);
-    		echo "</pre>";
-    		*/
-    		echo anchor("home", $menuHome);
-    		if($userPermissionLoader->userHasImportFilePermission($currentUser)) {
-    		  echo anchor("ImportFileSelector", $menuImportFile);
-    		}
-    		
-    		if($userPermissionLoader->userCanSeeUserAdminPage($currentUser)) {
-    		    echo anchor("UserAdmin", $menuUserAdmin);
-    		    echo anchor("UmpireAdmin/loadPage", $menuUmpireAdmin);
-    		}
-    		
-    		echo anchor("UpdateProfile", $menuUpdateProfile);
-    		echo anchor("home/logout", $menuLogout);
+        <?php
+        $session_data = $this->session->userdata('logged_in');
+        $username = $session_data['username'];
+        //Get user object, including their role and permissions
+        //$currentUser = User::createUserFromUsername($session_data['username']);
+        $pDataStore = new Database_store_user();
 
-    }
-    
-    if (strtolower($this->uri->segment(1)) == 'report') {
-    	//Show extra items if we are on the report page
-    
-    	//echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
-        if ($userPermissionLoader->userCanCreatePDF($currentUser)) {
-            echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
-        	echo "<div class='menuBarLink'>Create PDF</div></a>";
+        $currentUser = $userPermissionLoader->getUserFromUsername($pDataStore, $username);
+        //$currentUser = new User();
+        //$currentUser->getUserFromUsername($session_data['username']);
+
+        //$userFirstName = $currentUser->getUsername();
+        //echo "First Name: " . $currentUser->getFirstName();
+        $menuHome = "<div class='menuBarLink'>Home Page</div>";
+        $menuImportFile = "<div class='menuBarLink'>Import File</div>";
+        $menuUserAdmin = "<div class='menuBarLink'>User Admin</div>";
+        $menuUmpireAdmin = "<div class='menuBarLink'>Umpire Admin</div>";
+        $menuDataTest = "<div class='menuBarLink'>Data Test</div>";
+        $menuUpdateProfile = "<div class='menuBarLink'>Update Profile</div>";
+        $menuLogout = "<div class='menuBarLink'>Logout</div>";
+        /*
+        echo "<pre>";
+        print_r($currentUser);
+        echo "</pre>";
+        */
+        echo anchor("home", $menuHome);
+        if ($userPermissionLoader->userHasImportFilePermission($currentUser)) {
+            echo anchor("ImportFileSelector", $menuImportFile);
+        }
+
+        if ($userPermissionLoader->userCanSeeUserAdminPage($currentUser)) {
+            echo anchor("UserAdmin", $menuUserAdmin);
+            echo anchor("UmpireAdmin/loadPage", $menuUmpireAdmin);
+        }
+
+        echo anchor("UpdateProfile", $menuUpdateProfile);
+        echo anchor("home/logout", $menuLogout);
+
+
+        if (strtolower($this->uri->segment(1)) == 'report') {
+            //Show extra items if we are on the report page
+
+            //echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
+            if ($userPermissionLoader->userCanCreatePDF($currentUser)) {
+                echo "<a href='javascript:{}' onclick='document.getElementById(\"reportPostValues\").submit(); return false;'>";
+                echo "<div class='menuBarLink'>Create PDF</div></a>";
+            }
         }
     }
     

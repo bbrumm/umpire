@@ -48,27 +48,7 @@ class Header_test extends TestCase
         $this->assertContains($expectedHeader, $output);
     }
 
-    public function test_CreatePDF() {
-        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
-        $this->CI->session->set_userdata($sessionArray);
-        $linkName = "Create PDF";
-        $postArray = array(
-            'reportName'=>'1',
-            'season'=>2018,
-            'rdRegion'=>'Geelong',
-            'chkRegionHidden'=>'Geelong',
-            'chkAgeGroup'=>array('Seniors'),
-            'chkAgeGroupHidden'=>'Seniors',
-            'chkUmpireDiscipline'=>array('Field'),
-            'chkUmpireDisciplineHidden'=>'Field',
-            'chkLeague'=>array('GFL'),
-            'chkLeagueHidden'=>'GFL'
-        );
-
-        $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expectedHeader = "<div class='menuBarLink'>". $linkName ."</div>";
-        $this->assertContains($expectedHeader, $output);
-    }
+    //Create PDF link is tested in the Report_test file, because that's where the DW is checked and imported
 
     public function test_CreatePDFNotOnHomePage() {
         $sessionArray['logged_in'] = array('username' => 'bbrummtest');

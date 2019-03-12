@@ -119,9 +119,16 @@ VALUES ('Smith, John', 'GFL', 'Clubname', 'Seniors', 'Geelong', 'Field', 3, 2018
             'chkLeagueHidden'=>'GFL'
         );
 
+        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+
         $output = $this->request('POST', ['Report', 'index'], $postArray);
         $expected = "<h1>01 - Umpires and Clubs (2018)</h1>";
         $this->assertContains($expected, $output);
+        //Check that Create PDF is showing on header
+        $linkName = "Create PDF";
+        $expectedHeader = "<div class='menuBarLink'>". $linkName ."</div>";
+        $this->assertContains($expectedHeader, $output);
     }
 
     public function test_Report2() {
