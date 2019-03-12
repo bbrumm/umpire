@@ -126,7 +126,7 @@ if ($showHeader) {
 
     }
     
-    if ($this->uri->segment(1) == 'report') {
+    if (strtolower($this->uri->segment(1)) == 'report') {
     	//Show extra items if we are on the report page
     
     	//echo "<a href='createpdf/pdf' target = '_blank' onclick='form.submit();'><div class='menuBarLink'>Create PDF</div></a>";
