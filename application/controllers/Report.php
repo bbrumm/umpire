@@ -43,7 +43,7 @@ class Report extends CI_Controller {
 	    $requestedReport->setRegion(
 	        $requestedReport->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'));
 	    */
-	        $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
+	    $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = FALSE;
 		$data['debugLibrary'] = new Debug_library();
@@ -54,7 +54,7 @@ class Report extends CI_Controller {
 		*/
 		//Note: You can't pass an array through a hidden POST variable.
 		//This is why I have used the checkboxes and then imploded them
-    	        echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
+        echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
 		echo "<input type='hidden' name='reportName' value='". $_POST['reportName'] ."' />";
 		echo "<input type='hidden' name='season' value='". $_POST['season'] ."' />";
 		echo "<input type='hidden' name='age' value='". $_POST['chkAgeGroupHidden'] ."' />";

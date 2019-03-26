@@ -10,6 +10,7 @@ class CreatePDF extends CI_Controller {
 	    parent::__construct();
 	    $this->load->model('user','',TRUE);
 	    $this->load->model('Requested_report_model');
+        $this->load->model('Report_populator_model');
 	    $this->load->helper('url_helper');
 	    $this->load->helper('dompdf_helper');
 	    $this->load->model('Cell_formatting_helper');
@@ -28,18 +29,40 @@ class CreatePDF extends CI_Controller {
 	
 	function pdf() {
 
-		$requestedReport = Requested_report_model::createRequestedReportFromValues(
+	    /*
+	     * POST:
+
+	    Array
+        (
+            [reportName] => 1
+            [season] => 2018
+            [age] => Seniors,
+            [umpireType] => Field,
+            [league] => BFL,
+            [region] => Geelong,
+            [PDFSubmitted] => true
+        )
+	     */
+
+
+		/*$requestedReport = Requested_report_model::createRequestedReportFromValues(
 	        intval($_POST['reportName']),
 	        intval($_POST['season']),
+
 	        $this->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'),
 	        $this->findValueFromPostOrHidden($_POST, 'chkAgeGroup', 'chkAgeGroupHidden'),
 	        $this->findValueFromPostOrHidden($_POST, 'chkUmpireDiscipline', 'chkUmpireDisciplineHidden'),
 	        $this->findValueFromPostOrHidden($_POST, 'chkLeague', 'chkLeagueHidden'),
 	        false
 	        );
-		
+		*/
+
+        $requestedReport = $this->createNewReportFromPostData();
 		
 		$data = array();
+
+        $reportPopulator = new Report_populator_model();
+
 		$data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
 		$data['title'] = 'Test Report';
 		$data['PDFLayout'] = TRUE;
@@ -60,6 +83,18 @@ class CreatePDF extends CI_Controller {
 		    echo $html;
 		}
 	}
+
+	private function createNewReportFromPostData() {
+	    return Requested_report_model::createRequestedReportFromValues(
+            intval($_POST['reportName']),
+            intval($_POST['season']),
+            $_POST['region'],
+            $_POST['age'],
+            $_POST['umpireType'],
+            $_POST['league'],
+            false
+        );
+    }
 	
 	//TODO: Remove this duplicate function (Report.php)
 	private function findValueFromPostOrHidden($pPostArray, $pPostKey, $pPostKeyHidden) {
