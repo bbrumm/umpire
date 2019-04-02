@@ -27,7 +27,7 @@
 	?>
 	</div>
 	<br />
-		<input type="submit" value="Login" class="btn" />
+		<input type="submit" value="Login" class="btn" id="loginBtn" />
 	</div>
 
 <?php echo form_close(); ?>
