@@ -125,7 +125,7 @@ class ForgotPassword extends CI_Controller {
         return $sendStatusInfo;
     }
     
-    private function sendPasswordResetEmail(User $pUser) {
+    /*private function sendPasswordResetEmail(User $pUser) {
         $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://umpirereporting.com',
@@ -158,5 +158,21 @@ Ben - UmpireReporting";
             //show_error($this->email->print_debugger());
             return false; 
         }
-    }   
+    }   */
+
+    private function sendPasswordResetEmail(User $pUser) {
+        $from = new SendGrid\Email(null, "test@example.com");
+        $subject = "Hello World from the SendGrid PHP Library!";
+        $to = new SendGrid\Email(null, "brummthecar@gmail.com");
+        $content = new SendGrid\Content("text/plain", "Hello, Email!");
+        $mail = new SendGrid\Mail($from, $subject, $to, $content);
+
+        $apiKey = getenv('SENDGRID_API_KEY');
+
+        $sg = new \SendGrid($apiKey);
+        $response = $sg->client->mail()->send()->post($mail);
+        return true;
+
+    }
+
 }
