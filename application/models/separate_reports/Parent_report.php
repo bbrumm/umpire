@@ -66,9 +66,11 @@ class Parent_report extends CI_Model {
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
         $outputArray = array();
         //First add heading cells
-	$outputArray[0] = $this->addHeadingCellsToOutput($pReportDisplayOptions, $pColumnCountForHeadingCells, $pLoadedColumnGroupings);
+        $outputArray[0] = $this->addHeadingCellsToOutput(
+            $pReportDisplayOptions, $pColumnCountForHeadingCells, $pLoadedColumnGroupings);
         //Then add data cells
-	$outputArray = $this->addDataCellsToOutput($outputArray, $pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions);
+        $outputArray = $this->addDataCellsToOutput(
+            $outputArray, $pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions);
         return $outputArray;
     }
 	
@@ -76,12 +78,12 @@ class Parent_report extends CI_Model {
 		$thOutput = "<thead>";
 		$countItemsInColumnHeadingSet = count($pLoadedColumnGroupings[0]);
 		    for ($i = 0; $i < $countItemsInColumnHeadingSet; $i++) {
-			$thOutput .= "<tr class='header'>";
-			$thClassNameToUse = $this->determineClassNameToUse($pReportDisplayOptions);
-			$thOutput .= $this->addTableHeaderCellsToOutput($pReportDisplayOptions, $thClassNameToUse, $i);
-			$thOutput .= $this->addTableHeaderMergedCells($pColumnCountForHeadingCells, $pReportDisplayOptions, $i);
+                $thOutput .= "<tr class='header'>";
+                $thClassNameToUse = $this->determineClassNameToUse($pReportDisplayOptions);
+                $thOutput .= $this->addTableHeaderCellsToOutput($pReportDisplayOptions, $thClassNameToUse, $i);
+                $thOutput .= $this->addTableHeaderMergedCells($pColumnCountForHeadingCells, $pReportDisplayOptions, $i);
 		    }
-		    $thOutput .= "</thead>";
+		    $thOutput .= "</thead>\n";
 		    return $thOutput;
 	}
 	
@@ -114,7 +116,7 @@ class Parent_report extends CI_Model {
                     $thOutput .= $arrReportRowGroup[$r]->getGroupHeading();
                     $thOutput .= "<BR /><span class='columnSizeText'>" . $arrReportRowGroup[$r]->getGroupSizeText() . "</span>";
                 }
-                $thOutput .= "</th>";
+                $thOutput .= "</th>\n";
             }
 
             return $thOutput;
@@ -134,12 +136,13 @@ class Parent_report extends CI_Model {
                     $divClass = $this->determineHeadingDivClass($columnLabels, $pLoopIteration);
                     $colspanForCell = $this->determineHeadingColspan($columnLabels, $arrReportColumnGroup, $columnCountForHeadingCells, $pLoopIteration, $j);
 
-                    $thOutput .= "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>" . $columnCountForHeadingCells[$pLoopIteration][$j]["label"] . "</div></th>";
+                    $thOutput .= "<th class='$cellClass' colspan='$colspanForCell'><div class='$divClass'>" . $columnCountForHeadingCells[$pLoopIteration][$j]["label"] . "</div></th>\n";
                 //}
             }
 
             return $thOutput;
         }
+
 
         private function determineHeadingCellClass($pColumnLabels, $pLoopIteration) {
             if ($pColumnLabels[$pLoopIteration]->getFieldName() == 'club_name') {
@@ -181,39 +184,48 @@ class Parent_report extends CI_Model {
                 $cellValue = $this->determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter);
                 $cellClassToUse = $this->determineCellClassToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter);
 
-                $tableRowOutput .= "<td class='$cellClassToUse'>$cellValue</td>";
+                $tableRowOutput .= $this->constructTableCellOutput($cellValue, $cellClassToUse);
+                //$tableRowOutput .= "<td class='$cellClassToUse'>$cellValue</td>";
             }
-            $tableRowOutput .= "</tr>";
+            $tableRowOutput .= "</tr>\n";
             return $tableRowOutput;
 
+        }
+
+        private function constructTableCellOutput($cellValue, $cellClassToUse) {
+            if($cellClassToUse == "") {
+                return "<td>$cellValue</td>";
+            } else {
+                return "<td class='$cellClassToUse'>$cellValue</td>";
+            }
         }
 
 
        private function determineCellClassToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
            $cellFormatter = new Cell_formatting_helper();
-	   if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  === false) {
+	         if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  === false) {
                return "";
            }
-	   /*    
-	   if ($this->isFirstColumn($columnCounter) === false) {
-	       return "cellText cellNormal";
-	   }
-	   */    
-	   if ($this->isFirstColumn($columnCounter)) {
-	       return $this->getCellClassFromFirstColumnFormat($pReportDisplayOptions);
-	   }
-	   
-	   if ($this->shouldCellBeColouredForReport($pReportDisplayOptions)) {
-	       return $cellFormatter->getCellClassNameForTableFromOutputValue(
-				        $pResultOutputArray[$pRowCounter][$columnCounter]);      
-	   }
-	       
-	   if(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
-	      return "cellNumber cellNormal";      
-	   }
-	       
-	   return "cellText cellNormal";
-	       
+           /*
+           if ($this->isFirstColumn($columnCounter) === false) {
+               return "cellText cellNormal";
+           }
+           */
+           if ($this->isFirstColumn($columnCounter)) {
+               return $this->getCellClassFromFirstColumnFormat($pReportDisplayOptions);
+           }
+
+           if ($this->shouldCellBeColouredForReport($pReportDisplayOptions)) {
+               return $cellFormatter->getCellClassNameForTableFromOutputValue(
+                            $pResultOutputArray[$pRowCounter][$columnCounter]);
+           }
+
+           if(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
+              return "cellNumber cellNormal";
+           }
+
+           return "cellText cellNormal";
+
 	       
 	      /* 
 

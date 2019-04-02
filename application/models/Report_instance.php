@@ -241,6 +241,7 @@ class Report_instance extends CI_Model {
     }
 
 	//TODO: I think there is some refactoring here if I am using a collection of objects
+    //TODO improve the way the long function here is called
     public function getFormattedResultsForOutput() {
 	$this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
         $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());

@@ -12,8 +12,8 @@ echo "<br />";
 
 ini_set('memory_limit', '1024M'); // or you could use 1G
 
-$columnHeadingLabels = $reportDisplayOptions->getColumnHeadingLabel();
-$columnHeadingSizeText = $reportDisplayOptions->getColumnHeadingSizeText();
+//$columnHeadingLabels = $reportDisplayOptions->getColumnHeadingLabel();
+//$columnHeadingSizeText = $reportDisplayOptions->getColumnHeadingSizeText();
 
 echo "<div class='divTableOuter'>";
 echo "<div class='divTable'>";

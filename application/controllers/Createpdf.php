@@ -15,17 +15,6 @@ class CreatePDF extends CI_Controller {
 	    $this->load->helper('dompdf_helper');
 	    $this->load->model('Cell_formatting_helper');
 	}
-	 
-	 function writeToFile($outputText) {
-	     $file = 'testOutput.txt';
-	     // Open the file to get existing content
-	     $current = file_get_contents($file);
-	     // Append a new person to the file
-	     $current .= $outputText . "\n";
-	     // Write the contents back to the file
-	     file_put_contents($file, $current);
-	     
-	 }
 	
 	function pdf() {
 
@@ -65,26 +54,34 @@ class CreatePDF extends CI_Controller {
 
 		$data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
 		$data['title'] = 'Test Report';
-		$data['PDFLayout'] = TRUE;
+		//$data['PDFLayout'] = FALSE;
+		$data['printerFriendly'] = TRUE;
 
-		$this->load->helper(array('dompdf', 'file'));
+		//$this->load->helper(array('dompdf', 'file'));
 		
 		// page info here, db calls, etc.     
-		
+
+        //Don't output the header when PDF is being used, so we can create a printer-friendly mode
 		$html = $this->load->view('templates/header', $data, TRUE);
-		$html .= $this->load->view('report/pdf_report_view', $data, TRUE);
-		$html .= $this->load->view('templates/footer', $data, TRUE);
+        $html .= $this->load->view('report/single_report_view', $data, TRUE);
+		//$html .= $this->load->view('templates/footer', $data, TRUE);
 
 		//Save To File (TRUE), or Output to Window (FALSE).
-		$saveToFile = TRUE;
+		//$saveToFile = TRUE;
+        //$saveToFile = FALSE;
+        /*
 		if ($saveToFile) {
     		    pdf_create($html, 'pdf_report_view', $saveToFile, $data['loadedReportItem']->reportDisplayOptions);
 		} else {
 		    echo $html;
 		}
+
+        */
+        echo $html;
 	}
 
 	private function createNewReportFromPostData() {
+	    $pdfMode = false;
 	    return Requested_report_model::createRequestedReportFromValues(
             intval($_POST['reportName']),
             intval($_POST['season']),
@@ -92,7 +89,7 @@ class CreatePDF extends CI_Controller {
             $_POST['age'],
             $_POST['umpireType'],
             $_POST['league'],
-            false
+            $pdfMode
         );
     }
 	

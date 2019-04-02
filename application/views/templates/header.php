@@ -18,8 +18,8 @@ $data['useradmin'] = $this->config->item('useradmin');
 $userPermissionLoader = new User_permission_loader_model();
 
 
-if (isset($PDFLayout)) {
-    if ($PDFLayout == TRUE) {
+if (isset($printerFriendly)) {
+    if ($printerFriendly == TRUE) {
         $showHeader = FALSE;
     } else {
         $showHeader = TRUE;
@@ -134,6 +134,7 @@ if ($showHeader) {
                 echo "<div class='menuBarLink'>Create PDF</div></a>";
             }
         }
+
     }
     
     if($this->session->userdata('logged_in')) {
