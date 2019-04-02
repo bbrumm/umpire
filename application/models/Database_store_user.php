@@ -130,7 +130,7 @@ class Database_store_user extends CI_Model implements IData_store_user
             $user = User::createUserFromActivationID($resultArray[0]->user_name, $pActivationID);
             return $user;
         } else {
-            throw new Exception("No users found for the specified activation ID.");
+            throw new Exception("No users found for the specified activation ID: " . $pActivationID);
         }
     }
 

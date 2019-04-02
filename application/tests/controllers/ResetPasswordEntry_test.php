@@ -8,7 +8,8 @@ class ResetPasswordEntry_test extends TestCase
         //$this->CI->load->controller('ResetPasswordEntry');
         //$this->obj = new ResetPasswordEntry();
         $_POST = array();
-        $this->dbLocal = $this->CI->load->database('default', TRUE);
+        //$this->dbLocal = $this->CI->load->database('default', TRUE); //local_dbunittest
+        $this->dbLocal = $this->CI->load->database('local_dbunittest', TRUE);
     }
 
 
