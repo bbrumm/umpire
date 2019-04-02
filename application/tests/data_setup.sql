@@ -50,7 +50,7 @@ VALUES
 (18,'kclissold','kelvin@clissold.id.au','700307a755666ab878cd4bafcc2203ad','Kel','Clissold',NULL,4,1),
 (19,'rsteel','rvnsteel@bigpond.com.au','2ae60e9eba9d971008b7c6bcf6723209','Robert','Steel',NULL,4,1),
 (21,'bsmith','None','0d4cebded2367e6503125cd0f4cf914e','Brad','Smith',NULL,4,1),
-(24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 'odH07igcAaKqyxP', 3, 1),
+(24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 'odH07igcAaKqyxP', 2, 1),
 (25, 'bbtest2', 'None', '81dc9bdb52d04dc20036dbd8313ed055', 'bb1F', 'bb1L', 'D38wdVGvi4p5rzy', 3, 1);
 
 
