@@ -136,4 +136,38 @@ class UserAdmin_test extends TestCase
         $this->assertContains($message, $output);
 
     }
+
+
+
+    public function test_UserHasImportFilePermission_AdminUser() {
+        //Arrange
+        $this->CI->load->model('useradmin/User_permission_loader_model');
+        $permissionLoader = new User_permission_loader_model();
+        $dbStore = new Database_store_user();
+        $username = "bbrummtest";
+
+        //Act
+        $user = $permissionLoader->getUserFromUsername($dbStore, $username);
+        $actual = $permissionLoader->userHasImportFilePermission($user);
+        $expected = true;
+
+        //Assert
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_UserHasImportFilePermission_NotAdminUser() {
+        //Arrange
+        $this->CI->load->model('useradmin/User_permission_loader_model');
+        $permissionLoader = new User_permission_loader_model();
+        $dbStore = new Database_store_user();
+        $username = "ldonohue";
+
+        //Act
+        $user = $permissionLoader->getUserFromUsername($dbStore, $username);
+        $actual = $permissionLoader->userHasImportFilePermission($user);
+        $expected = false;
+
+        //Assert
+        $this->assertEquals($expected, $actual);
+    }
 }

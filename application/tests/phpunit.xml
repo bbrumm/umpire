@@ -12,10 +12,6 @@
 			<directory suffix="test.php">controllers</directory>
 			<exclude>./_ci_phpunit_test/</exclude>
 		</testsuite>
-		<testsuite name="ui">
-			<directory suffix="test.php">webdriver</directory>
-			<exclude>./_ci_phpunit_test/</exclude>
-		</testsuite>
 	</testsuites>
 	<filter>
 		<whitelist>
