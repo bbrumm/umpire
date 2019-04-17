@@ -17,11 +17,6 @@ $reportID = $loadedReportItem->requestedReport->getReportNumber();
 
 //$countLoadedColumnGroupings = count($loadedColumnGroupings);
 $countFirstLoadedColumnGroupings = count($columnLabels);
-/*if ($debugMode) {
-    echo "<BR />loadedReportItem<pre>";
-    print_r($loadedReportItem);
-    echo "</pre><BR />";
-}*/
 $columnCountForHeadingCells = $loadedReportItem->getColumnCountForHeadingCells();
 
 echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";

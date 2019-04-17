@@ -153,18 +153,14 @@ class Report_instance extends CI_Model {
 	public function loadReportResults($pDataStore) {
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryResultArray = $pDataStore->loadReportData($separateReport, $this);
+
         $this->setResultArray($separateReport, $queryResultArray);
-
-
 
         //Pivot the array so it can be displayed
         $this->setColumnLabelResultArray($pDataStore, $separateReport);
 
-
-        
         //TODO: This function is causing the output values to be misaligned.
         $this->setResultOutputArray($separateReport);
-
         $this->separateReport = $separateReport;
 	}
 
@@ -243,7 +239,7 @@ class Report_instance extends CI_Model {
 	//TODO: I think there is some refactoring here if I am using a collection of objects
     //TODO improve the way the long function here is called
     public function getFormattedResultsForOutput() {
-	$this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
+	    $this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
         $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());
         //$this->debug_library->debugOutput("formattedOutputArray: ", $this->formattedOutputArray);
 	    return $this->formattedOutputArray;

@@ -69,7 +69,7 @@ FROM backup_report_04_2018;";
         $this->dbLocal->query($queryString);
 
         //Report 5
-        $queryString = "DELETE FROM dw_mv_report_06 WHERE season_year = 2018;";
+        $queryString = "DELETE FROM dw_mv_report_05 WHERE season_year = 2018;";
         $this->dbLocal->query($queryString);
 
         $queryString = "INSERT INTO dw_mv_report_05 (umpire_type, age_group, age_sort_order, short_league_name, league_sort_order, region_name, match_no_ump, total_match_count, match_pct, season_year)
@@ -78,7 +78,7 @@ FROM backup_report_05_2018;";
         $this->dbLocal->query($queryString);
 
         //Report 6
-        $queryString = "DELETE FROM dw_mv_report_07 WHERE season_year = 2018;";
+        $queryString = "DELETE FROM dw_mv_report_06 WHERE season_year = 2018;";
         $this->dbLocal->query($queryString);
 
         $queryString = "INSERT INTO dw_mv_report_06 (umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count, short_league_name)
@@ -87,7 +87,7 @@ FROM backup_report_06_2018;";
         $this->dbLocal->query($queryString);
 
         //Report 7
-        $queryString = "DELETE FROM dw_mv_report_08 WHERE season_year = 2018;";
+        $queryString = "DELETE FROM dw_mv_report_07 WHERE season_year = 2018;";
         $this->dbLocal->query($queryString);
 
         $queryString = "INSERT INTO dw_mv_report_07 (umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count)
@@ -218,11 +218,11 @@ VALUES ('Field', 'Seniors', 1, 'GFL', 2, 'Geelong', 4, 8, 50, 2018);";
             'rdRegion'=>'Geelong',
             'chkRegionHidden'=>'Geelong',
             //'chkAgeGroup'=>array('Seniors'),
-            'chkAgeGroupHidden'=>'Seniors',
+            'chkAgeGroupHidden'=>'Seniors, Reserves, Colts, Under 19, Under 17.5, Under 17, Under 16, Under 15, Under 14.5, Under 14, Under 13, Under 12, Under 19 Girls, Under 18 Girls, Under 15 Girls, Under 12 Girls, Youth Girls, Junior Girls',
             //'chkUmpireDiscipline'=>array('Field'),
-            'chkUmpireDisciplineHidden'=>'Field',
+            'chkUmpireDisciplineHidden'=>'Field, Boundary, Goal',
             //'chkLeague'=>array('GFL'),
-            'chkLeagueHidden'=>'GFL'
+            'chkLeagueHidden'=>'BFL,GFL,GDFL,GJFL,CDFNL,Women'
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);

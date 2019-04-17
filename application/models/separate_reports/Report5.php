@@ -64,9 +64,10 @@ class Report5 extends Parent_report implements IReport {
         $resultOutputArray = [];
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
-        $totalForRow = 0;
+
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
+            $totalForRow = 0;
             $resultOutputArray[$currentResultArrayRow][0] = $currentRowItem[0]['umpire_type'];
             foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
                 $columnNumber++;
@@ -87,12 +88,14 @@ class Report5 extends Parent_report implements IReport {
                         'Total'=>'total_match_count',
                         'Pct'=>'match_pct'
                     );
-                    
+
+                    $columnItem['subtotal'] = $columnHeadingSet['subtotal'];
+
                     if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
-                            $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem[$subtotalToColumnMap[$columnHeadingSet['subtotal']]];
-                            if ($this->isSubtotalGames($columnHeadingSet)) {
-                                $totalForRow = $totalForRow + $columnItem['match_no_ump'];
-                            }
+                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem[$subtotalToColumnMap[$columnHeadingSet['subtotal']]];
+                        if ($this->isSubtotalGames($columnHeadingSet)) {
+                            $totalForRow = $totalForRow + $columnItem['match_no_ump'];
+                        }
                     }
                 }
             }
@@ -103,9 +106,9 @@ class Report5 extends Parent_report implements IReport {
         return $resultOutputArray;
     }
     
-private function isSubtotalGames($columnHeadingSet) {
-    return ($columnHeadingSet['subtotal'] == 'Games');
-}
+    private function isSubtotalGames($columnHeadingSet) {
+        return ($columnHeadingSet['subtotal'] == 'Games');
+    }
 
 
     public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
@@ -136,7 +139,7 @@ private function isSubtotalGames($columnHeadingSet) {
     }
 
 
-    private function setPivotedArrayNamedValue($pPivotedArray, $pRowArrayKey, $pCounterForRow, $pResultRow, $pResultArrayKey) {
+    private function setPivotedArrayNamedValue(&$pPivotedArray, $pRowArrayKey, $pCounterForRow, $pResultRow, $pResultArrayKey) {
         $pPivotedArray[$pRowArrayKey][$pCounterForRow][$pResultArrayKey] = $pResultRow[$pResultArrayKey];
     }
     
