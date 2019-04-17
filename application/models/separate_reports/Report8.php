@@ -3,7 +3,10 @@ require_once 'IReport.php';
 require_once 'Parent_report.php';
 
 class Report8 extends Parent_report implements IReport {
-    
+
+    const COL_TOTAL_GEELONG = 7;
+    const COL_TOTAL_OVERALL = 9;
+
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $queryString = "SELECT ".
             "season_year, ".
@@ -65,7 +68,7 @@ class Report8 extends Parent_report implements IReport {
                     //Match the column headings to the values in the array
                     if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
                         $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
-                        //TODO: Update this logic to remove the specific year numbers, and the hardcoding of column 6 and 8
+
                         if ($this->seasonYearNeedsTotal($columnItem)) {
                             $totalGeelong = $this->addMatchCountToTotal($totalGeelong, $columnItem);
                             $totalForRow = $this->addMatchCountToTotal($totalForRow, $columnItem);
@@ -77,8 +80,8 @@ class Report8 extends Parent_report implements IReport {
                 }
             }
             //Add on final column for totals for the row
-            $resultOutputArray[$currentResultArrayRow][6] = $totalGeelong;
-            $resultOutputArray[$currentResultArrayRow][8] = $totalForRow;
+            $resultOutputArray[$currentResultArrayRow][Report8::COL_TOTAL_GEELONG] = $totalGeelong;
+            $resultOutputArray[$currentResultArrayRow][Report8::COL_TOTAL_OVERALL] = $totalForRow;
             $currentResultArrayRow++;
         }
         return $resultOutputArray;
@@ -90,12 +93,13 @@ class Report8 extends Parent_report implements IReport {
     }
 
     private function addColumnHeadingsForTotals($resultOutputArray, $currentResultArrayRow, $columnNumber) {
-        if ($columnNumber == 6) {
+        //TODO: Update this logic to remove the specific year numbers, and the hardcoding of column 6 and 8
+        if ($columnNumber == Report8::COL_TOTAL_GEELONG) {
             //Add extra column for report 8, after column 5 (array index 5 which is column 6).
             //Column heading is called Total Geelong, the heading does not come from column data.
             $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Geelong';
         }
-        if ($columnNumber == 8) {
+        if ($columnNumber == Report8::COL_TOTAL_OVERALL) {
             $resultOutputArray[$currentResultArrayRow][$columnNumber] = 'Total Overall';
         }
         return $resultOutputArray;
