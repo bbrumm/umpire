@@ -175,8 +175,8 @@ class Report_instance_test extends TestCase
         $reportNumber = 4;
         $season = 2018;
         $region = 'Geelong';
-        $ageGroup = array('Under 18');
-        $umpireType = array('Senior');
+        $ageGroup = array('Seniors');
+        $umpireType = array('Field');
         $league = array('GFL', 'BFL');
         $pdfMode = false;
 
@@ -200,9 +200,9 @@ class Report_instance_test extends TestCase
 
             ),
             array(
+                array('label' => 'GFL', 'unique label' => 'Field|Under 18|GFL', 'count' => 1),
+                array('label' => 'BFL', 'unique label' => 'Field|Under 18|BFL', 'count' => 1),
                 array('label' => 'GFL', 'unique label' => 'Field|Seniors|GFL', 'count' => 1)
-                //array('label' => 'GFL', 'unique label' => 'Field|Under 18|GFL', 'count' => 1),
-                //array('label' => 'BFL', 'unique label' => 'Field|Under 18|BFL', 'count' => 1)
 
             )
         );

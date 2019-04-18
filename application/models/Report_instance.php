@@ -240,7 +240,7 @@ class Report_instance extends CI_Model {
     //TODO improve the way the long function here is called
     public function getFormattedResultsForOutput() {
 	    $this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
-        $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());
+            $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());
         //$this->debug_library->debugOutput("formattedOutputArray: ", $this->formattedOutputArray);
 	    return $this->formattedOutputArray;
     }
@@ -268,10 +268,10 @@ class Report_instance extends CI_Model {
             //that a report is grouped by. The array could have 1, 2, or 3 objects.
     public function getColumnCountForHeadingCells() {
         //TODO: Remove this variable as it's just a replica of the other object
-	$this->columnLabels = $this->getDisplayOptions()->getColumnGroup();
+	    $this->columnLabels = $this->getDisplayOptions()->getColumnGroup();
 
         $this->setValuesForFirstColumnGroup();
-	$columnCount = count($this->columnLabels);
+	    $columnCount = count($this->columnLabels);
         $this->setValuesForFirstColumnGroup();
         if ($columnCount >= 2) {
             $this->setValuesForSecondColumnGroup();
@@ -305,7 +305,7 @@ class Report_instance extends CI_Model {
 //TODO: Possibly refactor this now that I am using an array of cells
     private function setValuesForSecondColumnGroup() {
         $this->columnCountLabels[1] = [];
-	$arrayKeyNumber = 0;
+	    $arrayKeyNumber = 0;
         $columnLabelResultCount = count($this->columnLabelResultArray);
         for ($j=0; $j < $columnLabelResultCount; $j++) {
             $currentIterationReportGroupFieldName = $this->columnLabelResultArray[$j][$this->columnLabels[1]->getFieldName()];
@@ -332,15 +332,19 @@ class Report_instance extends CI_Model {
 
 	//TODO: Possibly refactor this now that I am using an array of cells
 	//This function will set all count values to 1 for this level, as it is not likely that the third row
-            //will need to be merged/have a higher than 1 colspan.
+    //will need to be merged/have a higher than 1 colspan.
     private function setValuesForThirdColumnGroup() {
 	    $arrayIndexForThirdGroup = 2;
+        $arrayKeyNumber = 0;
         $this->columnCountLabels[$arrayIndexForThirdGroup] = [];
         $columnLabelResultCount = count($this->columnLabelResultArray);
         for ($j=0; $j < $columnLabelResultCount; $j++) {
-            $this->setArrayColumnValues($arrayIndexForThirdGroup, 0, 
-		$this->calculateCurrentIterationReportGroupFieldName($j, $arrayIndexForThirdGroup),
-		$this->calculateCurrentIterationReportGroupFieldNameForThreeColumns($j));
+            $this->setArrayColumnValues(
+                $arrayIndexForThirdGroup, $arrayKeyNumber,
+		        $this->calculateCurrentIterationReportGroupFieldName($j, $arrayIndexForThirdGroup),
+		        $this->calculateCurrentIterationReportGroupFieldNameForThreeColumns($j)
+            );
+            $arrayKeyNumber++;
         }
     }
 	

@@ -194,11 +194,11 @@ VALUES ('Club name', 'Seniors', 'GFL', 'Geelong', 'Field', 1, 1, 5, 2018);";
             'rdRegion'=>'Geelong',
             'chkRegionHidden'=>'Geelong',
             //'chkAgeGroup'=>array('Seniors'),
-            'chkAgeGroupHidden'=>'Seniors',
+            'chkAgeGroupHidden'=>'Seniors,Reserves,Colts',
             //'chkUmpireDiscipline'=>array('Field'),
-            'chkUmpireDisciplineHidden'=>'Field',
+            'chkUmpireDisciplineHidden'=>'Field,Goal,Boundary',
             //'chkLeague'=>array('GFL'),
-            'chkLeagueHidden'=>'GFL'
+            'chkLeagueHidden'=>'BFL,GFL,GDFL,GJFL,CDFNL,Women'
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);

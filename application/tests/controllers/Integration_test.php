@@ -60,7 +60,7 @@ class Integration_test extends TestCase
         $queryString = "SELECT age_group FROM age_group ORDER BY display_order;";
         $query = $this->dbLocal->query($queryString);
         $resultArray = $query->result();
-        $expectedArray = array('Seniors', 'Reserves', 'Colts', 'Under 19',
+        $expectedArray = array('Seniors', 'Reserves', 'Colts', 'Under 19', 'Under 18',
             'Under 17.5', 'Under 17', 'Under 16', 'Under 15', 'Under 14.5', 'Under 14',
             'Under 13', 'Under 12', 'Under 19 Girls', 'Under 18 Girls', 'Under 15 Girls',
             'Under 12 Girls', 'Youth Girls', 'Junior Girls');
@@ -112,6 +112,7 @@ ORDER BY ag.display_order ASC, d.division_name ASC;";
             array('age_group'=>'Under 19', 'division_name'=>'Div 3'),
             array('age_group'=>'Under 19', 'division_name'=>'Grading'),
             array('age_group'=>'Under 19', 'division_name'=>'None'),
+            array('age_group'=>'Under 18', 'division_name'=>'None'),
             array('age_group'=>'Under 17.5', 'division_name'=>'None'),
             array('age_group'=>'Under 17', 'division_name'=>'Div 1'),
             array('age_group'=>'Under 17', 'division_name'=>'Div 2'),
