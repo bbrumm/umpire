@@ -967,7 +967,9 @@ CREATE TABLE age_group (
   PRIMARY KEY (ID)
 );
 
-INSERT INTO age_group VALUES (1,'Seniors',1),(2,'Reserves',2),(3,'Colts',3),(4,'Under 16',15),(5,'Under 14',25),(6,'Youth Girls',80),(7,'Junior Girls',90),(8,'Under 17.5',10),(9,'Under 14.5',20),(10,'Under 12',30),(11,'Under 19 Girls',50),(12,'Under 15 Girls',60),(13,'Under 12 Girls',70),(14,'Under 19',6),(15,'Under 17',12),(16,'Under 15',17),(17,'Under 13',27),(18,'Under 18 Girls',53);
+INSERT INTO age_group VALUES (1,'Seniors',1),(2,'Reserves',2),(3,'Colts',3),(4,'Under 16',15),(5,'Under 14',25),(6,'Youth Girls',80),(7,'Junior Girls',90),
+(8,'Under 17.5',10),(9,'Under 14.5',20),(10,'Under 12',30),(11,'Under 19 Girls',50),(12,'Under 15 Girls',60),
+(13,'Under 12 Girls',70),(14,'Under 19',6),(15,'Under 17',12),(16,'Under 15',17),(17,'Under 13',27),(18,'Under 18 Girls',53),(19,'Under 18', 8);
 
 CREATE TABLE division (
   ID int(11) NOT NULL,
