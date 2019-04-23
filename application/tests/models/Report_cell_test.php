@@ -59,7 +59,7 @@ class Report_cell_Test extends TestCase {
     $inputValue = null;
     $this->obj->setFormatClass($inputValue);
 
-    $actualValue = $this->obj->getFormatClasse();
+    $actualValue = $this->obj->getFormatClass();
     $this->assertEquals($inputValue, $actualValue);
   }
 
