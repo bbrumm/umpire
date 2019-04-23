@@ -9,7 +9,7 @@ class Database_store_matches_test extends TestCase {
 
   public function test_LoadAllGroupingStructures_Report1() {
     $reportNumber = 1;
-    $reportGroupingStructure = $this->obj->loadAllGroupingStructures($inputValue);
+    $reportGroupingStructure = $this->obj->loadAllGroupingStructures($reportNumber);
 
     $this->assertNotEmpty($reportGroupingStructure);
   }
@@ -17,7 +17,7 @@ class Database_store_matches_test extends TestCase {
   public function test_LoadAllGroupingStructures_ReportDoesNotExist() {
     $this->expectException(Exception::class);
     $reportNumber = 20;
-    $reportGroupingStructure = $this->obj->loadAllGroupingStructures($inputValue);
+    $reportGroupingStructure = $this->obj->loadAllGroupingStructures($reportNumber);
 
   }
 
