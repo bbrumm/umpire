@@ -2,6 +2,7 @@
 class Report_cell_Test extends TestCase {
 
   public function setUp() {
+    $this->resetInstance();
     $this->CI->load->model('Report_cell');
     $this->obj = $this->CI->Report_cell;
   }
