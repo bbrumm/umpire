@@ -1,5 +1,5 @@
 <?php
-class ReportCell_Test extends TestCase {
+class Report_cell_Test extends TestCase {
 
   public function setUp() {
     $this->CI->load->model('Report_cell');
