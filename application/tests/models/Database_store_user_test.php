@@ -14,10 +14,20 @@ class Database_store_user_test extends TestCase {
     $this->assertInstanceOf(User::class, $expectedUser);
   }
 
-  public function test_LoadAllGroupingStructures_ReportDoesNotExist() {
+  public function test_GetUserFromUsername_UsernameDoesNotExist() {
     $this->expectException(Exception::class);
     $inputUsername= 'something that does not exist';
     $expectedUser = $this->obj->getUserFromUsername($inputUsername);
   }
 
+  public function test_CheckUserExistsForReset_Valid() {
+    $inputUsername= 'bbrumm';
+    $inputEmail = 'brummthecar@gmail.com';
+    $newUser = User::createUserFromNameAndEmail($inputUsername, $inputEmail);
+    $expected = true
+    $actual = $this->obj->checkUserExistsForReset($newUser);
+    $this->assertEquals($expected, $actual);
+  }
+  
+  
 }
