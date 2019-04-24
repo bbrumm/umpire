@@ -23,7 +23,7 @@ class Database_store_user_test extends TestCase {
   public function test_CheckUserExistsForReset_Valid() {
     $inputUsername= 'bbrumm';
     $inputEmail = 'brummthecar@gmail.com';
-    $newUser = User::createUserFromNameAndEmail($inputUsername, $inputEmail);
+    $newUser = User::createUserFromNameAndEmail($inputUsername, 'Ben', 'Brumm', $inputEmail);
     $expected = true;
     $actual = $this->obj->checkUserExistsForReset($newUser);
     $this->assertEquals($expected, $actual);
