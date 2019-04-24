@@ -24,7 +24,7 @@ class Database_store_user_test extends TestCase {
     $inputUsername= 'bbrumm';
     $inputEmail = 'brummthecar@gmail.com';
     $newUser = User::createUserFromNameAndEmail($inputUsername, $inputEmail);
-    $expected = true
+    $expected = true;
     $actual = $this->obj->checkUserExistsForReset($newUser);
     $this->assertEquals($expected, $actual);
   }
