@@ -53,7 +53,7 @@ if ($showHeader) {
 <script type="text/javascript">
 
         $(document).ready(function() {
-            ActivateFloatingHeaders("table.tableWithFloatingHeader");
+            //ActivateFloatingHeaders("table.tableWithFloatingHeader");
         });
     </script>
 <?php 

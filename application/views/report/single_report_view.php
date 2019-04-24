@@ -15,9 +15,16 @@ echo "<br />";
         some really really wide content goes here
     </div>
      -->
+
+
+<span class='boldedText'>Search for Row</span>:<input type="text" id="search" placeholder="Type to search">
+
 <div id='panelBelow'>
 <div id='moveLeftDown'>
-<table class='reportTable tableWithFloatingHeader'>
+
+
+
+<table class='reportTable tableWithFloatingHeader' id='reportTable'>
 
 <?php
     $countRows = $loadedReportItem->getRowCount();
@@ -29,6 +36,18 @@ echo "<br />";
 </table>
 </div>
 </div>
+
+
+<script type="text/javascript">
+    var $rows = $('#reportTable tbody tr');
+    $('#search').keyup(function() {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+        $rows.show().filter(function() {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+</script>
 <!--
 </div>
 </section>
