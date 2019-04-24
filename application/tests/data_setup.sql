@@ -1,6 +1,10 @@
 #DROP DATABASE databas6;
 #CREATE DATABASE databas6;
 
+#dbunittest
+#databas6
+
+
 USE databas6;
 
 SET collation_connection = 'utf8_general_ci';
@@ -51,7 +55,8 @@ VALUES
 (19,'rsteel','rvnsteel@bigpond.com.au','2ae60e9eba9d971008b7c6bcf6723209','Robert','Steel',NULL,4,1),
 (21,'bsmith','None','0d4cebded2367e6503125cd0f4cf914e','Brad','Smith',NULL,4,1),
 (24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 'odH07igcAaKqyxP', 2, 1),
-(25, 'bbtest2', 'None', '81dc9bdb52d04dc20036dbd8313ed055', 'bb1F', 'bb1L', 'D38wdVGvi4p5rzy', 3, 1);
+(25, 'bbtest2', 'None', '81dc9bdb52d04dc20036dbd8313ed055', 'bb1F', 'bb1L', 'D38wdVGvi4p5rzy', 3, 1),
+(31, 'adame', 'None', 'none', 'Adam', 'Edwick', NULL, 4, 1);
 
 
 
@@ -995,6 +1000,7 @@ INSERT INTO team (id, team_name, club_id) VALUES
 (371, 'East Geelong Thomson', 261),
 (381, 'Grovedale Kelly', 271),
 (391, 'Grovedale Miers', 281),
+(281, 'Grovedale Tigers', 84),
 (401, 'Leopold A', 291),
 (411, 'Leopold B', 301),
 (421, 'Ncfnc Hall', 311),
