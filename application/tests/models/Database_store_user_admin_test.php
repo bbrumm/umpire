@@ -46,8 +46,8 @@ class Database_store_user_admin_test extends TestCase {
     //Check log after
     $query = $this->CI->db->query($queryStringLogLookup);
     $queryResult = $query->result_array();
-    $actualCount = $queryResult[0]['rc'];
-    $expectedCount = logCountBefore + 1;
+    $actualLogCount = $queryResult[0]['rc'];
+    $expectedLogCount = $logCountBefore + 1;
    
     //Assert
     $this->assertEquals($expectedCount, $actualCount);
