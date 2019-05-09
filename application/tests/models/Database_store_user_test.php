@@ -29,5 +29,22 @@ class Database_store_user_test extends TestCase {
     $this->assertEquals($expected, $actual);
   }
   
+  public function test_LogPasswordResetRequest_Valid() {
+    //Input
+    $requestData = array(
+    'request_datetime'=>'2019-01-01 01:23:45',
+    'activation_id'=>'ABC123 Sample',
+    'ip_address'=>'192093',
+    'user_name'=>'test_username',
+    'email_address'=>'something@test.com',
+    );
+    $expected = 1;
+
+    $actual = $this->obj->logPasswordResetRequest($requestData);
+
+    $this->assertEquals($expected, $actual);
+
+  }
+  
   
 }
