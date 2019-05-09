@@ -17,7 +17,7 @@ class Database_store_user_admin_test extends TestCase {
     $queryStringLogLookup = "SELECT COUNT(*) AS rc FROM log_privilege_changes 
     WHERE user_name = '". $sampleUsername ."' 
     AND permission_selection_id = ". $permissionSelectionID . "
-    AND privilege_action = 1;
+    AND privilege_action = 1";
     $query = $this->CI->db->query($queryStringLogLookup);
     $queryResult = $query->result_array();
     $logCountBefore = $queryResult[0]['rc'];
@@ -26,7 +26,8 @@ class Database_store_user_admin_test extends TestCase {
     $this->obj->addUserPrivilege($sampleUsername, $permissionSelectionID);
     
     //Select
-    $queryString = "SELECT COUNT(*) AS rc FROM user_permission_selection WHERE user_name = '". $sampleUsername ."' AND permission_selection_id = ". $permissionSelectionID;
+    $queryString = "SELECT COUNT(*) AS rc FROM user_permission_selection 
+      WHERE user_name = '". $sampleUsername ."' AND permission_selection_id = ". $permissionSelectionID;
     $query = $this->CI->db->query($queryString);
     $queryResult = $query->result_array();
     $actualCount = $queryResult[0]['rc'];
