@@ -140,7 +140,7 @@ class Database_store_user_test extends TestCase {
     $newActivationID = "987654";
 
     //Insert sample data
-    $queryString = "INSERT INTO umpire_users(id, user_name, email, activation_id)
+    $queryString = "INSERT INTO umpire_users(id, user_name, email_address, activation_id)
     VALUES (100, '". $sampleUsername  ."', '". $sampleEmail  ."', '". $sampleActivationID  ."')";
 
     $this->CI->db->query($queryString);
