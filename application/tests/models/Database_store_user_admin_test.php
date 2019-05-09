@@ -10,7 +10,7 @@ class Database_store_user_admin_test extends TestCase {
   
   public function test_AddUserPrvilege_Valid() {
     //Input
-    $sampleUsername = 'bbrumm_test';
+    $sampleUsername = 'testuser_addpriv';
     $sampleUserID = 100;
     $permissionSelectionID = 1; 
     
