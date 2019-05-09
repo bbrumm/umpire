@@ -15,8 +15,8 @@ class Database_store_user_admin_test extends TestCase {
     
     //Check log before
     $queryStringLogLookup = "SELECT COUNT(*) AS rc FROM log_privilege_changes 
-    WHERE user_name = '". $sampleUsername ."' 
-    AND permission_selection_id = ". $permissionSelectionID . "
+    WHERE username_changed = '". $sampleUsername ."' 
+    AND privilege_changed = ". $permissionSelectionID . "
     AND privilege_action = 1";
     $query = $this->CI->db->query($queryStringLogLookup);
     $queryResult = $query->result_array();
