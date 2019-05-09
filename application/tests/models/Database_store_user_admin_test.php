@@ -15,8 +15,9 @@ class Database_store_user_admin_test extends TestCase {
     $permissionSelectionID = 1; 
     
     //Insert sample data
-    $queryString = "INSERT INTO umpire_users(id, user_name, user_email, activation_id)
-    VALUES (". $sampleUserID .", '". $sampleUsername  ."', NULL, NULL)";
+    $queryString = "INSERT INTO umpire_users(id, user_name, user_email, activation_id, password)
+    VALUES (". $sampleUserID .", '". $sampleUsername  ."', NULL, NULL, 'abc')";
+    
     
     
     
