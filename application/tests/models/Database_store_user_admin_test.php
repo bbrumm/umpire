@@ -11,7 +11,14 @@ class Database_store_user_admin_test extends TestCase {
   public function test_AddUserPrvilege_Valid() {
     //Input
     $sampleUsername = 'bbrumm_test';
-    $permissionSelectionID = 1;
+    $sampleUserID = 100
+    $permissionSelectionID = 1; 
+    
+    //Insert sample data
+    $queryString = "INSERT INTO umpire_users(id, user_name, user_email, activation_id)
+    VALUES (". $sampleUserID .", '". $sampleUsername  ."', NULL, NULL)";
+    
+    
     
     //Check log before
     $queryStringLogLookup = "SELECT COUNT(*) AS rc FROM log_privilege_changes 
@@ -26,14 +33,8 @@ class Database_store_user_admin_test extends TestCase {
     $this->obj->addUserPrivilege($sampleUsername, $permissionSelectionID);
     
     //Select
-    $queryString = "SELECT id FROM umpire_users
-      WHERE user_name = '". $sampleUsername ."'";
-    $query = $this->CI->db->query($queryString);
-    $queryResult = $query->result_array();
-    $userID = $queryResult[0]['id'];
-    
     $queryString = "SELECT COUNT(*) AS rc FROM user_permission_selection 
-      WHERE user_id = ". $userID ." AND permission_selection_id = ". $permissionSelectionID;
+      WHERE user_id = ". $sampleUserID ." AND permission_selection_id = ". $permissionSelectionID;
     $query = $this->CI->db->query($queryString);
     $queryResult = $query->result_array();
     $actualCount = $queryResult[0]['rc'];
@@ -50,6 +51,10 @@ class Database_store_user_admin_test extends TestCase {
    
     //Assert
     $this->assertEquals($expectedCount, $actualCount);
+    
+    //Delete test data
+    $queryString = "DELETE FROM umpire_users WHERE user_name = '". $sampleUsername  ."'";
+    $this->CI->db->query($queryString);
   
   
   }
