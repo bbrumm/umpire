@@ -38,9 +38,100 @@ class Database_store_user_test extends TestCase {
     'user_name'=>'test_username',
     'email_address'=>'something@test.com',
     );
-    $expected = 1;
+    $expected = true;
 
     $actual = $this->obj->logPasswordResetRequest($requestData);
+
+    $this->assertEquals($expected, $actual);
+
+  }
+  
+  public function test_LogPasswordResetRequest_NullDatetime() {
+    //Input
+    $requestData = array(
+    'request_datetime'=>null,
+    'activation_id'=>'ABC123 Sample',
+    'ip_address'=>'192093',
+    'user_name'=>'test_username',
+    'email_address'=>'something@test.com',
+    );
+    $expected = false;
+
+    $dbStoreUser = new Database_store_user();
+    $actual = $dbStoreUser->logPasswordResetRequest($requestData);
+
+    $this->assertEquals($expected, $actual);
+
+  }
+
+  public function test_LogPasswordResetRequest_NullActivationID() {
+    //Input
+    $requestData = array(
+    'request_datetime'=>'2019-01-01 01:23:45',
+    'activation_id'=>null,
+    'ip_address'=>'192093',
+    'user_name'=>'test_username',
+    'email_address'=>'something@test.com',
+    );
+    $expected = false;
+
+    $dbStoreUser = new Database_store_user();
+    $actual = $dbStoreUser->logPasswordResetRequest($requestData);
+
+    $this->assertEquals($expected, $actual);
+
+  }
+
+  public function test_LogPasswordResetRequest_NullIP() {
+    //Input
+    $requestData = array(
+    'request_datetime'=>'2019-01-01 01:23:45',
+    'activation_id'=>'ABC123 Sample',
+    'ip_address'=>null,
+    'user_name'=>'test_username',
+    'email_address'=>'something@test.com',
+    );
+    $expected = false;
+
+    $dbStoreUser = new Database_store_user();
+    $actual = $dbStoreUser->logPasswordResetRequest($requestData);
+
+    $this->assertEquals($expected, $actual);
+
+  }
+
+  public function test_LogPasswordResetRequest_NullUsername() {
+    //Input
+    $requestData = array(
+    'request_datetime'=>'2019-01-01 01:23:45',
+    'activation_id'=>'ABC123 Sample',
+    'ip_address'=>'192093',
+    'user_name'=>null,
+    'email_address'=>'something@test.com',
+    );
+    $expected = false;
+
+    $dbStoreUser = new Database_store_user();
+    $actual = $dbStoreUser->logPasswordResetRequest($requestData);
+
+    $this->assertEquals($expected, $actual);
+
+  }
+
+
+  public function test_LogPasswordResetRequest_NullEmail() {
+    //Input
+    $requestData = array(
+    'request_datetime'=>'2019-01-01 01:23:45',
+    'activation_id'=>'ABC123 Sample',
+    'ip_address'=>'192093',
+    'user_name'=>'test_username',
+    'email_address'=>null
+    );
+    $expected = true;
+
+    $dbStoreUser = new Database_store_user();
+    $actual = $dbStoreUser->logPasswordResetRequest($requestData);
 
     $this->assertEquals($expected, $actual);
 
