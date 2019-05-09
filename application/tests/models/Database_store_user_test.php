@@ -143,7 +143,7 @@ class Database_store_user_test extends TestCase {
     $queryString = "INSERT INTO umpire_user(id, user_name, email, activation_id)
     VALUES (100, '". $sampleUsername  ."', '". $sampleEmail  ."', '". $sampleActivationID  ."')";
 
-    $this->db->query($queryString);
+    $this->CI->db->query($queryString);
 
     //Input
     $user = User::createUserFromNameAndEmail($sampleUsername, $sampleEmail);
@@ -153,7 +153,7 @@ class Database_store_user_test extends TestCase {
 
     //Get Activation ID
     $queryString = "SELECT activation_id FROM umpire_users WHERE user_name = '". $sampleUsername ."'";
-    $query = $this->db->query($queryString);
+    $query = $this->CI->db->query($queryString);
     $queryResult = $query->result_array();
     $actualActivationID = $queryResult['activation_id'];
     $expectedActivationID = $newActivationID;
@@ -164,7 +164,7 @@ class Database_store_user_test extends TestCase {
 
     //Delete test data
     $queryString = "DELETE FROM umpire_user WHERE user_name = '". $sampleUsername  ."'";
-    $this->db->query($queryString);
+    $this->CI->db->query($queryString);
 
 
   }
