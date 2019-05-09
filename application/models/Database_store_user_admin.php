@@ -208,8 +208,13 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         $this->runQuery($queryString, array(
             $permission_selection_id, $username
         ));
-        //TODO: Replace magic number 1 with global constant that represents INSERT
-        $this->logPrivilegeChange($username, $permission_selection_id, 1);
+        if ($this->db->affected_rows() == 1) {
+        
+          //TODO: Replace magic number 1 with global constant that represents INSERT
+          $this->logPrivilegeChange($username, $permission_selection_id, 1);
+        } else {
+          throw new Exception("There was an issue inserting into the user_permission_selection table. Please contact support.");  
+        }
 
     }
 
