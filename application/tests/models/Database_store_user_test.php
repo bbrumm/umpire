@@ -155,7 +155,7 @@ class Database_store_user_test extends TestCase {
     $queryString = "SELECT activation_id FROM umpire_users WHERE user_name = '". $sampleUsername ."'";
     $query = $this->CI->db->query($queryString);
     $queryResult = $query->result_array();
-    $actualActivationID = $queryResult['activation_id'];
+    $actualActivationID = $queryResult[0]['activation_id'];
     $expectedActivationID = $newActivationID;
 
     //Assert
