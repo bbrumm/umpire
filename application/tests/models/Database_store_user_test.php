@@ -5,7 +5,7 @@ class Database_store_user_test extends TestCase {
     $this->resetInstance();
     $this->CI->load->model('Database_store_user');
     $this->CI->load->model('User');
-    $this->CI->load->database();
+    $this->CI->load->database('default', true);
     $this->obj = $this->CI->Database_store_user;
   }
 
@@ -139,9 +139,13 @@ class Database_store_user_test extends TestCase {
     $sampleActivationID = "123456";
     $newActivationID = "987654";
 
+      //Delete test data
+      $queryString = "DELETE FROM umpire_users WHERE user_name = '". $sampleUsername  ."'";
+      $this->CI->db->query($queryString);
+
     //Insert sample data
-    $queryString = "INSERT INTO umpire_users(id, user_name, user_email, activation_id)
-    VALUES (100, '". $sampleUsername  ."', '". $sampleEmail  ."', '". $sampleActivationID  ."')";
+    $queryString = "INSERT INTO umpire_users(id, user_name, user_email, activation_id, user_password)
+    VALUES (101, '". $sampleUsername  ."', '". $sampleEmail  ."', '". $sampleActivationID  ."', 'abc123')";
 
     $this->CI->db->query($queryString);
 

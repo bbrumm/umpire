@@ -1334,6 +1334,7 @@ HAVING COUNT(*) > 1;";
             array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Reserves'),
             array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Colts'),
             array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 19'),
+            array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 18'),
             array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 17.5'),
             array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 17'),
             array('parameter_name'=>'Age Group', 'parameter_value_name'=>'Under 16'),

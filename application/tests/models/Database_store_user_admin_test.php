@@ -8,16 +8,24 @@ class Database_store_user_admin_test extends TestCase {
     $this->obj = $this->CI->Database_store_user_admin;
   }
   
-  public function test_AddUserPrvilege_Valid() {
+  public function test_AddUserPrivilege_Valid() {
     //Input
     $sampleUsername = 'testuser_addpriv';
-    $sampleUserID = 100;
-    $permissionSelectionID = 1; 
-    
+    $sampleEmail = 'test@test.com';
+    $sampleUserID = 102;
+    $permissionSelectionID = 1;
+
+      //Delete test data
+      $queryString = "DELETE FROM umpire_users WHERE user_name = '". $sampleUsername  ."'";
+      $this->CI->db->query($queryString);
+
+      $queryString = "DELETE FROM user_permission_selection WHERE user_id = ". $sampleUserID;
+      $this->CI->db->query($queryString);
+
     //Insert sample data
-    $queryString = "INSERT INTO umpire_users(id, user_name, user_email, activation_id, password)
-    VALUES (". $sampleUserID .", '". $sampleUsername  ."', NULL, NULL, 'abc')";
-    
+    $queryString = "INSERT INTO umpire_users(id, user_name, user_email, activation_id, user_password)
+    VALUES (". $sampleUserID .", '". $sampleUsername  ."', '". $sampleEmail ."', NULL, 'abc')";
+    $this->CI->db->query($queryString);
     
     
     
@@ -56,6 +64,9 @@ class Database_store_user_admin_test extends TestCase {
     //Delete test data
     $queryString = "DELETE FROM umpire_users WHERE user_name = '". $sampleUsername  ."'";
     $this->CI->db->query($queryString);
+
+      $queryString = "DELETE FROM user_permission_selection WHERE user_id = ". $sampleUserID;
+      $this->CI->db->query($queryString);
   
   
   }

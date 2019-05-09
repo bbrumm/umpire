@@ -56,7 +56,8 @@ VALUES
 (21,'bsmith','None','0d4cebded2367e6503125cd0f4cf914e','Brad','Smith',NULL,4,1),
 (24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 'odH07igcAaKqyxP', 2, 1),
 (25, 'bbtest2', 'None', '81dc9bdb52d04dc20036dbd8313ed055', 'bb1F', 'bb1L', 'D38wdVGvi4p5rzy', 3, 1),
-(31, 'adame', 'None', 'none', 'Adam', 'Edwick', NULL, 4, 1);
+(31, 'adame', 'None', 'none', 'Adam', 'Edwick', NULL, 4, 1),
+(41, 'mdavison', 'None', 'TBC', 'Mark', 'Davison', NULL, 4, 1);
 
 
 
