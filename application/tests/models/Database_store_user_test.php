@@ -169,6 +169,12 @@ class Database_store_user_test extends TestCase {
 
   }
 
+  public function test_CreateUserFromActivationID_NoUsers() {
+    $this->expectException(Exception::class);
+    //Input
+    $activationID = "JKBIRF29370234n";
+    $user = $this->obj->createUserFromActivationID($activationID);
+   }
   
   
   
