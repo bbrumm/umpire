@@ -47,6 +47,8 @@ class Database_store_user_test extends TestCase {
   }
   
   public function test_LogPasswordResetRequest_NullDatetime() {
+    $this->expectException(Exception::class);
+    
     //Input
     $requestData = array(
     'request_datetime'=>null,
@@ -55,13 +57,9 @@ class Database_store_user_test extends TestCase {
     'user_name'=>'test_username',
     'email_address'=>'something@test.com',
     );
-    $expected = false;
 
     $dbStoreUser = new Database_store_user();
     $actual = $dbStoreUser->logPasswordResetRequest($requestData);
-
-    $this->assertEquals($expected, $actual);
-
   }
 
   public function test_LogPasswordResetRequest_NullActivationID() {
@@ -73,7 +71,7 @@ class Database_store_user_test extends TestCase {
     'user_name'=>'test_username',
     'email_address'=>'something@test.com',
     );
-    $expected = false;
+    $expected = true;
 
     $dbStoreUser = new Database_store_user();
     $actual = $dbStoreUser->logPasswordResetRequest($requestData);
@@ -91,7 +89,7 @@ class Database_store_user_test extends TestCase {
     'user_name'=>'test_username',
     'email_address'=>'something@test.com',
     );
-    $expected = false;
+    $expected = true;
 
     $dbStoreUser = new Database_store_user();
     $actual = $dbStoreUser->logPasswordResetRequest($requestData);
@@ -101,6 +99,8 @@ class Database_store_user_test extends TestCase {
   }
 
   public function test_LogPasswordResetRequest_NullUsername() {
+    $this->expectException(Exception::class);
+    
     //Input
     $requestData = array(
     'request_datetime'=>'2019-01-01 01:23:45',
@@ -109,17 +109,15 @@ class Database_store_user_test extends TestCase {
     'user_name'=>null,
     'email_address'=>'something@test.com',
     );
-    $expected = false;
 
     $dbStoreUser = new Database_store_user();
     $actual = $dbStoreUser->logPasswordResetRequest($requestData);
-
-    $this->assertEquals($expected, $actual);
-
   }
 
 
   public function test_LogPasswordResetRequest_NullEmail() {
+    $this->expectException(Exception::class);
+    
     //Input
     $requestData = array(
     'request_datetime'=>'2019-01-01 01:23:45',
@@ -128,12 +126,9 @@ class Database_store_user_test extends TestCase {
     'user_name'=>'test_username',
     'email_address'=>null
     );
-    $expected = true;
 
     $dbStoreUser = new Database_store_user();
     $actual = $dbStoreUser->logPasswordResetRequest($requestData);
-
-    $this->assertEquals($expected, $actual);
 
   }
   
