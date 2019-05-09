@@ -381,7 +381,8 @@ CREATE TABLE report_selection_parameter_values (
   KEY fk_param_value (parameter_id)
 );
 
-INSERT INTO report_selection_parameter_values VALUES (1,1,'Geelong',1),(2,1,'Colac',2),(3,2,'BFL',1),(4,2,'GFL',2),(5,2,'GDFL',3),(6,2,'GJFL',4),(7,2,'CDFNL',5),(8,3,'Field',1),(9,3,'Boundary',2),(10,3,'Goal',3),(11,4,'Seniors',1),(12,4,'Reserves',2),(13,4,'Colts',3),(14,4,'Under 17.5',10),(15,4,'Under 16',15),(16,4,'Under 14.5',20),(17,4,'Under 14',25),(18,4,'Under 12',30),(19,4,'Youth Girls',80),(20,4,'Junior Girls',90),(21,4,'Under 19 Girls',50),(22,4,'Under 15 Girls',60),(23,4,'Under 12 Girls',70),(24,2,'Women',6),(25,4,'Under 19',6),(26,4,'Under 17',12),(27,4,'Under 15',17),(28,4,'Under 13',27),(29,4,'Under 18 Girls',53);
+INSERT INTO report_selection_parameter_values VALUES (1,1,'Geelong',1),(2,1,'Colac',2),(3,2,'BFL',1),(4,2,'GFL',2),(5,2,'GDFL',3),(6,2,'GJFL',4),(7,2,'CDFNL',5),(8,3,'Field',1),(9,3,'Boundary',2),(10,3,'Goal',3),(11,4,'Seniors',1),(12,4,'Reserves',2),(13,4,'Colts',3),(14,4,'Under 17.5',10),(15,4,'Under 16',15),(16,4,'Under 14.5',20),(17,4,'Under 14',25),(18,4,'Under 12',30),(19,4,'Youth Girls',80),(20,4,'Junior Girls',90),(21,4,'Under 19 Girls',50),(22,4,'Under 15 Girls',60),(23,4,'Under 12 Girls',70),(24,2,'Women',6),(25,4,'Under 19',6),(26,4,'Under 17',12),(27,4,'Under 15',17),(28,4,'Under 13',27),(29,4,'Under 18 Girls',53),
+(30, 4, 'Under 18', 9);
 
 
 
@@ -452,7 +453,8 @@ CREATE TABLE valid_selection_combinations (
 );
 
 
-INSERT INTO valid_selection_combinations VALUES (1,1,3,11),(2,1,3,12),(3,1,4,11),(4,1,4,12),(5,1,5,11),(6,1,5,12),(7,1,24,11),(8,1,24,12),(9,1,6,13),(10,1,6,15),(11,1,6,17),(12,1,6,18),(13,1,6,20),(14,1,6,19),(15,1,6,21),(16,1,6,22),(17,1,6,23),(18,2,7,11),(19,2,7,12),(20,2,7,14),(21,2,7,16),(22,1,6,25),(23,1,6,26),(24,1,6,27),(25,1,6,28),(26,1,6,29);
+INSERT INTO valid_selection_combinations VALUES (1,1,3,11),(2,1,3,12),(3,1,4,11),(4,1,4,12),(5,1,5,11),(6,1,5,12),(7,1,24,11),(8,1,24,12),(9,1,6,13),(10,1,6,15),(11,1,6,17),(12,1,6,18),(13,1,6,20),(14,1,6,19),(15,1,6,21),(16,1,6,22),(17,1,6,23),(18,2,7,11),(19,2,7,12),(20,2,7,14),(21,2,7,16),(22,1,6,25),(23,1,6,26),(24,1,6,27),(25,1,6,28),(26,1,6,29),
+(27, 2, 7, 30),(28, 2, 7, 27),(29, 2, 7, 28);
 
 
 CREATE TABLE report_grouping_structure (
