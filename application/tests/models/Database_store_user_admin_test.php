@@ -26,8 +26,14 @@ class Database_store_user_admin_test extends TestCase {
     $this->obj->addUserPrivilege($sampleUsername, $permissionSelectionID);
     
     //Select
+    $queryString = "SELECT id FROM umpire_users
+      WHERE user_name = '". $sampleUsername ."'";
+    $query = $this->CI->db->query($queryString);
+    $queryResult = $query->result_array();
+    $userID = $queryResult[0]['id'];
+    
     $queryString = "SELECT COUNT(*) AS rc FROM user_permission_selection 
-      WHERE user_name = '". $sampleUsername ."' AND permission_selection_id = ". $permissionSelectionID;
+      WHERE user_id = ". $userID ." AND permission_selection_id = ". $permissionSelectionID;
     $query = $this->CI->db->query($queryString);
     $queryResult = $query->result_array();
     $actualCount = $queryResult[0]['rc'];
