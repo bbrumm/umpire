@@ -146,7 +146,7 @@ class Database_store_user_test extends TestCase {
     $this->CI->db->query($queryString);
 
     //Input
-    $user = User::createUserFromNameAndEmail($sampleUsername, $sampleEmail);
+    $user = User::createUserFromNameAndEmail($sampleUsername, 'Test', 'Test', $sampleEmail);
 
     //Store Activation ID
     $this->obj->storeActivationID($user, $newActivationID);
