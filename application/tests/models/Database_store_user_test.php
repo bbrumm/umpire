@@ -5,6 +5,7 @@ class Database_store_user_test extends TestCase {
     $this->resetInstance();
     $this->CI->load->model('Database_store_user');
     $this->CI->load->model('User');
+    $this->load->database();
     $this->obj = $this->CI->Database_store_user;
   }
 
@@ -131,6 +132,45 @@ class Database_store_user_test extends TestCase {
     $actual = $dbStoreUser->logPasswordResetRequest($requestData);
 
   }
+  
+  public function testStoreActivationID_Valid() {
+    $sampleUsername = "test_storeactid";
+    $sampleEmail = "test@test.com";
+    $sampleActivationID = "123456";
+    $newActivationID = "987654";
+
+    //Insert sample data
+    $queryString = 'INSERT INTO umpire_user(id, user_name, email, activation_id)
+    VALUES (100, '". $sampleUser  ."', '". $sampleEmail  ."', '". sampleActivationID  ."')";
+
+    $this->db->query($queryString);
+
+    //Input
+    $user = User::createUserFromNameAndEmail($sampleUsername, $sampleEmail);
+
+    //Store Activation ID
+    $this->obj->storeActivation ID($user , $newActivationID);
+
+    //Get Activation ID
+    $queryString = 'SELECT activation_id FROM umpire_users WHERE user_name = '". $sampleUsername ."";
+    $query = $this->db->query($queryString);
+    $queryResult = $query->result_array();
+    $actualActivationID = $queryResult ['activation_id'];
+    $expectedActivationID = $newActivationID;
+
+    //Assert
+    $this->assertEquals($expectedActivationID, $actualActivationID);
+
+
+    //Delete test data
+    $queryString = 'DELETE FROM umpire_user WHERE user_name = '". $sampleUser  ."';";
+    $this->db->query($queryString);
+
+
+  }
+
+  
+  
   
   
 }
