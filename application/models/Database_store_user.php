@@ -105,9 +105,9 @@ class Database_store_user extends CI_Model implements IData_store_user
             'email_address' => $pRequestData['email_address']
         );
         
-        if (isnull($data['request_datetime']) ||
-            isnull($data['user_name']) ||
-            isnull($data['email_address'])) {
+        if (is_null($data['request_datetime']) ||
+            is_null($data['user_name']) ||
+            is_null($data['email_address'])) {
             throw new Exception("Null value found in either request datetime (".$data['request_datetime']."), username (".$data['user_name']."), or email address (".$data['email_address'].").");
         }
 
