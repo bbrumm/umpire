@@ -2,6 +2,7 @@
 
 class Integration_test extends TestCase
 {
+    const TEST_LOCAL_V_PROD = FALSE;
 
     public function setUp() {
         $this->resetInstance();
@@ -75,15 +76,19 @@ class Integration_test extends TestCase
     }
 
     public function test_AgeGroupLocalVsProd() {
-        $queryString = "SELECT age_group FROM age_group ORDER BY display_order;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'age_group');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+            $queryString = "SELECT age_group FROM age_group ORDER BY display_order;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'age_group');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
 
@@ -181,21 +186,25 @@ ORDER BY ag.display_order ASC, d.division_name ASC;";
     }
 
     public function test_AgeGroupDivisionLocalVsProd() {
-        $queryString = "SELECT ag.age_group, d.division_name
-FROM age_group ag
-INNER JOIN age_group_division agd ON ag.id = agd.age_group_id
-INNER JOIN division d ON d.id = agd.division_id
-ORDER BY ag.display_order ASC, d.division_name ASC;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'age_group');
-        $this->assertEmpty($arrayDifferences);
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'division_name');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+            $queryString = "SELECT ag.age_group, d.division_name
+    FROM age_group ag
+    INNER JOIN age_group_division agd ON ag.id = agd.age_group_id
+    INNER JOIN division d ON d.id = agd.division_id
+    ORDER BY ag.display_order ASC, d.division_name ASC;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'age_group');
+            $this->assertEmpty($arrayDifferences);
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'division_name');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
     public function test_DivisionsExist() {
@@ -216,15 +225,19 @@ ORDER BY ag.display_order ASC, d.division_name ASC;";
     }
 
     public function test_DivisionLocalVsProd() {
-        $queryString = "SELECT division_name FROM division ORDER BY id;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'division_name');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+            $queryString = "SELECT division_name FROM division ORDER BY id;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'division_name');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
     public function test_ClubNamesExist() {
@@ -426,29 +439,37 @@ HAVING COUNT(*) > 1;";
     }
 
     public function test_ClubsLocalVsProd() {
-        $queryString = "SELECT club_name FROM club ORDER BY id;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'club_name');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+            $queryString = "SELECT club_name FROM club ORDER BY id;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'club_name');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
     public function test_TeamsLocalVsProd() {
-        $queryString = "SELECT team_name FROM team 
-            WHERE team_name NOT IN ('Lorne NEW TEAM', 'Some new club') 
-            ORDER BY id;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'team_name');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+            $queryString = "SELECT team_name FROM team 
+                WHERE team_name NOT IN ('Lorne NEW TEAM', 'Some new club') 
+                ORDER BY id;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'team_name');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
 
@@ -676,6 +697,7 @@ ORDER BY p.permission_name, ps.category, ps.display_order;";
         $this->assertEmpty($arrayDifferences);
         $this->db->close();
         $this->dbLocal->close();
+        
     }
 
     public function test_ReportValuesAreCorrect() {
@@ -891,15 +913,19 @@ ORDER BY r.report_id;";
     }
 
     public function test_UmpireTypeLocalVsProd() {
-        $queryString = "SELECT umpire_type_name FROM umpire_type ORDER BY id;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'umpire_type_name');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+            $queryString = "SELECT umpire_type_name FROM umpire_type ORDER BY id;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'umpire_type_name');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
     //TODO: refactor this test so it's not so dependent on live data
@@ -1222,28 +1248,33 @@ ORDER BY id;";
     }
 
     public function test_UsersLocalVsProd() {
-        //Query excludes test users that are used to test user login scenarios
-        $queryString = "SELECT 
-user_name, first_name, last_name, role_id, active
-FROM umpire_users
-WHERE user_name NOT IN ('bbrummtest', 'bbtest2', 'bbrummtest_newvalid')
-ORDER BY id;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'user_name');
-        $this->assertEmpty($arrayDifferences);
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'first_name');
-        $this->assertEmpty($arrayDifferences);
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'last_name');
-        $this->assertEmpty($arrayDifferences);
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_id');
-        $this->assertEmpty($arrayDifferences);
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'active');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+        
+            //Query excludes test users that are used to test user login scenarios
+            $queryString = "SELECT 
+    user_name, first_name, last_name, role_id, active
+    FROM umpire_users
+    WHERE user_name NOT IN ('bbrummtest', 'bbtest2', 'bbrummtest_newvalid')
+    ORDER BY id;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'user_name');
+            $this->assertEmpty($arrayDifferences);
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'first_name');
+            $this->assertEmpty($arrayDifferences);
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'last_name');
+            $this->assertEmpty($arrayDifferences);
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'role_id');
+            $this->assertEmpty($arrayDifferences);
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'active');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
 
@@ -1277,15 +1308,19 @@ HAVING COUNT(*) > 1;";
     }
 
     public function test_RegionLocalVsProd() {
-        $queryString = "SELECT region_name FROM region ORDER BY id;";
-        $queryProd = $this->db->query($queryString);
-        $queryLocal = $this->dbLocal->query($queryString);
-        $resultArrayProd = $queryProd->result();
-        $resultArrayLocal = $queryLocal->result();
-        $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'region_name');
-        $this->assertEmpty($arrayDifferences);
-        $this->db->close();
-        $this->dbLocal->close();
+        if ($this::TEST_LOCAL_V_PROD) {
+            $queryString = "SELECT region_name FROM region ORDER BY id;";
+            $queryProd = $this->db->query($queryString);
+            $queryLocal = $this->dbLocal->query($queryString);
+            $resultArrayProd = $queryProd->result();
+            $resultArrayLocal = $queryLocal->result();
+            $arrayDifferences = $this->arrayLibrary->findArrayDBObjectDiff($resultArrayProd, $resultArrayLocal, 'region_name');
+            $this->assertEmpty($arrayDifferences);
+            $this->db->close();
+            $this->dbLocal->close();
+        } else {
+            $this->assertEquals(1, 1);
+        }
     }
 
     public function test_ReportSelectionParametersExist() {
