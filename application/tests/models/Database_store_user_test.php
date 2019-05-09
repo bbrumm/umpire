@@ -5,7 +5,7 @@ class Database_store_user_test extends TestCase {
     $this->resetInstance();
     $this->CI->load->model('Database_store_user');
     $this->CI->load->model('User');
-    $this->load->database();
+    $this->CI->load->database();
     $this->obj = $this->CI->Database_store_user;
   }
 
