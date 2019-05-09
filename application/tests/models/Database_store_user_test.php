@@ -141,7 +141,7 @@ class Database_store_user_test extends TestCase {
 
     //Insert sample data
     $queryString = "INSERT INTO umpire_user(id, user_name, email, activation_id)
-    VALUES (100, '". $sampleUser  ."', '". $sampleEmail  ."', '". sampleActivationID  ."')";
+    VALUES (100, '". $sampleUsername  ."', '". $sampleEmail  ."', '". $sampleActivationID  ."')";
 
     $this->db->query($queryString);
 
@@ -163,7 +163,7 @@ class Database_store_user_test extends TestCase {
 
 
     //Delete test data
-    $queryString = "DELETE FROM umpire_user WHERE user_name = '". $sampleUser  ."'";
+    $queryString = "DELETE FROM umpire_user WHERE user_name = '". $sampleUsername  ."'";
     $this->db->query($queryString);
 
 
