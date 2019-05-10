@@ -1189,7 +1189,10 @@ ORDER BY v.id;";
             array('region'=>'Geelong', 'league'=>'GJFL', 'age_group'=>'Under 17'),
             array('region'=>'Geelong', 'league'=>'GJFL', 'age_group'=>'Under 15'),
             array('region'=>'Geelong', 'league'=>'GJFL', 'age_group'=>'Under 13'),
-            array('region'=>'Geelong', 'league'=>'GJFL', 'age_group'=>'Under 18 Girls')
+            array('region'=>'Geelong', 'league'=>'GJFL', 'age_group'=>'Under 18 Girls'),
+            array('region'=>'Colac', 'league'=>'CDFNL', 'age_group'=>'Under 18'),
+            array('region'=>'Colac', 'league'=>'CDFNL', 'age_group'=>'Under 15'),
+            array('region'=>'Colac', 'league'=>'CDFNL', 'age_group'=>'Under 13')
         );
         foreach ($expectedArray as $key=>$subArray) {
             $this->assertEquals($subArray['region'], $resultArray[$key]->region);
