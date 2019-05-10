@@ -134,7 +134,12 @@ class Database_store_user_admin_test extends TestCase {
 
   }
 
-  
+   public function test_AddUserPrivilege_Exception() {
+    $this->expectException(Exception::class);
+    //Username that does not exist
+    $sampleUsername = "some username that does not exist goes here";
+    $this->obj->addUserPrivilege($sampleUsername, 998);
+  }
   
   
  }
