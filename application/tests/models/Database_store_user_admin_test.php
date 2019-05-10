@@ -71,5 +71,15 @@ class Database_store_user_admin_test extends TestCase {
   
   }
   
+  public function test_InsertNewUser_Exception() {
+    $this->expectException(Exception::class);
+    $sampleUsername = "bbrumm"; //same as existing username, so should encounter a PK violation
+    $sampleEmail = "test@test.com";
+    $user = User::createUserFromNameAndEmail($sampleUsername, $sampleEmail);
+
+    $this->obj->insertNewUser($user);
+
+  }
+  
   
  }
