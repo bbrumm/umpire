@@ -114,7 +114,7 @@ class Database_store_user_admin_test extends TestCase {
     $query = $this->CI->db->query($queryString);
     $queryResult = $query->result_array();
     $actualCount = $queryResult[0]['rc'];
-    $expectedCount = 1;
+    $expectedCount = 0;
     
     //Assert
     $this->assertEquals($expectedCount, $actualCount);
