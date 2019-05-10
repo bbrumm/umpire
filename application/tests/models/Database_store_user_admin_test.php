@@ -73,7 +73,12 @@ class Database_store_user_admin_test extends TestCase {
   
   public function test_InsertNewUser_Exception() {
     $this->expectException(Exception::class);
-    $sampleUsername = "bbrumm"; //same as existing username, so should encounter a PK violation
+    //Long username
+    $sampleUsername = "bbrumm some long name some long name some long name some long name ".
+      "some long name some long name some long name some long name some long name ".
+      "some long name some long name some long name some long name some long name ".
+      "some long name some long name some long name some long name some long name ".
+      "some long name some long name some long name some long name some long name";
     $user = User::createUserFromNameAndPW($sampleUsername, 'FN', 'LN', 'abc');
 
     $this->obj->insertNewUser($user);
