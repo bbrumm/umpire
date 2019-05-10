@@ -91,7 +91,7 @@ class Database_store_user_admin_test extends TestCase {
     $sampleUsername = "bbtest2";
 
     //Insert sample data
-    $queryString = "INSERT INTO user_permission_selection (id, user_id, user_permission_selection_id)
+    $queryString = "INSERT INTO user_permission_selection (id, user_id, permission_selection_id)
     VALUES (". $permissionSelectionID.", ". $sampleUserID .", 31)";
     $this->CI->db->query($queryString);
 
