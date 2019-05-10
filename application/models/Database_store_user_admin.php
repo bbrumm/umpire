@@ -97,13 +97,9 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
             $pUser->getFirstName(), $pUser->getLastName(), $pUser->getUsername(), $pUser->getPassword()
         ));
 
-        if ($this->db->affected_rows() == 1) {
-            //One user was added. Add their default privileges
-            $this->addDefaultUserPrivileges($pUser->getUsername());
-            return true;
-        } else {
-            throw new exception("There was an error when inserting the user. Please contact support.");
-        }
+        //One user was added. Add their default privileges
+        $this->addDefaultUserPrivileges($pUser->getUsername());
+        return true;        
     }
 
     /*
