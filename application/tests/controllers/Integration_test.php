@@ -11,11 +11,11 @@ class Integration_test extends TestCase
         //Connect to the ci_prod database in the "testing/database" file
         $this->db = $this->CI->load->database('ci_prod', TRUE);
         //This connects to the localhost database, and should be used when unit testing
-        $this->dbLocal = $this->CI->load->database('default', TRUE);
+        //$this->dbLocal = $this->CI->load->database('default', TRUE);
 
         //This connects to the local copy of the dbunittest database, which should be a copy of the DB created on Travis CI
         //It's helpful when debugging why something works on localhost but not on Travis
-        //$this->dbLocal = $this->CI->load->database('local_dbunittest', TRUE);
+        $this->dbLocal = $this->CI->load->database('local_dbunittest', TRUE);
     }
 
     public function tearDown() {

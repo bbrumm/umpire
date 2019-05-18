@@ -1,5 +1,5 @@
-#DROP DATABASE databas6;
-#CREATE DATABASE databas6;
+#DROP DATABASE dbunittest;
+#CREATE DATABASE dbunittest;
 
 #dbunittest
 #databas6
