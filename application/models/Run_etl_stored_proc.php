@@ -13,5 +13,4 @@ class Run_etl_stored_proc extends CI_Model
         $mvRefresher = new Refresh_mv_tables();
         $mvRefresher->refreshMVTables($pDataStore, $pSeason, $pImportedFileID);
     }
-    
 }

@@ -936,6 +936,7 @@ FROM umpire_users u
 INNER JOIN user_permission_selection us ON u.id = us.user_id
 INNER JOIN permission_selection ps ON us.permission_selection_id = ps.id
 WHERE u.active = 1
+AND u.role_id != 4
 AND u.user_name NOT IN ('bbrummtest')
 ORDER BY u.id, ps.category, ps.display_order;";
         $query = $this->dbLocal->query($queryString);
@@ -947,151 +948,7 @@ ORDER BY u.id, ps.category, ps.display_order;";
             array('user_name'=>'gmanager', 'role_id'=>2, 'category'=>'General', 'selection_name'=>'All'),
             array('user_name'=>'skeating', 'role_id'=>3, 'category'=>'General', 'selection_name'=>'All'),
             array('user_name'=>'chood', 'role_id'=>3, 'category'=>'General', 'selection_name'=>'All'),
-            array('user_name'=>'dsantospirito', 'role_id'=>3, 'category'=>'General', 'selection_name'=>'All'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Seniors'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Reserves'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Colts'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 16'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 12'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'General', 'selection_name'=>'All'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'BFL'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GFL'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GDFL'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GJFL'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'CDFNL'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Geelong'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Colac'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 1'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 2'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 3'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 4'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 5'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 6'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 7'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 8'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Field'),
-            array('user_name'=>'aedwick', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Seniors'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Reserves'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Colts'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 16'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 12'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'General', 'selection_name'=>'All'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'BFL'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GFL'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GDFL'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GJFL'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'CDFNL'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Geelong'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 1'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 2'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 3'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 4'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 5'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 6'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 7'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 8'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Field'),
-            array('user_name'=>'kclissold', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Seniors'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Reserves'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Colts'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 16'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 12'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'General', 'selection_name'=>'All'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'BFL'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GFL'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GDFL'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GJFL'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'CDFNL'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Geelong'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Colac'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 1'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 2'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 3'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 4'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 5'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 6'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 7'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 8'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Field'),
-            array('user_name'=>'rsteel', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Seniors'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Reserves'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Colts'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 16'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 12'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'General', 'selection_name'=>'All'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'BFL'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GFL'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GDFL'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GJFL'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'CDFNL'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Geelong'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Colac'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 1'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 2'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 3'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 4'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 5'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 6'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 7'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 8'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Field'),
-            array('user_name'=>'bsmith', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Goal'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Seniors'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Reserves'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Colts'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 17.5'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 16'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14.5'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 12'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Youth Girls'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Junior Girls'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Age Group', 'selection_name'=>'Under 14'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'General', 'selection_name'=>'All'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'BFL'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GFL'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GDFL'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'GJFL'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'League', 'selection_name'=>'CDFNL'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Geelong'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Region', 'selection_name'=>'Colac'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 1'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 2'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 3'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 4'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 5'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 6'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 7'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Report', 'selection_name'=>'Report 8'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Boundary'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Field'),
-            array('user_name'=>'adame', 'role_id'=>4, 'category'=>'Umpire Type', 'selection_name'=>'Goal')
+            array('user_name'=>'dsantospirito', 'role_id'=>3, 'category'=>'General', 'selection_name'=>'All')
         );
         foreach ($expectedArray as $key=>$subArray) {
             $this->assertEquals($subArray['user_name'], $resultArray[$key]->user_name);
@@ -1104,6 +961,88 @@ ORDER BY u.id, ps.category, ps.display_order;";
         $actualCount = count($resultArray);
         $this->assertEquals($expectedCount, $actualCount);
         $this->dbLocal->close();
+    }
+
+    public function test_AllRegularUsersHaveRequiredPermissions() {
+        $queryStringForDistinctUsers = "SELECT DISTINCT u.user_name
+FROM umpire_users u
+INNER JOIN user_permission_selection us ON u.id = us.user_id
+INNER JOIN permission_selection ps ON us.permission_selection_id = ps.id
+WHERE u.active = 1
+AND u.role_id = 4
+AND u.user_name NOT IN ('bbrummtest')
+ORDER BY u.user_name";
+
+        $queryForDistinctUsers = $this->dbLocal->query($queryStringForDistinctUsers);
+        $resultArrayForDistinctUsers = $queryForDistinctUsers->result();
+
+        $queryString = "SELECT
+u.user_name, ps.category, ps.selection_name
+FROM umpire_users u
+INNER JOIN user_permission_selection us ON u.id = us.user_id
+INNER JOIN permission_selection ps ON us.permission_selection_id = ps.id
+WHERE u.active = 1
+AND role_id = 4
+AND u.user_name NOT IN ('bbrummtest')
+ORDER BY u.user_name, ps.category;";
+        $query = $this->dbLocal->query($queryString);
+        $resultArray = $query->result();
+
+        $expectedPermissions = array(
+            array('category'=>'Age Group', 'selection_name'=>'Seniors'),
+            array('category'=>'Age Group', 'selection_name'=>'Reserves'),
+            array('category'=>'Age Group', 'selection_name'=>'Colts'),
+            array('category'=>'Age Group', 'selection_name'=>'Under 17.5'),
+            array('category'=>'Age Group', 'selection_name'=>'Under 16'),
+            array('category'=>'Age Group', 'selection_name'=>'Under 14.5'),
+            array('category'=>'Age Group', 'selection_name'=>'Under 12'),
+            array('category'=>'Age Group', 'selection_name'=>'Youth Girls'),
+            array('category'=>'Age Group', 'selection_name'=>'Junior Girls'),
+            array('category'=>'Age Group', 'selection_name'=>'Under 14'),
+            array('category'=>'General', 'selection_name'=>'All'),
+            array('category'=>'League', 'selection_name'=>'BFL'),
+            array('category'=>'League', 'selection_name'=>'GFL'),
+            array('category'=>'League', 'selection_name'=>'GDFL'),
+            array('category'=>'League', 'selection_name'=>'GJFL'),
+            array('category'=>'League', 'selection_name'=>'CDFNL'),
+            array('category'=>'Region', 'selection_name'=>'Geelong'),
+            array('category'=>'Region', 'selection_name'=>'Colac'),
+            array('category'=>'Report', 'selection_name'=>'Report 1'),
+            array('category'=>'Report', 'selection_name'=>'Report 2'),
+            array('category'=>'Report', 'selection_name'=>'Report 3'),
+            array('category'=>'Report', 'selection_name'=>'Report 4'),
+            array('category'=>'Report', 'selection_name'=>'Report 5'),
+            array('category'=>'Report', 'selection_name'=>'Report 6'),
+            array('category'=>'Report', 'selection_name'=>'Report 7'),
+            array('category'=>'Report', 'selection_name'=>'Report 8'),
+            array('category'=>'Umpire Type', 'selection_name'=>'Boundary'),
+            array('category'=>'Umpire Type', 'selection_name'=>'Field'),
+            array('category'=>'Umpire Type', 'selection_name'=>'Goal')
+        );
+
+        //Convert to array
+        foreach ($resultArray as $resultKey=>$resultRecord) {
+            $resultArrayTransformed[$resultKey]['user_name'] = $resultRecord->user_name;
+            $resultArrayTransformed[$resultKey]['category'] = $resultRecord->category;
+            $resultArrayTransformed[$resultKey]['selection_name'] = $resultRecord->selection_name;
+        }
+
+        foreach ($resultArrayForDistinctUsers as $userKey=>$usernameRecord) {
+            //foreach ($resultArray as $resultKey=>$resultRecord) {
+                foreach ($expectedPermissions as $permissionKey => $userPermissionArrayRecord) {
+                    $valueFound = $this->arrayLibrary->searchMultiArrayForThreeValues(
+                        $resultArrayTransformed,
+                        $usernameRecord->user_name,
+                        $userPermissionArrayRecord['category'],
+                        $userPermissionArrayRecord['selection_name']);
+                    if (!$valueFound) {
+                        echo "Value not found. Username (" . $usernameRecord->user_name . "), category (" . $userPermissionArrayRecord['category'] . "), selection_name (" . $userPermissionArrayRecord['selection_name'] . ")";
+                    }
+                    $this->assertEquals(true, $valueFound);
+                }
+            //}
+        }
+
     }
 
     /*public function test_UserPermissionsLocalVsProd() {
@@ -1234,7 +1173,8 @@ ORDER BY id;";
             array('user_name'=>'kclissold', 'first_name'=>'Kel', 'last_name'=>'Clissold', 'role_id'=>4, 'active'=>1),
             array('user_name'=>'rsteel', 'first_name'=>'Robert', 'last_name'=>'Steel', 'role_id'=>4, 'active'=>1),
             array('user_name'=>'bsmith', 'first_name'=>'Brad', 'last_name'=>'Smith', 'role_id'=>4, 'active'=>1),
-            array('user_name'=>'adame', 'first_name'=>'Adam', 'last_name'=>'Edwick', 'role_id'=>4, 'active'=>1)
+            array('user_name'=>'adame', 'first_name'=>'Adam', 'last_name'=>'Edwick', 'role_id'=>4, 'active'=>1),
+            array('user_name'=>'mdavison', 'first_name'=>'Mark', 'last_name'=>'Davison', 'role_id'=>4, 'active'=>1)
         );
         foreach ($expectedArray as $key=>$subArray) {
             $this->assertEquals($subArray['user_name'], $resultArray[$key]->user_name);

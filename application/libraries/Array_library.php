@@ -12,6 +12,19 @@ class Array_library {
     
     }
 
+    public function searchMultiArrayForThreeValues($pInputArray, $firstSearchValue, $secondSearchValue, $thirdSearchValue) {
+        foreach ($pInputArray as $key => $object) {
+            if (array_search($firstSearchValue, $object)) {
+                if (array_search($secondSearchValue, $object)) {
+                    if (array_search($thirdSearchValue, $object)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public function in_array_r($needle, $haystack, $strict = false) {
     	foreach ($haystack as $item) {
     		if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {

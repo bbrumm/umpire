@@ -59,7 +59,7 @@ class Database_store_user_admin_test extends TestCase {
     $expectedLogCount = $logCountBefore + 1;
    
     //Assert
-    $this->assertEquals($expectedCount, $actualCount);
+    $this->assertEquals($expectedLogCount, $actualLogCount);
     
     //Delete test data
     $queryString = "DELETE FROM umpire_users WHERE user_name = '". $sampleUsername  ."'";
@@ -84,55 +84,58 @@ class Database_store_user_admin_test extends TestCase {
     $this->obj->insertNewUser($user);
 
   }
-  
-  public function test_RemoveUserPrivilege_Valid() {
-    $permissionSelectionID = 10001;
-    $sampleUserID = 25; //username of bbtest2
-    $sampleUsername = "bbtest2";
 
-    //Insert sample data
-    $queryString = "INSERT INTO user_permission_selection (id, user_id, permission_selection_id)
-    VALUES (". $permissionSelectionID.", ". $sampleUserID .", 999)";
-    $this->CI->db->query($queryString);
+    public function test_RemoveUserPrivilege_Valid() {
+        $permissionSelectionID = 10001;
+        $sampleUserID = 25; //username of bbtest2
+        $sampleUsername = "bbtest2";
+        //Delete test data
+        $queryString = "DELETE FROM user_permission_selection WHERE user_id = ". $sampleUserID ." AND id = ". $permissionSelectionID;
+        $this->CI->db->query($queryString);
 
-    //Check log before
-    $queryStringLogLookup = "SELECT COUNT(*) AS rc FROM log_privilege_changes 
-    WHERE username_changed = '". $sampleUsername ."' 
-    AND privilege_changed = ". $permissionSelectionID . "
-    AND privilege_action = 1";
-    $query = $this->CI->db->query($queryStringLogLookup);
-    $queryResult = $query->result_array();
-    $logCountBefore = $queryResult[0]['rc'];
+        //Insert sample data
+        $queryString = "INSERT INTO user_permission_selection (id, user_id, permission_selection_id)
+        VALUES (". $permissionSelectionID.", ". $sampleUserID .", 999)";
+        $this->CI->db->query($queryString);
+
+        //Check log before
+        $queryStringLogLookup = "SELECT COUNT(*) AS rc FROM log_privilege_changes 
+        WHERE username_changed = '". $sampleUsername ."' 
+        AND privilege_changed = ". $permissionSelectionID . "
+        AND privilege_action = 1";
+        $query = $this->CI->db->query($queryStringLogLookup);
+        $queryResult = $query->result_array();
+        $logCountBefore = $queryResult[0]['rc'];
 
 
-    //Run
-    $this->obj->removeUserPrivilege($sampleUsername, $permissionSelectionID);
+        //Run
+        $this->obj->removeUserPrivilege($sampleUsername, $permissionSelectionID);
 
-    //Select
-    $queryString = "SELECT COUNT(*) AS rc FROM user_permission_selection 
-      WHERE user_id = ". $sampleUserID ." AND permission_selection_id = ". $permissionSelectionID;
-    $query = $this->CI->db->query($queryString);
-    $queryResult = $query->result_array();
-    $actualCount = $queryResult[0]['rc'];
-    $expectedCount = 0;
-    
-    //Assert
-    $this->assertEquals($expectedCount, $actualCount);
-    
-    //Check log after
-    $query = $this->CI->db->query($queryStringLogLookup);
-    $queryResult = $query->result_array();
-    $actualLogCount = $queryResult[0]['rc'];
-    $expectedLogCount = $logCountBefore + 1;
-   
-    //Assert
-    $this->assertEquals($expectedCount, $actualCount);
-    
-    //Delete test data
-      $queryString = "DELETE FROM user_permission_selection WHERE user_id = ". $sampleUserID ." AND permission_selection_id = ". $permissionSelectionID;
-      $this->CI->db->query($queryString);
+        //Select
+        $queryString = "SELECT COUNT(*) AS rc FROM user_permission_selection 
+            WHERE user_id = ". $sampleUserID ." AND permission_selection_id = ". $permissionSelectionID;
+        $query = $this->CI->db->query($queryString);
+        $queryResult = $query->result_array();
+        $actualCount = $queryResult[0]['rc'];
+        $expectedCount = 0;
 
-  }
+        //Assert
+        $this->assertEquals($expectedCount, $actualCount);
+
+        //Check log after
+        $query = $this->CI->db->query($queryStringLogLookup);
+        $queryResult = $query->result_array();
+        $actualLogCount = $queryResult[0]['rc'];
+        $expectedLogCount = $logCountBefore + 1;
+
+        //Assert
+        $this->assertEquals($expectedCount, $actualCount);
+
+        //Delete test data
+        $queryString = "DELETE FROM user_permission_selection WHERE user_id = ". $sampleUserID ." AND permission_selection_id = ". $permissionSelectionID;
+        $this->CI->db->query($queryString);
+
+    }
 
    public function test_AddUserPrivilege_Exception() {
     $this->expectException(Exception::class);

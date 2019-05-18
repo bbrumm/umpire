@@ -166,7 +166,9 @@ class Refresh_mv_tables extends CI_Model
 VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $this->runQuery($queryString);
     }
-    
+
+    //TODO: Move these to Etl_query_builder object
+
     /*
     * @property array $this->db
     */

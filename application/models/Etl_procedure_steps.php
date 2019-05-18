@@ -41,9 +41,9 @@ class Etl_procedure_steps extends CI_Model
 
     public function runETLProcess($pSeason, $pImportedFileID) {
         $this->setupScript();
-	$this->importFileID = $pImportedFileID;
-	$this->currentSeason = $pSeason;
-	$this->queryBuilder->setSeason($pSeason);
+        $this->importFileID = $pImportedFileID;
+        $this->currentSeason = $pSeason;
+        $this->queryBuilder->setSeason($pSeason);
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
 
         $pSeason->setSeasonYear($this->lookupSeasonYear());
@@ -52,6 +52,8 @@ class Etl_procedure_steps extends CI_Model
         $this->deleteMatchPlayed();
         $this->deleteRound();
         $this->deleteMatchStaging();
+
+        /*
         $this->deleteMVReport1();
         $this->deleteMVReport2();
         $this->deleteMVReport4();
@@ -59,6 +61,8 @@ class Etl_procedure_steps extends CI_Model
         $this->deleteMVReport6();
         $this->deleteMVReport7();
         $this->deleteMVReport8();
+        */
+
         $this->deleteDWFactMatch();
 
         $this->insertRound();
@@ -167,6 +171,7 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
         $this->logTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
 
+    /*
     private function deleteMVReport1() {
 	$this->deleteMVReportTable("dw_mv_report_01");
     }
@@ -203,6 +208,7 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
         $this->runQuery($queryString);
         $this->logTableDeleteOperation($pTableName);
     }
+    */
 
     private function deleteDWFactMatch() {
         $queryString = $this->queryBuilder->getDeleteDWFactMatchQuery();
