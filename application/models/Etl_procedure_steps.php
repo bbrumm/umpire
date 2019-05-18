@@ -53,16 +53,6 @@ class Etl_procedure_steps extends CI_Model
         $this->deleteRound();
         $this->deleteMatchStaging();
 
-        /*
-        $this->deleteMVReport1();
-        $this->deleteMVReport2();
-        $this->deleteMVReport4();
-        $this->deleteMVReport5();
-        $this->deleteMVReport6();
-        $this->deleteMVReport7();
-        $this->deleteMVReport8();
-        */
-
         $this->deleteDWFactMatch();
 
         $this->insertRound();
@@ -170,45 +160,6 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
 	$this->truncateTable(self::TABLE_MATCH_STAGING);
         $this->logTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
-
-    /*
-    private function deleteMVReport1() {
-	$this->deleteMVReportTable("dw_mv_report_01");
-    }
-
-    private function deleteMVReport2() {
-        $this->deleteMVReportTable("dw_mv_report_02");
-    }
-
-    private function deleteMVReport4() {
-        $this->deleteMVReportTable("dw_mv_report_04");
-    }
-
-    private function deleteMVReport5() {
-        $this->deleteMVReportTable("dw_mv_report_05");
-    }
-
-    private function deleteMVReport6() {
-       $this->deleteMVReportTable("dw_mv_report_06");
-    }
-
-    private function deleteMVReport7() {
-        $this->deleteMVReportTable("dw_mv_report_07");
-    }
-
-	//Report8 table delete is done differently as it contains more data
-    private function deleteMVReport8() {
-        $queryString = $this->queryBuilder->getDeleteMVReport8Query();
-        $this->runQuery($queryString);
-        $this->logTableDeleteOperation("dw_mv_report_08");
-    }
-	
-    private function deleteMVReportTable($pTableName) {
-        $queryString = "DELETE rec FROM ". $pTableName ." rec WHERE rec.season_year = ". $this->currentSeason->getSeasonYear() .";";
-        $this->runQuery($queryString);
-        $this->logTableDeleteOperation($pTableName);
-    }
-    */
 
     private function deleteDWFactMatch() {
         $queryString = $this->queryBuilder->getDeleteDWFactMatchQuery();
