@@ -86,6 +86,10 @@ class UserAdmin_test extends TestCase
         $newUserName = 'bbrummtest_newvalid';
         $newFirstName = 'bb1F';
         $newLastName = 'bb1L';
+
+        $queryString = "DELETE FROM umpire_users WHERE user_name = '". $newUserName ."'";
+        $query = $this->dbLocal->query($queryString);
+
         $queryString = "INSERT INTO umpire_users (user_name, first_name, last_name)
         VALUES ('".$newUserName."', '". $newFirstName ."', '". $newLastName ."');";
         $query = $this->dbLocal->query($queryString);
