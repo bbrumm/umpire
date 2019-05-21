@@ -92,6 +92,23 @@ class Array_library_test extends TestCase
         $actualSize = count($arrayDifferences);
         $this->assertEquals($expectedSize, $actualSize);
     }
+    
+    public function test_SearchMultiArrayForThreeValues_Valid() {
+        //Inputs
+        $firstSearchValue = "A";
+        $secondSearchValue = "B";
+        $thirdSearchValue = "C";
+        $arrayToSearch = array(
+          array('X', 'Y', 'Z')
+        );
+
+        $expectedResult = false;
+        $actualResult = $this->obj->searchMultiArrayForThreeValues(
+          $arrayToSearch, $firstSearchValue, $secondSearchValue, $thirdSearchValue);
+
+        $this->assertEquals($expectedResult, $actualResult);
+  
+  }
 
 
 
