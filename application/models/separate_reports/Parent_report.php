@@ -224,11 +224,13 @@ class Parent_report extends CI_Model {
     }
 	
     private function getCellClassFromFirstColumnFormat($pReportDisplayOptions) {
+	$cellClass = "";
         if ($this->isFirstColumnFormatText($pReportDisplayOptions)) {
-            return "cellText cellNormal";
+            $cellClass = "cellText cellNormal";
         } elseif ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
-            return "cellNumber cellNormal";
+            $cellClass = "cellNumber cellNormal";
         }
+	return $cellClass;
     }
 
     private function isFirstColumn($pColumnCounter) {
