@@ -131,6 +131,14 @@ class Report3 extends Parent_report implements IReport {
     }
 
     public function isFieldMatchingColumnReport3($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
+        //TODO: Write a test to ensure that the report grouping structure only returns 2 columns for this report,
+        //and the right number of rows for other reports.
+        if ($pColumnHeadingSet[$pReportColumnFields[1]] == 'Total') {
+                    return $this->isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
+                } else {
+                    return $this->isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
+                }
+        /*
         switch (count($pReportColumnFields)) {
             case 1:
                 return $this->isFieldMatchingOneColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
@@ -145,6 +153,7 @@ class Report3 extends Parent_report implements IReport {
             default:
                 throw new InvalidArgumentException("Count of report column fields needs to be between 1 and 3.");
         }
+        */
     }
 
 
