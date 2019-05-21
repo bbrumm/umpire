@@ -210,6 +210,103 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
+    
+    public function test_Report3_TwoUmpireTypesAndAges() {
+        /*$queryString = "INSERT INTO staging_no_umpires
+(weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
+VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
+        $query = $this->dbLocal->query($queryString);
+        */
+        $queryString = "INSERT INTO staging_all_ump_age_league VALUES
+        ('Seniors','Goal','Women','Geelong',1,1),
+        ('Seniors','Field','Women','Geelong',1,1),
+        ('Reserves','Field','Women','Geelong',1,1);";
+        $query = $this->dbLocal->query($queryString);
+
+        $postArray = array(
+            'reportName'=>'3',
+            'season'=>2018,
+            'rdRegion'=>'Geelong',
+            'chkRegionHidden'=>'Geelong',
+            //'chkAgeGroup'=>array('Seniors'),
+            'chkAgeGroupHidden'=>'Seniors,Reserves',
+            //'chkUmpireDiscipline'=>array('Goal'),
+            'chkUmpireDisciplineHidden'=>'Goal,Field',
+            //'chkLeague'=>array('Women'),
+            'chkLeagueHidden'=>'Women'
+        );
+
+        $output = $this->request('POST', ['Report', 'index'], $postArray);
+        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $this->assertContains($expected, $output);
+    }
+    
+     public function test_Report3_TwoUmpireTypesAndAgesAndLeagues() {
+        /*$queryString = "INSERT INTO staging_no_umpires
+(weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
+VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
+        $query = $this->dbLocal->query($queryString);
+        */
+        $queryString = "INSERT INTO staging_all_ump_age_league VALUES
+        ('Seniors','Goal','Women','Geelong',1,1),
+        ('Seniors','Field','Women','Geelong',1,1),
+        ('Seniors','Field','Women,GFL','Geelong',1,1),
+        ('Reserves','Field','Women','Geelong',1,1);";
+        $query = $this->dbLocal->query($queryString);
+
+        $postArray = array(
+            'reportName'=>'3',
+            'season'=>2018,
+            'rdRegion'=>'Geelong',
+            'chkRegionHidden'=>'Geelong',
+            //'chkAgeGroup'=>array('Seniors'),
+            'chkAgeGroupHidden'=>'Seniors,Reserves',
+            //'chkUmpireDiscipline'=>array('Goal'),
+            'chkUmpireDisciplineHidden'=>'Goal,Field',
+            //'chkLeague'=>array('Women'),
+            'chkLeagueHidden'=>'Women,GFL'
+        );
+
+        $output = $this->request('POST', ['Report', 'index'], $postArray);
+        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $this->assertContains($expected, $output);
+    }
+    
+    public function test_Report3_ThreeOfSeveralParameters() {
+        /*$queryString = "INSERT INTO staging_no_umpires
+(weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
+VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
+        $query = $this->dbLocal->query($queryString);
+        */
+        $queryString = "INSERT INTO staging_all_ump_age_league VALUES
+        ('Seniors','Goal','Women','Geelong',1,1),
+        ('Seniors','Field','Women','Geelong',1,1),
+        ('Seniors','Field','GFL','Geelong',1,1),
+        ('Seniors','Field','GDFL','Geelong',1,1),
+        ('Seniors','Field','BFL','Geelong',1,1),
+        ('Seniors','Boundary','BFL','Geelong',1,1),
+        ('Under 16','Field','BFL','Geelong',1,1),
+        ('Seniors','Field','Women,GFL','Geelong',1,1),
+        ('Reserves','Field','Women','Geelong',1,1);";
+        $query = $this->dbLocal->query($queryString);
+
+        $postArray = array(
+            'reportName'=>'3',
+            'season'=>2018,
+            'rdRegion'=>'Geelong',
+            'chkRegionHidden'=>'Geelong',
+            //'chkAgeGroup'=>array('Seniors'),
+            'chkAgeGroupHidden'=>'Seniors,Reserves,Under 16',
+            //'chkUmpireDiscipline'=>array('Goal'),
+            'chkUmpireDisciplineHidden'=>'Goal,Field,Boundary',
+            //'chkLeague'=>array('Women'),
+            'chkLeagueHidden'=>'Women,GFL,BFL,GDFL'
+        );
+
+        $output = $this->request('POST', ['Report', 'index'], $postArray);
+        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $this->assertContains($expected, $output);
+    }
 
     public function test_Report4() {
         /*$queryString = "INSERT INTO dw_mv_report_04
