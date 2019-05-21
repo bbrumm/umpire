@@ -405,22 +405,28 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
     }
 
     public function test_Report8() {
-        /*$queryString = "INSERT INTO dw_mv_report_08
-(season_year, full_name, match_count, total_match_count, last_name, first_name)
-VALUES (2018, 'Smith, John', 10, 12, 'Smith', 'John');";
-        $query = $this->dbLocal->query($queryString);
-        */
         $postArray = array(
             'reportName'=>'8',
             'season'=>2018,
-            //'rdRegion'=>'Geelong',
             'chkRegionHidden'=>'Geelong',
-            //'chkAgeGroup'=>array('Seniors'),
             'chkAgeGroupHidden'=>'Seniors',
-            //'chkUmpireDiscipline'=>array('Field'),
             'chkUmpireDisciplineHidden'=>'Field',
-            //'chkLeague'=>array('GFL'),
             'chkLeagueHidden'=>'GFL'
+        );
+
+        $output = $this->request('POST', ['Report', 'index'], $postArray);
+        $expected = "<h1>08 - Umpire Games Tally</h1>";
+        $this->assertContains($expected, $output);
+    }
+    
+    public function test_Report8_MultiParam() {
+        $postArray = array(
+            'reportName'=>'8',
+            'season'=>2018,
+            'chkRegionHidden'=>'Geelong',
+            'chkAgeGroupHidden'=>'Seniors,Reserves',
+            'chkUmpireDisciplineHidden'=>'Field,Goal,Boundary',
+            'chkLeagueHidden'=>'GFL,BFL,GDFL'
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
