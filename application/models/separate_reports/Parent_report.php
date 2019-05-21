@@ -250,22 +250,24 @@ class Parent_report extends CI_Model {
     }
 
     private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
+	$cellValue = "";
         if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  === false) {
-            return "";
+            $cellValue = "";
         }
 
         if ($this->isFirstColumn($columnCounter) === false) {
-            return $pResultOutputArray[$pRowCounter][$columnCounter];
+            $cellValue = $pResultOutputArray[$pRowCounter][$columnCounter];
         }
 
         if ($this->isFirstColumnFormatText($pReportDisplayOptions)) {
-            return  $pResultOutputArray[$pRowCounter][$columnCounter];
+            $cellValue =  $pResultOutputArray[$pRowCounter][$columnCounter];
         }
 
         if ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
             $weekDate = date_create($pResultOutputArray[$pRowCounter][$columnCounter]);
-            return date_format($weekDate, 'd/m/Y');
+            $cellValue = date_format($weekDate, 'd/m/Y');
         }
+	return $cellValue;
     }
 
     private function isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter) {
