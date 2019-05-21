@@ -217,31 +217,10 @@ class Parent_report extends CI_Model {
                         $pResultOutputArray[$pRowCounter][$columnCounter]);
        }
 
-       if(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
+       if (is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
           return "cellNumber cellNormal";
        }
-
        return "cellText cellNormal";
-
-
-      /*
-
-        if(array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter])) {
-            if ($this->isFirstColumn($columnCounter)) {
-                $cellClassToUse = $this->getCellClassFromFirstColumnFormat($pReportDisplayOptions);
-            } elseif ($this->shouldCellBeColouredForReport($pReportDisplayOptions)) {
-                $cellClassToUse = $cellFormatter->getCellClassNameForTableFromOutputValue(
-                    $pResultOutputArray[$pRowCounter][$columnCounter]);
-            } elseif(is_numeric($pResultOutputArray[$pRowCounter][$columnCounter])) {
-                $cellClassToUse = "cellNumber cellNormal";
-            } else {
-                $cellClassToUse = "cellText cellNormal";
-            }
-        } else {
-            $cellClassToUse = "cellNormal"; //done
-        }
-        return $cellClassToUse; //done
-    */
     }
 	
     private function getCellClassFromFirstColumnFormat($pReportDisplayOptions) {
@@ -269,7 +248,6 @@ class Parent_report extends CI_Model {
     }
 
     private function determineCellValueToUse($columnCounter, $pResultOutputArray, $pReportDisplayOptions, $pRowCounter) {
-
         if ($this->isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter)  === false) {
             return "";
         }
@@ -283,8 +261,8 @@ class Parent_report extends CI_Model {
         }
 
         if ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
-         $weekDate = date_create($pResultOutputArray[$pRowCounter][$columnCounter]);
-            return  date_format($weekDate, 'd/m/Y');
+            $weekDate = date_create($pResultOutputArray[$pRowCounter][$columnCounter]);
+            return date_format($weekDate, 'd/m/Y');
         }
     }
 
