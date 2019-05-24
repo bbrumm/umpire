@@ -1,5 +1,5 @@
 <?php
-class ReportArrayOutputFormatter extends CI_Model {
+class Report_array_output_formatter extends CI_Model {
     
     public function __construct() {
         
