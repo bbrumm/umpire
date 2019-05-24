@@ -50,7 +50,9 @@ class Parent_report extends CI_Model {
         return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]]);
     }
 
-    private function isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
+	//This is used by Report3
+	//TODO: Clean up the link to Report3 so these function calls are consistent
+    public function isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
         return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]] &&
             $pColumnItem[$pReportColumnFields[1]] == $pColumnHeadingSet[$pReportColumnFields[1]]);
     }
