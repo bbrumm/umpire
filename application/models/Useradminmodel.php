@@ -98,7 +98,7 @@ class Useradminmodel extends CI_Model {
              [permission_selection.id] => on
              [permission_selection.id] => on
      */
-    public function getAllUserPermissionsFromDB(IData_store_user_admin $pDataStore) {
+    public function getAllUserPermissionsFromDB(IData_store_user_permission $pDataStore) {
         return $pDataStore->getAllUserPermissionsFromDB();
     }
 
@@ -110,7 +110,7 @@ class Useradminmodel extends CI_Model {
             [jhillgrove] => 2
             [gmanager] => 2
     */
-    public function getAllUserRolesFromDB(IData_store_user_admin $pDataStore) {
+    public function getAllUserRolesFromDB(IData_store_user_permission $pDataStore) {
         return $pDataStore->getAllUserRolesFromDB();
     }
 
@@ -122,7 +122,7 @@ class Useradminmodel extends CI_Model {
              [username] => on
              [username] => on
      */
-    public function getAllUserActiveFromDB(IData_store_user_admin $pDataStore) {
+    public function getAllUserActiveFromDB(IData_store_user_permission $pDataStore) {
         return $pDataStore->getAllUserActiveFromDB();
     }
 
@@ -139,7 +139,7 @@ class Useradminmodel extends CI_Model {
         return $translatedArray;
     }
     
-    public function removePrivileges(IData_store_user_admin $pDataStore, $permissionArray) {
+    public function removePrivileges(IData_store_user_permission $pDataStore, $permissionArray) {
         foreach ($permissionArray as $username=>$userPermissionArray) {
             //Remove permission and log removal
             foreach($userPermissionArray as $permission_selection_id=>$setValue) {
@@ -148,7 +148,7 @@ class Useradminmodel extends CI_Model {
         }
     }
     
-    public function addPrivileges(IData_store_user_admin $pDataStore, $permissionArray) {
+    public function addPrivileges(IData_store_user_permission $pDataStore, $permissionArray) {
         foreach ($permissionArray as $username=>$userPermissionArray) {
             //Add permission and log removal
             foreach($userPermissionArray as $permission_selection_id=>$setValue) {
@@ -162,19 +162,17 @@ class Useradminmodel extends CI_Model {
         $pDataStore->addDefaultUserPrivileges($username);
     }
     
-    public function updateUserRoles(IData_store_user_admin $pDataStore, $userRoleArray) {
+    public function updateUserRoles(IData_store_user_permission $pDataStore, $userRoleArray) {
         foreach ($userRoleArray as $username=>$newRoleID) {
             $pDataStore->updateUserRole($username, $newRoleID);
         }
     }
     
-    public function updateUserActive(IData_store_user_admin $pDataStore, $userActiveArray) {
+    public function updateUserActive(IData_store_user_permission $pDataStore, $userActiveArray) {
         foreach ($userActiveArray as $username=>$setValue) {
             $pDataStore->updateSingleUserActive($username, $setValue);
         }
     }
-
-    public function saveUserPrivileges(IData_store_user_admin $pDataStore, $postData) {
 
 
         /*
@@ -205,6 +203,8 @@ The [#] represents the permission_selection.id value. This can be used to insert
          *
          *
          */
+    public function saveUserPrivileges(IData_store_user_permission $pDataStore, $postData) {
+
         $arrayLibrary = new Array_library();
 
         $userPermissionsFromDB = $this->getAllUserPermissionsFromDB($pDataStore);

@@ -76,7 +76,7 @@ class UserAdmin extends CI_Controller
     }
     
     public function saveUserPrivileges() {
-        $dataStore = new Database_store_user_admin();
+        $dataStore = new Database_store_user_permission();
 
         $userAdmin = new Useradminmodel();
         $privilegesSaved = $userAdmin->saveUserPrivileges($dataStore, $_POST);

@@ -253,7 +253,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_GetAllUserPermissionsFromDB() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $actualArray= $this->obj->getAllUserPermissionsFromDB($arrayStore);
         $expectedArray = array (
             "jsmith" => array (1=>"on", 4=>"on"),
@@ -268,7 +268,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_GetAllUserRolesFromDB() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $actualArray= $this->obj->getAllUserRolesFromDB($arrayStore);
         $expectedArray = array (
             "jsmith" => 2,
@@ -285,7 +285,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_GetAllUserActiveFromDB() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $actualArray= $this->obj->getAllUserActiveFromDB($arrayStore);
         $expectedArray = array (
             "jsmith22" => "on",
@@ -331,7 +331,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_RemovePrivileges() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $deletedUsername = "jsmith";
         $deletedPermissionID = 4;
@@ -368,7 +368,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_RemovePrivileges_UsernameNotFound() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $deletedUsername = "mark";
         $deletedPermissionID = 2;
@@ -406,7 +406,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_RemovePrivileges_PermissionNotFound() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $deletedUsername = "bbrumm";
         $deletedPermissionID = 4;
@@ -439,7 +439,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_RemovePrivileges_DeleteTwo() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $deletedUsername = "jsmith";
         $deletedPermissionID = 1;
@@ -480,7 +480,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_AddPrivileges() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $addedUsername = "jsmith";
         $addedPermissionID = 7;
@@ -515,7 +515,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_AddPrivileges_UsernameNotFound() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $addedUsername = "peter";
         $addedPermissionID = 7;
@@ -549,7 +549,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_AddPrivileges_PermissionExists() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $addedUsername = "abc";
         $addedPermissionID = 1;
@@ -584,7 +584,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_UpdateUserRoles() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "john";
         $updatedRoleID = 1;
@@ -616,7 +616,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_UpdateUserRoles_UsernameMissing() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "mark";
         $updatedRoleID = 1;
@@ -648,7 +648,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_UpdateUserRoles_UsernameHasRole() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "ringo";
         $updatedRoleID = 2;
@@ -682,7 +682,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_UpdateUserActive() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "abc";
         $updatedActive = 1;
@@ -715,7 +715,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_UpdateUserActive_UsernameMissing() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "alex";
         $updatedActive = 1;
@@ -748,7 +748,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_UpdateUserActive_SetInactive() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "jsmith";
         $updatedActive = 0;
@@ -781,7 +781,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_UpdateUserActive_SetInvalid() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "jsmith";
         $updatedActive = "abc";
@@ -814,7 +814,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_UpdateUserActive_SetNull() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $updatedUsername = "bbrumm";
         $updatedActive = null;
@@ -847,7 +847,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_SavePrivileges_OneUser() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $postDataArray = array (
             'userPrivilege' => array (
@@ -933,7 +933,7 @@ class User_admin_model_test extends TestCase
     }
 
     public function test_SavePrivileges_NoChanges() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $postDataArray = array (
             'userPrivilege' => array (
@@ -1006,6 +1006,7 @@ class User_admin_model_test extends TestCase
 
     public function test_SavePrivileges_TwoUsers() {
         $arrayStore = new Array_store_user_admin();
+        $arrayStorePermission = new Array_store_user_permission();
         $arrayLibrary = new Array_library();
         $postDataArray = array (
             'userPrivilege' => array (
@@ -1025,9 +1026,9 @@ class User_admin_model_test extends TestCase
             )
         );
 
-        $this->obj->saveUserPrivileges($arrayStore, $postDataArray);
+        $this->obj->saveUserPrivileges($arrayStorePermission, $postDataArray);
 
-        $actualPrivilegeArray = $arrayStore->getAllUserPermissionsFromDB();
+        $actualPrivilegeArray = $arrayStorePermission->getAllUserPermissionsFromDB();
         $expectedPrivilegeArray = array (
             "jsmith" => array (1=>"on", 4=>"on", 6=>"on"),
             "bbrumm" => array (3=>"on"),
@@ -1043,7 +1044,7 @@ class User_admin_model_test extends TestCase
         $this->assertEquals($expectedPrivilegeCount, $actualPrivilegeCount);
         $this->assertEquals($expectedCountOfDifferences, $countOfDifferentPrivileges);
 
-        $actualRoleArray = $arrayStore->getAllUserRolesFromDB();
+        $actualRoleArray = $arrayStorePermission->getAllUserRolesFromDB();
         $expectedRoleArray = array (
             'jsmith'=>2,
             'bbrumm'=>1,
@@ -1059,7 +1060,7 @@ class User_admin_model_test extends TestCase
         $this->assertEquals($expectedCountOfDifferentRoles, $countOfDifferentRoles);
 
         //Test Active value changes
-        $actualActiveArray = $arrayStore->getUserActiveData();
+        $actualActiveArray = $arrayStorePermission->getUserActiveData();
         $expectedActiveArray = array (
             array('username'=>'jsmith', 'active'=>0),
             array('username'=>'bbrumm', 'active'=>0),
