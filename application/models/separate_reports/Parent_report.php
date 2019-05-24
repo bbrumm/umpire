@@ -4,6 +4,7 @@ class Parent_report extends CI_Model {
     
     public function __construct() {
         $this->load->model('Cell_formatting_helper');
+	$this->load->model('separate_reports/Report_array_output_formatter');
     }
 
     public function getReportDataQuery(Report_instance $pReportInstance) {}
@@ -66,6 +67,11 @@ class Parent_report extends CI_Model {
 
     public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
+	$outputFormatter = new Report_array_output_formatter();
+	return $outputFormatter->formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
+                                             $pReportDisplayOptions, $pColumnCountForHeadingCells);
+	    
+	/*    
         $outputArray = array();
         //First add heading cells
         $outputArray[0] = $this->addHeadingCellsToOutput(
@@ -74,6 +80,7 @@ class Parent_report extends CI_Model {
         $outputArray = $this->addDataCellsToOutput(
             $outputArray, $pResultOutputArray, $pLoadedColumnGroupings, $pReportDisplayOptions);
         return $outputArray;
+	*/
     }
 	
 	private function addHeadingCellsToOutput($pReportDisplayOptions, $pColumnCountForHeadingCells, $pLoadedColumnGroupings) {
