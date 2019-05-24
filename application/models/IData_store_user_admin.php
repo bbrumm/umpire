@@ -4,20 +4,6 @@ interface IData_store_user_admin {
 
     public function getAllUsers();
 
-    public function getRoleArray();
-
-    public function getReportArray();
-
-    public function getRegionArray();
-
-    public function getUmpireDisciplineArray();
-
-    public function getAgeGroupArray();
-
-    public function getLeagueArray();
-
-    public function getPermissionSelectionArray();
-
     public function insertNewUser(User $pUser);
 
     public function addDefaultUserPrivileges($username);

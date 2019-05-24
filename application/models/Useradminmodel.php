@@ -18,7 +18,7 @@ class Useradminmodel extends CI_Model {
         return $userArray;
     }
 
-    public function getRoleArray(IData_store_user_admin $pDataStore) {
+    public function getRoleArray(IData_store_reference $pDataStore) {
         $roleArray = $pDataStore->getRoleArray();
         if (empty($roleArray)) {
             throw new Exception("No roles were found in the database. Please contact support.");
@@ -26,7 +26,7 @@ class Useradminmodel extends CI_Model {
         return $roleArray;
     }
     
-    public function getReportArray(IData_store_user_admin $pDataStore) {
+    public function getReportArray(IData_store_reference $pDataStore) {
         $reportArray = $pDataStore->getReportArray();
         if (empty($reportArray)) {
             throw new Exception("No reports were found in the database. Please contact support.");
@@ -34,7 +34,7 @@ class Useradminmodel extends CI_Model {
         return $reportArray;
     }
     
-    public function getRegionArray(IData_store_user_admin $pDataStore) {
+    public function getRegionArray(IData_store_reference $pDataStore) {
         $regionArray = $pDataStore->getRegionArray();
         if (empty($regionArray)) {
             throw new Exception("No regions were found in the database. Please contact support.");
@@ -42,7 +42,7 @@ class Useradminmodel extends CI_Model {
         return $regionArray;
     }
     
-    public function getUmpireDisciplineArray(IData_store_user_admin $pDataStore) {
+    public function getUmpireDisciplineArray(IData_store_reference $pDataStore) {
         $umpireDisciplineArray = $pDataStore->getUmpireDisciplineArray();
         if (empty($umpireDisciplineArray)) {
             throw new Exception("No umpire disciplines were found in the database. Please contact support.");
@@ -50,7 +50,7 @@ class Useradminmodel extends CI_Model {
         return $umpireDisciplineArray;
     }
     
-    public function getAgeGroupArray(IData_store_user_admin $pDataStore) {
+    public function getAgeGroupArray(IData_store_reference $pDataStore) {
         $ageGroupArray = $pDataStore->getAgeGroupArray();
         if (empty($ageGroupArray)) {
             throw new Exception("No age groups were found in the database. Please contact support.");
@@ -58,7 +58,7 @@ class Useradminmodel extends CI_Model {
         return $ageGroupArray;
     }
     
-    public function getLeagueArray(IData_store_user_admin $pDataStore) {
+    public function getLeagueArray(IData_store_reference $pDataStore) {
         $leagueArray = $pDataStore->getLeagueArray();
         if (empty($leagueArray)) {
             throw new Exception("No leagues were found in the database. Please contact support.");
@@ -66,7 +66,7 @@ class Useradminmodel extends CI_Model {
         return $leagueArray;
     }
     
-    public function getPermissionSelectionArray(IData_store_user_admin $pDataStore) {
+    public function getPermissionSelectionArray(IData_store_reference $pDataStore) {
         $permissionSelectionArray = $pDataStore->getPermissionSelectionArray();
         if (empty($permissionSelectionArray)) {
             throw new Exception("No permission selections were found in the database. Please contact support.");

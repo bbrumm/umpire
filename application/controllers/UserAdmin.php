@@ -13,6 +13,7 @@ class UserAdmin extends CI_Controller
         $this->load->helper(array('form', 'url'));
         $this->load->model('Useradminmodel');
         $this->load->model('Database_store_user_admin');
+        $this->load->model('Database_store_reference');
         $this->load->library('Debug_library');
         $this->load->library('Array_library');
     }
@@ -36,19 +37,20 @@ class UserAdmin extends CI_Controller
         
         if($this->session->userdata('logged_in')) {
             $dataStore = new Database_store_user_admin();
+            $dataStoreReference = new Database_store_reference();
             $userAdmin = new Useradminmodel();
             $userArray = $userAdmin->getAllUsers($dataStore);
-            $roleArray = $userAdmin->getRoleArray($dataStore);
+            $roleArray = $userAdmin->getRoleArray($dataStoreReference);
             //$subRoleArray = $userAdmin->getSubRoleArray();
             
-            $permissionSelectionArray = $userAdmin->getPermissionSelectionArray($dataStore);
+            $permissionSelectionArray = $userAdmin->getPermissionSelectionArray($dataStoreReference);
             
             //TODO: Remove these once the permission selection array is working
-            $reportSelectionArray = $userAdmin->getReportArray($dataStore);
-            $regionSelectionArray = $userAdmin->getRegionArray($dataStore);
-            $umpireDisciplineSelectionArray = $userAdmin->getUmpireDisciplineArray($dataStore);
-            $ageGroupSelectionArray = $userAdmin->getAgeGroupArray($dataStore);
-            $leagueSelectionArray = $userAdmin->getLeagueArray($dataStore);
+            $reportSelectionArray = $userAdmin->getReportArray($dataStoreReference);
+            $regionSelectionArray = $userAdmin->getRegionArray($dataStoreReference);
+            $umpireDisciplineSelectionArray = $userAdmin->getUmpireDisciplineArray($dataStoreReference);
+            $ageGroupSelectionArray = $userAdmin->getAgeGroupArray($dataStoreReference);
+            $leagueSelectionArray = $userAdmin->getLeagueArray($dataStoreReference);
             
             $this->load->view('templates/header');
             

@@ -8,42 +8,6 @@ class Array_store_user_admin_empty extends CI_Model implements IData_store_user_
         $testData = [];
         return $testData;
     }
-
-    public function getRoleArray() {
-        $testData = [];
-        return $testData;
-    }
-
-    public function getReportArray() {
-        $testData = [];
-        return $testData;
-    }
-
-    public function getRegionArray() {
-        $testData = [];
-        return $testData;
-    }
-
-    public function getUmpireDisciplineArray() {
-        $testData = [];
-        return $testData;
-    }
-
-    public function getAgeGroupArray() {
-        $testData = [];
-        return $testData;
-    }
-
-    public function getLeagueArray() {
-        $testData = [];
-        return $testData;
-    }
-
-    public function getPermissionSelectionArray() {
-        $testData = [];
-        return $testData;
-    }
-
     public function insertNewUser(User $pUser) {}
 
     public function addDefaultUserPrivileges($username) {}

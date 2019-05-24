@@ -51,41 +51,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
         return $queryResultArray;
     }
 
-    public function getRoleArray() {
-        $queryString = "SELECT id, role_name, display_order FROM role WHERE role_name != 'Owner' ORDER BY display_order;";
-        return $this->getArrayFromQuery($queryString);
-    }
 
-    public function getReportArray() {
-        $queryString = "SELECT report_id, report_name FROM report;";
-        return $this->getArrayFromQuery($queryString);
-    }
-
-    public function getRegionArray() {
-        $queryString = "SELECT id, region_name FROM region;";
-        return $this->getArrayFromQuery($queryString);
-    }
-
-    public function getUmpireDisciplineArray() {
-        $queryString = "SELECT id, umpire_type_name FROM umpire_type;";
-        return $this->getArrayFromQuery($queryString);
-    }
-
-    public function getAgeGroupArray() {
-        $queryString = "SELECT id, age_group FROM age_group ORDER BY display_order;";
-        return $this->getArrayFromQuery($queryString);
-    }
-
-    public function getLeagueArray() {
-        $queryString = "SELECT id, short_league_name FROM short_league_name ORDER BY display_order;";
-        return $this->getArrayFromQuery($queryString);
-    }
-
-    public function getPermissionSelectionArray() {
-        $queryString = "SELECT id, permission_id, category, selection_name ".
-            " FROM permission_selection ORDER BY category, display_order;";
-        return $this->getArrayFromQuery($queryString);
-    }
 
     public function insertNewUser(User $pUser) {
         //TODO: Replace the default role with a user selection, once it is built into the UI.

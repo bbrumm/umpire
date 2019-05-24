@@ -39,7 +39,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_GetRoleArray() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_reference();
         $actualRoleArray = $this->obj->getRoleArray($arrayStore);
         $expectedRoleArray = array (
             array("id"=>1, "role_name"=>"Administrator", "display_order"=>1),
@@ -56,7 +56,7 @@ class User_admin_model_test extends TestCase
 
     public function test_GetRoleArrayEmpty() {
         $this->expectException(Exception::class);
-        $arrayStore = new Array_store_user_admin_empty();
+        $arrayStore = new Array_store_reference_empty();
         $actualArray= $this->obj->getRoleArray($arrayStore);
 
     }
@@ -64,7 +64,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_GetReportArray() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_reference();
         $actualArray= $this->obj->getReportArray($arrayStore);
         $expectedArray = array (
             array("report_id"=>1, "report_title"=>"01 - Umpires and Clubs"),
@@ -80,14 +80,14 @@ class User_admin_model_test extends TestCase
 
     public function test_GetReportArrayEmpty() {
         $this->expectException(Exception::class);
-        $arrayStore = new Array_store_user_admin_empty(); //TODO create new array_store with empty data
+        $arrayStore = new Array_store_reference_empty(); //TODO create new array_store with empty data
         $actualArray= $this->obj->getReportArray($arrayStore);
 
     }
 
 
     public function test_GetRegionArray() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_reference();
         $actualArray= $this->obj->getRegionArray($arrayStore);
         $expectedArray = array (
             array("id"=>1, "region"=>"Geelong"),
@@ -102,12 +102,12 @@ class User_admin_model_test extends TestCase
 
     public function test_GetRegionArrayEmpty() {
         $this->expectException(Exception::class);
-        $arrayStore = new Array_store_user_admin_empty(); //TODO create new array_store with empty data
+        $arrayStore = new Array_store_reference_empty(); //TODO create new array_store with empty data
         $actualArray= $this->obj->getRegionArray($arrayStore);
     }
 
     public function test_GetUmpireDisciplineArray() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_reference();
         $actualArray= $this->obj->getUmpireDisciplineArray($arrayStore);
         $expectedArray = array (
             array("id"=>1, "umpire_type_name"=>"Field"),
@@ -123,13 +123,13 @@ class User_admin_model_test extends TestCase
 
     public function test_GetUmpireDisciplineArrayEmpty() {
         $this->expectException(Exception::class);
-        $arrayStore = new Array_store_user_admin_empty();
+        $arrayStore = new Array_store_reference_empty();
         $actualArray= $this->obj->getUmpireDisciplineArray($arrayStore);
     }
 
 
     public function test_GetAgeGroupArray() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_reference();
         $actualArray= $this->obj->getAgeGroupArray($arrayStore);
         $expectedArray = array (
             array("id"=>1, "umpire_type_name"=>"Under 18"),
@@ -145,12 +145,12 @@ class User_admin_model_test extends TestCase
 
     public function test_GetAgeGroupArrayEmpty() {
         $this->expectException(Exception::class);
-        $arrayStore = new Array_store_user_admin_empty();
+        $arrayStore = new Array_store_reference_empty();
         $actualArray= $this->obj->getAgeGroupArray($arrayStore);
     }
 
     public function test_GetLeagueArray() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_reference();
         $actualArray= $this->obj->getLeagueArray($arrayStore);
         $expectedArray = array (
             array("id"=>1, "short_league_name"=>"BFL"),
@@ -166,7 +166,7 @@ class User_admin_model_test extends TestCase
 
     public function test_GetLeagueArrayEmpty() {
         $this->expectException(Exception::class);
-        $arrayStore = new Array_store_user_admin_empty();
+        $arrayStore = new Array_store_reference_empty();
         $actualArray= $this->obj->getLeagueArray($arrayStore);
     }
 
@@ -174,7 +174,7 @@ class User_admin_model_test extends TestCase
 
 
     public function test_GetPermissionArray() {
-        $arrayStore = new Array_store_user_admin();
+        $arrayStore = new Array_store_reference();
         $actualArray= $this->obj->getPermissionSelectionArray($arrayStore);
         $expectedArray = array (
             array("id"=>1, "permission_id"=>1, "category" => "something", "selection_name" => "yes"),
@@ -189,7 +189,7 @@ class User_admin_model_test extends TestCase
 
     public function test_GetPermissionArrayEmpty() {
         $this->expectException(Exception::class);
-        $arrayStore = new Array_store_user_admin_empty();
+        $arrayStore = new Array_store_reference_empty();
         $actualArray= $this->obj->getPermissionSelectionArray($arrayStore);
     }
 
