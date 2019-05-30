@@ -120,6 +120,90 @@ class HomeController_test extends TestCase
 
     }
 
+    public function test_LoadPage_NewLayout_SeasonRegion() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $seasonSelection = '<select name="season">';
+        $this->assertContains($seasonSelection, $output);
+
+        $regionSelection = '<select name="region">';
+        $this->assertContains($regionSelection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report1button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report1Selection = "<input type='button' value='Report 01 - Umpires and Clubs' id='reportButton1' class='btn'";
+        $this->assertContains($report1Selection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report2button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report2Selection = "<input type='button' value='Report 02 - Umpire Names by League' id='reportButton2' class='btn'";
+        $this->assertContains($report2Selection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report3button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report3Selection = "<input type='button' value='Report 03 - Summary' id='reportButton3' class='btn'";
+        $this->assertContains($report3Selection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report4button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report4Selection = "<input type='button' value='Report 04 - Summary by Club' id='reportButton4' class='btn'";
+        $this->assertContains($report4Selection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report5button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report5Selection = "<input type='button' value='Report 05 - Summary by League' id='reportButton5' class='btn'";
+        $this->assertContains($report5Selection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report6button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report6Selection = "<input type='button' value='Report 06 - Pairings' id='reportButton6' class='btn'";
+        $this->assertContains($report6Selection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report7button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report7Selection = "<input type='button' value='Report 07 - 2 and 3 Field Umpires' id='reportButton7' class='btn'";
+        $this->assertContains($report7Selection, $output);
+    }
+
+    public function test_LoadPage_NewLayout_Report8button() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $report8Selection = "<input type='button' value='Report 08 - Umpire Games Tally' id='reportButton8' class='btn'";
+        $this->assertContains($report8Selection, $output);
+    }
+
 
 
 }

@@ -29,8 +29,7 @@ class Home extends CI_Controller {
             $data['validCombinations'] = $this->getListOfValidCombinations();
             
             $this->load->helper('form');
-            //TODO add feature flag check here
-            if ($this->useNewReportLayout()) {
+            if ($this->shouldUseNewReportLayout()) {
                 $this->load->view('report_new', $data);
             } else {
                 $this->load->view('report_home', $data);
@@ -146,7 +145,7 @@ class Home extends CI_Controller {
         return $queryResultArray;
     }
 
-    private function useNewReportLayout() {
+    private function shouldUseNewReportLayout() {
         $ffNewReportLayoutUsers = $this->getFeatureFlag('ff_new_report_selection');
         $session_data = $this->session->userdata('logged_in');
         $currentUsername = $session_data['username'];
