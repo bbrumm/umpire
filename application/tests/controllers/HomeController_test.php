@@ -66,8 +66,59 @@ class HomeController_test extends TestCase
     }
 
 
+    public function test_LoadPage_bbrumm() {
+        $sessionArray['logged_in'] = array('username' => 'bbrumm');
+        $this->CI->session->set_userdata($sessionArray);
 
+        $output = $this->request('POST', ['Home', 'index']);
+        $expectedHeader = "<h2>New Report</h2>";
+        $this->assertContains($expectedHeader, $output);
 
+    }
+
+    public function test_LoadPage_brendan() {
+        $sessionArray['logged_in'] = array('username' => 'bbeveridge');
+        $this->CI->session->set_userdata($sessionArray);
+
+        $output = $this->request('POST', ['Home', 'index']);
+        $expectedHeader = "<h2>Select a Report</h2>";
+        $this->assertContains($expectedHeader, $output);
+
+    }
+
+    public function test_LoadPage_allOtherUsers() {
+        $allOtherUsernameArray = array(
+            'jhillgrove',
+            'gmanager',
+            'dbaensch',
+            'skeating',
+            'hphilpott',
+            'rtrotter',
+            'agrant',
+            'chood',
+            'dsantospirito',
+            'tbrooks',
+            'aedwick',
+            'kmcmaster',
+            'ldonohue',
+            'dreid',
+            'kclissold',
+            'rsteel',
+            'bsmith',
+            'adame',
+            'mdavison'
+        );
+        $userCount = count($allOtherUsernameArray);
+        for($i=0; $i<$userCount; $i++) {
+            $sessionArray['logged_in'] = array('username' => $allOtherUsernameArray[$i]);
+            $this->CI->session->set_userdata($sessionArray);
+
+            $output = $this->request('POST', ['Home', 'index']);
+            $expectedHeader = "<h2>Select a Report</h2>";
+            $this->assertContains($expectedHeader, $output);
+        }
+
+    }
 
 
 

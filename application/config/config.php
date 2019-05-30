@@ -515,3 +515,6 @@ $config['debug_mode'] = FALSE;
 $config['use_new_dw_tables'] = TRUE;
 
 $config['encryption_key'] = '654879493156487941564795';
+
+//These users will have the new report selection experience
+$config['ff_new_report_selection'] = array('bbrumm');
