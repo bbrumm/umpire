@@ -34,8 +34,8 @@ echo form_open('report', array('id'=>'submitForm'));
     <span class="reportSelectorLabel">Region:</span>
     <span class="reportSelectorControl">
 		<select name="region">
-            <option value="regionGeelong">Geelong</option>
-            <option value="regionColac">Colac</option>
+            <option value="Geelong">Geelong</option>
+            <option value="Colac">Colac</option>
 
 		<?php
         //TODO: set the default to whatever region this user has. Most of the time this will be one.
@@ -52,11 +52,12 @@ foreach ($reportList as $reportListItem) {
     "value='Report ".$reportListItem->getReportName()."' ".
     "id='reportButton". $reportListItem->getReportId() ."' ".
     "class='btn' ".
-    "onClick='validateReportSelectionsNew()'>
+    "onClick='validateReportSelectionsNew(". $reportListItem->getReportId() .")' ".
+    "name='reportButton'>
     <br /><br />";
 }
 ?>
-
+<input type="hidden" name="reportID" id="reportID" value="" />
 </div>
 
 <?php echo form_close(); ?>

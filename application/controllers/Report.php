@@ -88,8 +88,28 @@ class Report extends CI_Controller {
 
     private function showNewReportOutput() {
         $data = array();
+
+        $reportPopulator = new Report_populator_model();
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+
+        $requestedReport = Requested_report_model::createDefaultReportFromValues(
+            intval($_POST['reportID']),
+            intval($_POST['season']),
+            $_POST['region']
+        );
+
+        $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
+        $data['title'] = 'Test Report';
+        $data['PDFLayout'] = FALSE;
+        $data['debugLibrary'] = new Debug_library();
+        //TODO Add JS controls for report param selection here
+
         $this->load->view('templates/header', $data);
-        echo "new report page";
+        $this->load->view('report/single_report_view', $data);
+        $this->load->view('templates/footer');
+
     }
 	
 	//Determines if the Requested Report Model should use a value from the selectable field, or the hidden value

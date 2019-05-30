@@ -43,6 +43,7 @@ class Report_instance extends CI_Model {
 	    $this->reportParamLoader = new Report_param_loader();
 	    $this->load->model('separate_reports/Report_factory');
 	    $this->load->model('separate_reports/Report_cell');
+        $this->load->model('separate_reports/Report_array_output_formatter');
 
 	}
 	
@@ -239,9 +240,12 @@ class Report_instance extends CI_Model {
 	//TODO: I think there is some refactoring here if I am using a collection of objects
     //TODO improve the way the long function here is called
     public function getFormattedResultsForOutput() {
-	    $this->formattedOutputArray = $this->separateReport->formatOutputArrayForView($this->getResultOutputArray(),
-            $this->getColumnLabelResultArray(), $this->getDisplayOptions(), $this->getColumnCountForHeadingCells());
-        //$this->debug_library->debugOutput("formattedOutputArray: ", $this->formattedOutputArray);
+        $reportArrayOutputFormatter = new Report_array_output_formatter();
+	    $this->formattedOutputArray = $reportArrayOutputFormatter->formatOutputArrayForView(
+	        $this->getResultOutputArray(),
+            $this->getColumnLabelResultArray(),
+            $this->getDisplayOptions(),
+            $this->getColumnCountForHeadingCells());
 	    return $this->formattedOutputArray;
     }
 

@@ -249,7 +249,8 @@ function validateReportSelections() {
 }
 
 //The same function as above, but to be used with the new report selection UI
-function validateReportSelectionsNew() {
+function validateReportSelectionsNew(reportID) {
+    document.getElementById("reportID").value = reportID;
     document.getElementById("submitForm").submit();
 }
 

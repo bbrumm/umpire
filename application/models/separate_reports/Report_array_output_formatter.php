@@ -6,7 +6,7 @@ class Report_array_output_formatter extends CI_Model {
     }
 
 
-public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
+    public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
         $outputArray = array();
         //First add heading cells

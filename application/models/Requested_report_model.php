@@ -6,8 +6,9 @@
  * and is used to find the right report to display.
  */
 
-class Requested_report_model extends CI_Model {
-    
+class Requested_report_model extends CI_Model
+{
+
     private $reportNumber;
     private $season;
     private $region;
@@ -15,14 +16,14 @@ class Requested_report_model extends CI_Model {
     private $umpireType;
     private $league;
     private $pdfMode;
-    
+
     public function __construct() {
-           
+
     }
-    
+
     public static function createRequestedReportFromValues(
         $pReportNumber, $pSeason, $pRegion, $pAgeGroup, $pUmpireType, $pLeague, $pPDFMode) {
-        
+
         $instance = new Requested_report_model();
         $instance->setReportNumber($pReportNumber);
         $instance->setSeason($pSeason);
@@ -31,8 +32,26 @@ class Requested_report_model extends CI_Model {
         $instance->setUmpireType($pUmpireType);
         $instance->setLeague($pLeague);
         $instance->setPDFMode($pPDFMode);
-        
+
         return $instance;
+    }
+
+    public static function createDefaultReportFromValues(
+        $pReportNumber, $pSeason, $pRegion) {
+
+        $instance = new Requested_report_model();
+        $instance->setReportNumber($pReportNumber);
+        $instance->setSeason($pSeason);
+        $instance->setRegion($pRegion);
+        //Use defaults
+        //TODO: Update these to specify all of the defaults
+        $instance->setAgeGroup(array('Seniors'));
+        $instance->setUmpireType(array('Field'));
+        $instance->setLeague(array('GFL'));
+        $instance->setPDFMode(FALSE);
+
+        return $instance;
+
     }
     
     public function getReportNumber() {
