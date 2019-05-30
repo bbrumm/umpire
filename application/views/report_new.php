@@ -48,7 +48,12 @@ echo form_open('report', array('id'=>'submitForm'));
 <?php
 //TODO: Make these dropdown boxes bigger, now there is only two of them
 foreach ($reportList as $reportListItem) {
-    echo "<input type='button' value='Report ".$reportListItem->getReportName()."' id='reportButton". $reportListItem->getReportId() ."' class='btn' onClick='validateReportSelections()'> <br /><br />";
+    echo "<input type='button' ".
+    "value='Report ".$reportListItem->getReportName()."' ".
+    "id='reportButton". $reportListItem->getReportId() ."' ".
+    "class='btn' ".
+    "onClick='validateReportSelectionsNew()'>
+    <br /><br />";
 }
 ?>
 

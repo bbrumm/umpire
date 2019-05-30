@@ -9,8 +9,24 @@ class Report extends CI_Controller {
 		$this->load->model('Requested_report_model');
 		$this->load->library('Debug_library');
 	}
+
+	//TODO: move this to another place because it's repeated in the Home controller
+    private function shouldUseNewReportLayout() {
+        $ffNewReportLayoutUsers = $this->config->item('ff_new_report_selection');
+        $session_data = $this->session->userdata('logged_in');
+        $currentUsername = $session_data['username'];
+        return in_array($currentUsername, $ffNewReportLayoutUsers);
+    }
 	
 	public function index() {
+        if ($this->shouldUseNewReportLayout()) {
+            $this->showNewReportOutput();
+        } else {
+            $this->showOldReportOutput();
+        }
+    }
+
+    private function showOldReportOutput() {
 	    $data = array();
 	    $reportPopulator = new Report_populator_model();
 	    
@@ -69,6 +85,12 @@ class Report extends CI_Controller {
 		$this->load->view('templates/footer');
 		
 	}
+
+    private function showNewReportOutput() {
+        $data = array();
+        $this->load->view('templates/header', $data);
+        echo "new report page";
+    }
 	
 	//Determines if the Requested Report Model should use a value from the selectable field, or the hidden value
 	//(e.g. if the PDF report was generated)

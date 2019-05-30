@@ -146,13 +146,9 @@ class Home extends CI_Controller {
     }
 
     private function shouldUseNewReportLayout() {
-        $ffNewReportLayoutUsers = $this->getFeatureFlag('ff_new_report_selection');
+        $ffNewReportLayoutUsers = $this->config->item('ff_new_report_selection');
         $session_data = $this->session->userdata('logged_in');
         $currentUsername = $session_data['username'];
         return in_array($currentUsername, $ffNewReportLayoutUsers);
-    }
-
-    private function getFeatureFlag($pFlagName) {
-        return $this->config->item($pFlagName);
     }
 }

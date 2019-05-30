@@ -248,6 +248,11 @@ function validateReportSelections() {
     }
 }
 
+//The same function as above, but to be used with the new report selection UI
+function validateReportSelectionsNew() {
+    document.getElementById("submitForm").submit();
+}
+
 function isCheckboxSelected(checkboxElements) {
     var isSelected = false;
     for(var i=0, n=checkboxElements.length; i<n; i++) {
