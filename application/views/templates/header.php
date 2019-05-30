@@ -27,10 +27,11 @@ if (isset($printerFriendly)) {
 } else {
     $showHeader = TRUE;
 }
-
+//echo "<link type='text/css' rel='stylesheet' href='". asset_url() . "/tailselect/css/tail.select-default.css' />";
 //echo "<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>";
 //Localhost version of the JQuery script
 echo "<script src='". asset_url() . "jquery.min.js'></script>\n";
+//echo "<script src='". asset_url() . "/tailselect/js/tail.select.min.js'></script>\n";
 
 if ($showHeader) {
     echo "<script language='JavaScript' type='text/javascript' src='". asset_url() . $data['js_fixed'] ."'></script>\n";
@@ -49,6 +50,7 @@ echo "<link rel='stylesheet' type='text/css' media='all' href='". asset_url() . 
 if ($showHeader) {
 
 ?>
+
 
 <script type="text/javascript">
 

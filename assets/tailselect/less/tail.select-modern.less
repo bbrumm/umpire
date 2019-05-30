@@ -1,0 +1,141 @@
+/*
+ |  tail.select - Another solution to make select fields beautiful again!
+ |  @file       ./less/tail.select-modern.less
+ |  @author     SamBrishes <sam@pytes.net>
+ |  @version    0.5.12 - Beta
+ |
+ |  @website    https://github.com/pytesNET/tail.select
+ |  @license    X11 / MIT License
+ |  @copyright  Copyright © 2014 - 2019 SamBrishes, pytesNET <info@pytes.net>
+ */
+@import "tail.select-default.less";
+
+// ICONS
+@icon_caret_invert: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNMCA1bDYgNiA2LTZIMHoiLz48L3N2Zz4=";
+
+/* @start GENERAL */
+.tail-select{
+    button.tail-all,
+    button.tail-none{
+        .radius(10px);
+    }
+    button.tail-all:hover{
+        color: @handle_foreground;
+        background-color: @color_main;
+    }
+    button.tail-none:hover{
+        color: @handle_foreground;
+        background-color: @color_util;
+    }
+}
+.tail-select-container{
+    padding: 3px 5px 2px 5px;
+    .radius(34px);
+
+    .select-handle{
+        padding: 2px 22px 3px 10px;
+        .radius(10px);
+
+        &:after{
+            margin-left: -2px;
+        }
+    }
+}
+/* @end GENERAL */
+
+/* @start LABEL */
+.tail-select .select-label{
+    max-height: 32px;
+    overflow: hidden;
+    .radius(34px);
+
+    &:before{
+        top: 1px;
+        right: 1px;
+        width: 30px;
+        height: 30px;
+        opacity: 1;
+        content: "";
+        display: inline-block;
+        position: absolute;
+        border: 1px solid transparent;
+        .radius(50%);
+        .transition("border 142ms linear, background 142ms linear");
+    }
+    &:after{
+        right: -1px;
+        .radius(50%);
+    }
+}
+.tail-select:hover .select-label,
+.tail-select.idle .select-label{
+    &:before{
+        opacity: 1;
+        border-color: @color_main;
+    }
+}
+.tail-select.active .select-label{
+    &:before{
+        opacity: 1;
+        border-color: @color_main;
+        background-color: @color_main;
+    }
+    &:after{
+        background-image: url(@icon_caret_invert);
+    }
+}
+/* @end LABEL */
+
+/* @start DROPDOWN */
+.tail-select .select-dropdown{
+    margin: 15px 0 0 0;
+    overflow: visible;
+    .radius(3px);
+
+    &:before, &:after{
+        top: -13px;
+        right: 3px;
+        width: 0;
+        height: 0;
+        content: "";
+        position: absolute;
+        border-style: solid;
+        border-width: 0 14px 13px 14px;
+        border-color: transparent transparent rgba(0, 0, 0, 0.5) transparent;
+    }
+    &:after{
+        top: -12px;
+        right: 4px;
+        border-width: 0 13px 12px 13px;
+        border-color: transparent transparent @main_background transparent;
+    }
+    .dropdown-action{
+        background-color: @main_background;
+    }
+    ul li:first-of-type{
+        margin-top: 5px;
+    }
+    ul li:last-of-type{
+        margin-bottom: 5px;
+    }
+}
+.tail-select.open-top .select-dropdown{
+    margin: 0 0 15px 0;
+    .radius;
+
+    &:before, &:after{
+        top: auto;
+        bottom: -13px;
+        border-width: 13px 14px 0 14px;
+        border-color: rgba(0, 0, 0, 0.5) transparent transparent transparent;
+    }
+    &:after{
+        top: auto;
+        bottom: -12px;
+        border-width: 12px 13px 0 13px;
+        border-color: @main_background transparent transparent transparent;
+    }
+}
+/* @end DROPDOWN */

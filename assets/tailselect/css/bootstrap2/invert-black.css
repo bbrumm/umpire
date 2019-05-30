@@ -1,0 +1,45 @@
+@charset "utf-8";
+/*
+ |  tail.select - Another solution to make select fields beautiful again!
+ |  @file       ./css/bootstrap2/invert-black.css
+ |  @author     SamBrishes <sam@pytes.net>
+ |  @version    0.5.12 - Beta
+ |
+ |  @website    https://github.com/pytesNET/tail.select
+ |  @license    X11 / MIT License
+ |  @copyright  Copyright © 2014 - 2019 SamBrishes, pytesNET <info@pytes.net>
+ */
+@import url("../tail.select-bootstrap2.css");
+
+/* @start COLOR */
+.tail-select .select-label{
+    color: #FFFFFF;
+    background-color: #222222;
+    background-image: linear-gradient(to bottom, #444444, #222222);
+    background-image: -o-linear-gradient(top, #444444, #222222);
+    background-image: -moz-linear-gradient(top, #444444, #222222);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#444444), to(#222222));
+    background-image: -webkit-linear-gradient(top, #444444, #222222);
+}
+.tail-select .select-label:hover:after{
+    background-color: #222222;
+}
+.tail-select .select-label:before{
+    border-color: #FFFFFF transparent transparent;
+}
+.tail-select .select-label .label-count,
+.tail-select .select-label .label-inner{
+    color: #FFFFFF;
+}
+.tail-select.active .select-label:after{
+    background-color: #222222;
+}
+.tail-select .select-dropdown ul li.dropdown-option:hover{
+    background-color: #222222;
+    background-image: linear-gradient(to bottom, #444444, #222222);
+    background-image: -o-linear-gradient(top, #444444, #222222);
+    background-image: -moz-linear-gradient(top, #444444, #222222);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#444444), to(#222222));
+    background-image: -webkit-linear-gradient(top, #444444, #222222);
+}
+/* @end COLOR */

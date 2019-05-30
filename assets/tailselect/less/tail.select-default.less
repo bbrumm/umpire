@@ -1,0 +1,524 @@
+/*
+ |  tail.select - Another solution to make select fields beautiful again!
+ |  @file       ./less/tail.select-default.less
+ |  @author     SamBrishes <sam@pytes.net>
+ |  @version    0.5.12 - Beta
+ |
+ |  @website    https://github.com/pytesNET/tail.select
+ |  @license    X11 / MIT License
+ |  @copyright  Copyright © 2014 - 2019 SamBrishes, pytesNET <info@pytes.net>
+ */
+
+// WHITE COLORS
+@icons_invert: false;
+@color_main: #3C82E6;
+@color_util: #DC4650;
+
+@main_foreground: #303438;
+@main_foreground_meta: lighten(@main_foreground, 10%);
+@main_background: #FFFFFF;
+@main_background_hover: darken(@main_background, 5%);
+@main_background_disabled: darken(@main_background, 7%);
+@main_borderstyle: darken(@main_background, 20%);
+
+@main_boxshadow: "0 1px 1px 1px rgba(0, 0, 0, 0.1), 0 0 1px 1px rgba(0, 0, 0, 0.25)";
+@main_boxshadow_meta: "0 1px 1px 0 rgba(0, 0, 0, 0.1)";
+@main_boxshadow_active: %("0 1px 1px 1px rgba(0, 0, 0, 0.1), 0 0 1px 1px %s", @color_main);
+@main_boxshadow_disabled: "0 0 1px 1px rgba(0, 0, 0, 0.35)";
+
+@handle_foreground: #FFFFFF;
+@handle_background: @color_main;
+@handle_background_hover: @color_util;
+
+@button_foreground: #808080;
+@button_background: transparent;
+@button_borderstyle: #a0a0a0;
+
+// BLACK COLORS
+/*
+@icons_invert: true;
+@color_main: #3C82E6;
+@color_util: #DC4650;
+
+@main_foreground: rgba(255, 255, 255, 0.85);
+@main_foreground_meta: rgba(255, 255, 255, 0.5);
+@main_background: #202428;
+@main_background_hover: rgba(0, 0, 0, 0.3);
+@main_background_disabled: rgba(0, 0, 0, 0.3);
+@main_borderstyle: #101418;
+
+@main_boxshadow: "0 0 0 1px #000408, inset 0 0 1px 1px #404448";
+@main_boxshadow_meta: none;
+@main_boxshadow_active: %("0 0 0 1px #000408, inset 0 0 1px 1px %s", @color_main);
+@main_boxshadow_disabled: "0 0 0 1px #000408, inset 0 0 1px 1px #404448";
+
+@handle_foreground: #FFFFFF;
+@handle_background: @color_main;
+@handle_background_hover: @color_util;
+
+@button_foreground: rgba(255, 255, 255, 0.85);
+@button_background: transparent;
+@button_borderstyle: #505458;
+*/
+
+// MIXINS
+.radius(@radius: 3px){
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+}
+.shadow(@shadow: none){
+    box-shadow: e(@shadow);
+    -moz-box-shadow: e(@shadow);
+    -webkit-box-shadow: e(@shadow);
+}
+.transition(@transition: none){
+    transition: e(@transition);
+    -moz-transition: e(@transition);
+    -webkit-transition: e(@transition);
+}
+.icon(){
+    top: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 21;
+    display: inline-block;
+    content: "";
+    position: absolute;
+    vertical-align: top;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+// ICONS
+@icon_caret: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNMCA1bDYgNiA2LTZIMHoiLz48L3N2Zz4=",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBkPSJNMCA1bDYgNiA2LTZIM\
+HoiLz48L3N2Zz4=");
+@icon_check: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNMTIgNWwtOCA4LTQtNCAxLjUtMS41TDQgMTBsNi41LTYuNUwxMiA1eiIvPjwvc3ZnPg==",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBkPSJNMTIgNWwtOCA4LTQtN\
+CAxLjUtMS41TDQgMTBsNi41LTYuNUwxMiA1eiIvPjwvc3ZnPg==");
+@icon_times: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNNy40OCA4bDMuNzUgMy43NS0xLjQ4IDEuNDhMNiA5LjQ4bC0zLjc1IDMuNzUtMS40OC0xLjQ4TDQuNTIgOCAuNzcgNC4y\
+NWwxLjQ4LTEuNDhMNiA2LjUybDMuNzUtMy43NSAxLjQ4IDEuNDhMNy40OCA4eiIvPjwvc3ZnPg==",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBkPSJNNy40OCA4bDMuNzUgM\
+y43NS0xLjQ4IDEuNDhMNiA5LjQ4bC0zLjc1IDMuNzUtMS40OC0xLjQ4TDQuNTIgOCAuNzcgNC4yNWwxLjQ4LTEuNDhMNiA2\
+LjUybDMuNzUtMy43NSAxLjQ4IDEuNDhMNy40OCA4eiIvPjwvc3ZnPg==");
+@icon_disabled: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNNyAxQzMuMTQgMSAwIDQuMTQgMCA4czMuMTQgNyA3IDcgNy0zLjE0IDctNy0zLjE0LTctNy03em0wIDEuM2MxLjMgMCAy\
+LjUuNDQgMy40NyAxLjE3bC04IDhBNS43NTUgNS43NTUgMCAwIDEgMS4zIDhjMC0zLjE0IDIuNTYtNS43IDUuNy01Ljd6bTA\
+gMTEuNDFjLTEuMyAwLTIuNS0uNDQtMy40Ny0xLjE3bDgtOGMuNzMuOTcgMS4xNyAyLjE3IDEuMTcgMy40NyAwIDMuMTQtMi\
+41NiA1LjctNS43IDUuN3oiLz48L3N2Zz4=",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBkPSJNNyAxQzMuMTQgMSAwI\
+DQuMTQgMCA4czMuMTQgNyA3IDcgNy0zLjE0IDctNy0zLjE0LTctNy03em0wIDEuM2MxLjMgMCAyLjUuNDQgMy40NyAxLjE3\
+bC04IDhBNS43NTUgNS43NTUgMCAwIDEgMS4zIDhjMC0zLjE0IDIuNTYtNS43IDUuNy01Ljd6bTAgMTEuNDFjLTEuMyAwLTI\
+uNS0uNDQtMy40Ny0xLjE3bDgtOGMuNzMuOTcgMS4xNyAyLjE3IDEuMTcgMy40NyAwIDMuMTQtMi41NiA1LjctNS43IDUuN3\
+oiLz48L3N2Zz4=");
+@icon_multi_check: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnpNNiA5SDNWN2gzVjRoMnYzaDN2Mkg4djNINlY5eiIvPjwvc3ZnPg==",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBkPSJNMTMgMUgxYy0uNTUgM\
+C0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUtLjQ1LTEtMS0xem0wIDEz\
+SDFWMmgxMnYxMnpNNiA5SDNWN2gzVjRoMnYzaDN2Mkg4djNINlY5eiIvPjwvc3ZnPg==");
+@icon_multi_point: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnpNNCA4YzAtMS42NiAxLjM0LTMgMy0zczMgMS4zNCAzIDMtMS4zNCAzLTMgMy0\
+zLTEuMzQtMy0zeiIvPjwvc3ZnPg==",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBkPSJNMTMgMUgxYy0uNTUgM\
+C0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUtLjQ1LTEtMS0xem0wIDEz\
+SDFWMmgxMnYxMnpNNCA4YzAtMS42NiAxLjM0LTMgMy0zczMgMS4zNCAzIDMtMS4zNCAzLTMgMy0zLTEuMzQtMy0zeiIvPjw\
+vc3ZnPg==");
+@icon_multi_times: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnptLTItNUgzVjdoOHYyeiIvPjwvc3ZnPg==",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBkPSJNMTMgMUgxYy0uNTUgM\
+C0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUtLjQ1LTEtMS0xem0wIDEz\
+SDFWMmgxMnYxMnptLTItNUgzVjdoOHYyeiIvPjwvc3ZnPg==");
+@icon_multi_disabled: if((@icons_invert), "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnptLTguNS0ySDN2LTEuNUw5LjUgNEgxMXYxLjVMNC41IDEyeiIvPjwvc3ZnPg==",
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBkPSJNMTMgMUgxYy0uNTUgM\
+C0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUtLjQ1LTEtMS0xem0wIDEz\
+SDFWMmgxMnYxMnptLTguNS0ySDN2LTEuNUw5LjUgNEgxMXYxLjVMNC41IDEyeiIvPjwvc3ZnPg==");
+
+/* @start GENERAL */
+.tail-select,
+.tail-select *, .tail-select *:before, .tail-select *:after{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.tail-select{
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+
+    mark{
+        color: @handle_foreground;
+        background-color: @color_util;
+    }
+    button.tail-all,
+    button.tail-none{
+        color: @button_foreground;
+        cursor: pointer;
+        margin: 1px 3px 0 0;
+        padding: 1px 5px;
+        display: inline-block;
+        font-size: 10px;
+        text-shadow: none;
+        line-height: 14px;
+        vertical-align: top;
+        background-color: transparent;
+        outline: none;
+        background-color: @button_background;
+        border: 1px solid @button_borderstyle;
+        .radius;
+        .shadow(none);
+    }
+    button.tail-all:hover{
+        color: @color_main;
+        border-color: @color_main;
+        background-color: transparent;
+    }
+    button.tail-none:hover{
+        color: @color_util;
+        border-color: @color_util;
+        background-color: transparent;
+    }
+}
+.tail-select-container{
+    margin: 0;
+    padding: 3px;
+    text-align: left;
+    .radius;
+    .shadow(@main_boxshadow);
+
+    .select-handle{
+        width: auto;
+        color: @handle_foreground;
+        cursor: pointer;
+        margin: 1px;
+        padding: 2px 24px 2px 5px;
+        display: inline-block;
+        position: relative;
+        font-size: 12px;
+        text-align: left;
+        line-height: 16px;
+        vertical-align: top;
+        background-color: @handle_background;
+        .radius;
+        .transition("background 142ms linear");
+
+        &:hover{
+            background-color: @handle_background_hover;
+        }
+        &:after{
+            .icon;
+            width: 24px;
+            height: 21px;
+            opacity: 0.3;
+            vertical-align: top;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+            9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+            SJNNy40OCA4bDMuNzUgMy43NS0xLjQ4IDEuNDhMNiA5LjQ4bC0zLjc1IDMuNzUtMS40OC0xLjQ4TDQuNTIgOCAuNzcgNC4y\
+            NWwxLjQ4LTEuNDhMNiA2LjUybDMuNzUtMy43NSAxLjQ4IDEuNDhMNy40OCA4eiIvPjwvc3ZnPg==");
+            .transition("opacity 142ms linear");
+        }
+        &:hover:after{
+            opacity: 1;
+        }
+    }
+}
+/* @end GENERAL */
+
+/* @start LABEL */
+.tail-select .select-label{
+    cursor: pointer;
+    color: @main_foreground;
+    width: 100%;
+    margin: 0;
+    padding: 5px 10px;
+    display: block;
+    z-index: 20;
+    position: relative;
+    font-size: 14px;
+    text-align: left;
+    line-height: 22px;
+    background-color: @main_background;
+    .radius;
+    .shadow(@main_boxshadow);
+    .transition("box-shadow 142ms linear");
+
+    &:after{
+        .icon;
+        right: 0;
+        width: 34px;
+        height: 34px;
+        opacity: 0.5;
+        background-image: url(@icon_caret);
+        .transition("opacity 142ms linear, transform 142ms linear");
+    }
+    .label-count{
+        margin: 0 5px 0 0;
+        padding: 0 7px 0 0;
+        display: inline-block;
+        border-right: 1px solid @main_borderstyle;
+    }
+    .label-count,
+    .label-inner{
+        opacity: 0.75;
+        .transition("border-color 142ms linear, opacity 142ms linear");
+    }
+}
+.tail-select:hover .select-label,
+.tail-select.idle .select-label,
+.tail-select.active .select-label{
+    z-index: 25;
+    .shadow(@main_boxshadow_active);
+
+    &:after{
+        opacity: 0.85;
+    }
+    .label-count,
+    .label-inner{
+        opacity: 1.0;
+    }
+}
+.tail-select.active .select-label{
+    z-index: 27;
+
+    &:after{
+        transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+    }
+}
+.tail-select.disabled .select-label{
+    cursor: not-allowed;
+    background-color: @main_background_disabled;
+    .shadow(@main_boxshadow_disabled);
+}
+/* @end LABEL */
+
+/* @start DROPDOWN */
+.tail-select .select-dropdown{
+    top: 100%;
+    width: 100%;
+    height: auto;
+    min-height: 35px;
+    margin: -1px 0 0 0;
+    padding: 0;
+    display: none;
+    z-index: 23;
+    overflow: hidden;
+    position: absolute;
+    font-size: 14px;
+    text-align: left;
+    line-height: 22px;
+    background-color: @main_background;
+    .radius(0 0 3px 3px);
+    .shadow(@main_boxshadow);
+    .transition("box-shadow 142ms linear");
+
+    .dropdown-search, .dropdown-inner,
+    .dropdown-empty, .dropdown-action,
+    input[type=text].search-input{
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: block;
+    }
+
+    .dropdown-search{
+        z-index: 30;
+        position: relative;
+        border-bottom: 1px solid @main_borderstyle;
+        .shadow(@main_boxshadow_meta);
+
+        input[type=text].search-input{
+            color: @main_foreground;
+            padding: 10px 15px;
+            font-size: 12px;
+            text-align: left;
+            line-height: 20px;
+            outline: none;
+            background-color: transparent;
+            border: 0;
+            .radius(0);
+            .shadow(none);
+        }
+    }
+    .dropdown-inner{
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .dropdown-empty{
+        padding: 16px 0 15px 0;
+        font-size: 12px;
+        text-align: center;
+        line-height: 18px;
+    }
+    .dropdown-action{
+        padding: 6px 0 5px 0;
+        text-align: center;
+        border-bottom: 1px solid @main_borderstyle;
+        background-color: @main_background_hover;
+
+        button{
+            font-size: 12px;
+            line-height: 16px;
+        }
+    }
+}
+.tail-select.active .select-dropdown{
+    z-index: 26;
+}
+.tail-select .select-dropdown{
+    ul, ul li{
+        width: auto;
+        margin: 0;
+        padding: 0;
+        display: block;
+        position: relative;
+        list-style: none;
+    }
+    ul li{
+        color: @main_foreground;
+        cursor: pointer;
+        padding: 5px 10px 5px 35px;
+        font-size: 12px;
+        text-align: left;
+        line-height: 18px;
+
+        &:first-of-type{
+            margin-top: 7px;
+        }
+        &:last-of-type{
+            margin-bottom: 7px;
+        }
+        &.optgroup-title{
+            padding-left: 10px;
+            font-size: 14px;
+            background-color: transparent;
+
+            button{
+                float: right;
+            }
+        }
+    }
+    ul li.dropdown-option{
+        &:hover, &.hover{
+            background-color: @main_background_hover;
+        }
+        &:before{
+            .icon;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            .transition("opacity 50ms linear");
+        }
+    }
+    ul li .option-description{
+        color: @main_foreground_meta;
+        width: auto;
+        margin: 0;
+        padding: 0;
+        display: block;
+        font-size: 10px;
+        text-align: left;
+        line-height: 14px;
+    }
+}
+.tail-select.open-top .select-dropdown{
+    top: auto;
+    bottom: 100%;
+    margin: 0 0 -1px 0;
+    .radius(3px 3px 0 0);
+}
+
+// Specials
+.tail-select.disabled .select-dropdown ul li.dropdown-option,
+.tail-select .select-dropdown ul li.dropdown-option.disabled{
+    cursor: not-allowed;
+    opacity: 0.65;
+    background-color: @main_background_disabled;
+}
+.tail-select.hide-selected .select-dropdown ul li.selected{
+    display: none;
+}
+.tail-select.hide-disabled .select-dropdown ul li.disabled{
+    display: none;
+}
+
+// Option State :: Single
+.tail-select .select-dropdown ul li{
+    &:before{
+        opacity: 0;
+        background-image: url(@icon_check);
+    }
+    &:hover:before{
+        opacity: 0.5;
+    }
+    &.selected:before{
+        opacity: 0.85;
+    }
+}
+
+// Option State :: Single Deselectable
+.tail-select.deselect .select-dropdown ul li{
+    &.selected:hover:before{
+        background-image: url(@icon_times);
+    }
+}
+
+// Option State :: Multiple
+.tail-select.multiple .select-dropdown ul li{
+    &:before{
+        opacity: 0;
+        background-image: url(@icon_multi_check);
+    }
+    &:hover:before{
+        opacity: 0.5;
+    }
+    &.selected:before{
+        opacity: 0.85;
+        background-image: url(@icon_multi_point);
+    }
+    &.selected:hover:before{
+        opacity: 0.85;
+        background-image: url(@icon_multi_times);
+    }
+}
+
+// Option State :: Disabled
+.tail-select.disabled .select-dropdown ul li:before,
+.tail-select .select-dropdown ul li.disabled:before{
+    opacity: 0.85;
+    background-image: url(@icon_disabled);
+}
+.tail-select.multiple.disabled .select-dropdown ul li:before,
+.tail-select.multiple .select-dropdown ul li.disabled:before{
+    opacity: 0.85;
+    background-image: url(@icon_multi_disabled);
+}
+/* @end DROPDOWN */

@@ -1,0 +1,451 @@
+/*
+ |  tail.select - Another solution to make select fields beautiful again!
+ |  @file       ./less/tail.select-bootstrap4.less
+ |  @author     SamBrishes <sam@pytes.net>
+ |  @version    0.5.12 - Beta
+ |
+ |  @website    https://github.com/pytesNET/tail.select
+ |  @license    X11 / MIT License
+ |  @copyright  Copyright © 2014 - 2019 SamBrishes, pytesNET <info@pytes.net>
+ */
+
+// Colors
+@color_main: #3A87AD;
+@color_util: #B94A48;
+@color_font: #333333;
+
+@label_foreground: #FFFFFF;
+@label_background: #6c757d;
+@label_bordercolor: #6c757d;
+
+@dropdown_background: #FFFFFF;
+@dropdown_border: #ced4da;
+@dropdown_input: #495057;
+@dropdown_input_focus: #80bdff;
+@dropdown_item_optgroup: #6c757d;
+@dropdown_item_hover_foreground: #222222;
+@dropdown_item_hover_background: #F8F8F8;
+@dropdown_item_description: lighten(@color_font, 50%);
+@dropdown_item_description_hover: #555555;
+@dropdown_item_disabled: lighten(@color_font, 50%);
+@dropdown_item_selected_foreground: #FFFFFF;
+@dropdown_item_selected_background: #007bff;
+@dropdown_item_unselect_foreground: #dc3545;
+@dropdown_item_unselect_background: transparent;
+
+@handle_foreground: #FFFFFF;
+@handle_background: #777777;
+@handle_delete: @color_util;
+
+@mark_foreground: #FFFFFF;
+@mark_background: @color_main;
+
+@button_foreground: #FFFFFF;
+@button_background: #6c757d;
+@button_all_foreground: #FFFFFF;
+@button_all_color: #28a745;
+@button_none_foreground: #FFFFFF;
+@button_none_color: #dc3545;
+
+//  PRIMARY-BLUE
+//@label_background: #007bff;
+
+//  DANGER-RED
+//@label_background: #dc3545;
+
+//  WARNING-ORANGE
+//@label_foreground: #212529;
+//@label_background: #ffc107;
+
+//  SUCCESS-GREEN
+//@label_background: #28a745;
+
+//  INFO-BLUE
+//@label_background: #17a2b8;
+
+//  INVERT-BLACK
+//@label_background: #343a40;
+
+// Mixins
+.radius(@radius: 4px){
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+}
+.shadow(@shadow: none){
+    box-shadow: e(@shadow);
+    -moz-box-shadow: e(@shadow);
+    -webkit-box-shadow: e(@shadow);
+}
+.transition(@transition: none){
+    transition: e(@transition);
+    -moz-transition: e(@transition);
+    -webkit-transition: e(@transition);
+}
+
+/* @start GENERAL */
+.tail-select,
+.tail-select *, .tail-select *:before, .tail-select *:after{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.tail-select, .tail-select *{
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+                 "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+.tail-select{
+    width: 275px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+
+    mark{
+        color: @mark_foreground;
+        background-color: @mark_background;
+    }
+    button.tail-all,
+    button.tail-none{
+        color: @button_foreground;
+        margin: 0 2px;
+        padding: .25em .4em;
+        display: inline-block;
+        font-size: 75%;
+        line-height: 1;
+        font-weight: 700;
+        text-align: center;
+        text-shadow: none;
+        white-space: nowrap;
+        vertical-align: top;
+        background-color: @button_background;
+        border: 0;
+        .radius(0.25rem);
+        .shadow(none);
+    }
+    button.tail-all:hover{
+        color: @button_all_foreground;
+        background-color: @button_all_color;
+    }
+    button.tail-none:hover{
+        color: @button_none_foreground;
+        background-color: @button_none_color;
+    }
+}
+.tail-select-container{
+    margin: 0;
+    padding: 3px;
+    text-align: left;
+    .radius;
+
+    .select-handle{
+        width: auto;
+        color: @handle_foreground;
+        cursor: pointer;
+        margin: 1px;
+        padding: .2em .6em .3em;
+        display: inline-block;
+        position: relative;
+        font-size: 75%;
+        text-align: left;
+        font-weight: 700;
+        line-height: 1;
+        vertical-align: top;
+        background-color: @handle_background;
+        .radius(0.25em);
+        .transition("background 142ms linear");
+
+        &:hover{
+            background-color: @handle_delete;
+        }
+    }
+}
+/* @end GENERAL */
+
+/* @start LABEL */
+.tail-select .select-label{
+    cursor: pointer;
+    color: @label_foreground;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    text-align: left;
+    background-color: @label_background;
+    .radius;
+    .transition("background 142ms linear");
+
+    &:hover{
+        background-color: darken(@label_background, 10%);
+    }
+    &:focus{
+        background-color: darken(@label_background, 20%);
+        .shadow(%("0 0 0 .2rem %s", fadeout(@label_background, 50%)));
+    }
+    &:before{
+        top: 9px;
+        right: 12px;
+        width: 0;
+        height: 0;
+        margin: 8px 0 0 0;
+        padding: 0;
+        z-index: 30;
+        content: "";
+        display: inline-block;
+        position: absolute;
+        vertical-align: top;
+        border-top: 5px dashed;
+        border-top: 5px solid\9;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        text-shadow: none;
+        .transition("transform 142ms linear");
+    }
+    .label-count, .label-inner{
+        color: @label_foreground;
+        width: auto;
+        margin: 0;
+        padding: .375rem .75rem;
+        display: inline-block;
+        text-align: left;
+        vertical-align: top;
+    }
+    .label-inner{
+        max-width: 100%;
+    }
+    .label-count{
+        color: #212529;
+        margin: 10px -3px 0 9px;
+        padding: .25em .4em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: top;
+        background-color: #f8f9fa;
+        .radius(0.25rem);
+    }
+}
+.tail-select.active .select-label{
+    background-color: darken(@label_background, 20%);
+    .shadow(%("0 0 0 .2rem %s", fadeout(@label_background, 50%)));
+
+    &:before{
+        transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+    }
+}
+/* @end LABEL */
+
+/* @start DROPDOWN */
+.tail-select .select-dropdown{
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin: 0.125rem 0 0;
+    padding: 0;
+    z-index: 35;
+    display: none;
+    position: absolute;
+    background-color: @dropdown_background;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    .radius(0.25rem);
+    .shadow("0 6px 12px rgba(0,0,0,.175)");
+
+    .dropdown-search{
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+        display: block;
+        border-bottom: 1px solid @dropdown_border;
+
+        input[type=text].search-input{
+            color: @dropdown_input;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: .25rem .5rem;
+            display: inline-block;
+            font-size: .875rem;
+            line-height: 1.5;
+            vertical-align: middle;
+            border: 1px solid @dropdown_border;
+            .radius(0.2rem);
+            .shadow("inset 0 1px 1px rgba(0, 0, 0, 0.075)");
+            .transition("border 142ms linear, box-shadow 142ms linear");
+        }
+        input[type=text].search-input:focus{
+            border-color: @dropdown_input_focus;
+            .shadow(%("0 0 0 .2rem %s", fadeout(@dropdown_input_focus, 60%)));
+        }
+    }
+    .dropdown-inner{
+        width: 100%;
+        margin: 0;
+        padding: 1px 0;
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .dropdown-empty{
+        color: @dropdown_item_optgroup;
+        margin: 0;
+        padding: 1.25rem 1.75rem;
+        display: block;
+        font-size: .875rem;
+        text-align: center;
+        font-weight: 400;
+        line-height: 1.2;
+    }
+    .dropdown-action{
+        margin: 0;
+        padding: 7px 0 2px 0;
+        display: block;
+        text-align: center;
+        border-bottom: 1px solid @dropdown_border;
+    }
+}
+.tail-select .select-dropdown{
+    ul, ul li{
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: block;
+        position: relative;
+        list-style: none;
+    }
+    ul li{
+        color: @color_font;
+        padding: .25rem 1.75rem;
+        text-align: left;
+        font-weight: normal;
+
+        &:first-of-type{
+            margin-top: 0.5rem;
+        }
+        &:last-of-type{
+            margin-bottom: 0.5rem;
+        }
+        &.optgroup-title{
+            color: @dropdown_item_optgroup;
+            cursor: default;
+            margin: 0;
+            padding: .5rem 1.5rem;
+
+            b{
+                font-size: .875rem;
+                font-weight: 400;
+                line-height: 1.2;
+                text-shadow: none;
+                letter-spacing: 0;
+                text-transform: none;
+            }
+            button{
+                float: right;
+                margin: 4px 2px 0 2px;
+                font-size: 65%;
+                line-height: 1;
+                font-weight: 700;
+                letter-spacing: 0;
+                text-transform: none;
+            }
+        }
+    }
+    ul li.dropdown-option{
+        &:before{
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 33px;
+            margin: 0;
+            padding: 0;
+            z-index: 21;
+            display: inline-block;
+            content: "";
+            position: absolute;
+            vertical-align: top;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        &:hover{
+            color: @dropdown_item_hover_foreground;
+            cursor: pointer;
+            background-color: @dropdown_item_hover_background;
+        }
+        .option-description{
+            color: @dropdown_item_description;
+            width: auto;
+            margin: 0;
+            padding: 0;
+            display: block;
+            font-size: 10px;
+            text-align: left;
+            line-height: 14px;
+            vertical-align: top;
+        }
+        .option-description *{
+            font-size: 10px;
+            text-align: left;
+            line-height: 14px;
+        }
+        &:hover .option-description{
+            color: @dropdown_item_description_hover;
+        }
+    }
+}
+
+// Specials
+.tail-select.disabled .select-dropdown ul li.dropdown-option,
+.tail-select .select-dropdown ul li.dropdown-option.disabled{
+    cursor: not-allowed;
+    color: @dropdown_item_disabled;
+    text-decoration: none;
+    background-color: transparent;
+    background-image: none;
+}
+.tail-select.disabled .select-dropdown ul li.dropdown-option .option-description,
+.tail-select .select-dropdown ul li.dropdown-option.disabled .option-description{
+    color: @dropdown_item_disabled;
+}
+.tail-select.hide-selected .select-dropdown ul li.selected,
+.tail-select.hide-disabled .select-dropdown ul li.disabled{
+    display: none;
+}
+
+// Select
+.tail-select .select-dropdown ul li{
+    &.selected,
+    &.selected:hover{
+        cursor: default;
+        color: @dropdown_item_selected_foreground;
+        background-color: @dropdown_item_selected_background;
+    }
+
+    &.selected:before{
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+        9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+        SJNMTIgNWwtOCA4LTQtNCAxLjUtMS41TDQgMTBsNi41LTYuNUwxMiA1eiIvPjwvc3ZnPg==");
+    }
+}
+
+// Deselect
+.tail-select.deselect .select-dropdown ul li,
+.tail-select.multiple .select-dropdown ul li{
+    &.selected:hover{
+        cursor: pointer;
+        color: @dropdown_item_unselect_foreground;
+        background-color: @dropdown_item_unselect_background;
+    }
+    &.selected:hover:before{
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+        9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZGMzNTQ1IiBkP\
+        SJNNy40OCA4bDMuNzUgMy43NS0xLjQ4IDEuNDhMNiA5LjQ4bC0zLjc1IDMuNzUtMS40OC0xLjQ4TDQuNTIgOCAuNzcgNC4y\
+        NWwxLjQ4LTEuNDhMNiA2LjUybDMuNzUtMy43NSAxLjQ4IDEuNDhMNy40OCA4eiIvPjwvc3ZnPg==");
+    }
+}
+/* @end DROPDOWN */

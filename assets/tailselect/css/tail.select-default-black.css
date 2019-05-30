@@ -1,0 +1,132 @@
+@charset "utf-8";
+/*
+ |  tail.select - Another solution to make select fields beautiful again!
+ |  @file       ./css/tail.select-default-black.css
+ |  @author     SamBrishes <sam@pytes.net>
+ |  @version    0.5.12 - Beta
+ |
+ |  @website    https://github.com/pytesNET/tail.select
+ |  @license    X11 / MIT License
+ |  @copyright  Copyright © 2014 - 2019 SamBrishes, pytesNET <info@pytes.net>
+ */
+@import url("tail.select-default.css");
+
+/* @start BLACK */
+.tail-select button.tail-all,
+.tail-select button.tail-none{
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid #505458;
+}
+.tail-select-container{
+    box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -moz-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -webkit-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+}
+.tail-select .select-label{
+    color: rgba(255, 255, 255, 0.85);
+    background-color: #202428;
+    box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -moz-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -webkit-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+}
+.tail-select .select-label:after{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNMCA1bDYgNiA2LTZIMHoiLz48L3N2Zz4=");
+}
+.tail-select .select-label .label-count{
+    border-right: 1px solid #101418;
+}
+.tail-select:hover .select-label,
+.tail-select.idle .select-label,
+.tail-select.active .select-label{
+    box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #3C82E6;
+    -moz-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #3C82E6;
+    -webkit-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #3C82E6;
+}
+.tail-select.disabled .select-label{
+    background-color: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -moz-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -webkit-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+}
+.tail-select .select-dropdown{
+    background-color: #202428;
+    box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -moz-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+    -webkit-box-shadow: 0 0 0 1px #000408, inset 0 0 1px 1px #404448;
+}
+.tail-select .select-dropdown .dropdown-search{
+    border-bottom: 1px solid #101418;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.tail-select .select-dropdown .dropdown-search input[type=text].search-input{
+    color: rgba(255, 255, 255, 0.85);
+}
+.tail-select .select-dropdown .dropdown-action{
+    border-bottom: 1px solid #101418;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.tail-select .select-dropdown ul li{
+    color: rgba(255, 255, 255, 0.85);
+}
+.tail-select .select-dropdown ul li.dropdown-option:hover,
+.tail-select .select-dropdown ul li.dropdown-option.hover{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.tail-select .select-dropdown ul li .option-description{
+    color: rgba(255, 255, 255, 0.5);
+}
+.tail-select.disabled .select-dropdown ul li.dropdown-option,
+.tail-select .select-dropdown ul li.dropdown-option.disabled{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.tail-select .select-dropdown ul li:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNMTIgNWwtOCA4LTQtNCAxLjUtMS41TDQgMTBsNi41LTYuNUwxMiA1eiIvPjwvc3ZnPg==");
+}
+.tail-select.deselect .select-dropdown ul li.selected:hover:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDEyIDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNNy40OCA4bDMuNzUgMy43NS0xLjQ4IDEuNDhMNiA5LjQ4bC0zLjc1IDMuNzUtMS40OC0xLjQ4TDQuNTIgOCAuNzcgNC4y\
+    NWwxLjQ4LTEuNDhMNiA2LjUybDMuNzUtMy43NSAxLjQ4IDEuNDhMNy40OCA4eiIvPjwvc3ZnPg==");
+}
+.tail-select.multiple .select-dropdown ul li:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+    LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnpNNiA5SDNWN2gzVjRoMnYzaDN2Mkg4djNINlY5eiIvPjwvc3ZnPg==");
+}
+.tail-select.multiple .select-dropdown ul li.selected:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+    LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnpNNCA4YzAtMS42NiAxLjM0LTMgMy0zczMgMS4zNCAzIDMtMS4zNCAzLTMgMy0\
+    zLTEuMzQtMy0zeiIvPjwvc3ZnPg==");
+}
+.tail-select.multiple .select-dropdown ul li.selected:hover:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+    LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnptLTItNUgzVjdoOHYyeiIvPjwvc3ZnPg==");
+}
+.tail-select.disabled .select-dropdown ul li:before,
+.tail-select .select-dropdown ul li.disabled:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNNyAxQzMuMTQgMSAwIDQuMTQgMCA4czMuMTQgNyA3IDcgNy0zLjE0IDctNy0zLjE0LTctNy03em0wIDEuM2MxLjMgMCAy\
+    LjUuNDQgMy40NyAxLjE3bC04IDhBNS43NTUgNS43NTUgMCAwIDEgMS4zIDhjMC0zLjE0IDIuNTYtNS43IDUuNy01Ljd6bTA\
+    gMTEuNDFjLTEuMyAwLTIuNS0uNDQtMy40Ny0xLjE3bDgtOGMuNzMuOTcgMS4xNyAyLjE3IDEuMTcgMy40NyAwIDMuMTQtMi\
+    41NiA1LjctNS43IDUuN3oiLz48L3N2Zz4=");
+}
+.tail-select.multiple.disabled .select-dropdown ul li:before,
+.tail-select.multiple .select-dropdown ul li.disabled:before{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
+    9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDE2Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkP\
+    SJNMTMgMUgxYy0uNTUgMC0xIC40NS0xIDF2MTJjMCAuNTUuNDUgMSAxIDFoMTJjLjU1IDAgMS0uNDUgMS0xVjJjMC0uNTUt\
+    LjQ1LTEtMS0xem0wIDEzSDFWMmgxMnYxMnptLTguNS0ySDN2LTEuNUw5LjUgNEgxMXYxLjVMNC41IDEyeiIvPjwvc3ZnPg==");
+}
+/* @end BLACK */

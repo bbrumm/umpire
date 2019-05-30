@@ -1,0 +1,52 @@
+@charset "utf-8";
+/*
+ |  tail.select - Another solution to make select fields beautiful again!
+ |  @file       ./css/bootstrap3/danger-red.css
+ |  @author     SamBrishes <sam@pytes.net>
+ |  @version    0.5.12 - Beta
+ |
+ |  @website    https://github.com/pytesNET/tail.select
+ |  @license    X11 / MIT License
+ |  @copyright  Copyright © 2014 - 2019 SamBrishes, pytesNET <info@pytes.net>
+ */
+@import url("../tail.select-bootstrap3.css");
+
+/* @start COLOR */
+.tail-select .select-label{
+    color: #FFFFFF;
+}
+.tail-select .select-label:after{
+    background-color: #d9534f;
+    border: 1px solid #d43f3a;
+}
+.tail-select .select-label:hover:after{
+    border-color: #9f2723;
+    background-color: #b52b27;
+}
+.tail-select .select-label .label-count,
+.tail-select .select-label .label-inner{
+    color: #FFFFFF;
+    background-color: #d9534f;
+    border-top: 1px solid #d43f3a;
+    border-bottom: 1px solid #d43f3a;
+}
+.tail-select .select-label .label-count{
+    border-right: 1px solid #d43f3a;
+}
+.tail-select .select-label .label-count:first-child,
+.tail-select .select-label .label-inner:first-child{
+    border-left: 1px solid #d43f3a;
+}
+.tail-select .select-label:hover .label-count,
+.tail-select .select-label:hover .label-inner{
+    border-color: #9f2723;
+}
+.tail-select.active .select-label:after{
+    border-color: #9f2723;
+    background-color: #b52b27;
+}
+.tail-select.active .select-label .label-count,
+.tail-select.active .select-label .label-inner{
+    border-color: #9f2723;
+}
+/* @end COLOR */
