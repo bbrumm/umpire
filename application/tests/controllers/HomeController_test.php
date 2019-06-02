@@ -65,7 +65,7 @@ class HomeController_test extends TestCase
 
     }
 
-
+/*
     public function test_LoadPage_bbrumm() {
         $sessionArray['logged_in'] = array('username' => 'bbrumm');
         $this->CI->session->set_userdata($sessionArray);
@@ -75,6 +75,7 @@ class HomeController_test extends TestCase
         $this->assertContains($expectedHeader, $output);
 
     }
+*/
 
     public function test_LoadPage_brendan() {
         $sessionArray['logged_in'] = array('username' => 'bbeveridge');
@@ -120,6 +121,7 @@ class HomeController_test extends TestCase
 
     }
 
+    /*
     public function test_LoadPage_NewLayout_SeasonRegion() {
         $sessionArray['logged_in'] = array('username' => 'bbrumm');
         $this->CI->session->set_userdata($sessionArray);
@@ -203,7 +205,7 @@ class HomeController_test extends TestCase
         $report8Selection = "<input type='button' value='Report 08 - Umpire Games Tally' id='reportButton8' class='btn'";
         $this->assertContains($report8Selection, $output);
     }
-
+*/
 
 
 }
