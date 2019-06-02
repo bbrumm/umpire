@@ -57,6 +57,8 @@ class Refresh_mv_tables extends CI_Model
     
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_01", 0);
+        $this->deleteFromDWTableForYear("dw_mv_report_01", $pSeasonYear);
+        $this->logTableOperation($importedFileID, "dw_mv_report_01", 3);
         $this->updateTableMV1($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_01", 1);
         $this->updateKeyStatus("dw_mv_report_01", 1);
@@ -64,6 +66,8 @@ class Refresh_mv_tables extends CI_Model
     
     private function refreshMVTable2($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_02", 0);
+        $this->deleteFromDWTableForYear("dw_mv_report_02", $pSeasonYear);
+        $this->logTableOperation($importedFileID, "dw_mv_report_02", 3);
         $this->updateTableMV2($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_02", 1);
         $this->updateKeyStatus("dw_mv_report_02", 1);
@@ -71,6 +75,8 @@ class Refresh_mv_tables extends CI_Model
     
     private function refreshMVTable4($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_04", 0);
+        $this->deleteFromDWTableForYear("dw_mv_report_04", $pSeasonYear);
+        $this->logTableOperation($importedFileID, "dw_mv_report_04", 3);
         $this->updateTableMV4($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_04", 1);
         $this->updateKeyStatus("dw_mv_report_04", 1);
@@ -78,6 +84,8 @@ class Refresh_mv_tables extends CI_Model
     
     private function refreshMVTable5($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_05", 0);
+        $this->deleteFromDWTableForYear("dw_mv_report_05", $pSeasonYear);
+        $this->logTableOperation($importedFileID, "dw_mv_report_05", 3);
         $this->updateTableMV5($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_05", 1);
         $this->updateKeyStatus("dw_mv_report_05", 1);
@@ -118,6 +126,8 @@ class Refresh_mv_tables extends CI_Model
         
         
         $this->updateKeyStatus("dw_mv_report_06", 0);
+        $this->deleteFromDWTableForYear("dw_mv_report_06", $pSeasonYear);
+        $this->logTableOperation($importedFileID, "dw_mv_report_06", 3);
         $this->updateTableMV6($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_06", 1);
         $this->updateKeyStatus("dw_mv_report_06", 1);
@@ -128,6 +138,8 @@ class Refresh_mv_tables extends CI_Model
         $this->logTableOperation($importedFileID, "mv_report_07_stg1", 1);
 
         $this->updateKeyStatus("dw_mv_report_07", 0);
+        $this->deleteFromDWTableForYear("dw_mv_report_07", $pSeasonYear);
+        $this->logTableOperation($importedFileID, "dw_mv_report_07", 3);
         $this->updateTableMV7($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_07", 1);
         $this->updateKeyStatus("dw_mv_report_07", 1);
@@ -135,6 +147,8 @@ class Refresh_mv_tables extends CI_Model
 
     private function refreshMVTable8($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_08", 0);
+        $this->deleteFromDWTableForYear("dw_mv_report_08", $pSeasonYear);
+        $this->logTableOperation($importedFileID, "dw_mv_report_08", 3);
         $this->updateTableMV8($pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_08", 1);
 
@@ -167,12 +181,19 @@ VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name
         $this->runQuery($queryString);
     }
 
+    private function deleteFromDWTableForYear($pTableName, $pSeasonYear) {
+        $queryString = "DELETE FROM " . $pTableName . " WHERE season_year = " . $pSeasonYear;
+        $this->runQuery($queryString);
+    }
+
     //TODO: Move these to Etl_query_builder object
 
     /*
     * @property array $this->db
     */
     private function updateTableMV1($pSeasonYear) {
+
+
         $queryString = "INSERT INTO dw_mv_report_01 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, season_year, match_count)
             SELECT
             u.last_first_name,
