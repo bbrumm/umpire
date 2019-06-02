@@ -20,6 +20,7 @@ class Refresh_mv_tables extends CI_Model
     }
     
     //TODO: A lot of this code is duplicated in model/Etl_procedure_steps.
+    //Not the report tables, but the code to run queries and delete data
     public function refreshMVTables(IData_store_matches $pDataStore, $season, $importedFileID) {
 
         //$pDataStore->runETLProcedure($season, $importedFileID);
@@ -54,7 +55,8 @@ class Refresh_mv_tables extends CI_Model
         $queryResultArray = $query->result_array();
         return $queryResultArray[0]['season_year'];
     }
-    
+
+    //TODO: Replace all of these table names with variables
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_01", 0);
         $this->deleteFromDWTableForYear("dw_mv_report_01", $pSeasonYear);
@@ -147,6 +149,7 @@ class Refresh_mv_tables extends CI_Model
 
     private function refreshMVTable8($pSeasonYear, $importedFileID) {
         $this->updateKeyStatus("dw_mv_report_08", 0);
+        $this->deleteFromDW8Table($pSeasonYear);
         $this->deleteFromDWTableForYear("dw_mv_report_08", $pSeasonYear);
         $this->logTableOperation($importedFileID, "dw_mv_report_08", 3);
         $this->updateTableMV8($pSeasonYear);
@@ -155,6 +158,13 @@ class Refresh_mv_tables extends CI_Model
         $this->updateTableMV8Totals();
         $this->logTableOperation($importedFileID, "dw_mv_report_08", 2);
         $this->updateKeyStatus("dw_mv_report_08", 1);
+    }
+
+    //TODO refactor this process. This comes from another object so I should get the query from that object
+    private function deleteFromDW8Table($pSeasonYear) {
+        $queryString = "DELETE rec FROM dw_mv_report_08 rec 
+WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');";
+        $this->runQuery($queryString);
     }
     
     /*
