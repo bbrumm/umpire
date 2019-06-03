@@ -56,12 +56,15 @@ class Refresh_mv_tables extends CI_Model {
 
     //TODO: Replace all of these table names with variables
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
+        $this->etlHelper->refreshDWReportTable("dw_mv_report_01", $pSeasonYear, $importedFileID);
+        /*
         $this->etlHelper->disableKeys("dw_mv_report_01");
         $this->deleteFromDWTableForYear("dw_mv_report_01", $pSeasonYear);
         $this->etlHelper->logTableDeleteOperation("dw_mv_report_01", $importedFileID);
         $this->updateTableMV1($pSeasonYear);
         $this->etlHelper->logTableInsertOperation("dw_mv_report_01", $importedFileID);
         $this->etlHelper->enableKeys("dw_mv_report_01");
+        */
     }
     
     private function refreshMVTable2($pSeasonYear, $importedFileID) {
@@ -107,20 +110,16 @@ class Refresh_mv_tables extends CI_Model {
         $this->etlHelper->disableKeys("dw_rpt06_stg2");
         $this->updateTableMV6StagingPart2($pSeasonYear, "Field");
         $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
-        $this->etlHelper->enableKeys("dw_rpt06_stg2");
 
-        $this->etlHelper->disableKeys("dw_rpt06_stg2");
         $this->updateTableMV6StagingPart2($pSeasonYear, "Goal");
         $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
-        $this->etlHelper->enableKeys("dw_rpt06_stg2");
 
-        $this->etlHelper->disableKeys("dw_rpt06_stg2");
         $this->updateTableMV6StagingPart2($pSeasonYear, "Boundary");
         $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
-        $this->etlHelper->enableKeys("dw_rpt06_stg2");
+
         
         //Now, insert into the staging table the opposite combination
-        $this->etlHelper->disableKeys("dw_rpt06_stg2");
+
         $this->updateTableMV6StagingPart2Opposite();
         $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
         $this->etlHelper->enableKeys("dw_rpt06_stg2");
