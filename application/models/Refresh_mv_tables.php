@@ -11,23 +11,21 @@
 /*
 * @property Object db
 */
-class Refresh_mv_tables extends CI_Model
-{
+class Refresh_mv_tables extends CI_Model {
+
+    private $etlHelper;
+
     function __construct() {
         parent::__construct();
         $this->load->model('Season');
         $this->load->model('Etl_procedure_steps');
+        $this->load->model('Etl_helper');
+        $this->etlHelper = new Etl_helper();
     }
     
     //TODO: A lot of this code is duplicated in model/Etl_procedure_steps.
     //Not the report tables, but the code to run queries and delete data
     public function refreshMVTables(IData_store_matches $pDataStore, $season, $importedFileID) {
-
-        //$pDataStore->runETLProcedure($season, $importedFileID);
-
-        //$queryString = "CALL `RunETLProcess`(". $season->getSeasonID() .", ". $importedFileID .")";
-        //$query = $this->db->query($queryString);
-
         if (is_a($pDataStore, 'Array_store_matches')) {
             //TODO remove this once I have refactored this code
         } else {
@@ -58,46 +56,46 @@ class Refresh_mv_tables extends CI_Model
 
     //TODO: Replace all of these table names with variables
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
-        $this->updateKeyStatus("dw_mv_report_01", 0);
+        $this->etlHelper->disableKeys("dw_mv_report_01");
         $this->deleteFromDWTableForYear("dw_mv_report_01", $pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_01", 3);
+        $this->etlHelper->logTableDeleteOperation("dw_mv_report_01", $importedFileID);
         $this->updateTableMV1($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_01", 1);
-        $this->updateKeyStatus("dw_mv_report_01", 1);
+        $this->etlHelper->logTableInsertOperation("dw_mv_report_01", $importedFileID);
+        $this->etlHelper->enableKeys("dw_mv_report_01");
     }
     
     private function refreshMVTable2($pSeasonYear, $importedFileID) {
-        $this->updateKeyStatus("dw_mv_report_02", 0);
+        $this->etlHelper->disableKeys("dw_mv_report_02");
         $this->deleteFromDWTableForYear("dw_mv_report_02", $pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_02", 3);
+        $this->etlHelper->logTableDeleteOperation("dw_mv_report_02", $importedFileID);
         $this->updateTableMV2($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_02", 1);
-        $this->updateKeyStatus("dw_mv_report_02", 1);
+        $this->etlHelper->logTableInsertOperation("dw_mv_report_02", $importedFileID);
+        $this->etlHelper->enableKeys("dw_mv_report_02");
     }
     
     private function refreshMVTable4($pSeasonYear, $importedFileID) {
-        $this->updateKeyStatus("dw_mv_report_04", 0);
+        $this->etlHelper->disableKeys("dw_mv_report_04");
         $this->deleteFromDWTableForYear("dw_mv_report_04", $pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_04", 3);
+        $this->etlHelper->logTableDeleteOperation("dw_mv_report_04", $importedFileID);
         $this->updateTableMV4($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_04", 1);
-        $this->updateKeyStatus("dw_mv_report_04", 1);
+        $this->etlHelper->logTableInsertOperation("dw_mv_report_04", $importedFileID);
+        $this->etlHelper->enableKeys("dw_mv_report_04");
     }
     
     private function refreshMVTable5($pSeasonYear, $importedFileID) {
-        $this->updateKeyStatus("dw_mv_report_05", 0);
+        $this->etlHelper->disableKeys("dw_mv_report_05");
         $this->deleteFromDWTableForYear("dw_mv_report_05", $pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_05", 3);
+        $this->etlHelper->logTableDeleteOperation("dw_mv_report_05", $importedFileID);
         $this->updateTableMV5($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_05", 1);
-        $this->updateKeyStatus("dw_mv_report_05", 1);
+        $this->etlHelper->logTableInsertOperation("dw_mv_report_05", $importedFileID);
+        $this->etlHelper->enableKeys("dw_mv_report_05");
     }
     
     private function refreshMVTable6($pSeasonYear, $importedFileID) {
-        $this->updateKeyStatus("dw_rpt06_staging", 0);
+        $this->etlHelper->disableKeys("dw_rpt06_staging");
         $this->updateTableMV6Staging($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_rpt06_staging", 1);
-        $this->updateKeyStatus("dw_rpt06_staging", 1);
+        $this->etlHelper->logTableInsertOperation("dw_rpt06_staging", $importedFileID);
+        $this->etlHelper->enableKeys("dw_rpt06_staging");
         
         //TODO: Move all of these function calls into a single function, and call the new function. Lots of repetition here.
         //TODO: Change this to call separate stored procedures. Even though the large stored proc took a long time to run,
@@ -105,59 +103,60 @@ class Refresh_mv_tables extends CI_Model
         //I should store the stored proc names and their run order in a database table, and loop through the list.
         
         //Run each of the umpire types into the staging 2 table
-        $this->updateKeyStatus("dw_rpt06_stg2", 0);
+        //TODO: Remove the repeated calls to enable and disable keys
+        $this->etlHelper->disableKeys("dw_rpt06_stg2");
         $this->updateTableMV6StagingPart2($pSeasonYear, "Field");
-        $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
-        $this->updateKeyStatus("dw_rpt06_stg2", 1);
-        
-        $this->updateKeyStatus("dw_rpt06_stg2", 0);
+        $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
+        $this->etlHelper->enableKeys("dw_rpt06_stg2");
+
+        $this->etlHelper->disableKeys("dw_rpt06_stg2");
         $this->updateTableMV6StagingPart2($pSeasonYear, "Goal");
-        $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
-        $this->updateKeyStatus("dw_rpt06_stg2", 1);
-        
-        $this->updateKeyStatus("dw_rpt06_stg2", 0);
+        $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
+        $this->etlHelper->enableKeys("dw_rpt06_stg2");
+
+        $this->etlHelper->disableKeys("dw_rpt06_stg2");
         $this->updateTableMV6StagingPart2($pSeasonYear, "Boundary");
-        $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
-        $this->updateKeyStatus("dw_rpt06_stg2", 1);
+        $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
+        $this->etlHelper->enableKeys("dw_rpt06_stg2");
         
         //Now, insert into the staging table the opposite combination
-        $this->updateKeyStatus("dw_rpt06_stg2", 0);
+        $this->etlHelper->disableKeys("dw_rpt06_stg2");
         $this->updateTableMV6StagingPart2Opposite();
-        $this->logTableOperation($importedFileID, "dw_rpt06_stg2", 1);
-        $this->updateKeyStatus("dw_rpt06_stg2", 1);
-        
-        
-        $this->updateKeyStatus("dw_mv_report_06", 0);
+        $this->etlHelper->logTableInsertOperation("dw_rpt06_stg2", $importedFileID);
+        $this->etlHelper->enableKeys("dw_rpt06_stg2");
+
+
+        $this->etlHelper->disableKeys("dw_mv_report_06");
         $this->deleteFromDWTableForYear("dw_mv_report_06", $pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_06", 3);
+        $this->etlHelper->logTableDeleteOperation("dw_mv_report_06", $importedFileID);
         $this->updateTableMV6($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_06", 1);
-        $this->updateKeyStatus("dw_mv_report_06", 1);
+        $this->etlHelper->logTableInsertOperation("dw_mv_report_06", $importedFileID);
+        $this->etlHelper->enableKeys("dw_mv_report_06");
     }
 
     private function refreshMVTable7($pSeasonYear, $importedFileID) {
         $this->updateTableMV7Staging($pSeasonYear);
-        $this->logTableOperation($importedFileID, "mv_report_07_stg1", 1);
+        $this->etlHelper->logTableInsertOperation("mv_report_07_stg1", $importedFileID);
 
-        $this->updateKeyStatus("dw_mv_report_07", 0);
+        $this->etlHelper->disableKeys("dw_mv_report_07");
         $this->deleteFromDWTableForYear("dw_mv_report_07", $pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_07", 3);
+        $this->etlHelper->logTableDeleteOperation("dw_mv_report_07", $importedFileID);
         $this->updateTableMV7($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_07", 1);
-        $this->updateKeyStatus("dw_mv_report_07", 1);
+        $this->etlHelper->logTableInsertOperation("dw_mv_report_07", $importedFileID);
+        $this->etlHelper->enableKeys("dw_mv_report_07");
     }
 
     private function refreshMVTable8($pSeasonYear, $importedFileID) {
-        $this->updateKeyStatus("dw_mv_report_08", 0);
+        $this->etlHelper->disableKeys("dw_mv_report_08");
         $this->deleteFromDW8Table($pSeasonYear);
         $this->deleteFromDWTableForYear("dw_mv_report_08", $pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_08", 3);
+        $this->etlHelper->logTableDeleteOperation("dw_mv_report_08", $importedFileID);
         $this->updateTableMV8($pSeasonYear);
-        $this->logTableOperation($importedFileID, "dw_mv_report_08", 1);
+        $this->etlHelper->logTableInsertOperation("dw_mv_report_08", $importedFileID);
 
         $this->updateTableMV8Totals();
-        $this->logTableOperation($importedFileID, "dw_mv_report_08", 2);
-        $this->updateKeyStatus("dw_mv_report_08", 1);
+        $this->etlHelper->logTableUpdateOperation("dw_mv_report_08", $importedFileID);
+        $this->etlHelper->enableKeys("dw_mv_report_08");
     }
 
     //TODO refactor this process. This comes from another object so I should get the query from that object
@@ -172,23 +171,6 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
     */
     private function runQuery($queryString) {
         return $this->db->query($queryString);
-    }
-    
-    
-    private function updateKeyStatus($pTable, $pStatus) {
-        if ($pStatus == 0) {
-            $this->runQuery("ALTER TABLE $pTable DISABLE KEYS;");
-        } elseif ($pStatus == 1) {
-            $this->runQuery("ALTER TABLE $pTable ENABLE KEYS;");
-        } else {
-            throw new Exception("Invalid status for disabling a key.");
-        }
-    }
-    
-    private function logTableOperation($pImportedFileID, $pTableName, $pOperationType) {
-         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
-VALUES (". $pImportedFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
-        $this->runQuery($queryString);
     }
 
     private function deleteFromDWTableForYear($pTableName, $pSeasonYear) {
