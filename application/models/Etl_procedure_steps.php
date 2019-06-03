@@ -43,7 +43,7 @@ class Etl_procedure_steps extends CI_Model
     }
 
     public function runETLProcess($pSeason, $pImportedFileID) {
-        $this->setupScript();
+        $this->etlHelper->setupScript();
         $this->importFileID = $pImportedFileID;
         $this->currentSeason = $pSeason;
         $this->queryBuilder->setSeason($pSeason);
@@ -93,19 +93,11 @@ class Etl_procedure_steps extends CI_Model
         $this->insertNewTeams();
         $this->insertNewGrounds();
 
-        $this->commitTransaction();
+        $this->etlHelper->commitTransaction();
     }
 
 
-    private function commitTransaction() {
-        $queryString = "COMMIT;";
-        $this->etlHelper->runQuery($queryString);
-    }
 
-    private function setupScript() {
-        $queryString = "SET group_concat_max_len = 15000;";
-        $this->etlHelper->runQuery($queryString);
-    }
 
     private function lookupSeasonYear() {
         $queryString = $this->queryBuilder->getLatestSeasonQuery();
@@ -118,12 +110,6 @@ class Etl_procedure_steps extends CI_Model
         $queryString = $this->queryBuilder->getDeleteUmpireNameTypeMatchQuery();
         $this->etlHelper->runQuery($queryString);
         $this->etlHelper->logTableDeleteOperation(self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->importFileID);
-    }
-
-    private function logTableOperation($pTableName, $pOperationType) {
-        $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
-VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
-        $this->etlHelper->runQuery($queryString);
     }
 
     private function deleteMatchPlayed() {

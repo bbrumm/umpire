@@ -41,4 +41,14 @@ VALUES (". $pImportFileID .", (SELECT id FROM processed_table WHERE table_name =
         $this->runQuery($queryString);
     }
 
+    public function setupScript() {
+        $queryString = "SET group_concat_max_len = 15000;";
+        $this->runQuery($queryString);
+    }
+
+    public function commitTransaction() {
+        $queryString = "COMMIT;";
+        $this->runQuery($queryString);
+    }
+
 }
