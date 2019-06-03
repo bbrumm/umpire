@@ -19,6 +19,15 @@ CREATE TABLE password_reset_request (
   email_address varchar(255)
 );
 
+CREATE TABLE query_log (
+id INT(10) AUTO_INCREMENT,
+query_time DATETIME,
+sql_query VARCHAR(2000),
+query_params VARCHAR(2000),
+PRIMARY KEY (id)
+);
+
+
 CREATE TABLE umpire_users (
   id int(11) NOT NULL AUTO_INCREMENT,
   user_name varchar(255) NOT NULL,

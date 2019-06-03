@@ -167,9 +167,19 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
         $queryString = "UPDATE competition_lookup
             SET league_id = ?
             WHERE id = ?;";
-        echo "update comp SQL: " . $queryString;
-        $this->runQuery($queryString, array($pLeagueIDToUse, $pCompetitionData['competition_id']));
+        $queryParams = array($pLeagueIDToUse, $pCompetitionData['competition_id']);
+        //Log the query to see what is happening
+        $this->logQuery($queryString, $queryParams);
+        $this->runQuery($queryString, $queryParams);
         return true;
+    }
+
+    //TODO: Move this into a query logging class
+    private function logQuery($pQueryToLog, $pParamArray) {
+        $queryString = "INSERT INTO query_log(query_time, sql_query, query_params) ".
+        "VALUES(NOW(), '" . substr(addslashes($pQueryToLog), 0, 2000) ."', '". addslashes(implode(",", $pParamArray)) ."');";
+        $this->runQuery($queryString);
+        $this->runQuery("COMMIT;");
     }
 
     public function findSingleLeagueIDFromParameters($competitionData) {
@@ -194,7 +204,7 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
 
         $leagueIDToUse = $resultArray[0]['league_id'];
 
-        if (is_null($leagueIDToUse)) {
+        if (is_null($leagueIDToUse) || $leagueIDToUse == 0) {
             /* No matching leagues found. We need to insert some data first.
              * We have the short_league_name, the league_name, and the region_id.
              * We need the age_group_division_id
@@ -227,12 +237,15 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
             WHERE ag.id = ?
             AND d.id = ?;";
 
-        $this->runQuery($queryString, array(
+        $queryParams = array(
             $competitionData['short_league_name'],
             $competitionData['region'],
             $competitionData['age_group'],
             $competitionData['division']
-        ));
+        );
+
+        $this->logQuery($queryString, $queryParams);
+        $this->runQuery($queryString, $queryParams);
 
         $insertedLeagueID = $this->db->insert_id();
         return $insertedLeagueID;
