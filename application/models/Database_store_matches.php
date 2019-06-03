@@ -167,6 +167,7 @@ ORDER BY rgs.grouping_type, rgs.field_group_order;";
         $queryString = "UPDATE competition_lookup
             SET league_id = ?
             WHERE id = ?;";
+        echo "update comp SQL: " . $queryString;
         $this->runQuery($queryString, array($pLeagueIDToUse, $pCompetitionData['competition_id']));
         return true;
     }
