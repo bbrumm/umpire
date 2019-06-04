@@ -122,7 +122,9 @@ class FileImport_test extends TestCase
             'size'      =>  10141,
             'error'     =>  0
         );
+        echo "point1 ";
         $output = $this->request('POST', ['FileImport', 'do_upload'], $postArray);
+        echo "point2 ";
 
         $expectedArray = array(
             array('table_name'=>'umpire_name_type_match', 'operation_name'=>'DELETE'),
@@ -173,7 +175,7 @@ class FileImport_test extends TestCase
             array('table_name'=>'dw_mv_report_08', 'operation_name'=>'UPDATE')
 
         );
-
+        echo "point3 ";
         $queryString = "SELECT
             t.table_name,
             r.operation_name,
@@ -188,15 +190,17 @@ class FileImport_test extends TestCase
             )
             ORDER BY op.id;";
         $query = $this->dbLocal->query($queryString);
+        echo "point4 ";
         $actualArray = $query->result();
-
+        echo "point5 ";
         foreach ($expectedArray as $key=>$arrayItem) {
             $this->assertEquals($arrayItem['table_name'], $actualArray[$key]->table_name);
             $this->assertEquals($arrayItem['operation_name'], $actualArray[$key]->operation_name);
         }
+        echo "point6 ";
 
     }
-    
+
 
     //Test that importing the same file twice will show the same import steps and counts
     /*
