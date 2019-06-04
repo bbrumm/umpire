@@ -1,0 +1,42 @@
+<?php
+class Simple_report_table_refresher extends CI_Model implements IReport_table_refresher {
+
+private $etlHelper = new Etl_helper();
+private $dataRefreshQuery;
+private $tableName;
+private $importFileID;
+
+  function __construct() {
+    parent::__construct();
+    $this->load->model('Etl_helper');
+  }
+
+
+  public function refreshMVTable($pTableName, $pSeasonYear, $pImportedFileID) {
+    $this->etlHelper->disableKeys($pTableName);
+    $this->etlHelper->deleteFromDWTableForYear($pTableName, $pSeasonYear);
+    //TODO: Include this in the above function (in etlHelper)
+    $this->etlHelper->logTableDeleteOperation($pTableName, $pImportedFileID);
+
+    $this->updateMVTable();
+    $this->etlHelper->enableKeys($pTableName);
+  }
+
+  public function setDataRefreshQuery($pQuery) {
+    $this->dataRefreshQuery = $pQuery;
+  }
+
+  public function setTableName($pTableName) {
+    $this->tableName = $pTableName;
+  }
+
+  public function setImportFileID($pImportFileID) {
+    $this->importFileID = $pImportFileID;
+  }
+
+  private function updateMVTable() {
+    $this->etlHelper->runQuery($this->dataRefreshQuery);
+    $this->etlHelper->logTableInsertOperation($this->tableName, $pImportedFileID);
+  }
+
+}
