@@ -51,17 +51,7 @@ VALUES (". $pImportFileID .", (SELECT id FROM processed_table WHERE table_name =
         $this->runQuery($queryString);
     }
 
-    public function refreshDWReportTable($pTableName, $pSeasonYear, $pImportedFileID) {
-        $this->disableKeys($pTableName);
-        $this->deleteFromDWTableForYear($pTableName, $pSeasonYear);
-        $this->logTableDeleteOperation($pTableName, $pImportedFileID);
-        //TODO: replace this with a SWITCH then maybe different objects
-        $this->updateTableMV1($pSeasonYear);
-        $this->logTableInsertOperation($pTableName, $pImportedFileID);
-        $this->enableKeys($pTableName);
-    }
-
-    private function deleteFromDWTableForYear($pTableName, $pSeasonYear) {
+    public function deleteFromDWTableForYear($pTableName, $pSeasonYear) {
         $queryString = "DELETE FROM " . $pTableName . " WHERE season_year = " . $pSeasonYear;
         $this->runQuery($queryString);
     }
