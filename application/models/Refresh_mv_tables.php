@@ -59,7 +59,7 @@ class Refresh_mv_tables extends CI_Model {
 
     //TODO: Replace all of these table names with variables
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
-        $reportTableRefresher = new Report1_refresher()
+        $reportTableRefresher = new Report1_refresher();
         $reportTableRefresher->initialiseData("dw_mv_report_01", $pSeasonYear, $importedFileID);
         $reportTableRefresher->refreshMVTable();
         
