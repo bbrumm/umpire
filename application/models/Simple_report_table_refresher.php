@@ -1,7 +1,7 @@
 <?php
 class Simple_report_table_refresher extends CI_Model implements IReport_table_refresher {
 
-private $etlHelper = new Etl_helper();
+private $etlHelper;
 private $dataRefreshQuery;
 private $tableName;
 private $importFileID;
@@ -10,6 +10,7 @@ private $seasonYear;
   function __construct() {
     parent::__construct();
     $this->load->model('Etl_helper');
+    $this->$etlHelper = new Etl_helper();
   }
   
   public static function createRefresher($pTableName, $pImportFileID, $pSeasonYear) {
