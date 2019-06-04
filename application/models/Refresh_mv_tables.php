@@ -63,24 +63,27 @@ class Refresh_mv_tables extends CI_Model {
         $reportTableRefresher->refreshMVTable();
         
         //$reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_01", $importedFileID, $pSeasonYear);
-        $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV1Query($pSeasonYear));
-        $reportTableRefresher->refreshMVTable();
+        //$reportTableRefresher->setDataRefreshQuery($this->getUpdateMV1Query($pSeasonYear));
+        //$reportTableRefresher->refreshMVTable();
     }
     
     private function refreshMVTable2($pSeasonYear, $importedFileID) {
         $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_02", $importedFileID, $pSeasonYear);
+        //$reportTableRefresher->setTableName("dw_mv_report_02");
         $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV2Query($pSeasonYear));
         $reportTableRefresher->refreshMVTable();
     }
     
     private function refreshMVTable4($pSeasonYear, $importedFileID) {
         $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_04", $importedFileID, $pSeasonYear);
+        //$reportTableRefresher->setTableName("dw_mv_report_04");
         $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV4Query($pSeasonYear));
         $reportTableRefresher->refreshMVTable();
     }
     
     private function refreshMVTable5($pSeasonYear, $importedFileID) {
         $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_05", $importedFileID, $pSeasonYear);
+        //$reportTableRefresher->setTableName("dw_mv_report_05");
         $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV5Query($pSeasonYear));
         $reportTableRefresher->refreshMVTable();
     }
