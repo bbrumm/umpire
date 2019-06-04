@@ -9,8 +9,8 @@ private $seasonYear;
 
   function __construct() {
     parent::__construct();
-    $this->load->model('Etl_helper');
-    $this->etlHelper = new Etl_helper();
+    $this->load->model('Report_table_refresher');
+    $this->etlHelper = new Report_table_refresher();
   }
   
   public static function createRefresher($pTableName, $pImportFileID, $pSeasonYear) {
