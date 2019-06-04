@@ -20,6 +20,7 @@ class Refresh_mv_tables extends CI_Model {
         $this->load->model('Season');
         $this->load->model('Etl_procedure_steps');
         $this->load->model('Etl_helper');
+        $this->load->model('Simple_report_table_refresher');
         $this->etlHelper = new Etl_helper();
     }
     
@@ -56,8 +57,17 @@ class Refresh_mv_tables extends CI_Model {
 
     //TODO: Replace all of these table names with variables
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
-        $this->etlHelper->refreshDWReportTable("dw_mv_report_01", $pSeasonYear, $importedFileID);
+        $reportTableRefresher = new Simple_report_table_refresher();
+        //TODO: add these to a constructor or custom constructor function
+        $reportTableRefresher->setTableName("dw_mv_report_01");
+        $reportTableRefresher->setImportFileID($importedFileID);
+        $reportTableRefresher->setSeasonYear($pSeasonYear);
+        
+        $reportTableRefresher->refreshMVTable();
+        
         /*
+        $this->etlHelper->refreshDWReportTable("dw_mv_report_01", $pSeasonYear, $importedFileID);
+        
         $this->etlHelper->disableKeys("dw_mv_report_01");
         $this->deleteFromDWTableForYear("dw_mv_report_01", $pSeasonYear);
         $this->etlHelper->logTableDeleteOperation("dw_mv_report_01", $importedFileID);
