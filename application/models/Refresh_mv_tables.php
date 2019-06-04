@@ -58,6 +58,7 @@ class Refresh_mv_tables extends CI_Model {
     //TODO: Replace all of these table names with variables
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
         $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_01", $importedFileID, $pSeasonYear);
+        $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV1Query());
         $reportTableRefresher->refreshMVTable();
         
         /*
@@ -187,9 +188,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
     /*
     * @property array $this->db
     */
-    private function updateTableMV1($pSeasonYear) {
-
-
+    private function getUpdateMV1Query($pSeasonYear) {
         $queryString = "INSERT INTO dw_mv_report_01 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, season_year, match_count)
             SELECT
             u.last_first_name,
@@ -208,7 +207,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
             INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
             WHERE ti.date_year = $pSeasonYear
             GROUP BY u.last_first_name, l.short_league_name, te.club_name, a.age_group, l.region_name, u.umpire_type, ti.date_year;";
-        $this->runQuery($queryString);
+        return $queryString;
     }
     
     
