@@ -132,12 +132,21 @@ class Refresh_mv_tables extends CI_Model {
     }
 
     private function refreshMVTable8($pSeasonYear, $importedFileID) {
-        $this->etlHelper->disableKeys("dw_mv_report_08");
+        $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_08", $importedFileID, $pSeasonYear);
+        $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV5Query($pSeasonYear));
+        
         $this->deleteFromDW8Table($pSeasonYear);
+        
+        $reportTableRefresher->refreshMVTable();
+        
+        /*
+        $this->etlHelper->disableKeys("dw_mv_report_08");
+        
         $this->deleteFromDWTableForYear("dw_mv_report_08", $pSeasonYear);
         $this->etlHelper->logTableDeleteOperation("dw_mv_report_08", $importedFileID);
         $this->updateTableMV8($pSeasonYear);
         $this->etlHelper->logTableInsertOperation("dw_mv_report_08", $importedFileID);
+        */
 
         $this->updateTableMV8Totals();
         $this->etlHelper->logTableUpdateOperation("dw_mv_report_08", $importedFileID);
@@ -516,7 +525,7 @@ WHERE ti2.date_year = $pSeasonYear;";
         $this->runQuery($queryString);
     }
 
-    private function updateTableMV8($pSeasonYear) {
+    private function getUpdateMV2Query($pSeasonYear) {
         //Use the baseline data if the imported year is not 2018
         //This is because annual report/baseline data is more correct than the master spreadsheets
         if ($pSeasonYear <= 2017) {
@@ -575,7 +584,7 @@ WHERE ti2.date_year = $pSeasonYear;";
                 u.first_name
                 FROM dw_dim_umpire u;";
         }
-        $this->runQuery($queryString);
+        return $queryString;
     }
 
     private function updateTableMV8Totals() {
