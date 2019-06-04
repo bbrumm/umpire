@@ -7,10 +7,11 @@ class FileImport_test extends TestCase
         $this->dbLocal = $this->CI->load->database('default', TRUE);
     }
 
-
+/*
     public function tearDown() {
         $this->dbLocal->close();
     }
+*/
 
     public function test_ImportFile() {
 
