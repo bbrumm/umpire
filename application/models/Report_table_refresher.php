@@ -48,7 +48,7 @@ class Report_table_refresher extends CI_Model {
 
     public function disableKeys($pTableName) {
         if(isnull($pTableName)) {
-            throw new Exception("Table name cannot be empty".);
+            throw new Exception("Table name cannot be empty.");
         } else {
             $queryString = "ALTER TABLE ". $pTableName ." DISABLE KEYS;";
             $this->runQuery($queryString);
@@ -57,7 +57,7 @@ class Report_table_refresher extends CI_Model {
 
     public function enableKeys($pTableName) {
         if(isnull($pTableName)) {
-            throw new Exception("Table name cannot be empty".);
+            throw new Exception("Table name cannot be empty.");
         } else {
           $queryString = "ALTER TABLE ". $pTableName ." ENABLE KEYS;";
           $this->runQuery($queryString);
