@@ -19,8 +19,10 @@ class Refresh_mv_tables extends CI_Model {
         parent::__construct();
         $this->load->model('Season');
         $this->load->model('Etl_procedure_steps');
-        $this->load->model('Etl_helper');
+        //$this->load->model('Etl_helper');
         $this->load->model('Simple_report_table_refresher');
+        //TODO: create a factory class that creates these reports
+        $this->load->model('Report1_refresher');
         $this->etlHelper = new Etl_helper();
     }
     
@@ -57,7 +59,10 @@ class Refresh_mv_tables extends CI_Model {
 
     //TODO: Replace all of these table names with variables
     private function refreshMVTable1($pSeasonYear, $importedFileID) {
-        $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_01", $importedFileID, $pSeasonYear);
+        $reportTableRefresher = Report1_refresher::createRefresher($importedFileID, $pSeasonYear);
+        $reportTableRefresher->refreshMVTable();
+        
+        //$reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_01", $importedFileID, $pSeasonYear);
         $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV1Query($pSeasonYear));
         $reportTableRefresher->refreshMVTable();
     }
