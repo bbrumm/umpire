@@ -47,20 +47,20 @@ class Report_table_refresher extends CI_Model {
     }
 
     public function disableKeys($pTableName) {
-        if(isnull($pTableName)) {
-            throw new Exception("Table name cannot be empty.");
-        } else {
+        if(isset($pTableName)) {
             $queryString = "ALTER TABLE ". $pTableName ." DISABLE KEYS;";
             $this->runQuery($queryString);
+        } else {
+            throw new Exception("Table name cannot be empty.");
         }
     }
 
     public function enableKeys($pTableName) {
-        if(isnull($pTableName)) {
-            throw new Exception("Table name cannot be empty.");
-        } else {
+        if(isset($pTableName)) {
           $queryString = "ALTER TABLE ". $pTableName ." ENABLE KEYS;";
-          $this->runQuery($queryString);
+          $this->runQuery($queryString);  
+        } else {
+            throw new Exception("Table name cannot be empty.");
         }
     }
 
