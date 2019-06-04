@@ -8,25 +8,27 @@ class Report_table_refresher extends CI_Model {
     private $importFileID;
     private $seasonYear;
     private $tableName;
+    private $dataRefreshQuery;
 
     function __construct() {
         parent::__construct();
     }
     
-    public static function createRefresher($pImportFileID, $pSeasonYear) {
-      $reportTableRefresher = new Report_table_refresher();
-      $reportTableRefresher->importFileID = $pImportFileID;
-      $reportTableRefresher->seasonYear = $pSeasonYear;
-  
-      return $reportTableRefresher;
-    }
-    
     public function refreshMVTable() {
-      $this->disableKeys($this->tableName);
-      $this->deleteFromDWTableForYear($this->tableName, $this->seasonYear);
-      $this->logTableDeleteOperation($this->tableName, $this->importFileID);
-      $this->updateMVTable();
-      $this->enableKeys($this->tableName);
+        $this->disableKeys($this->tableName);
+        $this->deleteFromDWTableForYear($this->tableName, $this->seasonYear);
+        $this->logTableDeleteOperation($this->tableName, $this->importFileID);
+        $this->updateMVTable();
+        $this->enableKeys($this->tableName);
+    }
+
+    public function setSeasonYear($pSeason) {
+        $queryString = "SELECT MAX(season_year) AS season_year
+            FROM season
+            WHERE id = " . $pSeason->getSeasonID() . ";";
+        $query = $this->runQuery($queryString);
+        $queryResultArray = $query->result_array();
+        $this->seasonYear = $queryResultArray[0]['season_year'];
     }
     
     public function setDataRefreshQuery($pQuery) {
@@ -35,6 +37,23 @@ class Report_table_refresher extends CI_Model {
     
     public function setTableName($pTableName) {
       $this->tableName = $pTableName;
+    }
+
+    public function getTableName() {
+        return $this->tableName;
+    }
+
+    public function setImportFileID($pImportFileID) {
+        $this->importFileID = $pImportFileID;
+    }
+
+    //TODO: remove this when the log operation functions use the object value instead of a parameter
+    public function getImportFileID() {
+        return $this->importFileID;
+    }
+
+    public function getSeasonYear() {
+        return $this->seasonYear;
     }
     
     private function updateMVTable() {

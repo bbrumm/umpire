@@ -4,14 +4,13 @@ class Report1_refresher extends Report_table_refresher {
   function __construct() {
         parent::__construct();
     }
-  
-  public function initialiseData($pTableName, $pSeasonYear, $pImportFileID) {
-    $this->setTableName($pTableName);
-    $this->importFileID = $pImportFileID;
-    $this->seasonYear = $pSeasonYear;
-  }
 
-  public function refreshMVTable() {
+    public static function createRefresher($pImportFileID, $pSeason) {
+        $reportTableRefresher = new Report1_refresher();
+        $reportTableRefresher->setTableName("dw_mv_report_01");
+        $reportTableRefresher->setImportFileID($pImportFileID);
+        $reportTableRefresher->setSeasonYear($pSeason);
+
         $queryString = "INSERT INTO dw_mv_report_01 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, season_year, match_count)
             SELECT
             u.last_first_name,
@@ -28,13 +27,11 @@ class Report1_refresher extends Report_table_refresher {
             INNER JOIN dw_dim_team te ON (m.home_team_key = te.team_key OR m.away_team_key = te.team_key)
             INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
             INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
-            WHERE ti.date_year = $this->seasonYear
+            WHERE ti.date_year = ". $reportTableRefresher->getSeasonYear() ."
             GROUP BY u.last_first_name, l.short_league_name, te.club_name, a.age_group, l.region_name, u.umpire_type, ti.date_year;";
-        
-        
-        $this->setDataRefreshQuery($queryString);
-        $this->refreshMVTable();
-    
+        $reportTableRefresher->setDataRefreshQuery($queryString);
+
+        return $reportTableRefresher;
     }
 
 }

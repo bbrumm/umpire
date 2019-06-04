@@ -1536,5 +1536,4 @@ ORDER BY r.display_order, p.permission_name, ps.category, ps.display_order;";
         $this->dbLocal->close();
     }
 
-
 }
