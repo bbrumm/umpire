@@ -66,39 +66,18 @@ class Refresh_mv_tables extends CI_Model {
         $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_02", $importedFileID, $pSeasonYear);
         $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV2Query($pSeasonYear));
         $reportTableRefresher->refreshMVTable();
-        
-        /*
-        $this->etlHelper->disableKeys("dw_mv_report_02");
-        $this->deleteFromDWTableForYear("dw_mv_report_02", $pSeasonYear);
-        $this->etlHelper->logTableDeleteOperation("dw_mv_report_02", $importedFileID);
-        $this->updateTableMV2($pSeasonYear);
-        $this->etlHelper->logTableInsertOperation("dw_mv_report_02", $importedFileID);
-        $this->etlHelper->enableKeys("dw_mv_report_02");
-        */
     }
     
     private function refreshMVTable4($pSeasonYear, $importedFileID) {
         $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_04", $importedFileID, $pSeasonYear);
         $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV4Query($pSeasonYear));
         $reportTableRefresher->refreshMVTable();
-        
-        /*
-        $this->etlHelper->disableKeys("dw_mv_report_04");
-        $this->deleteFromDWTableForYear("dw_mv_report_04", $pSeasonYear);
-        $this->etlHelper->logTableDeleteOperation("dw_mv_report_04", $importedFileID);
-        $this->updateTableMV4($pSeasonYear);
-        $this->etlHelper->logTableInsertOperation("dw_mv_report_04", $importedFileID);
-        $this->etlHelper->enableKeys("dw_mv_report_04");
-        */
     }
     
     private function refreshMVTable5($pSeasonYear, $importedFileID) {
-        $this->etlHelper->disableKeys("dw_mv_report_05");
-        $this->deleteFromDWTableForYear("dw_mv_report_05", $pSeasonYear);
-        $this->etlHelper->logTableDeleteOperation("dw_mv_report_05", $importedFileID);
-        $this->updateTableMV5($pSeasonYear);
-        $this->etlHelper->logTableInsertOperation("dw_mv_report_05", $importedFileID);
-        $this->etlHelper->enableKeys("dw_mv_report_05");
+        $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_05", $importedFileID, $pSeasonYear);
+        $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV5Query($pSeasonYear));
+        $reportTableRefresher->refreshMVTable();
     }
     
     private function refreshMVTable6($pSeasonYear, $importedFileID) {
@@ -350,7 +329,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
         return $queryString;
     }
     
-    private function updateTableMV5($pSeasonYear) {
+    private function getUpdateMV5Query($pSeasonYear) {
         $queryString = "INSERT INTO dw_mv_report_05 (umpire_type, age_group, age_sort_order, short_league_name, league_sort_order, region_name, match_no_ump, total_match_count, match_pct, season_year) 
         SELECT 
         ua.umpire_type,
@@ -403,7 +382,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
         AND ua.age_group = sub_match_count.age_group
         AND ua.short_league_name = sub_match_count.short_league_name
         WHERE sub_total_matches.date_year = $pSeasonYear;";
-        $this->runQuery($queryString);
+        return $queryString;
     }
     
     private function updateTableMV6Staging($pSeasonYear) {
