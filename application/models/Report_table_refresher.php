@@ -47,13 +47,21 @@ class Report_table_refresher extends CI_Model {
     }
 
     public function disableKeys($pTableName) {
-        $queryString = "ALTER TABLE ". $pTableName ." DISABLE KEYS;";
-        $this->runQuery($queryString);
+        if(isnull($pTableName)) {
+            throw new Exception("Table name cannot be empty".);
+        } else {
+            $queryString = "ALTER TABLE ". $pTableName ." DISABLE KEYS;";
+            $this->runQuery($queryString);
+        }
     }
 
     public function enableKeys($pTableName) {
-        $queryString = "ALTER TABLE ". $pTableName ." ENABLE KEYS;";
-        $this->runQuery($queryString);
+        if(isnull($pTableName)) {
+            throw new Exception("Table name cannot be empty".);
+        } else {
+          $queryString = "ALTER TABLE ". $pTableName ." ENABLE KEYS;";
+          $this->runQuery($queryString);
+        }
     }
 
     public function logTableInsertOperation($pTableName, $pImportFileID) {
