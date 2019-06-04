@@ -37,8 +37,8 @@ class Etl_procedure_steps extends CI_Model
         parent::__construct();
         $this->load->model('Season');
 	    $this->load->model('Etl_query_builder');
-	    $this->load->model('Etl_helper');
-	    $this->etlHelper = new Etl_helper();
+	    $this->load->model('Report_table_refresher');
+	    $this->etlHelper = new Report_table_refresher();
 	    $this->queryBuilder = new Etl_query_builder();
     }
 
