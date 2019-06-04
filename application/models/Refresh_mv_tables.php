@@ -270,7 +270,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
         return $queryString;
     }
     
-    private function getUpdateMV2Query($pSeasonYear) {
+    private function getUpdateMV4Query($pSeasonYear) {
         $queryString = "INSERT INTO dw_mv_report_04 (club_name, age_group, short_league_name, umpire_type, age_sort_order, league_sort_order, match_count, season_year, region_name)
         SELECT
         te.club_name,
