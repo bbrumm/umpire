@@ -1,5 +1,5 @@
 <?php
-class Etl_helper extends CI_Model {
+class Report_table_refresher extends CI_Model {
 
     const OPERATION_INSERT = 1;
     const OPERATION_UPDATE = 2;
@@ -8,7 +8,7 @@ class Etl_helper extends CI_Model {
     function __construct() {
         parent::__construct();
     }
-
+    
     public function runQuery($pQueryString) {
         return $this->db->query($pQueryString);
     }
