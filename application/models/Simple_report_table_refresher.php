@@ -10,7 +10,7 @@ private $seasonYear;
   function __construct() {
     parent::__construct();
     $this->load->model('Etl_helper');
-    $this->$etlHelper = new Etl_helper();
+    $this->etlHelper = new Etl_helper();
   }
   
   public static function createRefresher($pTableName, $pImportFileID, $pSeasonYear) {
