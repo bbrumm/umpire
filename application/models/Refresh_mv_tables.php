@@ -63,21 +63,33 @@ class Refresh_mv_tables extends CI_Model {
     }
     
     private function refreshMVTable2($pSeasonYear, $importedFileID) {
+        $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_02", $importedFileID, $pSeasonYear);
+        $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV2Query($pSeasonYear));
+        $reportTableRefresher->refreshMVTable();
+        
+        /*
         $this->etlHelper->disableKeys("dw_mv_report_02");
         $this->deleteFromDWTableForYear("dw_mv_report_02", $pSeasonYear);
         $this->etlHelper->logTableDeleteOperation("dw_mv_report_02", $importedFileID);
         $this->updateTableMV2($pSeasonYear);
         $this->etlHelper->logTableInsertOperation("dw_mv_report_02", $importedFileID);
         $this->etlHelper->enableKeys("dw_mv_report_02");
+        */
     }
     
     private function refreshMVTable4($pSeasonYear, $importedFileID) {
+        $reportTableRefresher = Simple_report_table_refresher::createRefresher("dw_mv_report_04", $importedFileID, $pSeasonYear);
+        $reportTableRefresher->setDataRefreshQuery($this->getUpdateMV4Query($pSeasonYear));
+        $reportTableRefresher->refreshMVTable();
+        
+        /*
         $this->etlHelper->disableKeys("dw_mv_report_04");
         $this->deleteFromDWTableForYear("dw_mv_report_04", $pSeasonYear);
         $this->etlHelper->logTableDeleteOperation("dw_mv_report_04", $importedFileID);
         $this->updateTableMV4($pSeasonYear);
         $this->etlHelper->logTableInsertOperation("dw_mv_report_04", $importedFileID);
         $this->etlHelper->enableKeys("dw_mv_report_04");
+        */
     }
     
     private function refreshMVTable5($pSeasonYear, $importedFileID) {
@@ -200,7 +212,7 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
     }
     
     
-    private function updateTableMV2($pSeasonYear) {
+    private function getUpdateMV2Query($pSeasonYear) {
         $queryString = "INSERT INTO dw_mv_report_02 (last_first_name, short_league_name, age_group, age_sort_order, league_sort_order, two_ump_flag, region_name, umpire_type, season_year, match_count)
             SELECT
             u.last_first_name,
@@ -255,10 +267,10 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
             AND a.age_group = 'Seniors'
             AND ti.date_year = $pSeasonYear
             GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.region_name, u.umpire_type, ti.date_year;";
-        $this->runQuery($queryString);
+        return $queryString;
     }
     
-    private function updateTableMV4($pSeasonYear) {
+    private function getUpdateMV2Query($pSeasonYear) {
         $queryString = "INSERT INTO dw_mv_report_04 (club_name, age_group, short_league_name, umpire_type, age_sort_order, league_sort_order, match_count, season_year, region_name)
         SELECT
         te.club_name,
@@ -334,7 +346,8 @@ WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues
         )
         AND ti.date_year = $pSeasonYear
         GROUP BY te.club_name, a.age_group, l.short_league_name;";
-        $this->runQuery($queryString);
+        
+        return $queryString;
     }
     
     private function updateTableMV5($pSeasonYear) {
