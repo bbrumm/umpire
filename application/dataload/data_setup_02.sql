@@ -402,6 +402,8 @@ CREATE TABLE table_operations (
   PRIMARY KEY (id)
 );
 
+CREATE INDEX idx_tblop_fileid ON table_operations(imported_file_id);
+
 
 CREATE TABLE dw_fact_match (
   match_id int(11) DEFAULT NULL,
