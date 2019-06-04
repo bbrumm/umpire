@@ -7,6 +7,7 @@ class Report_table_refresher extends CI_Model {
     
     private $importFileID;
     private $seasonYear;
+    private $tableName;
 
     function __construct() {
         parent::__construct();
@@ -30,6 +31,10 @@ class Report_table_refresher extends CI_Model {
     
     public function setDataRefreshQuery($pQuery) {
       $this->dataRefreshQuery = $pQuery;
+    }
+    
+    public function setTableName($pTableName) {
+      $this->tableName = $pTableName;
     }
     
     private function updateMVTable() {
