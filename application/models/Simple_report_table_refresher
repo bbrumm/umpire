@@ -5,38 +5,40 @@ private $etlHelper = new Etl_helper();
 private $dataRefreshQuery;
 private $tableName;
 private $importFileID;
+private $seasonYear;
 
   function __construct() {
     parent::__construct();
     $this->load->model('Etl_helper');
   }
+  
+  public static function createRefresher($pTableName, $pImportFileID, $pSeasonYear) {
+    $reportTableRefresher = new Simple_report_table_refresher();
+    $reportTableRefresher->tableName = $pTableName;
+    $reportTableRefresher->importFileID = $pImportFileID;
+    $reportTableRefresher->seasonYear = $pSeasonYear;
+  
+    return $reportTableRefresher;
+  }
 
 
-  public function refreshMVTable($pTableName, $pSeasonYear, $pImportedFileID) {
-    $this->etlHelper->disableKeys($pTableName);
-    $this->etlHelper->deleteFromDWTableForYear($pTableName, $pSeasonYear);
+  public function refreshMVTable() {
+    $this->etlHelper->disableKeys($this->tableName);
+    $this->etlHelper->deleteFromDWTableForYear($this->tableName, $this->seasonYear);
     //TODO: Include this in the above function (in etlHelper)
-    $this->etlHelper->logTableDeleteOperation($pTableName, $pImportedFileID);
+    $this->etlHelper->logTableDeleteOperation($this->tableName, $this->importedFileID);
 
     $this->updateMVTable();
-    $this->etlHelper->enableKeys($pTableName);
+    $this->etlHelper->enableKeys($this->tableName);
   }
 
   public function setDataRefreshQuery($pQuery) {
     $this->dataRefreshQuery = $pQuery;
   }
 
-  public function setTableName($pTableName) {
-    $this->tableName = $pTableName;
-  }
-
-  public function setImportFileID($pImportFileID) {
-    $this->importFileID = $pImportFileID;
-  }
-
   private function updateMVTable() {
     $this->etlHelper->runQuery($this->dataRefreshQuery);
-    $this->etlHelper->logTableInsertOperation($this->tableName, $pImportedFileID);
+    $this->etlHelper->logTableInsertOperation($this->tableName, $this->importedFileID);
   }
 
 }
