@@ -1,7 +1,15 @@
 <?php
 class Report1_refresher extends Report_table_refresher {
   
+  function __construct() {
+        parent::__construct();
+    }
   
+  public function initialiseData($pTableName, $pSeasonYear, $pImportFileID) {
+    $this->setTableName($pTableName);
+    $this->importFileID = $pImportFileID;
+    $this->seasonYear = $pSeasonYear;
+  }
 
   public function refreshMVTable() {
         $queryString = "INSERT INTO dw_mv_report_01 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, season_year, match_count)
@@ -23,7 +31,7 @@ class Report1_refresher extends Report_table_refresher {
             WHERE ti.date_year = $this->pSeasonYear
             GROUP BY u.last_first_name, l.short_league_name, te.club_name, a.age_group, l.region_name, u.umpire_type, ti.date_year;";
         
-        $this->setTableName("dw_mv_report_01");
+        
         $this->setDataRefreshQuery($queryString);
         $this->refreshMVTable();
     
