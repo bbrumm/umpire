@@ -20,6 +20,23 @@ class Report_table_refresher extends CI_Model {
       return $reportTableRefresher;
     }
     
+    public function refreshMVTable() {
+      $this->disableKeys($this->tableName);
+      $this->deleteFromDWTableForYear($this->tableName, $this->seasonYear);
+      $this->logTableDeleteOperation($this->tableName, $this->importFileID);
+      $this->updateMVTable();
+      $this->enableKeys($this->tableName);
+    }
+    
+    public function setDataRefreshQuery($pQuery) {
+      $this->dataRefreshQuery = $pQuery;
+    }
+    
+    private function updateMVTable() {
+      $this->runQuery($this->dataRefreshQuery);
+      $this->logTableInsertOperation($this->tableName, $this->importFileID);
+    }
+    
     public function runQuery($pQueryString) {
         return $this->db->query($pQueryString);
     }
