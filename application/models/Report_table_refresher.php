@@ -4,9 +4,20 @@ class Report_table_refresher extends CI_Model {
     const OPERATION_INSERT = 1;
     const OPERATION_UPDATE = 2;
     const OPERATION_DELETE = 3;
+    
+    private $importFileID;
+    private $seasonYear;
 
     function __construct() {
         parent::__construct();
+    }
+    
+    public static function createRefresher($pImportFileID, $pSeasonYear) {
+      $reportTableRefresher = new Report_table_refresher();
+      $reportTableRefresher->importFileID = $pImportFileID;
+      $reportTableRefresher->seasonYear = $pSeasonYear;
+  
+      return $reportTableRefresher;
     }
     
     public function runQuery($pQueryString) {
