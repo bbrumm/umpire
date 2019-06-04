@@ -525,7 +525,7 @@ WHERE ti2.date_year = $pSeasonYear;";
         $this->runQuery($queryString);
     }
 
-    private function getUpdateMV2Query($pSeasonYear) {
+    private function getUpdateMV8Query($pSeasonYear) {
         //Use the baseline data if the imported year is not 2018
         //This is because annual report/baseline data is more correct than the master spreadsheets
         if ($pSeasonYear <= 2017) {
