@@ -23,6 +23,7 @@ class Report1_refresher extends Report_table_refresher {
             WHERE ti.date_year = $this->pSeasonYear
             GROUP BY u.last_first_name, l.short_league_name, te.club_name, a.age_group, l.region_name, u.umpire_type, ti.date_year;";
         
+        parent::setTableName("dw_mv_report_01");
         parent::setDataRefreshQuery($queryString);
         parent::refreshMVTable();
     
