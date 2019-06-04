@@ -27,7 +27,7 @@ private $seasonYear;
     $this->etlHelper->disableKeys($this->tableName);
     $this->etlHelper->deleteFromDWTableForYear($this->tableName, $this->seasonYear);
     //TODO: Include this in the above function (in etlHelper)
-    $this->etlHelper->logTableDeleteOperation($this->tableName, $this->importedFileID);
+    $this->etlHelper->logTableDeleteOperation($this->tableName, $this->importFileID);
 
     $this->updateMVTable();
     $this->etlHelper->enableKeys($this->tableName);
@@ -39,7 +39,7 @@ private $seasonYear;
 
   private function updateMVTable() {
     $this->etlHelper->runQuery($this->dataRefreshQuery);
-    $this->etlHelper->logTableInsertOperation($this->tableName, $this->importedFileID);
+    $this->etlHelper->logTableInsertOperation($this->tableName, $this->importFileID);
   }
 
 }
