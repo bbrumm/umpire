@@ -74,7 +74,7 @@ class Report_table_refresher extends CI_Model {
     }
     
     public function disableKeysForSpecificTable($pTableName) {
-        if(isset($this->tableName)) {
+        if(isset($pTableName)) {
             $this->disableKeysForTable($pTableName);
         } else {
             throw new Exception("Table name specified cannot be empty.");
@@ -82,7 +82,7 @@ class Report_table_refresher extends CI_Model {
     }
     
     private function disableKeysForTable($pTableName) {
-        $queryString = "ALTER TABLE ". $this->tableName ." DISABLE KEYS;";
+        $queryString = "ALTER TABLE ". $pTableName ." DISABLE KEYS;";
         $this->runQuery($queryString);
     }
 
@@ -95,7 +95,7 @@ class Report_table_refresher extends CI_Model {
     }
     
     public function enableKeysForSpecificTable($pTableName) {
-        if(isset($this->tableName)) {
+        if(isset($pTableName)) {
             $this->enableKeysForTable($pTableName);
         } else {
             throw new Exception("Table name specified cannot be empty.");
@@ -103,20 +103,32 @@ class Report_table_refresher extends CI_Model {
     }
     
     private function enableKeysForTable($pTableName) {
-        $queryString = "ALTER TABLE ". $this->tableName ." ENABLE KEYS;";
+        $queryString = "ALTER TABLE ". $pTableName ." ENABLE KEYS;";
         $this->runQuery($queryString);
     }
 
     public function logTableInsertOperation() {
-        $this->logTableOperation($this->tableName, self::OPERATION_INSERT);
+        if(isset($this->tableName)) {
+            $this->logTableOperation($this->tableName, self::OPERATION_INSERT);
+        } else {
+            throw new Exception("Table name for insert operation logging cannot be empty.");
+        }
     }
 
     public function logTableDeleteOperation() {
-        $this->logTableOperation($this->tableName, self::OPERATION_DELETE);
+        if(isset($this->tableName)) {
+            $this->logTableOperation($this->tableName, self::OPERATION_DELETE);
+        } else {
+            throw new Exception("Table name for delete operation logging cannot be empty.");
+        }
     }
 
     public function logTableUpdateOperation() {
-        $this->logTableOperation($this->tableName, self::OPERATION_UPDATE);
+        if(isset($this->tableName)) {
+            $this->logTableOperation($this->tableName, self::OPERATION_UPDATE);
+        } else {
+            throw new Exception("Table name for update operation logging cannot be empty.");
+        }
     }
     
     public function logSpecificTableInsertOperation($pTableName) {
@@ -145,7 +157,7 @@ class Report_table_refresher extends CI_Model {
 
     private function logTableOperation($pTableName, $pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
-VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_name = '". $this->tableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
+VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $this->runQuery($queryString);
     }
 
@@ -161,6 +173,28 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
 
     public function deleteFromDWTableForYear() {
         $queryString = "DELETE FROM " . $this->tableName . " WHERE season_year = " . $this->seasonYear;
+        $this->runQuery($queryString);
+    }
+
+    public function runInsertETLStep($pTableName, $pQueryString) {
+        $this->disableKeysForSpecificTable($pTableName);
+        $this->runQuery($pQueryString);
+        $this->logSpecificTableInsertOperation($pTableName);
+        $this->enableKeysForSpecificTable($pTableName);
+    }
+
+    public function runInsertETLStepWithoutKeys($pTableName, $pQueryString) {
+        $this->runQuery($pQueryString);
+        $this->logSpecificTableInsertOperation($pTableName);
+    }
+
+    public function runDeleteETLStep($pTableName, $pQueryString) {
+        $this->runQuery($pQueryString);
+        $this->logSpecificTableDeleteOperation($pTableName);
+    }
+
+    public function truncateTable($pTableName) {
+        $queryString = "TRUNCATE ". $pTableName .";";
         $this->runQuery($queryString);
     }
 

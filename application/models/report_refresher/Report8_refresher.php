@@ -15,13 +15,13 @@ class Report8_refresher extends Report_table_refresher {
         return $reportTableRefresher;
     }
 
-    private static function getUpdateMV8Query() {
+    private static function getUpdateMV8Query($pSeasonYear) {
         //Use the baseline data if the imported year is not 2018
         //This is because annual report/baseline data is more correct than the master spreadsheets
         if ($pSeasonYear <= 2017) {
             $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count, last_name, first_name)
                 SELECT
-                '". $this->getSeasonYear() ."',
+                '". $pSeasonYear ."',
                 CONCAT(b.last_name, ', ', b.first_name),
                 b.games_$pSeasonYear,
                 b.last_name,
@@ -55,7 +55,7 @@ class Report8_refresher extends Report_table_refresher {
                 INNER JOIN dw_dim_league l ON m.league_key = l.league_key
                 INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
                 INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-                WHERE ti.date_year = ". $this->getSeasonYear() ."
+                WHERE ti.date_year = ". $pSeasonYear ."
                 GROUP BY ti.date_year, u.first_name, u.last_name
                 UNION ALL
                 SELECT DISTINCT

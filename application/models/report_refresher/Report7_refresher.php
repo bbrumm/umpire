@@ -21,7 +21,7 @@ class Report7_refresher extends Report_table_refresher {
         $this->logSpecificTableInsertOperation(self::STAGING_TABLE);
 
         $this->disableKeys();
-        $this->deleteFromDWTableForYear);
+        $this->deleteFromDWTableForYear();
         $this->logTableDeleteOperation();
         $this->updateTableMV7();
         $this->logTableInsertOperation();

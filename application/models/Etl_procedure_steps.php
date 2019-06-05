@@ -31,20 +31,24 @@ class Etl_procedure_steps extends CI_Model
     private $importFileID;
     private $currentSeason;
     private $queryBuilder;
-    private $etlHelper;
+    private $reportTableRefresher;
 	
     function __construct() {
         parent::__construct();
         $this->load->model('Season');
 	    $this->load->model('Etl_query_builder');
 	    $this->load->model('report_refresher/Report_table_refresher');
-	    $this->etlHelper = new Report_table_refresher();
+	    $this->reportTableRefresher = new Report_table_refresher();
 	    $this->queryBuilder = new Etl_query_builder();
     }
 
     public function runETLProcess($pSeason, $pImportedFileID) {
-        $this->etlHelper->setupScript();
+        $this->reportTableRefresher->setupScript();
         $this->importFileID = $pImportedFileID;
+
+        $this->reportTableRefresher->setImportFileID($pImportedFileID);
+        $this->reportTableRefresher->setSeasonYear($pSeason);
+
         $this->currentSeason = $pSeason;
         $this->queryBuilder->setSeason($pSeason);
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
@@ -55,7 +59,6 @@ class Etl_procedure_steps extends CI_Model
         $this->deleteMatchPlayed();
         $this->deleteRound();
         $this->deleteMatchStaging();
-
         $this->deleteDWFactMatch();
 
         $this->insertRound();
@@ -87,228 +90,136 @@ class Etl_procedure_steps extends CI_Model
         */
         $this->deleteCompetitionsWithMissingLeague();
         $this->insertCompetitionLookup();
-        /*
-        Insert new teams. Clubs are added manually by the person importing the data
-        */
+
+        //Insert new teams. Clubs are added manually by the person importing the data
         $this->insertNewTeams();
         $this->insertNewGrounds();
 
-        $this->etlHelper->commitTransaction();
+        $this->reportTableRefresher->commitTransaction();
     }
-
-
-
 
     private function lookupSeasonYear() {
         $queryString = $this->queryBuilder->getLatestSeasonQuery();
-        $query = $this->etlHelper->runQuery($queryString);
+        $query = $this->reportTableRefresher->runQuery($queryString);
         $queryResultArray = $query->result_array();
         return $queryResultArray[0]['season_year'];
     }
 
     private function deleteUmpireNameTypeMatch() {
-        $queryString = $this->queryBuilder->getDeleteUmpireNameTypeMatchQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableDeleteOperation(self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->importFileID);
+        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->queryBuilder->getDeleteUmpireNameTypeMatchQuery());
     }
 
     private function deleteMatchPlayed() {
-        $queryString = $this->queryBuilder->getDeleteMatchPlayedQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableDeleteOperation(self::TABLE_MATCH_PLAYED, $this->importFileID);
+        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_MATCH_PLAYED, $this->queryBuilder->getDeleteMatchPlayedQuery());
     }
 
     private function deleteRound() {
-        $queryString = $this->queryBuilder->getDeleteRoundQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableDeleteOperation(self::TABLE_ROUND, $this->importFileID);
+        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_ROUND, $this->queryBuilder->getDeleteRoundQuery());
     }
 
     private function deleteMatchStaging() {
-	$this->truncateTable(self::TABLE_MATCH_STAGING);
-        $this->etlHelper->logTableDeleteOperation(self::TABLE_MATCH_STAGING, $this->importFileID);
+	    $this->reportTableRefresher->truncateTable(self::TABLE_MATCH_STAGING);
+        $this->reportTableRefresher->logSpecificTableDeleteOperation(self::TABLE_MATCH_STAGING);
     }
 
     private function deleteDWFactMatch() {
-        $queryString = $this->queryBuilder->getDeleteDWFactMatchQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableDeleteOperation("dw_fact_match", $this->importFileID);
+        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_DW_FACT_MATCH, $this->queryBuilder->getDeleteDWFactMatchQuery());
     }
 
     private function insertRound() {
-        $this->etlHelper->disableKeys(self::TABLE_ROUND);
-        $queryString = $this->queryBuilder->getInsertRoundQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_ROUND, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_ROUND);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_ROUND, $this->queryBuilder->getInsertRoundQuery());
     }
 
     private function insertUmpire() {
-        $queryString = $this->queryBuilder->getInsertUmpireQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_UMPIRE, $this->importFileID);
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_UMPIRE, $this->queryBuilder->getInsertUmpireQuery());
     }
 
     private function insertUmpireNameType() {
-        $this->etlHelper->disableKeys(self::TABLE_UMPIRE_NAME_TYPE);
-        $queryString = $this->queryBuilder->getInsertUmpireNameTypeQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_UMPIRE_NAME_TYPE, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_UMPIRE_NAME_TYPE);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_UMPIRE_NAME_TYPE, $this->queryBuilder->getInsertUmpireNameTypeQuery());
     }
 
     private function insertMatchStaging() {
-        $this->etlHelper->disableKeys(self::TABLE_MATCH_STAGING);
-        $queryString = $this->queryBuilder->getInsertMatchStagingQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_MATCH_STAGING, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_MATCH_STAGING);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_MATCH_STAGING, $this->queryBuilder->getInsertMatchStagingQuery());
     }
 
     private function deleteDuplicateMatchStagingRecords() {
-        $queryString = $this->queryBuilder->getDeleteDuplicateMatchStagingRecordsQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableDeleteOperation(self::TABLE_MATCH_STAGING, $this->importFileID);
+        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_MATCH_STAGING, $this->queryBuilder->getDeleteDuplicateMatchStagingRecordsQuery());
     }
 
     private function insertMatchPlayed() {
-        $this->etlHelper->disableKeys(self::TABLE_MATCH_PLAYED);
-        $queryString = $this->queryBuilder->getInsertMatchPlayedQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_MATCH_PLAYED, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_MATCH_PLAYED);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_MATCH_PLAYED, $this->queryBuilder->getInsertMatchPlayedQuery());
     }
 
     private function insertUmpireNameTypeMatch() {
-        $this->etlHelper->disableKeys(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
-        $queryString = $this->queryBuilder->getInsertUmpireNameTypeMatchQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_UMPIRE_NAME_TYPE_MATCH);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->queryBuilder->getInsertUmpireNameTypeMatchQuery());
     }
 
     private function truncateDimFact() {
-        $this->truncateTable(self::TABLE_DW_DIM_AGE_GROUP);
-        $this->truncateTable(self::TABLE_DW_DIM_LEAGUE);
-        $this->truncateTable(self::TABLE_DW_DIM_TEAM);
-        $this->truncateTable(self::TABLE_DW_DIM_TIME);
-        $this->truncateTable(self::TABLE_DW_DIM_UMPIRE);
-        $this->truncateTable(self::TABLE_STAGING_MATCH);
-        $this->truncateTable(self::TABLE_STAGING_NO_UMP);
-        $this->truncateTable(self::TABLE_STAGING_UMP_AGE_LG);
-        $this->truncateTable(self::TABLE_DW_RPT06_STG2);
-        $this->truncateTable(self::TABLE_DW_RPT06_STG);
+        $this->reportTableRefresher->truncateTable(self::TABLE_DW_DIM_AGE_GROUP);
+        $this->reportTableRefresher->truncateTable(self::TABLE_DW_DIM_LEAGUE);
+        $this->reportTableRefresher->truncateTable(self::TABLE_DW_DIM_TEAM);
+        $this->reportTableRefresher->truncateTable(self::TABLE_DW_DIM_TIME);
+        $this->reportTableRefresher->truncateTable(self::TABLE_DW_DIM_UMPIRE);
+        $this->reportTableRefresher->truncateTable(self::TABLE_STAGING_MATCH);
+        $this->reportTableRefresher->truncateTable(self::TABLE_STAGING_NO_UMP);
+        $this->reportTableRefresher->truncateTable(self::TABLE_STAGING_UMP_AGE_LG);
+        $this->reportTableRefresher->truncateTable(self::TABLE_DW_RPT06_STG2);
+        $this->reportTableRefresher->truncateTable(self::TABLE_DW_RPT06_STG);
     }
 	
-    private function truncateTable($pTableName) {
-	    $queryString = "TRUNCATE ". $pTableName .";";
-        $this->etlHelper->runQuery($queryString);
-    }
+
 
     private function insertDimUmpire() {
-        $this->etlHelper->disableKeys(self::TABLE_DW_DIM_UMPIRE);
-        $queryString = $this->queryBuilder->getInsertDimUmpireQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_DW_DIM_UMPIRE, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_DW_DIM_UMPIRE);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_UMPIRE, $this->queryBuilder->getInsertDimUmpireQuery());
     }
 
-
     private function insertDimAgeGroup() {
-        $this->etlHelper->disableKeys(self::TABLE_DW_DIM_AGE_GROUP);
-        $queryString = $this->queryBuilder->getInsertDimAgeGroupQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_DW_DIM_AGE_GROUP, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_DW_DIM_AGE_GROUP);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_AGE_GROUP, $this->queryBuilder->getInsertDimAgeGroupQuery());
     }
 
     private function insertDimLeague() {
-        $this->etlHelper->disableKeys(self::TABLE_DW_DIM_LEAGUE);
-
-        $queryString = $this->queryBuilder->getInsertDimLeagueQuery();
-        $this->etlHelper->runQuery($queryString);
-
-        $this->etlHelper->logTableInsertOperation(self::TABLE_DW_DIM_LEAGUE, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_DW_DIM_LEAGUE);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_LEAGUE, $this->queryBuilder->getInsertDimLeagueQuery());
     }
 
     private function insertDimTeam() {
-        $this->etlHelper->disableKeys(self::TABLE_DW_DIM_TEAM);
-
-        $queryString = $this->queryBuilder->getInsertDimTeamQuery();
-        $this->etlHelper->runQuery($queryString);
-
-        $this->etlHelper->logTableInsertOperation(self::TABLE_DW_DIM_TEAM, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_DW_DIM_TEAM);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_TEAM, $this->queryBuilder->getInsertDimTeamQuery());
     }
 
     private function insertDimTime() {
-        $this->etlHelper->disableKeys(self::TABLE_DW_DIM_TIME);
-
-        $queryString = $this->queryBuilder->getInsertDimTimeQuery();
-        $this->etlHelper->runQuery($queryString);
-
-        $this->etlHelper->logTableInsertOperation(self::TABLE_DW_DIM_TIME, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_DW_DIM_TIME);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_TIME, $this->queryBuilder->getInsertDimTimeQuery());
     }
 
     private function insertStagingMatch() {
-        $this->etlHelper->disableKeys(self::TABLE_STAGING_MATCH);
-
-        $queryString = $this->queryBuilder->getInsertStagingMatchQuery();
-        $this->etlHelper->runQuery($queryString);
-
-        $this->etlHelper->logTableInsertOperation(self::TABLE_STAGING_MATCH, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_STAGING_MATCH);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_STAGING_MATCH, $this->queryBuilder->getInsertStagingMatchQuery());
     }
 
     private function insertStagingUmpAgeLeague() {
-        $this->etlHelper->disableKeys(self::TABLE_STAGING_UMP_AGE_LG);
-
-        $queryString = $this->queryBuilder->getInsertStagingAllUmpAgeLeagueQuery();
-        $this->etlHelper->runQuery($queryString);
-	    
-        $this->etlHelper->logTableInsertOperation(self::TABLE_STAGING_UMP_AGE_LG, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_STAGING_UMP_AGE_LG);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_STAGING_UMP_AGE_LG, $this->queryBuilder->getInsertStagingAllUmpAgeLeagueQuery());
     }
 
     private function insertFactMatch() {
-        $this->etlHelper->disableKeys(self::TABLE_DW_FACT_MATCH);
-        $queryString = $this->queryBuilder->getInsertDWFactMatchQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_DW_FACT_MATCH, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_DW_FACT_MATCH);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_FACT_MATCH, $this->queryBuilder->getInsertDWFactMatchQuery());
     }
 
     private function insertStagingNoUmpires() {
-        $this->etlHelper->disableKeys(self::TABLE_STAGING_NO_UMP);
-        $queryString = $this->queryBuilder->getInsertStagingNoUmpiresQuery();
-        $this->etlHelper->runQuery($queryString);
-        $this->etlHelper->logTableInsertOperation(self::TABLE_STAGING_NO_UMP, $this->importFileID);
-        $this->etlHelper->enableKeys(self::TABLE_STAGING_NO_UMP);
+        $this->reportTableRefresher->runInsertETLStep(self::TABLE_STAGING_NO_UMP, $this->queryBuilder->getInsertStagingNoUmpiresQuery());
     }
 
     private function deleteCompetitionsWithMissingLeague() {
         $queryString = "DELETE FROM competition_lookup WHERE league_id IS NULL;";
-        $this->etlHelper->runQuery($queryString);
-	    $this->etlHelper->logTableDeleteOperation(self::TABLE_COMPETITION_LOOKUP, $this->importFileID);
+        $this->reportTableRefresher->runQuery($queryString);
+	    $this->reportTableRefresher->logSpecificTableDeleteOperation(self::TABLE_COMPETITION_LOOKUP);
     }
 
     private function insertCompetitionLookup() {
-        $queryString = $this->queryBuilder->getInsertCompetitionLookupQuery();
-        $this->etlHelper->runQuery($queryString);
-	    $this->etlHelper->logTableInsertOperation(self::TABLE_COMPETITION_LOOKUP, $this->importFileID);
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_COMPETITION_LOOKUP, $this->queryBuilder->getInsertCompetitionLookupQuery());
     }
 
     private function insertNewTeams() {
-        $queryString = $this->queryBuilder->getInsertTeamQuery();
-        $this->etlHelper->runQuery($queryString);
-	    $this->etlHelper->logTableInsertOperation(self::TABLE_TEAM, $this->importFileID);
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_TEAM, $this->queryBuilder->getInsertTeamQuery());
     }
 
     private function insertNewGrounds() {
-        $queryString = $this->queryBuilder->getInsertNewGroundsQuery();
-        $this->etlHelper->runQuery($queryString);
-	    $this->etlHelper->logTableInsertOperation(self::TABLE_GROUND, $this->importFileID);
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_GROUND, $this->queryBuilder->getInsertNewGroundsQuery());
     }
 }

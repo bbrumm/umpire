@@ -53,7 +53,7 @@ class Report6_refresher extends Report_table_refresher {
         $this->enableKeys();
     }
 
-    private function updateTableMV6Staging($pSeasonYear) {
+    private function updateTableMV6Staging() {
         $queryString = "INSERT INTO dw_rpt06_staging (umpire_key, umpire_type, last_first_name, match_id, date_year, league_key, age_group, region_name, short_league_name)
             SELECT DISTINCT
             u.umpire_key,
@@ -70,7 +70,7 @@ class Report6_refresher extends Report_table_refresher {
             INNER JOIN dw_dim_time dti ON m.time_key = dti.time_key
             INNER JOIN dw_dim_league l ON m.league_key = l.league_key
             INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
-            WHERE dti.date_year = $pSeasonYear;";
+            WHERE dti.date_year = ". $this->getSeasonYear() .";";
         $this->runQuery($queryString);
     }
 
