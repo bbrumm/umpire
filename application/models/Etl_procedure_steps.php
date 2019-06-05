@@ -2,11 +2,7 @@
 /*
 * @property Object db
 */
-class Etl_procedure_steps extends CI_Model
-{
-    //const OPERATION_INSERT = 1;
-    //const OPERATION_UPDATE = 2;
-    //const OPERATION_DELETE = 3;
+class Etl_procedure_steps extends CI_Model {
     const TABLE_DW_DIM_AGE_GROUP = "dw_dim_age_group";
     const TABLE_DW_DIM_LEAGUE = "dw_dim_league";
     const TABLE_DW_DIM_TEAM = "dw_dim_team";
@@ -106,15 +102,18 @@ class Etl_procedure_steps extends CI_Model
     }
 
     private function deleteUmpireNameTypeMatch() {
-        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->queryBuilder->getDeleteUmpireNameTypeMatchQuery());
+        $this->reportTableRefresher->runDeleteETLStep(
+            self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->queryBuilder->getDeleteUmpireNameTypeMatchQuery());
     }
 
     private function deleteMatchPlayed() {
-        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_MATCH_PLAYED, $this->queryBuilder->getDeleteMatchPlayedQuery());
+        $this->reportTableRefresher->runDeleteETLStep(
+            self::TABLE_MATCH_PLAYED, $this->queryBuilder->getDeleteMatchPlayedQuery());
     }
 
     private function deleteRound() {
-        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_ROUND, $this->queryBuilder->getDeleteRoundQuery());
+        $this->reportTableRefresher->runDeleteETLStep(
+            self::TABLE_ROUND, $this->queryBuilder->getDeleteRoundQuery());
     }
 
     private function deleteMatchStaging() {
@@ -123,35 +122,43 @@ class Etl_procedure_steps extends CI_Model
     }
 
     private function deleteDWFactMatch() {
-        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_DW_FACT_MATCH, $this->queryBuilder->getDeleteDWFactMatchQuery());
+        $this->reportTableRefresher->runDeleteETLStep(
+            self::TABLE_DW_FACT_MATCH, $this->queryBuilder->getDeleteDWFactMatchQuery());
     }
 
     private function insertRound() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_ROUND, $this->queryBuilder->getInsertRoundQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_ROUND, $this->queryBuilder->getInsertRoundQuery());
     }
 
     private function insertUmpire() {
-        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_UMPIRE, $this->queryBuilder->getInsertUmpireQuery());
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(
+            self::TABLE_UMPIRE, $this->queryBuilder->getInsertUmpireQuery());
     }
 
     private function insertUmpireNameType() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_UMPIRE_NAME_TYPE, $this->queryBuilder->getInsertUmpireNameTypeQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_UMPIRE_NAME_TYPE, $this->queryBuilder->getInsertUmpireNameTypeQuery());
     }
 
     private function insertMatchStaging() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_MATCH_STAGING, $this->queryBuilder->getInsertMatchStagingQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_MATCH_STAGING, $this->queryBuilder->getInsertMatchStagingQuery());
     }
 
     private function deleteDuplicateMatchStagingRecords() {
-        $this->reportTableRefresher->runDeleteETLStep(self::TABLE_MATCH_STAGING, $this->queryBuilder->getDeleteDuplicateMatchStagingRecordsQuery());
+        $this->reportTableRefresher->runDeleteETLStep(
+            self::TABLE_MATCH_STAGING, $this->queryBuilder->getDeleteDuplicateMatchStagingRecordsQuery());
     }
 
     private function insertMatchPlayed() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_MATCH_PLAYED, $this->queryBuilder->getInsertMatchPlayedQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_MATCH_PLAYED, $this->queryBuilder->getInsertMatchPlayedQuery());
     }
 
     private function insertUmpireNameTypeMatch() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->queryBuilder->getInsertUmpireNameTypeMatchQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_UMPIRE_NAME_TYPE_MATCH, $this->queryBuilder->getInsertUmpireNameTypeMatchQuery());
     }
 
     private function truncateDimFact() {
@@ -166,43 +173,50 @@ class Etl_procedure_steps extends CI_Model
         $this->reportTableRefresher->truncateTable(self::TABLE_DW_RPT06_STG2);
         $this->reportTableRefresher->truncateTable(self::TABLE_DW_RPT06_STG);
     }
-	
-
 
     private function insertDimUmpire() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_UMPIRE, $this->queryBuilder->getInsertDimUmpireQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_DW_DIM_UMPIRE, $this->queryBuilder->getInsertDimUmpireQuery());
     }
 
     private function insertDimAgeGroup() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_AGE_GROUP, $this->queryBuilder->getInsertDimAgeGroupQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_DW_DIM_AGE_GROUP, $this->queryBuilder->getInsertDimAgeGroupQuery());
     }
 
     private function insertDimLeague() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_LEAGUE, $this->queryBuilder->getInsertDimLeagueQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_DW_DIM_LEAGUE, $this->queryBuilder->getInsertDimLeagueQuery());
     }
 
     private function insertDimTeam() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_TEAM, $this->queryBuilder->getInsertDimTeamQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_DW_DIM_TEAM, $this->queryBuilder->getInsertDimTeamQuery());
     }
 
     private function insertDimTime() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_DIM_TIME, $this->queryBuilder->getInsertDimTimeQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_DW_DIM_TIME, $this->queryBuilder->getInsertDimTimeQuery());
     }
 
     private function insertStagingMatch() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_STAGING_MATCH, $this->queryBuilder->getInsertStagingMatchQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_STAGING_MATCH, $this->queryBuilder->getInsertStagingMatchQuery());
     }
 
     private function insertStagingUmpAgeLeague() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_STAGING_UMP_AGE_LG, $this->queryBuilder->getInsertStagingAllUmpAgeLeagueQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_STAGING_UMP_AGE_LG, $this->queryBuilder->getInsertStagingAllUmpAgeLeagueQuery());
     }
 
     private function insertFactMatch() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_DW_FACT_MATCH, $this->queryBuilder->getInsertDWFactMatchQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_DW_FACT_MATCH, $this->queryBuilder->getInsertDWFactMatchQuery());
     }
 
     private function insertStagingNoUmpires() {
-        $this->reportTableRefresher->runInsertETLStep(self::TABLE_STAGING_NO_UMP, $this->queryBuilder->getInsertStagingNoUmpiresQuery());
+        $this->reportTableRefresher->runInsertETLStep(
+            self::TABLE_STAGING_NO_UMP, $this->queryBuilder->getInsertStagingNoUmpiresQuery());
     }
 
     private function deleteCompetitionsWithMissingLeague() {
@@ -212,14 +226,17 @@ class Etl_procedure_steps extends CI_Model
     }
 
     private function insertCompetitionLookup() {
-        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_COMPETITION_LOOKUP, $this->queryBuilder->getInsertCompetitionLookupQuery());
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(
+            self::TABLE_COMPETITION_LOOKUP, $this->queryBuilder->getInsertCompetitionLookupQuery());
     }
 
     private function insertNewTeams() {
-        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_TEAM, $this->queryBuilder->getInsertTeamQuery());
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(
+            self::TABLE_TEAM, $this->queryBuilder->getInsertTeamQuery());
     }
 
     private function insertNewGrounds() {
-        $this->reportTableRefresher->runInsertETLStepWithoutKeys(self::TABLE_GROUND, $this->queryBuilder->getInsertNewGroundsQuery());
+        $this->reportTableRefresher->runInsertETLStepWithoutKeys(
+            self::TABLE_GROUND, $this->queryBuilder->getInsertNewGroundsQuery());
     }
 }
