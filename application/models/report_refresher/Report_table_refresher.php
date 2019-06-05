@@ -129,7 +129,7 @@ class Report_table_refresher extends CI_Model {
 
     public function logSpecificTableUpdateOperation() {
         $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
-    
+    }
 
     private function logTableOperation($pTableName, $pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
