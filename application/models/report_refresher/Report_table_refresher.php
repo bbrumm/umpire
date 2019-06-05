@@ -74,7 +74,7 @@ class Report_table_refresher extends CI_Model {
     }
     
     public function disableKeysForSpecificTable($pTableName) {
-        if(isset$pTableName)) {
+        if(isset($this->tableName)) {
             $this->disableKeysForTable($pTableName);
         } else {
             throw new Exception("Table name specified cannot be empty.");
@@ -95,7 +95,7 @@ class Report_table_refresher extends CI_Model {
     }
     
     public function enableKeysForSpecificTable($pTableName) {
-        if(isset$pTableName)) {
+        if(isset($this->tableName)) {
             $this->enableKeysForTable($pTableName);
         } else {
             throw new Exception("Table name specified specified cannot be empty.");
