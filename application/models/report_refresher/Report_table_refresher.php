@@ -15,11 +15,11 @@ class Report_table_refresher extends CI_Model {
     }
     
     public function refreshMVTable() {
-        $this->disableKeys($this->tableName);
-        $this->deleteFromDWTableForYear($this->tableName, $this->seasonYear);
-        $this->logTableDeleteOperation($this->tableName, $this->importFileID);
+        $this->disableKeys();
+        $this->deleteFromDWTableForYear();
+        $this->logTableDeleteOperation();
         $this->updateMVTable();
-        $this->enableKeys($this->tableName);
+        $this->enableKeys();
     }
 
     public function setSeasonYear($pSeason) {
@@ -58,46 +58,46 @@ class Report_table_refresher extends CI_Model {
     
     private function updateMVTable() {
       $this->runQuery($this->dataRefreshQuery);
-      $this->logTableInsertOperation($this->tableName, $this->importFileID);
+      $this->logTableInsertOperation();
     }
     
     public function runQuery($pQueryString) {
         return $this->db->query($pQueryString);
     }
 
-    public function disableKeys($pTableName) {
-        if(isset($pTableName)) {
-            $queryString = "ALTER TABLE ". $pTableName ." DISABLE KEYS;";
+    public function disableKeys() {
+        if(isset($this->tableName)) {
+            $queryString = "ALTER TABLE ". $this->tableName ." DISABLE KEYS;";
             $this->runQuery($queryString);
         } else {
             throw new Exception("Table name cannot be empty.");
         }
     }
 
-    public function enableKeys($pTableName) {
-        if(isset($pTableName)) {
-          $queryString = "ALTER TABLE ". $pTableName ." ENABLE KEYS;";
+    public function enableKeys() {
+        if(isset($this->tableName)) {
+          $queryString = "ALTER TABLE ". $this->tableName ." ENABLE KEYS;";
           $this->runQuery($queryString);  
         } else {
             throw new Exception("Table name cannot be empty.");
         }
     }
 
-    public function logTableInsertOperation($pTableName, $pImportFileID) {
-        $this->logTableOperation($pTableName, self::OPERATION_INSERT, $pImportFileID);
+    public function logTableInsertOperation() {
+        $this->logTableOperation(self::OPERATION_INSERT);
     }
 
-    public function logTableDeleteOperation($pTableName, $pImportFileID) {
-        $this->logTableOperation($pTableName, self::OPERATION_DELETE, $pImportFileID);
+    public function logTableDeleteOperation() {
+        $this->logTableOperation(self::OPERATION_DELETE);
     }
 
-    public function logTableUpdateOperation($pTableName, $pImportFileID) {
-        $this->logTableOperation($pTableName, self::OPERATION_UPDATE, $pImportFileID);
+    public function logTableUpdateOperation() {
+        $this->logTableOperation(self::OPERATION_UPDATE);
     }
 
-    private function logTableOperation($pTableName, $pOperationType, $pImportFileID) {
+    private function logTableOperation($pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
-VALUES (". $pImportFileID .", (SELECT id FROM processed_table WHERE table_name = '". $pTableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
+VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_name = '". $this->tableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $this->runQuery($queryString);
     }
 
@@ -111,8 +111,8 @@ VALUES (". $pImportFileID .", (SELECT id FROM processed_table WHERE table_name =
         $this->runQuery($queryString);
     }
 
-    public function deleteFromDWTableForYear($pTableName, $pSeasonYear) {
-        $queryString = "DELETE FROM " . $pTableName . " WHERE season_year = " . $pSeasonYear;
+    public function deleteFromDWTableForYear() {
+        $queryString = "DELETE FROM " . $this->tableName . " WHERE season_year = " . $this->seasonYear;
         $this->runQuery($queryString);
     }
 
