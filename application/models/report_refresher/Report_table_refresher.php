@@ -67,20 +67,44 @@ class Report_table_refresher extends CI_Model {
 
     public function disableKeys() {
         if(isset($this->tableName)) {
-            $queryString = "ALTER TABLE ". $this->tableName ." DISABLE KEYS;";
-            $this->runQuery($queryString);
+            $this->disableKeysForTable($this->tableName);
         } else {
-            throw new Exception("Table name cannot be empty.");
+            throw new Exception("Table name for object cannot be empty.");
         }
+    }
+    
+    public function disableKeysForSpecificTable($pTableName) {
+        if(isset$pTableName)) {
+            $this->disableKeysForTable($pTableName);
+        } else {
+            throw new Exception("Table name specified cannot be empty.");
+        }
+    }
+    
+    private function disableKeysForTable($pTableName) {
+        $queryString = "ALTER TABLE ". $this->tableName ." DISABLE KEYS;";
+        $this->runQuery($queryString);
     }
 
     public function enableKeys() {
         if(isset($this->tableName)) {
-          $queryString = "ALTER TABLE ". $this->tableName ." ENABLE KEYS;";
-          $this->runQuery($queryString);  
+          $this->enableKeysForTable($this->tableName);
         } else {
-            throw new Exception("Table name cannot be empty.");
+            throw new Exception("Table name for object cannot be empty.");
         }
+    }
+    
+    public function enableKeysForSpecificTable($pTableName) {
+        if(isset$pTableName)) {
+            $this->enableKeysForTable($pTableName);
+        } else {
+            throw new Exception("Table name specified specified cannot be empty.");
+        }
+    }
+    
+    private function enableKeysForTable($pTableName) {
+        $queryString = "ALTER TABLE ". $this->tableName ." ENABLE KEYS;";
+        $this->runQuery($queryString);
     }
 
     public function logTableInsertOperation() {
