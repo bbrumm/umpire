@@ -1,5 +1,7 @@
 <?php
 class Report7_refresher extends Report_table_refresher {
+    
+    const STAGING_TABLE = "mv_report_07_stg1";
 
     function __construct() {
         parent::__construct();
@@ -15,18 +17,18 @@ class Report7_refresher extends Report_table_refresher {
     }
 
     public function refreshMVTable() {
-        $this->updateTableMV7Staging($this->getSeasonYear());
-        $this->logTableInsertOperation("mv_report_07_stg1", $this->getImportFileID());
+        $this->updateTableMV7Staging();
+        $this->logSpecificTableInsertOperation(self::STAGING_TABLE);
 
-        $this->disableKeys($this->getTableName());
-        $this->deleteFromDWTableForYear($this->getTableName(), $this->getSeasonYear());
-        $this->logTableDeleteOperation($this->getTableName(), $this->getImportFileID());
-        $this->updateTableMV7($this->getSeasonYear());
-        $this->logTableInsertOperation($this->getTableName(), $this->getImportFileID());
-        $this->enableKeys($this->getTableName());
+        $this->disableKeys();
+        $this->deleteFromDWTableForYear);
+        $this->logTableDeleteOperation();
+        $this->updateTableMV7();
+        $this->logTableInsertOperation();
+        $this->enableKeys();
     }
 
-    private function updateTableMV7Staging($pSeasonYear) {
+    private function updateTableMV7Staging() {
         $queryString = "TRUNCATE TABLE mv_report_07_stg1;";
         $this->runQuery($queryString);
 
@@ -45,19 +47,19 @@ class Report7_refresher extends Report_table_refresher {
             INNER JOIN dw_dim_age_group a2 ON m2.age_group_key = a2.age_group_key
             INNER JOIN dw_dim_league l2 ON m2.league_key = l2.league_key
             INNER JOIN dw_dim_time ti2 ON m2.time_key = ti2.time_key
-            WHERE ti2.date_year = ". $pSeasonYear .";";
+            WHERE ti2.date_year = ". $this->getSeasonYear() .";";
 
         $this->runQuery($queryString);
     }
 
-    private function updateTableMV7($pSeasonYear) {
+    private function updateTableMV7() {
         $queryString = "INSERT INTO dw_mv_report_07 (umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count)
             SELECT
             m.umpire_type,
             m.age_group,
             m.region_name,
             m.short_league_name,
-            ". $pSeasonYear ." AS season_year,
+            ". $this->getSeasonYear() ." AS season_year,
             m.sort_order AS age_sort_order,
             m.league_sort_order,
             CONCAT(sub.umpire_count, ' Umpires') AS umpire_count,
