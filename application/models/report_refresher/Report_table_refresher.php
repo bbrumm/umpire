@@ -127,7 +127,7 @@ class Report_table_refresher extends CI_Model {
         }
     }
     
-    public function logSpecificTableDeleteOperation() {
+    public function logSpecificTableDeleteOperation($pTableName) {
         if(isset($pTableName)) {
             $this->logTableOperation($pTableName, self::OPERATION_DELETE);
         } else {
@@ -135,7 +135,7 @@ class Report_table_refresher extends CI_Model {
         }
     }
 
-    public function logSpecificTableUpdateOperation() {
+    public function logSpecificTableUpdateOperation($pTableName) {
         if(isset($pTableName)) {
             $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
         } else {
