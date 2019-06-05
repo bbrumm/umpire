@@ -108,18 +108,30 @@ class Report_table_refresher extends CI_Model {
     }
 
     public function logTableInsertOperation() {
-        $this->logTableOperation(self::OPERATION_INSERT);
+        $this->logTableOperation($this->tableName, self::OPERATION_INSERT);
     }
 
     public function logTableDeleteOperation() {
-        $this->logTableOperation(self::OPERATION_DELETE);
+        $this->logTableOperation($this->tableName, self::OPERATION_DELETE);
     }
 
     public function logTableUpdateOperation() {
-        $this->logTableOperation(self::OPERATION_UPDATE);
+        $this->logTableOperation($this->tableName, self::OPERATION_UPDATE);
+    }
+    
+    public function logSpecificTableInsertOperation($pTableName) {
+        $this->logTableOperation($pTableName, self::OPERATION_INSERT);
+    }
+    
+    public function logSpecificTableDeleteOperation() {
+        $this->logTableOperation($pTableName, self::OPERATION_DELETE);
     }
 
-    private function logTableOperation($pOperationType) {
+    public function logSpecificTableUpdateOperation() {
+        $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
+    
+
+    private function logTableOperation($pTableName, $pOperationType) {
         $queryString = "INSERT INTO table_operations (imported_file_id, processed_table_id, operation_id, operation_datetime, rowcount)
 VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_name = '". $this->tableName ."'), ". $pOperationType .",  NOW(), ROW_COUNT());";
         $this->runQuery($queryString);
