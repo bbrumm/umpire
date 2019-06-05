@@ -23,7 +23,7 @@ class Report6_refresher extends Report_table_refresher {
         //TODO: Use the object's properties instead of passing parameters
         $this->disableKeys();
         $this->updateTableMV6Staging();
-        $this->logTableInsertOperation($this->getTableName(), $this->getImportFileID());
+        $this->logTableInsertOperation();
 
         //TODO: Move all of these function calls into a single function, and call the new function. Lots of repetition here.
 
@@ -31,17 +31,17 @@ class Report6_refresher extends Report_table_refresher {
         //TODO: Remove the repeated calls to enable and disable keys
         $this->disableKeysForSpecificTable(self::SECOND_STAGING_TABLE);
         $this->updateTableMV6StagingPart2(self::UMPIRE_TYPE_FIELD);
-        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
+        $this->logSpecificTableInsertOperation(self::SECOND_STAGING_TABLE);
 
         $this->updateTableMV6StagingPart2(self::UMPIRE_TYPE_GOAL);
-        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
+        $this->logSpecificTableInsertOperation(self::SECOND_STAGING_TABLE);
 
         $this->updateTableMV6StagingPart2(self::UMPIRE_TYPE_BOUNDARY);
-        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
+        $this->logSpecificTableInsertOperation(self::SECOND_STAGING_TABLE);
 
         //Now, insert into the staging table the opposite combination
         $this->updateTableMV6StagingPart2Opposite();
-        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
+        $this->logSpecificTableInsertOperation(self::SECOND_STAGING_TABLE);
         $this->enableKeysForSpecificTable(self::SECOND_STAGING_TABLE);
 
 
