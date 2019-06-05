@@ -15,13 +15,13 @@ class Report8_refresher extends Report_table_refresher {
         return $reportTableRefresher;
     }
 
-    private static function getUpdateMV8Query($pSeasonYear) {
+    private static function getUpdateMV8Query() {
         //Use the baseline data if the imported year is not 2018
         //This is because annual report/baseline data is more correct than the master spreadsheets
         if ($pSeasonYear <= 2017) {
             $queryString = "INSERT INTO dw_mv_report_08 (season_year, full_name, match_count, last_name, first_name)
                 SELECT
-                '$pSeasonYear',
+                '". $this->getSeasonYear() ."',
                 CONCAT(b.last_name, ', ', b.first_name),
                 b.games_$pSeasonYear,
                 b.last_name,
@@ -55,7 +55,7 @@ class Report8_refresher extends Report_table_refresher {
                 INNER JOIN dw_dim_league l ON m.league_key = l.league_key
                 INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
                 INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
-                WHERE ti.date_year = $pSeasonYear
+                WHERE ti.date_year = ". $this->getSeasonYear() ."
                 GROUP BY ti.date_year, u.first_name, u.last_name
                 UNION ALL
                 SELECT DISTINCT
@@ -79,13 +79,13 @@ class Report8_refresher extends Report_table_refresher {
 
 
     public function refreshMVTable() {
-        $this->deleteFromDW8Table($this->getSeasonYear());
+        $this->deleteFromDW8Table();
 
         parent::refreshMVTable();
 
         $this->updateTableMV8Totals();
-        $this->logTableUpdateOperation($this->getTableName(), $this->getImportFileID());
-        $this->enableKeys($this->getTableName());
+        $this->logTableUpdateOperation();
+        $this->enableKeys();
     }
 
     private function updateTableMV8Totals() {
@@ -100,9 +100,9 @@ class Report8_refresher extends Report_table_refresher {
         $this->runQuery($queryString);
     }
 
-    private function deleteFromDW8Table($pSeasonYear) {
+    private function deleteFromDW8Table() {
         $queryString = "DELETE rec FROM dw_mv_report_08 rec 
-          WHERE rec.season_year IN(CONVERT(". $pSeasonYear .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');";
+          WHERE rec.season_year IN(CONVERT(". $this->getSeasonYear() .", CHAR), 'Games Other Leagues', 'Games Prior', 'Other Years');";
         $this->runQuery($queryString);
     }
 
