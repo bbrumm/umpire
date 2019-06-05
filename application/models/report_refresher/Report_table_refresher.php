@@ -98,7 +98,7 @@ class Report_table_refresher extends CI_Model {
         if(isset($this->tableName)) {
             $this->enableKeysForTable($pTableName);
         } else {
-            throw new Exception("Table name specified specified cannot be empty.");
+            throw new Exception("Table name specified cannot be empty.");
         }
     }
     
@@ -120,15 +120,27 @@ class Report_table_refresher extends CI_Model {
     }
     
     public function logSpecificTableInsertOperation($pTableName) {
-        $this->logTableOperation($pTableName, self::OPERATION_INSERT);
+        if(isset($pTableName)) {
+            $this->logTableOperation($pTableName, self::OPERATION_INSERT);
+        } else {
+            throw new Exception("Table name specified cannot be empty.");
+        }
     }
     
     public function logSpecificTableDeleteOperation() {
-        $this->logTableOperation($pTableName, self::OPERATION_DELETE);
+        if(isset($pTableName)) {
+            $this->logTableOperation($pTableName, self::OPERATION_DELETE);
+        } else {
+            throw new Exception("Table name specified cannot be empty.");
+        }
     }
 
     public function logSpecificTableUpdateOperation() {
-        $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
+        if(isset($pTableName)) {
+            $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
+        } else {
+            throw new Exception("Table name specified cannot be empty.");
+        }
     }
 
     private function logTableOperation($pTableName, $pOperationType) {
