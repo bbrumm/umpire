@@ -1,6 +1,11 @@
 <?php
 class Report6_refresher extends Report_table_refresher {
 
+    const SECOND_STAGING_TABLE = "dw_rpt06_stg2";
+    const UMPIRE_TYPE_FIELD = "Field";
+    const UMPIRE_TYPE_BOUNDARY = "Boundary";
+    const UMPIRE_TYPE_GOAL = "Goal";
+    
     function __construct() {
         parent::__construct();
     }
@@ -16,36 +21,36 @@ class Report6_refresher extends Report_table_refresher {
 
     public function refreshMVTable() {
         //TODO: Use the object's properties instead of passing parameters
-        $this->disableKeys($this->getTableName());
-        $this->updateTableMV6Staging($this->getSeasonYear());
+        $this->disableKeys();
+        $this->updateTableMV6Staging();
         $this->logTableInsertOperation($this->getTableName(), $this->getImportFileID());
 
         //TODO: Move all of these function calls into a single function, and call the new function. Lots of repetition here.
 
         //Run each of the umpire types into the staging 2 table
         //TODO: Remove the repeated calls to enable and disable keys
-        $this->disableKeys("dw_rpt06_stg2");
-        $this->updateTableMV6StagingPart2("Field");
-        $this->logTableInsertOperation("dw_rpt06_stg2", $this->getImportFileID());
+        $this->disableKeysForSpecificTable(self::SECOND_STAGING_TABLE);
+        $this->updateTableMV6StagingPart2(self::UMPIRE_TYPE_FIELD);
+        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
 
-        $this->updateTableMV6StagingPart2( "Goal");
-        $this->logTableInsertOperation("dw_rpt06_stg2", $this->getImportFileID());
+        $this->updateTableMV6StagingPart2(self::UMPIRE_TYPE_GOAL);
+        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
 
-        $this->updateTableMV6StagingPart2("Boundary");
-        $this->logTableInsertOperation("dw_rpt06_stg2", $this->getImportFileID());
+        $this->updateTableMV6StagingPart2(self::UMPIRE_TYPE_BOUNDARY);
+        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
 
         //Now, insert into the staging table the opposite combination
         $this->updateTableMV6StagingPart2Opposite();
-        $this->logTableInsertOperation("dw_rpt06_stg2", $this->getImportFileID());
-        $this->enableKeys("dw_rpt06_stg2");
+        $this->logTableInsertOperation(self::SECOND_STAGING_TABLE);
+        $this->enableKeysForSpecificTable(self::SECOND_STAGING_TABLE);
 
 
-        $this->disableKeys($this->getTableName());
-        $this->deleteFromDWTableForYear($this->getTableName(), $this->getSeasonYear());
-        $this->logTableDeleteOperation($this->getTableName(), $this->getImportFileID());
+        $this->disableKeys();
+        $this->deleteFromDWTableForYear();
+        $this->logTableDeleteOperation();
         $this->updateTableMV6();
-        $this->logTableInsertOperation($this->getTableName(), $this->getImportFileID());
-        $this->enableKeys($this->getTableName());
+        $this->logTableInsertOperation();
+        $this->enableKeys();
     }
 
     private function updateTableMV6Staging($pSeasonYear) {
