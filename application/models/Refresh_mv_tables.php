@@ -21,6 +21,12 @@ class Refresh_mv_tables extends CI_Model {
         $this->load->model('Etl_procedure_steps');
         //TODO: create a factory class that creates these reports
         $this->load->model('report_refresher/Report1_refresher');
+        $this->load->model('report_refresher/Report2_refresher');
+        $this->load->model('report_refresher/Report4_refresher');
+        $this->load->model('report_refresher/Report5_refresher');
+        $this->load->model('report_refresher/Report6_refresher');
+        $this->load->model('report_refresher/Report7_refresher');
+        $this->load->model('report_refresher/Report8_refresher');
         $this->etlHelper = new Report_table_refresher();
     }
     
