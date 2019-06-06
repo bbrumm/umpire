@@ -39,17 +39,8 @@ class Report_table_refresher extends CI_Model {
       $this->tableName = $pTableName;
     }
 
-    public function getTableName() {
-        return $this->tableName;
-    }
-
     public function setImportFileID($pImportFileID) {
         $this->importFileID = $pImportFileID;
-    }
-
-    //TODO: remove this when the log operation functions use the object value instead of a parameter
-    public function getImportFileID() {
-        return $this->importFileID;
     }
 
     public function getSeasonYear() {
@@ -142,14 +133,6 @@ class Report_table_refresher extends CI_Model {
     public function logSpecificTableDeleteOperation($pTableName) {
         if(isset($pTableName)) {
             $this->logTableOperation($pTableName, self::OPERATION_DELETE);
-        } else {
-            throw new Exception("Table name specified cannot be empty.");
-        }
-    }
-
-    public function logSpecificTableUpdateOperation($pTableName) {
-        if(isset($pTableName)) {
-            $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
         } else {
             throw new Exception("Table name specified cannot be empty.");
         }
