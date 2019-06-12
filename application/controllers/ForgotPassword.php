@@ -72,12 +72,7 @@ class ForgotPassword extends CI_Controller {
         $userPermissionLoader = new User_permission_loader_model();
         $dbStore = new Database_store_user();
         
-        $data = array();
-        $data['activation_id'] = random_string('alnum',15);
-        $data['request_datetime'] = date('Y-m-d H:i:s');
-        $data['client_ip'] = $this->input->ip_address();
-        $data['username_entered'] = $umpireUser->getUsername();
-        $data['email_address_entered'] = $umpireUser->getEmailAddress();
+        $data = $this->populateDataArray($umpireUser);
 
         $userMaintenance->logPasswordResetRequest($dbStore, $data);
 
@@ -85,7 +80,6 @@ class ForgotPassword extends CI_Controller {
         $userExists = $userMaintenance->checkUserExistsForReset($dbStore, $umpireUser);
         if($userExists) {
             urlencode($pEmailAddress);
-            //TODO: Move this into a separate function
             $userPermissionLoader->getUserFromUsername($dbStore, $pUserName);
             $umpireUser->setPasswordResetURL(base_url() . "index.php/ResetPasswordEntry/load/" . $data['activation_id']);
             $userMaintenance->storeActivationID($dbStore, $umpireUser, $data['activation_id']);
@@ -101,6 +95,16 @@ class ForgotPassword extends CI_Controller {
         }
         $sendStatusInfo = $this->getSendStatusInfo($umpireUser, $sendStatus, $userExists);
         return $sendStatusInfo;
+    }
+    
+    private function populateDataArray($umpireUser) {
+        $data = array();
+        $data['activation_id'] = random_string('alnum',15);
+        $data['request_datetime'] = date('Y-m-d H:i:s');
+        $data['client_ip'] = $this->input->ip_address();
+        $data['username_entered'] = $umpireUser->getUsername();
+        $data['email_address_entered'] = $umpireUser->getEmailAddress();
+        return $data;
     }
 
     private function getSendStatusInfo(User $pUmpireUser, $pSendStatus, $pUserExists) {
