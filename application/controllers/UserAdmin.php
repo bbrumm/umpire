@@ -69,7 +69,7 @@ class UserAdmin extends CI_Controller
             $data['leagueSelectionArray'] = $leagueSelectionArray;
             */
             
-            $data = $this->populateDataArrayForView();
+            $data = $this->populateDataArrayForView($pUserAddedMessage);
             
             $this->load->view('templates/header');
             
@@ -81,7 +81,7 @@ class UserAdmin extends CI_Controller
         }
     }
     
-    private function populateDataArrayForView() {
+    private function populateDataArrayForView($pUserAddedMessage) {
         $dataStore = new Database_store_user_admin();
             $dataStoreReference = new Database_store_reference();
             $userAdmin = new Useradminmodel();
