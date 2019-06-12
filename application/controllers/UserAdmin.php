@@ -36,6 +36,7 @@ class UserAdmin extends CI_Controller
     public function loadPage($pUserAddedMessage = "") {
         
         if($this->session->userdata('logged_in')) {
+            /*
             $dataStore = new Database_store_user_admin();
             $dataStoreReference = new Database_store_reference();
             $userAdmin = new Useradminmodel();
@@ -52,7 +53,7 @@ class UserAdmin extends CI_Controller
             $ageGroupSelectionArray = $userAdmin->getAgeGroupArray($dataStoreReference);
             $leagueSelectionArray = $userAdmin->getLeagueArray($dataStoreReference);
             
-            $this->load->view('templates/header');
+           
             
             $data = array();
             $data['userAddedMessage'] = $pUserAddedMessage;
@@ -66,6 +67,11 @@ class UserAdmin extends CI_Controller
             $data['umpireDisciplineSelectionArray'] = $umpireDisciplineSelectionArray;
             $data['ageGroupSelectionArray'] = $ageGroupSelectionArray;
             $data['leagueSelectionArray'] = $leagueSelectionArray;
+            */
+            
+            $data = $this->populateDataArrayForView();
+            
+            $this->load->view('templates/header');
             
             $this->load->view('useradmin', $data);
             $this->load->view('templates/footer');
@@ -73,6 +79,39 @@ class UserAdmin extends CI_Controller
             //If no session, redirect to login page
             redirect('login', 'refresh');
         }
+    }
+    
+    private function populateDataArrayForView() {
+        $dataStore = new Database_store_user_admin();
+            $dataStoreReference = new Database_store_reference();
+            $userAdmin = new Useradminmodel();
+            $userArray = $userAdmin->getAllUsers($dataStore);
+            $roleArray = $userAdmin->getRoleArray($dataStoreReference);
+            //$subRoleArray = $userAdmin->getSubRoleArray();
+            
+            $permissionSelectionArray = $userAdmin->getPermissionSelectionArray($dataStoreReference);
+            
+            //TODO: Remove these once the permission selection array is working
+            $reportSelectionArray = $userAdmin->getReportArray($dataStoreReference);
+            $regionSelectionArray = $userAdmin->getRegionArray($dataStoreReference);
+            $umpireDisciplineSelectionArray = $userAdmin->getUmpireDisciplineArray($dataStoreReference);
+            $ageGroupSelectionArray = $userAdmin->getAgeGroupArray($dataStoreReference);
+            $leagueSelectionArray = $userAdmin->getLeagueArray($dataStoreReference);
+        
+        $data = array();
+            $data['userAddedMessage'] = $pUserAddedMessage;
+            $data['userArray'] = $userArray;
+            $data['roleArray'] = $roleArray;
+            //$data['subRoleArray'] = $subRoleArray;
+            $data['permissionSelectionArray'] = $permissionSelectionArray;
+            //TODO: Remove these once the permission selection array is working
+            $data['reportSelectionArray'] = $reportSelectionArray;
+            $data['regionSelectionArray'] = $regionSelectionArray;
+            $data['umpireDisciplineSelectionArray'] = $umpireDisciplineSelectionArray;
+            $data['ageGroupSelectionArray'] = $ageGroupSelectionArray;
+            $data['leagueSelectionArray'] = $leagueSelectionArray;
+        
+        return $data;
     }
     
     public function saveUserPrivileges() {
