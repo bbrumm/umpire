@@ -9,27 +9,24 @@ include 'Report7.php';
 include 'Report8.php';
 
 class Report_factory {
+
+    const REPORT_CLASSNAMES = array (
+        1=>'Report1',
+        2=>'Report2',
+        3=>'Report3',
+        4=>'Report4',
+        5=>'Report5',
+        6=>'Report6',
+        7=>'Report7',
+        8=>'Report8',
+    );
     
     public static function createReport($pReportNumber) {
-        switch ($pReportNumber) {
-            case 1:
-                return new Report1();
-            case 2:
-                return new Report2();
-            case 3:
-                return new Report3();
-            case 4:
-                return new Report4();
-            case 5:
-                return new Report5();
-            case 6:
-                return new Report6();
-            case 7:
-                return new Report7();
-            case 8:
-                return new Report8();
-            default:
-                throw new InvalidArgumentException ("Specified report number does not match a required report. Value provided was " . $pReportNumber);
+        if (array_key_exists(intval($pReportNumber), self::REPORT_CLASSNAMES)) {
+            $className = self::REPORT_CLASSNAMES[$pReportNumber];
+            return new $className();
+        } else {
+            throw new InvalidArgumentException ("Specified report number does not match a required report. Value provided was " . $pReportNumber);
         }
     }
 }

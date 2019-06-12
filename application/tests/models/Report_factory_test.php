@@ -60,8 +60,9 @@ class Report_factory_test extends TestCase {
   }
 
   public function test_ReportDecimal() {
-    $this->expectException(InvalidArgumentException::class);
+    //$this->expectException(InvalidArgumentException::class);
     $expected = $this->obj->createReport(3.2);
+    $this->assertInstanceOf('Report3', $expected);
   }
 
   public function test_ReportZero() {
