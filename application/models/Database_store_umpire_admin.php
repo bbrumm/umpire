@@ -63,33 +63,26 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
     }
 
     public function logUmpireGamesHistory($pChangedUmpireArray) {
+        $queryString = $this->buildQueryStringFromChangedUmpire($pChangedUmpireArray);
+        $this->runQuery($queryString);
+    }
+
+    private function buildQueryStringFromChangedUmpire($pChangedUmpireArray) {
+        $session_data = $this->session->userdata('logged_in');
+        $username = $session_data['username'];
+
         $queryString = "INSERT INTO umpire_games_history (
             id, first_name, last_name, old_games_prior, old_games_other_leagues, 
             new_games_prior, new_games_other_leagues, updated_by, updated_date) VALUES ";
 
-        //$this->debug_library->debugOutput("build: pPostArray", $pPostArray);
-        $session_data = $this->session->userdata('logged_in');
-        $username = $session_data['username'];
-
         $arrayCount = count($pChangedUmpireArray);
         $currentLoopCount = 0;
         foreach ($pChangedUmpireArray as $currentUmpire) {
-            //$this->debug_library->debugOutput("build: arrayValue", $arrayValue);
             $currentLoopCount++;
 
             //Check if values have changed, if so, update data
             if ($currentUmpire->haveUmpireGamesNumbersChanged()) {
-                $queryString .= " (".
-                    $currentUmpire->getID().", 
-                    '". $currentUmpire->getFirstName() ."',
-                    '". $currentUmpire->getLastName() ."',
-                    ". $currentUmpire->getOldGamesPlayedPrior() .",
-                    ". $currentUmpire->getOldGamesPlayedOtherLeagues().",
-                    ". $currentUmpire->getGamesPlayedPrior().",
-                    ". $currentUmpire->getGamesPlayedOtherLeagues().",
-                    '". $username."',
-                    NOW() 
-                    )";
+                $queryString .= $this->addCurrentUmpireToQueryString($currentUmpire, $username);
             }
 
             if ($currentLoopCount < $arrayCount) {
@@ -99,7 +92,21 @@ class Database_store_umpire_admin extends CI_Model implements IData_store_umpire
 
         }
         $queryString .= ";";
-        $this->runQuery($queryString);
+        return $queryString;
+    }
+
+    private function addCurrentUmpireToQueryString($currentUmpire, $username) {
+        return " (".
+            $currentUmpire->getID().", 
+            '". $currentUmpire->getFirstName() ."',
+            '". $currentUmpire->getLastName() ."',
+            ". $currentUmpire->getOldGamesPlayedPrior() .",
+            ". $currentUmpire->getOldGamesPlayedOtherLeagues().",
+            ". $currentUmpire->getGamesPlayedPrior().",
+            ". $currentUmpire->getGamesPlayedOtherLeagues().",
+            '". $username."',
+            NOW() 
+            )";
     }
 
     public function updateDimUmpireTable() {
