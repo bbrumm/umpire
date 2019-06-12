@@ -32,10 +32,10 @@ class Etl_procedure_steps extends CI_Model {
     function __construct() {
         parent::__construct();
         $this->load->model('Season');
-	    $this->load->model('Etl_query_builder');
-	    $this->load->model('report_refresher/Report_table_refresher');
-	    $this->reportTableRefresher = new Report_table_refresher();
-	    $this->queryBuilder = new Etl_query_builder();
+	$this->load->model('Etl_query_builder');
+	$this->load->model('report_refresher/Report_table_refresher');
+	$this->reportTableRefresher = new Report_table_refresher();
+	$this->queryBuilder = new Etl_query_builder();
     }
 
     public function runETLProcess($pSeason, $pImportedFileID) {
@@ -50,22 +50,35 @@ class Etl_procedure_steps extends CI_Model {
         //TODO add exceptions or error logging if there are issues here, e.g. if INSERT statements insert 0 rows.
 
         $pSeason->setSeasonYear($this->lookupSeasonYear());
-        $this->deleteUmpireNameTypeMatch();
+        
+	$this->deleteOldData();
+	$this->insertNewMatchData();
+	$this->insertNewDimData();
+        $this->insertNewLookupData();
 
+        $this->reportTableRefresher->commitTransaction();
+    }
+	
+    private function deleteOldData() {
+	$this->deleteUmpireNameTypeMatch();
         $this->deleteMatchPlayed();
         $this->deleteRound();
         $this->deleteMatchStaging();
-        $this->deleteDWFactMatch();
-
-        $this->insertRound();
+        $this->deleteDWFactMatch();  
+    }
+	
+    private function insertNewMatchData() {
+	$this->insertRound();
         $this->insertUmpire();
         $this->insertUmpireNameType();
         $this->insertMatchStaging();
         $this->deleteDuplicateMatchStagingRecords();
         $this->insertMatchPlayed();
-        $this->insertUmpireNameTypeMatch();
-
-        $this->truncateDimFact();
+        $this->insertUmpireNameTypeMatch();	
+    }
+	
+    private function insertNewDimData() {
+	$this->truncateDimFact();
         $this->insertDimUmpire();
         $this->insertDimAgeGroup();
         $this->insertDimLeague();
@@ -74,8 +87,9 @@ class Etl_procedure_steps extends CI_Model {
         $this->insertStagingMatch();
         $this->insertStagingUmpAgeLeague();
         $this->insertFactMatch();
-        $this->insertStagingNoUmpires();
-
+        $this->insertStagingNoUmpires();	
+    }
+	
         /*
         Insert New Competitions
         These will be displayed to the user when a file is imported. The leagues need to be assigned manually by the person who imported them.
@@ -84,14 +98,13 @@ class Etl_procedure_steps extends CI_Model {
 
         First, delete the competitions which are still NULL from previous imports
         */
-        $this->deleteCompetitionsWithMissingLeague();
+    private function insertNewLookupData() {
+	$this->deleteCompetitionsWithMissingLeague();
         $this->insertCompetitionLookup();
 
         //Insert new teams. Clubs are added manually by the person importing the data
         $this->insertNewTeams();
-        $this->insertNewGrounds();
-
-        $this->reportTableRefresher->commitTransaction();
+        $this->insertNewGrounds();	
     }
 
     private function lookupSeasonYear() {
