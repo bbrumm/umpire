@@ -34,15 +34,23 @@ class UserAdmin extends CI_Controller
     }
     
     public function loadPage($pUserAddedMessage = "") {
-        if($this->session->userdata('logged_in')) {
+        if($this->isUserLoggedIn()) {
             $data = $this->populateDataArrayForView($pUserAddedMessage);
             $this->load->view('templates/header');
             $this->load->view('useradmin', $data);
             $this->load->view('templates/footer');
         } else {
             //If no session, redirect to login page
-            redirect('login', 'refresh');
+            $this->redirectUserToLoginPage();
         }
+    }
+    
+    private function isUserLoggedIn() {
+        return $this->session->userdata('logged_in');
+    }
+    
+    private function redirectUserToLoginPage() {
+        redirect('login', 'refresh');
     }
     
     private function populateDataArrayForView($pUserAddedMessage) {
