@@ -50,7 +50,6 @@ class VerifyLogin extends CI_Controller {
     
      function check_database($password) {
          $username = $this->input->post('username');
-         $userAuth = new User_authentication_model();
          $dbStore = new Database_store_user();
     
          if ($userAuth->checkUserActive($dbStore, $username)) {
@@ -69,6 +68,7 @@ class VerifyLogin extends CI_Controller {
      }
      
      private function loginUserAndReturnResult($dbStore, $username, $password) {
+          $userAuth = new User_authentication_model();
           return $userAuth->login($dbStore, $username, $password);
      }
      
