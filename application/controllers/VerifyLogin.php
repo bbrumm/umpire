@@ -51,9 +51,9 @@ class VerifyLogin extends CI_Controller {
      function check_database($password) {
          $username = $this->input->post('username');
          $dbStore = new Database_store_user();
-    
+         $userAuth = new User_authentication_model();
          if ($userAuth->checkUserActive($dbStore, $username)) {
-             $result = $this->loginUserAndReturnResult($dbStore, $username, $password);
+             $result = $this->loginUserAndReturnResult($userAuth, $dbStore, $username, $password);
              if ($result) {
                  $this->setUserData($result);
                  return true;
@@ -67,8 +67,8 @@ class VerifyLogin extends CI_Controller {
          }
      }
      
-     private function loginUserAndReturnResult($dbStore, $username, $password) {
-          $userAuth = new User_authentication_model();
+     //TODO: Refactor, this has four parameters. Maybe create a Credentials object with username and password?
+     private function loginUserAndReturnResult($userAuth, $dbStore, $username, $password) {
           return $userAuth->login($dbStore, $username, $password);
      }
      
