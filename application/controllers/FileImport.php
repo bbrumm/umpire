@@ -19,33 +19,70 @@ class FileImport extends CI_Controller {
 	}
 
 	function do_upload() {
+		$this->setConfigForUpload();
+		/*
 	    $config = array();
 	    $config['upload_path'] = './application/import/';
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']	= '4096';
 	    $this->load->library('upload', $config);
-
+*/
+		
 	    //Calls a CI method to upload the file from I think the POST variable
             $uploadPassed = $this->upload->do_upload();
             $data = array();
 	    if ( ! $uploadPassed) {
+		$this->displayUploadError();
+		/*
 	        $error = array('error' => $this->upload->display_errors());
 	        $data['test'] = "Test Report";
 	        $this->load->helper(array('form', 'url'));
 	        $this->load->view('templates/header', $data);
 	        $this->load->view('upload_form', $error);
 	        $this->load->view('templates/footer');
+		*/
 	    } else {
+		$fileImportStatus = $this->importDataFromSpreadsheet();
+		    
+		    /*
                 $data = array('upload_data' => $this->upload->data());
                 //$data['progress_pct'] = 10;
                 //Import the data from the imported spreadsheet
                 $fileLoader = new File_loader_import();
                 $dataStore = new Database_store_matches();
                 $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
+		*/
                 if ($fileImportStatus) {
                     $this->showUploadComplete();
                 }
 	    }
+	}
+	
+	private function setConfigForUpload() {
+		$config = array();
+	    $config['upload_path'] = './application/import/';
+	    $config['allowed_types'] = 'xlsx|xls';
+	    $config['max_size']	= '4096';
+	    $this->load->library('upload', $config);
+
+	}
+	
+	private function displayUploadError() {
+		$error = array('error' => $this->upload->display_errors());
+	        $data['test'] = "Test Report";
+	        $this->load->helper(array('form', 'url'));
+	        $this->load->view('templates/header', $data);
+	        $this->load->view('upload_form', $error);
+	        $this->load->view('templates/footer');
+	}
+	
+	private function importDataFromSpreadsheet() {
+		$data = array('upload_data' => $this->upload->data());
+                $fileLoader = new File_loader_import();
+                $dataStore = new Database_store_matches();
+                $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
+		
+		return $fileImportStatus;
 	}
 	
 	public function runETLProcess() {
