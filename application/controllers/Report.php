@@ -38,39 +38,27 @@ class Report extends CI_Controller {
 	        $this->findValueFromPostOrHidden($_POST, 'chkUmpireDiscipline', 'chkUmpireDisciplineHidden'),
 	        $this->findValueFromPostOrHidden($_POST, 'chkLeague', 'chkLeagueHidden'),
 	        false
-	        );
-	    /*
-	    $requestedReport = new Requested_report_model();
-	    $requestedReport->setReportNumber(intval($_POST['reportName']));
-	    $requestedReport->setSeason(intval($_POST['season']));
-
-        */
-	    /* Why are we treating these separately?
-    	 * Maybe because when I submit the home page to the Report page, these chk keys exist.
-    	 * When I 'submit' the Report page by clicking on Create PDF, they don't exist.
-    	 */
-	    /*
-	    $requestedReport->setAgeGroup(
-	       $requestedReport->findValueFromPostOrHidden($_POST, 'chkAgeGroup', 'chkAgeGroupHidden')); 
-	    $requestedReport->setUmpireType(
-	        $requestedReport->findValueFromPostOrHidden($_POST, 'chkUmpireDiscipline', 'chkUmpireDisciplineHidden'));
-	    $requestedReport->setLeague(
-	        $requestedReport->findValueFromPostOrHidden($_POST, 'chkLeague', 'chkLeagueHidden'));
-	    $requestedReport->setRegion(
-	        $requestedReport->findValueFromPostOrHidden($_POST, 'rdRegion', 'chkRegionHidden'));
-	    */
+	    );
+	   
 	    $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
-		$data['title'] = 'Test Report';
-		$data['PDFLayout'] = FALSE;
-		$data['debugLibrary'] = new Debug_library();
-		
+	    $data['title'] = 'Test Report';
+	    $data['PDFLayout'] = FALSE;
+	    $data['debugLibrary'] = new Debug_library();
+            $this->outputHiddenValues();
+	    $this->load->view('templates/header', $data);
+	    $this->load->view('report/single_report_view', $data);
+	    $this->load->view('templates/footer');
+
+	}
+	
+	private function outputHiddenValues() {
 		/*
 		TODO: Also write some code to check if the passed value is "All", then it should look up all applicable values from
 		the database and add them to the array, rather that look up a string of "All" in the table.
 		*/
 		//Note: You can't pass an array through a hidden POST variable.
 		//This is why I have used the checkboxes and then imploded them
-        echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
+		echo "<form method='post' id='reportPostValues' action='createpdf/pdf' target='_blank'>";
 		echo "<input type='hidden' name='reportName' value='". $_POST['reportName'] ."' />";
 		echo "<input type='hidden' name='season' value='". $_POST['season'] ."' />";
 		echo "<input type='hidden' name='age' value='". $_POST['chkAgeGroupHidden'] ."' />";
@@ -79,11 +67,6 @@ class Report extends CI_Controller {
 		echo "<input type='hidden' name='region' value='". $_POST['chkRegionHidden'] ."' />";
 		echo "<input type='hidden' name='PDFSubmitted' value='true' />";
 		echo "</form>";	
-		
-		$this->load->view('templates/header', $data);
-		$this->load->view('report/single_report_view', $data);
-		$this->load->view('templates/footer');
-		
 	}
 
     private function showNewReportOutput() {
