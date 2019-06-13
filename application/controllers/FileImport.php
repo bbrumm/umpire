@@ -5,6 +5,11 @@
 * @property Object Missing_data_updater
 */
 class FileImport extends CI_Controller {
+	
+	const FILE_IMPORT_PATH = './application/import/';
+	const IMPORT_ALLOWED_FILE_TYPES = 'xlsx|xls';
+	const MAX_FILE_SIZE = '4096';
+		
 	public function __construct() {
 	    parent::__construct();
 		
@@ -12,59 +17,36 @@ class FileImport extends CI_Controller {
 	    $this->load->helper('url_helper');
 	    $this->load->model('Match_import');
 	    $this->load->model('Run_etl_stored_proc');
-        $this->load->model('File_loader_import');
+            $this->load->model('File_loader_import');
 	    $this->load->model('Missing_data_updater');
 	    $this->load->model('Database_store_matches');
 	    $this->load->helper('form');
 	}
 
 	function do_upload() {
-		$this->setConfigForUpload();
-		/*
-	    $config = array();
-	    $config['upload_path'] = './application/import/';
-	    $config['allowed_types'] = 'xlsx|xls';
-	    $config['max_size']	= '4096';
-	    $this->load->library('upload', $config);
-*/
-		
-	    //Calls a CI method to upload the file from I think the POST variable
-            $uploadPassed = $this->upload->do_upload();
-            $data = array();
+	    $this->setConfigForUpload();
+            $uploadPassed = $this->uploadFileFromPost();
 	    if ( ! $uploadPassed) {
 		$this->displayUploadError();
-		/*
-	        $error = array('error' => $this->upload->display_errors());
-	        $data['test'] = "Test Report";
-	        $this->load->helper(array('form', 'url'));
-	        $this->load->view('templates/header', $data);
-	        $this->load->view('upload_form', $error);
-	        $this->load->view('templates/footer');
-		*/
 	    } else {
 		$fileImportStatus = $this->importDataFromSpreadsheet();
-		    
-		    /*
-                $data = array('upload_data' => $this->upload->data());
-                //$data['progress_pct'] = 10;
-                //Import the data from the imported spreadsheet
-                $fileLoader = new File_loader_import();
-                $dataStore = new Database_store_matches();
-                $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
-		*/
                 if ($fileImportStatus) {
                     $this->showUploadComplete();
                 }
 	    }
 	}
 	
+	//Calls a CI method to upload the file from I think the POST variable
+	private function uploadFileFromPost() {
+	    return $this->upload->do_upload();
+	}
+	
 	private function setConfigForUpload() {
-		$config = array();
-	    $config['upload_path'] = './application/import/';
-	    $config['allowed_types'] = 'xlsx|xls';
-	    $config['max_size']	= '4096';
+	    $config = array();
+	    $config['upload_path'] = self::FILE_IMPORT_PATH;
+	    $config['allowed_types'] = self::IMPORT_ALLOWED_FILE_TYPES;
+	    $config['max_size']	= self::MAX_FILE_SIZE;
 	    $this->load->library('upload', $config);
-
 	}
 	
 	private function displayUploadError() {
