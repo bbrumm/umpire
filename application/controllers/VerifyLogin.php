@@ -15,21 +15,37 @@ class VerifyLogin extends CI_Controller {
      }
     
      function index() {
-         //This method will have the credentials validation
+         if($this->validateLoginForm()) {
+             $this->loadMainReportSelectionPage();
+         } else {
+             $this->loadLoginPage();
+         }
+     }
+     
+     private function loadLoginPage() {
+          $this->showHeader();
+    	  	$this->load->view('login_view');
+    		$this->showFooter();
+     }
+     
+     private function loadMainReportSelectionPage() {
+          redirect('home', 'refresh');
+     }
+     
+     private function validateLoginForm() {
          $this->load->library('form_validation');
          $this->form_validation->set_rules('username', 'Username', 'trim|required');
          $this->form_validation->set_rules('password', 'Password', 'trim|required|callback_check_database');
-         if($this->form_validation->run() == FALSE) {
-             //echo "test failed ";
-             //Field validation failed.  User redirected to login page
-      	     $this->load->view('templates/header');
-    	  	 $this->load->view('login_view');
-    		 $this->load->view('templates/footer');
-         } else {
-             //echo "test passed ";
-             //Go to private area
-             redirect('home', 'refresh');
-         }
+         return $this->form_validation->run();
+     }
+     
+     //TODO: Move these to a common location
+     private function showHeader() {
+          $this->load->view('templates/header');
+     }
+     
+     private function showFooter() {
+          $this->load->view('templates/footer');
      }
     
      function check_database($password) {
