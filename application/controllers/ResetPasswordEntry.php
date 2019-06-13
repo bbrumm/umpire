@@ -42,21 +42,23 @@ class ResetPasswordEntry extends CI_Controller {
     }
     
     private function showResetPasswordPage($data) {
-        $this->load->view('templates/header');
+        $this->showHeader();
         $this->load->view('resetPassword', $data);
-        $this->load->view('templates/footer');
+        $this->showFooter();
     }
     
      private function showPasswordResetDonePage() {
-        $this->load->view('templates/header');
+        $this->showHeader();
         $this->load->view('password_reset_done');
-        $this->load->view('templates/footer');
+        $this->showFooter();
     }
     
     public function submitNewPassword() {
         $userAuthModel = new User_authentication_model();
         $dbStore = new Database_store_user();
-        $passwordUpdated = $userAuthModel->updatePassword($dbStore, $_POST['username'], $_POST['password'], $_POST['confirmPassword']);
+        //TODO: Change this function so I don't need to pass the POST values, assuming it's only called in one place
+        $passwordUpdated = $userAuthModel->updatePassword(
+            $dbStore, $_POST['username'], $_POST['password'], $_POST['confirmPassword']);
         if($passwordUpdated) {
             $this->showPasswordResetDonePage();
         } else {
@@ -64,5 +66,14 @@ class ResetPasswordEntry extends CI_Controller {
                 "Please ensure that both passwords you have entered are the same, and they are at least 6 characters long.";
             $this->showPasswordResetEntryPage($statusMessage);
         }
+    }
+    
+    //TODO maybe move these functions to a common library?
+    private function showHeader() {
+        $this->load->view('templates/header');
+    }
+    
+    private function showFooter() {
+        $this->load->view('templates/footer');
     }
 }
