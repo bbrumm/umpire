@@ -28,11 +28,7 @@ class ForgotPassword extends CI_Controller {
     }
     
     public function submitChangePasswordForm($pSendEmail = true) {
-        //Perform checks and send confirmation email
-        $username = $this->security->xss_clean($this->input->post('username'));
-        $emailAddress = $this->security->xss_clean($this->input->post('emailAddress'));
-        $sendStatusInfo = $this->validateUserAndSendEmail($username, $emailAddress, $pSendEmail);
-        
+        $sendStatusInfo = $this->validateUserAndSendEmail($pSendEmail);
         if ($sendStatusInfo['status'] == "sent") {
             //Show page
             $this->showPasswordResetNextStepsPage($sendStatusInfo);
@@ -40,6 +36,18 @@ class ForgotPassword extends CI_Controller {
             $this->showPasswordResetPage($sendStatusInfo);
             
         }
+    }
+    
+    private function getCleanUsername() {
+        return $this->getXSSCleanValue('username');
+    }
+    
+    private function getCleanEmailAddress() {
+        return $this->getXSSCleanValue('emailAddress');
+    }
+    
+    private function getXSSCleanValue($pValue) {
+        return $this->security->xss_clean($this->input->post($pValue));
     }
     
     private function showPasswordResetNextStepsPage($sendStatusInfo) {
@@ -64,10 +72,15 @@ class ForgotPassword extends CI_Controller {
         $this->load->view('templates/footer');
     }
     
-    private function validateUserAndSendEmail($pUserName, $pEmailAddress, $pSendEmail) {
+    //TODO: refactor, maybe split function
+    private function validateUserAndSendEmail($pSendEmail) {
         $umpireUser = new User();
+        $username = $this->getCleanUsername();
+        $emailAddress = $this->getCleanEmailAddress();
+        
         $umpireUser->setUsername($pUserName);
         $umpireUser->setEmailAddress($pEmailAddress);
+        
         $userMaintenance = new User_maintenance_model();
         $userPermissionLoader = new User_permission_loader_model();
         $dbStore = new Database_store_user();
