@@ -46,5 +46,15 @@ class Report_table_refresher_test extends TestCase {
         $this->obj->logTableDeleteOperation();
     }
     
+    public function test_TableInsertOperationForSpecificTable_Exception() {
+        $this->expectException(Exception::class);
+        $this->obj->logSpecificTableInsertOperation(null);
+    }
+    
+    public function test_TableDeleteOperationForSpecificTable_Exception() {
+        $this->expectException(Exception::class);
+        $this->obj->logSpecificTableDeleteOperation(null);
+    }
+    
     
 }
