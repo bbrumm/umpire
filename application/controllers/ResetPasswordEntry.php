@@ -21,51 +21,42 @@ class ResetPasswordEntry extends CI_Controller {
      */
 
     function load($pActivationID) {
+        $data = $this->populateDataArrayForView($pActivationID);
+        $this->showResetPasswordPage($data);
+    }
+    
+    private function showPasswordResetEntryPage($pStatusMessage) {
+        $data = $this->populateDataArrayForView($_POST['activationID']);
+        $data['statusMessage'] = $pStatusMessage;
+        $data['activationIDMatches'] = isset($umpireUser); //different
+        $this->showResetPasswordPage($data);
+    }
+    
+    private function populateDataArrayForView($pActivationID) {
         $userMaintenance = new User_maintenance_model();
         $dataStore = new Database_store_user();
         $umpireUser = $userMaintenance->createUserFromActivationID($dataStore, $pActivationID);
-        //TODO check that this works and refactor. Repeated in function below.
-        $data = array();
         $data['activationID'] = $umpireUser->getActivationID();
         $data['username'] = $umpireUser->getUsername();
-
+        return $data;
+    }
+    
+    private function showResetPasswordPage($data) {
         $this->load->view('templates/header');
         $this->load->view('resetPassword', $data);
         $this->load->view('templates/footer');
-        
     }
     
-    private function showPasswordResetDonePage() {
+     private function showPasswordResetDonePage() {
         $this->load->view('templates/header');
         $this->load->view('password_reset_done');
         $this->load->view('templates/footer');
     }
     
-    private function showPasswordResetEntryPage($pStatusMessage) {
-        $dataStore = new Database_store_user();
-        $data = array();
-        $data['statusMessage'] = $pStatusMessage;
-        $userMaintenance = new User_maintenance_model();
-        //TODO check that this works and refactor. Repeated in function above
-        $umpireUser = $userMaintenance->createUserFromActivationID($dataStore, $_POST['activationID']);
-        //$umpireUser->setActivationID($_POST['activationID']);
-        $data['activationIDMatches'] = isset($umpireUser);
-        $data['activationID'] = $umpireUser->getActivationID();
-        $data['username'] = $umpireUser->getUsername();
-        
-        $this->load->view('templates/header');
-        $this->load->view('resetPassword', $data);
-        $this->load->view('templates/footer');
-    }
-    
     public function submitNewPassword() {
-
         $userAuthModel = new User_authentication_model();
         $dbStore = new Database_store_user();
-
-
         $passwordUpdated = $userAuthModel->updatePassword($dbStore, $_POST['username'], $_POST['password'], $_POST['confirmPassword']);
-
         if($passwordUpdated) {
             $this->showPasswordResetDonePage();
         } else {
