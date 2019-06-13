@@ -165,9 +165,9 @@ Ben - UmpireReporting";
     }   */
 
     private function sendPasswordResetEmail(User $pUser) {
-        $from = new SendGrid\Email(null, "test@example.com");
+        $from = new SendGrid\Email(null, "test@umpirereporting.com");
         $subject = "Hello World from the SendGrid PHP Library!";
-        $to = new SendGrid\Email(null, "brummthecar@gmail.com");
+        $to = new SendGrid\Email(null, "bbrumm@gmail.com");
         $content = new SendGrid\Content("text/plain", "Hello, Email!");
         $mail = new SendGrid\Mail($from, $subject, $to, $content);
 
@@ -175,6 +175,8 @@ Ben - UmpireReporting";
 
         $sg = new \SendGrid($apiKey);
         $response = $sg->client->mail()->send()->post($mail);
+        //TODO: add check to return OK if the response is OK, otherwise error.
+        // _status_code = 202 seems to be ok?
         return true;
 
     }
