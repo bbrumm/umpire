@@ -49,33 +49,44 @@ class VerifyLogin extends CI_Controller {
      }
     
      function check_database($password) {
-         //Field validation succeeded.  Validate against database
          $username = $this->input->post('username');
          $userAuth = new User_authentication_model();
          $dbStore = new Database_store_user();
     
-         //Check if user is active first
-         if($userAuth->checkUserActive($dbStore, $username)) {
-             
-             //query the database
-             $result = $userAuth->login($dbStore, $username, $password);
-             if($result) {
-                 foreach($result as $row) {
-                     $sess_array = array(
-                         'id' => $row->id,
-                         'username' => $row->user_name
-                     );
-                     $this->session->set_userdata('logged_in', $sess_array);
-                 }
+         if ($userAuth->checkUserActive($dbStore, $username)) {
+             $result = $this->loginUserAndReturnResult($dbStore, $username, $password);
+             if ($result) {
+                 $this->setUserData($result);
                  return true;
-              } else {
-                  $this->form_validation->set_message('check_database', 'Invalid username or password.');
-                  return false;
-              }
+             } else {
+                 $this->setInvalidUsernamePasswordMessage();
+                 return false;
+             }
          } else {
-             //User is not active
-             $this->form_validation->set_message('check_database', 'User is not active. Please contact support or the administrator.');
+             $this->setUserInactiveMessage();
              return false;
          }
+     }
+     
+     private function loginUserAndReturnResult($dbStore, $username, $password) {
+          return $userAuth->login($dbStore, $username, $password);
+     }
+     
+     private function setUserData($result) {
+          foreach($result as $row) {
+           $sess_array = array(
+               'id' => $row->id,
+               'username' => $row->user_name
+           );
+           $this->session->set_userdata('logged_in', $sess_array);
+       }
+     }
+     
+     private function setInvalidUsernamePasswordMessage() {
+          $this->form_validation->set_message('check_database', 'Invalid username or password.');
+     }
+     
+     private function setUserInactiveMessage() {
+          $this->form_validation->set_message('check_database', 'User is not active. Please contact support or the administrator.');
      }
 }
