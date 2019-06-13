@@ -92,8 +92,8 @@ class ForgotPassword extends CI_Controller {
         //Check user data entered: user exists, email matches user
         $userExists = $userMaintenance->checkUserExistsForReset($dbStore, $umpireUser);
         if($userExists) {
-            urlencode($pEmailAddress);
-            $userPermissionLoader->getUserFromUsername($dbStore, $pUserName);
+            urlencode($emailAddress);
+            $userPermissionLoader->getUserFromUsername($dbStore, $username);
             $umpireUser->setPasswordResetURL(base_url() . "index.php/ResetPasswordEntry/load/" . $data['activation_id']);
             $userMaintenance->storeActivationID($dbStore, $umpireUser, $data['activation_id']);
 
