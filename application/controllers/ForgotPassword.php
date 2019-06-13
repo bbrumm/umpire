@@ -78,8 +78,8 @@ class ForgotPassword extends CI_Controller {
         $username = $this->getCleanUsername();
         $emailAddress = $this->getCleanEmailAddress();
         
-        $umpireUser->setUsername($pUserName);
-        $umpireUser->setEmailAddress($pEmailAddress);
+        $umpireUser->setUsername($username);
+        $umpireUser->setEmailAddress($emailAddress);
         
         $userMaintenance = new User_maintenance_model();
         $userPermissionLoader = new User_permission_loader_model();
