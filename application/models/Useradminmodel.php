@@ -278,7 +278,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $this->updateUserRoles($pDataStore, $userRoleDifferences);
     }
     
-    privacte function updateChangedUserActive(IData_store_user_permission $pDataStore, $postData) {
+    private function updateChangedUserActive(IData_store_user_permission $pDataStore, $postData) {
         //TODO: Update active/not active status
         $userActiveFromDB = $this->getAllUserActiveFromDB($pDataStore);
         $userActiveFromForm = $this->translateUserFormActive($postData);
