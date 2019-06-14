@@ -205,7 +205,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
          */
     public function saveUserPrivileges(IData_store_user_permission $pDataStore, $postData) {
 
-        $this->updatePrivileges($pDataStore);
+        $this->updatePrivileges($pDataStore, $postData);
         /*
         $arrayLibrary = new Array_library();
 
@@ -243,7 +243,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
         return true;
     }
     
-    private function updatePrivileges(IData_store_user_permission $pDataStore) {
+    private function updatePrivileges(IData_store_user_permission $pDataStore, $postData) {
         $arrayLibrary = new Array_library();
 
         $userPermissionsFromDB = $this->getAllUserPermissionsFromDB($pDataStore);
