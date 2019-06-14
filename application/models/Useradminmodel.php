@@ -205,6 +205,8 @@ The [#] represents the permission_selection.id value. This can be used to insert
          */
     public function saveUserPrivileges(IData_store_user_permission $pDataStore, $postData) {
 
+        $this->updatePrivileges($pDataStore);
+        /*
         $arrayLibrary = new Array_library();
 
         $userPermissionsFromDB = $this->getAllUserPermissionsFromDB($pDataStore);
@@ -218,6 +220,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
 
         //Add privileges for users that were added on the form
         $this->addPrivileges($pDataStore, $permissionsInFormNotDB);
+        */
 
         $userRolesFromDB = $this->getAllUserRolesFromDB($pDataStore);
         $userRolesFromForm = $postData['userRole'];
@@ -238,6 +241,23 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $this->updateUserActive($pDataStore, $userActiveDifferences);
 
         return true;
+    }
+    
+    private function updatePrivileges(IData_store_user_permission $pDataStore) {
+        $arrayLibrary = new Array_library();
+
+        $userPermissionsFromDB = $this->getAllUserPermissionsFromDB($pDataStore);
+        $userPermissionsFromForm = $postData['userPrivilege'];
+
+        $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
+        $permissionsInFormNotDB = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
+
+        //Remove privileges from users that were changed on the form
+        $this->removePrivileges($pDataStore, $permissionsInDBNotForm);
+
+        //Add privileges for users that were added on the form
+        $this->addPrivileges($pDataStore, $permissionsInFormNotDB);
+
     }
 
     private function arrayDiff($A, $B) {
