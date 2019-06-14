@@ -190,65 +190,10 @@ class Useradminmodel extends CI_Model {
 The [#] represents the permission_selection.id value. This can be used to insert/delete from the user_permission_selection table.
          */
 
-
-        /*
-         * Check which permissions are selected from the form (post is included)
-         * Check which permissions exist in the database but not sent from the form
-         * Insert these if they don't exist into user_permission_selection
-         * Delete these from user_permission_selection
-         *
-         * Repeat these steps using the role-level permissions
-         *
-         * Better to load both sets of data into two arrays, with the same structure, that can then be compared easily
-         *
-         *
-         */
     public function saveUserPrivileges(IData_store_user_permission $pDataStore, $postData) {
-
         $this->updateChangedPrivileges($pDataStore, $postData);
-        /*
-        $arrayLibrary = new Array_library();
-
-        $userPermissionsFromDB = $this->getAllUserPermissionsFromDB($pDataStore);
-        $userPermissionsFromForm = $postData['userPrivilege'];
-
-        $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
-        $permissionsInFormNotDB = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
-
-        //Remove privileges from users that were changed on the form
-        $this->removePrivileges($pDataStore, $permissionsInDBNotForm);
-
-        //Add privileges for users that were added on the form
-        $this->addPrivileges($pDataStore, $permissionsInFormNotDB);
-        */
-
         $this->updateChangedRoles($pDataStore, $postData);
-        
-        /*
-        $userRolesFromDB = $this->getAllUserRolesFromDB($pDataStore);
-        $userRolesFromForm = $postData['userRole'];
-
-        $userRoleDifferences = $this->arrayDiff($userRolesFromDB, $userRolesFromForm);
-
-        //Update user roles
-        $this->updateUserRoles($pDataStore, $userRoleDifferences);
-
-        */
-        
         $this->updateChangedUserActive($pDataStore, $postData);
-        
-        /*
-        //TODO: Update active/not active status
-        $userActiveFromDB = $this->getAllUserActiveFromDB($pDataStore);
-        $userActiveFromForm = $this->translateUserFormActive($postData);
-
-        //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
-        $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);
-
-        //Update user roles
-        $this->updateUserActive($pDataStore, $userActiveDifferences);
-        */
-        
         return true;
     }
     
@@ -261,20 +206,15 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $permissionsInDBNotForm = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromDB, $userPermissionsFromForm);
         $permissionsInFormNotDB = $arrayLibrary->findRecursiveArrayDiff($userPermissionsFromForm, $userPermissionsFromDB);
 
-        //Remove privileges from users that were changed on the form
         $this->removePrivileges($pDataStore, $permissionsInDBNotForm);
-
-        //Add privileges for users that were added on the form
         $this->addPrivileges($pDataStore, $permissionsInFormNotDB);
     }
     
     private function updateChangedRoles(IData_store_user_permission $pDataStore, $postData) {
         $userRolesFromDB = $this->getAllUserRolesFromDB($pDataStore);
         $userRolesFromForm = $postData['userRole'];
-
         $userRoleDifferences = $this->arrayDiff($userRolesFromDB, $userRolesFromForm);
 
-        //Update user roles
         $this->updateUserRoles($pDataStore, $userRoleDifferences);
     }
     
@@ -283,12 +223,8 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $userActiveFromDB = $this->getAllUserActiveFromDB($pDataStore);
         $userActiveFromForm = $this->translateUserFormActive($postData);
 
-        //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
         $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);
-
-        //Update user roles
         $this->updateUserActive($pDataStore, $userActiveDifferences);
-
     }
 
     private function arrayDiff($A, $B) {
