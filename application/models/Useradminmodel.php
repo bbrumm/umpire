@@ -205,7 +205,7 @@ The [#] represents the permission_selection.id value. This can be used to insert
          */
     public function saveUserPrivileges(IData_store_user_permission $pDataStore, $postData) {
 
-        $this->updatePrivileges($pDataStore, $postData);
+        $this->updateChangedPrivileges($pDataStore, $postData);
         /*
         $arrayLibrary = new Array_library();
 
@@ -222,6 +222,9 @@ The [#] represents the permission_selection.id value. This can be used to insert
         $this->addPrivileges($pDataStore, $permissionsInFormNotDB);
         */
 
+        $this->updateChangedRoles($pDataStore, $postData);
+        
+        /*
         $userRolesFromDB = $this->getAllUserRolesFromDB($pDataStore);
         $userRolesFromForm = $postData['userRole'];
 
@@ -230,6 +233,11 @@ The [#] represents the permission_selection.id value. This can be used to insert
         //Update user roles
         $this->updateUserRoles($pDataStore, $userRoleDifferences);
 
+        */
+        
+        $this->updateChangedUserActive($pDataStore, $postData);
+        
+        /*
         //TODO: Update active/not active status
         $userActiveFromDB = $this->getAllUserActiveFromDB($pDataStore);
         $userActiveFromForm = $this->translateUserFormActive($postData);
@@ -239,11 +247,12 @@ The [#] represents the permission_selection.id value. This can be used to insert
 
         //Update user roles
         $this->updateUserActive($pDataStore, $userActiveDifferences);
-
+        */
+        
         return true;
     }
     
-    private function updatePrivileges(IData_store_user_permission $pDataStore, $postData) {
+    private function updateChangedPrivileges(IData_store_user_permission $pDataStore, $postData) {
         $arrayLibrary = new Array_library();
 
         $userPermissionsFromDB = $this->getAllUserPermissionsFromDB($pDataStore);
@@ -257,6 +266,28 @@ The [#] represents the permission_selection.id value. This can be used to insert
 
         //Add privileges for users that were added on the form
         $this->addPrivileges($pDataStore, $permissionsInFormNotDB);
+    }
+    
+    private function updateChangedRoles(IData_store_user_permission $pDataStore, $postData) {
+        $userRolesFromDB = $this->getAllUserRolesFromDB($pDataStore);
+        $userRolesFromForm = $postData['userRole'];
+
+        $userRoleDifferences = $this->arrayDiff($userRolesFromDB, $userRolesFromForm);
+
+        //Update user roles
+        $this->updateUserRoles($pDataStore, $userRoleDifferences);
+    }
+    
+    privacte function updateChangedUserActive(IData_store_user_permission $pDataStore, $postData) {
+        //TODO: Update active/not active status
+        $userActiveFromDB = $this->getAllUserActiveFromDB($pDataStore);
+        $userActiveFromForm = $this->translateUserFormActive($postData);
+
+        //$userRoleDifferences = array_diff($userRolesFromDB, $userRolesFromForm);
+        $userActiveDifferences = $this->arrayDiff($userActiveFromDB, $userActiveFromForm);
+
+        //Update user roles
+        $this->updateUserActive($pDataStore, $userActiveDifferences);
 
     }
 
