@@ -36,7 +36,7 @@ class ForgotPassword_test extends TestCase
         $this->assertContains($expected, $output);
     }
 
-/*
+
     public function test_SubmitChangePasswordForm_DoesNotMatch() {
         $postArray = array(
             'username'=>'bbrummtest',
@@ -148,6 +148,6 @@ class ForgotPassword_test extends TestCase
         $this->assertContains($expected, $output);
 
     }
-*/
+
 
 }

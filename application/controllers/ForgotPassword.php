@@ -165,10 +165,18 @@ Ben - UmpireReporting";
     }   */
 
     private function sendPasswordResetEmail(User $pUser) {
-        $from = new SendGrid\Email(null, "test@umpirereporting.com");
-        $subject = "Hello World from the SendGrid PHP Library!";
-        $to = new SendGrid\Email(null, "bbrumm@gmail.com");
-        $content = new SendGrid\Content("text/plain", "Hello, Email!");
+
+        $emailMessage = "Hi, \r\n <br/>
+To continue with your password reset, visit the following URL:\r\n<br/>
+". $pUser->getPasswordResetURL() ."\r\n<br/>
+If you did not want to reset your password, just ignore this email.\r\n<br/>
+Thanks,\r\n<br/>
+Ben - UmpireReporting";
+
+        $from = new SendGrid\Email(null, "support@umpirereporting.com");
+        $subject = "Umpire Reporting: Password Reset";
+        $to = new SendGrid\Email(null, $pUser->getEmailAddress());
+        $content = new SendGrid\Content("text/plain", $emailMessage);
         $mail = new SendGrid\Mail($from, $subject, $to, $content);
 
         $apiKey = getenv('SENDGRID_API_KEY');
@@ -177,7 +185,11 @@ Ben - UmpireReporting";
         $response = $sg->client->mail()->send()->post($mail);
         //TODO: add check to return OK if the response is OK, otherwise error.
         // _status_code = 202 seems to be ok?
-        return true;
+        if ($response->_status_code == 202) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
