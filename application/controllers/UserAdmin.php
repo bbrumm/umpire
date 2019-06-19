@@ -12,6 +12,7 @@ class UserAdmin extends CI_Controller
         $this->load->helper('url_helper');
         $this->load->helper(array('form', 'url'));
         $this->load->model('Useradminmodel');
+        $this->load->model('User_data_loader');
         $this->load->model('Database_store_user_admin');
         $this->load->model('Database_store_reference');
         $this->load->library('Debug_library');
@@ -55,31 +56,32 @@ class UserAdmin extends CI_Controller
     
     private function populateDataArrayForView($pUserAddedMessage) {
         $dataStore = new Database_store_user_admin();
-            $dataStoreReference = new Database_store_reference();
-            $userAdmin = new Useradminmodel();
-            $userArray = $userAdmin->getAllUsers($dataStore);
-            $roleArray = $userAdmin->getRoleArray($dataStoreReference);
-            
-            $permissionSelectionArray = $userAdmin->getPermissionSelectionArray($dataStoreReference);
-            
-            //TODO: Remove these once the permission selection array is working
-            $reportSelectionArray = $userAdmin->getReportArray($dataStoreReference);
-            $regionSelectionArray = $userAdmin->getRegionArray($dataStoreReference);
-            $umpireDisciplineSelectionArray = $userAdmin->getUmpireDisciplineArray($dataStoreReference);
-            $ageGroupSelectionArray = $userAdmin->getAgeGroupArray($dataStoreReference);
-            $leagueSelectionArray = $userAdmin->getLeagueArray($dataStoreReference);
-        
-            $data = array();
-            $data['userAddedMessage'] = $pUserAddedMessage;
-            $data['userArray'] = $userArray;
-            $data['roleArray'] = $roleArray;
-            $data['permissionSelectionArray'] = $permissionSelectionArray;
-            //TODO: Remove these once the permission selection array is working
-            $data['reportSelectionArray'] = $reportSelectionArray;
-            $data['regionSelectionArray'] = $regionSelectionArray;
-            $data['umpireDisciplineSelectionArray'] = $umpireDisciplineSelectionArray;
-            $data['ageGroupSelectionArray'] = $ageGroupSelectionArray;
-            $data['leagueSelectionArray'] = $leagueSelectionArray;
+        $dataStoreReference = new Database_store_reference();
+        $userAdmin = new Useradminmodel();
+        $userDataLoader = new User_data_loader();
+        $userArray = $userDataLoader->getAllUsers($dataStore);
+        $roleArray = $userDataLoader->getRoleArray($dataStoreReference);
+
+        $permissionSelectionArray = $userDataLoader->getPermissionSelectionArray($dataStoreReference);
+
+        //TODO: Remove these once the permission selection array is working
+        $reportSelectionArray = $userDataLoader->getReportArray($dataStoreReference);
+        $regionSelectionArray = $userDataLoader->getRegionArray($dataStoreReference);
+        $umpireDisciplineSelectionArray = $userDataLoader->getUmpireDisciplineArray($dataStoreReference);
+        $ageGroupSelectionArray = $userDataLoader->getAgeGroupArray($dataStoreReference);
+        $leagueSelectionArray = $userDataLoader->getLeagueArray($dataStoreReference);
+
+        $data = array();
+        $data['userAddedMessage'] = $pUserAddedMessage;
+        $data['userArray'] = $userArray;
+        $data['roleArray'] = $roleArray;
+        $data['permissionSelectionArray'] = $permissionSelectionArray;
+        //TODO: Remove these once the permission selection array is working
+        $data['reportSelectionArray'] = $reportSelectionArray;
+        $data['regionSelectionArray'] = $regionSelectionArray;
+        $data['umpireDisciplineSelectionArray'] = $umpireDisciplineSelectionArray;
+        $data['ageGroupSelectionArray'] = $ageGroupSelectionArray;
+        $data['leagueSelectionArray'] = $leagueSelectionArray;
         
         return $data;
     }
