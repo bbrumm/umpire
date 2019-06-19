@@ -129,6 +129,8 @@ class Match_import extends CI_Model
                 }
             }
         }
+        
+        return $missingColumnNames;
     }
 
     private function prepareNormalisedTables($pFileLoader, $pDataStore, $importedFilename) {
