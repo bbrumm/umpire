@@ -114,20 +114,20 @@ class Match_import extends CI_Model
     }
 
     private function checkAllRequiredColumnsFound($pSheetColumnHeaderArray) {
-        $missingColumnCount = 0;
+        $missingColumnNames = $this->findMissingColumnNames($pSheetColumnHeaderArray);
+        if (strlen($missingColumnNames) > 0) {
+            throw new Exception("A required column is missing from the imported file: " . $missingColumnNames);
+        }
+    }
+    
+    private function findMissingColumnNames($pSheetColumnHeaderArray) {
         $missingColumnNames = "";
-
         foreach (self::COLUMN_TO_TABLE_MATCH as $expectedColumnHeaderLabel=>$expectedColumnHeaderProperties) {
             if ($expectedColumnHeaderProperties['required']) {
                 if (!in_array($expectedColumnHeaderLabel, $pSheetColumnHeaderArray)) {
-                    $missingColumnCount++;
                     $missingColumnNames .= $expectedColumnHeaderLabel . ", ";
                 }
             }
-        }
-
-        if ($missingColumnCount > 0) {
-            throw new Exception("A required column is missing from the imported file: " . $missingColumnNames);
         }
     }
 
