@@ -99,27 +99,15 @@ class Report_table_refresher extends CI_Model {
     }
 
     public function logTableInsertOperation() {
-        if(isset($this->tableName)) {
-            $this->logTableOperation($this->tableName, self::OPERATION_INSERT);
-        } else {
-            throw new Exception("Table name for insert operation logging cannot be empty.");
-        }
+        $this->logSpecificTableInsertOperation($this->tableName);
     }
 
     public function logTableDeleteOperation() {
-        if(isset($this->tableName)) {
-            $this->logTableOperation($this->tableName, self::OPERATION_DELETE);
-        } else {
-            throw new Exception("Table name for delete operation logging cannot be empty.");
-        }
+        $this->logSpecificTableDeleteOperation($this->tableName);
     }
 
     public function logTableUpdateOperation() {
-        if(isset($this->tableName)) {
-            $this->logTableOperation($this->tableName, self::OPERATION_UPDATE);
-        } else {
-            throw new Exception("Table name for update operation logging cannot be empty.");
-        }
+        $this->logSpecificTableUpdateOperation($this->tableName);
     }
     
     public function logSpecificTableInsertOperation($pTableName) {
@@ -133,6 +121,14 @@ class Report_table_refresher extends CI_Model {
     public function logSpecificTableDeleteOperation($pTableName) {
         if(isset($pTableName)) {
             $this->logTableOperation($pTableName, self::OPERATION_DELETE);
+        } else {
+            throw new Exception("Table name specified cannot be empty.");
+        }
+    }
+
+    public function logSpecificTableUpdateOperation($pTableName) {
+        if(isset($pTableName)) {
+            $this->logTableOperation($pTableName, self::OPERATION_UPDATE);
         } else {
             throw new Exception("Table name specified cannot be empty.");
         }
