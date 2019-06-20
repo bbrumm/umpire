@@ -6,10 +6,13 @@ require_once 'IData_store_user_admin.php';
 */
 class Database_store_user_permission extends CI_Model implements IData_store_user_permission
 {
+    
+    const OPERATION_INSERT = 1;
+    const OPERATION_UPDATE = 2;
+    const OPERATION_DELETE = 3;
 
     private function runQuery($queryString, $arrayValues = null) {
         return $this->db->query($queryString, $arrayValues);
-        //$this->db->close();
     }
 
     private function getArrayFromQuery($queryString) {
@@ -82,9 +85,7 @@ class Database_store_user_permission extends CI_Model implements IData_store_use
             $permission_selection_id, $username
         ));
         if ($this->db->affected_rows() == 1) {
-
-            //TODO: Replace magic number 1 with global constant that represents INSERT
-            $this->logPrivilegeChange($username, $permission_selection_id, 1);
+            $this->logPrivilegeChange($username, $permission_selection_id, self::OPERATION_INSERT);
         } else {
             throw new Exception("There was an issue inserting into the user_permission_selection table. Please contact support.");
         }
@@ -99,7 +100,6 @@ class Database_store_user_permission extends CI_Model implements IData_store_use
         $this->runQuery($queryString, array(
             $newRoleID, $username
         ));
-        //TODO: Replace magic number with global constant that represents UPDATE
         $this->logRoleChange($username, $newRoleID);
     }
 
@@ -114,8 +114,7 @@ class Database_store_user_permission extends CI_Model implements IData_store_use
         $this->runQuery($queryString, array(
             $username, $permission_selection_id
         ));
-        //TODO: Replace magic number 3 with global constant that represents DELETE
-        $this->logPrivilegeChange($username, $permission_selection_id, 3);
+        $this->logPrivilegeChange($username, $permission_selection_id, self::OPERATION_DELETE);
 
     }
 
@@ -175,7 +174,6 @@ class Database_store_user_permission extends CI_Model implements IData_store_use
         $this->runQuery($queryString, array(
             $setValue, $username
         ));
-        //TODO: Replace magic number with global constant that represents UPDATE
         $this->logActiveChange($username, $setValue);
     }
 
