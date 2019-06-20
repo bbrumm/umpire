@@ -158,8 +158,9 @@ VALUES (". $this->importFileID .", (SELECT id FROM processed_table WHERE table_n
     public function runInsertETLStep($pTableName, $pQueryString) {
         $this->disableKeysForSpecificTable($pTableName);
         $this->runQuery($pQueryString);
-        $this->logSpecificTableInsertOperation($pTableName);
         $this->enableKeysForSpecificTable($pTableName);
+        //Run this after the keys to get a true time taken
+        $this->logSpecificTableInsertOperation($pTableName);
     }
 
     public function runInsertETLStepWithoutKeys($pTableName, $pQueryString) {

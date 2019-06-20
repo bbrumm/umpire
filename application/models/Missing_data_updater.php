@@ -100,9 +100,9 @@ class Missing_data_updater extends CI_Model {
     
     private function updateTeamAndClubTables(IData_store_matches $pDataStore, array $pPostData) {
         foreach ($pPostData['rdTeam'] as $teamID => $radioSelection) {
-            if ($radioSelection == self:RD_SELECTION_NEW) {
+            if ($radioSelection == self::RD_SELECTION_NEW) {
                 $this->updateForNewClub($pDataStore, $teamID, $pPostData);
-            } elseif ($radioSelection == self:RD_SELECTION_EXISTING) {
+            } elseif ($radioSelection == self::RD_SELECTION_EXISTING) {
                 $this->updateForExistingClub($pDataStore, $teamID, $pPostData);
             }
         }
