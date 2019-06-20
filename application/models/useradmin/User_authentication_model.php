@@ -64,6 +64,25 @@ class User_authentication_model extends CI_Model {
             */
         }
     }
+    
+    //TODO: use this function instead of the above function, if it's only called in one place
+    //TODO: Refactor this with the ResetPasswordEntry controller as it's very similar code
+    public function updatePasswordFromPost(IData_store_user $pDataStore) {
+        $userMaintenance = new User_maintenance_model();
+        $newPassword = $this->security->xss_clean($_POST['password']);
+        $confirmNewPassword = $this->security->xss_clean($_POST['confirmPassword']);
+
+        $umpireUser = new User();
+        $validPassword = $userMaintenance->validatePassword($newPassword, $confirmNewPassword);
+        if ($validPassword) {
+            $umpireUser->setUsername($_POST['username']);
+            $umpireUser->setPassword(MD5($newPassword));
+            $userMaintenance->updatePassword($pDataStore, $umpireUser);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
