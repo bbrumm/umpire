@@ -21,8 +21,9 @@ class Report_instance_test extends TestCase
             $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
         );
         $dataStore = new Array_store_matches();
+        $dataStoreReportParam = new Array_store_report_param();
 
-        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->setReportType($dataStoreReportParam, $dataStore, $requestedReport);
         $expectedReportTitle = "Random Title " . $season;
         $actualReportTitle = $this->obj->getReportTitle();
         $this->assertEquals($expectedReportTitle, $actualReportTitle);
@@ -50,8 +51,9 @@ class Report_instance_test extends TestCase
             $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
         );
         $dataStore = new Array_store_matches();
+        $dataStoreReportParam = new Array_store_report_param();
 
-        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->setReportType($dataStoreReportParam, $dataStore, $requestedReport);
         $this->obj->loadReportResults($dataStore);
 
         $this->assertEquals(1, 1);
@@ -112,8 +114,9 @@ class Report_instance_test extends TestCase
             $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
         );
         $dataStore = new Array_store_matches();
+        $dataStoreReportParam = new Array_store_report_param();
 
-        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->setReportType($dataStoreReportParam, $dataStore, $requestedReport);
         $this->obj->loadReportResults($dataStore);
 
         //Get data
@@ -152,8 +155,9 @@ class Report_instance_test extends TestCase
             $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
         );
         $dataStore = new Array_store_matches();
+        $dataStoreReportParam = new Array_store_report_param();
 
-        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->setReportType($dataStoreReportParam, $dataStore, $requestedReport);
         $this->obj->loadReportResults($dataStore);
 
         //Get data
@@ -184,8 +188,9 @@ class Report_instance_test extends TestCase
             $reportNumber, $season, $region, $ageGroup, $umpireType, $league, $pdfMode
         );
         $dataStore = new Array_store_matches();
+        $dataStoreReportParam = new Array_store_report_param();
 
-        $this->obj->setReportType($dataStore, $requestedReport);
+        $this->obj->setReportType($dataStoreReportParam, $dataStore, $requestedReport);
         $this->obj->loadReportResults($dataStore);
 
         //Get data

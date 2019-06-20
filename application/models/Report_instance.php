@@ -108,7 +108,8 @@ class Report_instance extends CI_Model {
 	}
 
 
-	public function setReportType(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
+	public function setReportType(IData_store_report_param $pDataStore,
+                                  IData_store_matches $pDataStoreMatches, Requested_report_model $pRequestedReport) {
 	    //RequestedReport values are set in controllers/report.php->index();
 	    //$pDataStore = new Database_store_matches();
 	    
@@ -129,7 +130,7 @@ class Report_instance extends CI_Model {
 	    //Extract the ReportGroupingStructure into separate arrays for columns and rows
 	    $this->setRowAndColumnGroups($reportGroupingStructureArray);
 	    $this->filterParameters();
-		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason($pDataStore));
+		$this->reportDisplayOptions->setLastGameDate($this->findLastGameDateForSelectedSeason($pDataStoreMatches));
 	}
 	
 	private function setReportTitle($pSeasonYear) {

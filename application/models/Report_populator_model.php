@@ -25,7 +25,8 @@ class Report_populator_model extends CI_Model {
 	    
 		$reportToDisplay = new Report_instance();
 		$dataStore = new Database_store_matches();
-		$reportToDisplay->setReportType($dataStore, $requestedReport);
+		$dataStoreReportParam = new Database_store_report_param();
+		$reportToDisplay->setReportType($dataStoreReportParam, $dataStore, $requestedReport);
 		
 		 /* To get the column labels, currently I get the query data for the report and then translate that.
 		 * Is that the best way to go? Or should I use a different method of getting the column labels?

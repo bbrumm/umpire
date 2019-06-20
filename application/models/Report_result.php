@@ -16,15 +16,15 @@ class Report_result extends CI_Model {
     private $reportParameter;
     private $reportTitle;
 
-    public function loadReport(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
+    public function loadReport(IData_store_matches $pDataStore, IData_store_report_param $pDataStoreReportParam, Requested_report_model $pRequestedReport) {
         //Load parameters and grouping structire
-        $this->loadReportParameters($pRequestedReport);
+        $this->loadReportParameters($pDataStoreReportParam, $pRequestedReport);
         $this->setReportTitle($pRequestedReport);
         //Load data from database
         $this->loadReportResultsNew($pDataStore);
     }
 
-    private function loadReportParameters(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
+    private function loadReportParameters(IData_store_report_param $pDataStore, Requested_report_model $pRequestedReport) {
         $this->reportParamLoader = new Report_param_loader();
         $this->reportParamLoader->loadAllReportParametersForReport($pRequestedReport, $pDataStore);
         $this->reportParameter = $this->reportParamLoader->getReportParameter();
@@ -113,7 +113,7 @@ class Report_result extends CI_Model {
     private $filterParameterRegion;
 
 
-    public function setReportType(IData_store_matches $pDataStore, Requested_report_model $pRequestedReport) {
+    public function setReportType(IData_store_report_param $pDataStore, Requested_report_model $pRequestedReport) {
         //RequestedReport values are set in controllers/report.php->index();
         
         $reportGroupingStructureArray = $this->reportParamLoader->getReportGroupingStructureArray();

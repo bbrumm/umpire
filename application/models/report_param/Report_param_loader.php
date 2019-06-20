@@ -36,11 +36,11 @@ class Report_param_loader extends CI_Model {
         $this->reportGroupingStructureArray = $pValue;
     }
     
-    public function loadAllReportParametersForReport(Requested_report_model $pRequestedReport, IData_store_matches $pDataStore) {
+    public function loadAllReportParametersForReport(Requested_report_model $pRequestedReport, IData_store_report_param $pDataStore) {
         $this->setReportParameter($pDataStore->loadAllReportParameters($pRequestedReport->getReportNumber()));
     }
 
-    public function loadAllGroupingStructuresForReport(Requested_report_model $pRequestedReport, IData_store_matches $pDataStore) {
+    public function loadAllGroupingStructuresForReport(Requested_report_model $pRequestedReport, IData_store_report_param $pDataStore) {
         //Load all report grouping structures
         $this->setReportGroupingStructureArray($pDataStore->loadAllGroupingStructures($pRequestedReport->getReportNumber()));
     }
