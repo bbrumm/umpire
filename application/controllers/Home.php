@@ -15,7 +15,7 @@ class Home extends CI_Controller {
         $this->load->model('Report_selection');
         $this->load->model('Season');
         $this->load->model('User');
-        $this->load->model('Database_store_matches');
+        $this->load->model('data_store/Database_store_matches');
 
         if($this->session->userdata('logged_in')) {
             $this->session->userdata('logged_in');

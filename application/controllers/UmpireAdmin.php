@@ -9,7 +9,7 @@ class UmpireAdmin extends CI_Controller
         $this->load->helper('url_helper');
         $this->load->helper(array('form', 'url'));
         $this->load->model('Umpireadminmodel');
-        $this->load->model('Database_store_umpire_admin');
+        $this->load->model('data_store/Database_store_umpire_admin');
         $this->load->library('Debug_library');
     }
 

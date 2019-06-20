@@ -38,4 +38,35 @@ class Array_store_reference_empty extends CI_Model implements IData_store_refere
         return $testData;
     }
 
+    public function loadPossibleLeaguesForComp() {
+        $testData = [];
+        return $testData;
+
+    }
+
+    public function loadPossibleClubsForTeam() {
+        $testData = [];
+        return $testData;
+    }
+
+    public function loadPossibleRegions() {
+        $testData = [];
+        return $testData;
+    }
+
+    public function loadPossibleAgeGroups() {
+        $testData = [];
+        return $testData;
+    }
+
+    public function loadPossibleShortLeagueNames() {
+        $testData = [];
+        return $testData;
+    }
+
+    public function loadPossibleDivisions() {
+        $testData = [];
+        return $testData;
+    }
+
 }

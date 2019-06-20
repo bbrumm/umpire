@@ -12,7 +12,7 @@ class Database_store_user_admin extends CI_Model implements IData_store_user_adm
     public function __construct() {
         $this->load->database();
         $this->load->library('Debug_library');
-        $this->load->model('Database_store_user');
+        $this->load->model('data_store/Database_store_user');
     }
     
     private function runQuery($queryString, $arrayValues = null) {

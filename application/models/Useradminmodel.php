@@ -7,7 +7,7 @@ class Useradminmodel extends CI_Model {
         $this->load->model("User");
         $this->load->library('Debug_library');
         $this->load->model("useradmin/User_permission_loader_model");
-        $this->load->model("Database_store_matches");
+        $this->load->model("data_store/Database_store_matches");
     }
     
 

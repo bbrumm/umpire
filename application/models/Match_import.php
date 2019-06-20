@@ -31,7 +31,7 @@ class Match_import extends CI_Model
         $this->load->model('Table_operation');
         $this->load->model('Season');
         $this->load->library('Debug_library');
-        $this->load->model('Database_store_matches');
+        $this->load->model('data_store/Database_store_matches');
         $this->load->model('Run_etl_stored_proc');
         $this->load->model('Import_file');
     }

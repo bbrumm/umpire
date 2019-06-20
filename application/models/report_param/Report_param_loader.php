@@ -14,7 +14,7 @@ class Report_param_loader extends CI_Model {
         parent::__construct();
         $this->load->model('report_param/Report_grouping_structure');
         $this->load->model('report_param/Report_parameter');
-        $this->load->model('Database_store_matches');
+        $this->load->model('data_store/Database_store_matches');
     }
     
     private $reportParameter;

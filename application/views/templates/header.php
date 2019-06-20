@@ -8,7 +8,7 @@ $this->load->helper('url');
 $this->load->helper('utility_helper');
 $this->load->model('User');
 $this->load->model('useradmin/User_permission_loader_model');
-$this->load->model('Database_store_user');
+$this->load->model('data_store/Database_store_user');
 $data['css'] = $this->config->item('css');
 $data['js_fixed'] = $this->config->item('js_fixed');
 //$data['reportSelection'] = $this->config->item('reportSelection');

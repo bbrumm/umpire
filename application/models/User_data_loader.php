@@ -6,7 +6,7 @@ class User_data_loader extends CI_Model
         parent::__construct();
         $this->load->model("User");
         $this->load->model("useradmin/User_permission_loader_model");
-        $this->load->model("Database_store_matches");
+        $this->load->model("data_store/Database_store_matches");
     }
 
     public function getAllUsers(IData_store_user_admin $pDataStore) {

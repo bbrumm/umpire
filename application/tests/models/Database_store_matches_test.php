@@ -3,7 +3,7 @@ class Database_store_matches_test extends TestCase {
 
   public function setUp() {
     $this->resetInstance();
-    $this->CI->load->model('Database_store_matches');
+    $this->CI->load->model('data_store/Database_store_matches');
     $this->obj = $this->CI->Database_store_matches;
   }
 

@@ -14,7 +14,7 @@ class UpdateProfile extends CI_Controller {
         $this->load->model('User');
         $this->load->model('useradmin/User_maintenance_model');
         $this->load->model('useradmin/User_permission_loader_model');
-        $this->load->model('Database_store_user');
+        $this->load->model('data_store/Database_store_user');
         $this->load->library('Debug_library');
     }
 

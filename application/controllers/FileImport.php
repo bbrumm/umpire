@@ -17,9 +17,11 @@ class FileImport extends CI_Controller {
 	    $this->load->helper('url_helper');
 	    $this->load->model('Match_import');
 	    $this->load->model('Run_etl_stored_proc');
-            $this->load->model('File_loader_import');
+	    $this->load->model('File_loader_import');
 	    $this->load->model('Missing_data_updater');
-	    $this->load->model('Database_store_matches');
+	    $this->load->model('data_store/Database_store_matches');
+        $this->load->model('data_store/Database_store_missing_data');
+        $this->load->model('data_store/Database_store_reference');
 	    $this->load->helper('form');
 	}
 
@@ -66,24 +68,27 @@ class FileImport extends CI_Controller {
 		
 		return $fileImportStatus;
 	}
-	
+
+    //This function runs when the user presses "Update Reports" on the File Import page if missing data is found.
 	public function runETLProcess() {
-	    //This function runs when the user presses "Update Reports" on the File Import page if missing data is found.
 	    $databaseStore = new Database_store_matches();
-	    $this->Missing_data_updater->updateDataAndRunETLProcedure($databaseStore, $_POST);
+	    $databaseStoreMissingData = new Database_store_missing_data();
+	    $this->Missing_data_updater->updateCompetitionAndTeamData($databaseStoreMissingData, $_POST);
+        $this->Missing_data_updater->runETLProcedure($databaseStore, $_POST);
 	    $this->showUploadComplete();
 	}
 	
 	private function showUploadComplete() {
-       	    $dataStore = new Database_store_matches();
+	    $dataStore = new Database_store_matches();
+	    $dataStoreReference = new Database_store_reference();
 	    $data = array();
 	    $data['missing_data'] = $this->Match_import->findMissingDataOnImport();
-	    $data['possibleLeaguesForComp'] = $this->Missing_data_updater->loadPossibleLeaguesForComp($dataStore);
-	    $data['possibleClubsForTeam'] = $this->Missing_data_updater->loadPossibleClubsForTeam($dataStore);
-	    $data['possibleRegions'] = $this->Missing_data_updater->loadPossibleRegions($dataStore);
-	    $data['possibleAgeGroups'] = $this->Missing_data_updater->loadPossibleAgeGroups($dataStore);
-	    $data['possibleShortLeagueNames'] = $this->Missing_data_updater->loadPossibleShortLeagueNames($dataStore);
-	    $data['possibleDivisions'] = $this->Missing_data_updater->loadPossibleDivisions($dataStore);
+	    $data['possibleLeaguesForComp'] = $this->Missing_data_updater->loadPossibleLeaguesForComp($dataStoreReference);
+	    $data['possibleClubsForTeam'] = $this->Missing_data_updater->loadPossibleClubsForTeam($dataStoreReference);
+	    $data['possibleRegions'] = $this->Missing_data_updater->loadPossibleRegions($dataStoreReference);
+	    $data['possibleAgeGroups'] = $this->Missing_data_updater->loadPossibleAgeGroups($dataStoreReference);
+	    $data['possibleShortLeagueNames'] = $this->Missing_data_updater->loadPossibleShortLeagueNames($dataStoreReference);
+	    $data['possibleDivisions'] = $this->Missing_data_updater->loadPossibleDivisions($dataStoreReference);
 	    
 	    $this->load->view('templates/header', $data);
 	    $this->load->view('upload_success', $data);

@@ -4,7 +4,7 @@ class Database_store_user_admin_test extends TestCase {
     public function setUp() {
         $this->resetInstance();
         $this->CI->load->database();
-        $this->CI->load->model('Database_store_user_admin');
+        $this->CI->load->model('data_store/Database_store_user_admin');
         $this->obj = $this->CI->Database_store_user_admin;
     }
   

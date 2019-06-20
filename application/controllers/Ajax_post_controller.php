@@ -11,7 +11,8 @@ class Ajax_Post_Controller extends CI_Controller
         $this->load->helper('url_helper');
         $this->load->model('Umpireadminmodel');
         $this->load->model('Missing_data_updater');
-        $this->load->model('Database_store_umpire_admin');
+        $this->load->model('data_store/Database_store_umpire_admin');
+        $this->load->model('data_store/Database_store_missing_data');
         //include 'application/helpers/phpexcel/Classes/PHPExcel.php';
 
     }
@@ -35,7 +36,7 @@ class Ajax_Post_Controller extends CI_Controller
             'competition_id' => $this->input->post('competitionID'),
         );
         
-        $dataStore = new Database_store_matches();
+        $dataStore = new Database_store_missing_data();
         $missingDataUpdater = new Missing_data_updater();
         $missingDataUpdater->updateSingleCompetition($dataStore, $data);
     }

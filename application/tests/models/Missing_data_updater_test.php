@@ -10,7 +10,7 @@ class Missing_data_updater_test extends TestCase
 
 
     public function test_GetPossibleLeaguesForComp() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_reference();
         $leagesForComp = $this->obj->loadPossibleLeaguesForComp($arrayStore);
         $expectedSize = 10;
         $actualSize = count($leagesForComp);
@@ -21,7 +21,7 @@ class Missing_data_updater_test extends TestCase
     }
 
     public function test_GetClubsForTeam() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_reference();
         $clubs = $this->obj->loadPossibleClubsForTeam($arrayStore);
         $expectedSize = 4;
         $actualSize = count($clubs);
@@ -32,7 +32,7 @@ class Missing_data_updater_test extends TestCase
     }
 
     public function test_GetRegions() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_reference();
         $regions = $this->obj->loadPossibleRegions($arrayStore);
         $expectedSize = 3;
         $actualSize = count($regions);
@@ -43,7 +43,7 @@ class Missing_data_updater_test extends TestCase
     }
 
     public function test_GetAgeGroups() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_reference();
         $ages = $this->obj->loadPossibleAgeGroups($arrayStore);
         $expectedSize = 5;
         $actualSize = count($ages);
@@ -54,7 +54,7 @@ class Missing_data_updater_test extends TestCase
     }
 
     public function test_GetShortLeagueNames() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_reference();
         $leagues = $this->obj->loadPossibleShortLeagueNames($arrayStore);
         $expectedSize = 4;
         $actualSize = count($leagues);
@@ -65,7 +65,7 @@ class Missing_data_updater_test extends TestCase
     }
 
     public function test_GetDivisions() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_reference();
         $divisions = $this->obj->loadPossibleDivisions($arrayStore);
         $expectedSize = 3;
         $actualSize = count($divisions);
@@ -76,7 +76,7 @@ class Missing_data_updater_test extends TestCase
     }
 
     public function test_UpdateSingleCompetition() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
         $inputArray = array(
             "competition_id" => 2
         );
@@ -86,7 +86,7 @@ class Missing_data_updater_test extends TestCase
     }
 
     public function test_InsertNewLeague() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
         $inputArray = array(
             "short_league_name" => "abc",
             "age_group" => "Under 15"
@@ -98,7 +98,7 @@ class Missing_data_updater_test extends TestCase
 
 
     public function test_updateTeamAndClubData_OneTeamInsert() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
 
         $postArray = array(
             'competition' => array('Some new competition'),
@@ -114,14 +114,15 @@ class Missing_data_updater_test extends TestCase
         );
 
         $expected = true;
-        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+        $actual = $this->obj->updateCompetitionAndTeamData($arrayStore, $postArray);
 
         $this->assertEquals($expected, $actual);
 
     }
 
     public function test_updateTeamAndClubData_TwoTeamsInsert() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
+        //$arrayStoreMissingData = new Array_store_missing_data();
 
         $postArray = array(
             'competition' => array('Some new competition'),
@@ -137,15 +138,15 @@ class Missing_data_updater_test extends TestCase
         );
 
         $expected = true;
-        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+        $actual = $this->obj->updateCompetitionAndTeamData($arrayStore, $postArray);
+        //$this->obj->runETLProcedure($arrayStoreMissingData);
 
         $this->assertEquals($expected, $actual);
-
     }
 
 
     public function test_updateTeamAndClubData_OneTeamUpdate() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
 
         $postArray = array(
             'competition' => array('Some new competition'),
@@ -161,14 +162,14 @@ class Missing_data_updater_test extends TestCase
         );
 
         $expected = true;
-        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+        $actual = $this->obj->updateCompetitionAndTeamData($arrayStore, $postArray);
 
         $this->assertEquals($expected, $actual);
 
     }
 
     public function test_updateTeamAndClubData_TwoTeamsUpdate() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
 
         $postArray = array(
             'competition' => array('Some new competition'),
@@ -184,21 +185,21 @@ class Missing_data_updater_test extends TestCase
         );
 
         $expected = true;
-        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+        $actual = $this->obj->updateCompetitionAndTeamData($arrayStore, $postArray);
 
         $this->assertEquals($expected, $actual);
 
     }
 
     public function test_updateTeamAndClubData_MissingValues() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
 
         $postArray = array(
             'competition' => array('Some new competition'),
         );
 
         $expected = true;
-        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+        $actual = $this->obj->updateCompetitionAndTeamData($arrayStore, $postArray);
 
         $this->assertEquals($expected, $actual);
 
@@ -206,7 +207,7 @@ class Missing_data_updater_test extends TestCase
 
 
     public function test_updateTeamAndClubData_NoCompetition() {
-        $arrayStore = new Array_store_matches();
+        $arrayStore = new Array_store_missing_data();
 
         $postArray = array(
             'rdTeam' => array(
@@ -222,7 +223,7 @@ class Missing_data_updater_test extends TestCase
         );
 
         $expected = true;
-        $actual = $this->obj->updateDataAndRunETLProcedure($arrayStore, $postArray);
+        $actual = $this->obj->updateCompetitionAndTeamData($arrayStore, $postArray);
 
         $this->assertEquals($expected, $actual);
 

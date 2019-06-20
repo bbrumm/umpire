@@ -16,4 +16,17 @@ interface IData_store_reference {
 
     public function getPermissionSelectionArray();
 
+    public function loadPossibleLeaguesForComp();
+
+    public function loadPossibleClubsForTeam();
+
+    public function loadPossibleRegions();
+
+    public function loadPossibleAgeGroups();
+
+    public function loadPossibleShortLeagueNames();
+
+    //Missing_data_updater
+    public function loadPossibleDivisions();
+
 }

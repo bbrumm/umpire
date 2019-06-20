@@ -5,7 +5,7 @@ class Database_store_user_permission_test extends TestCase
     public function setUp() {
         $this->resetInstance();
         $this->CI->load->database();
-        $this->CI->load->model('Database_store_user_permission');
+        $this->CI->load->model('data_store/Database_store_user_permission');
         $this->obj = $this->CI->Database_store_user_permission;
     }
 

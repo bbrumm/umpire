@@ -12,7 +12,7 @@ class ResetPasswordEntry extends CI_Controller {
         $this->load->model('user');
         $this->load->model('useradmin/User_maintenance_model');
         $this->load->model('useradmin/User_authentication_model');
-        $this->load->model('Database_store_user');
+        $this->load->model('data_store/Database_store_user');
     }
 
     /*

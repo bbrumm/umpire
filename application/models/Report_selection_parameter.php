@@ -12,7 +12,7 @@ class Report_selection_parameter extends CI_Model
         parent::__construct();
         $this->load->model('Selectable_report_option');
         $this->load->library('Debug_library');
-        $this->load->model('Database_store_matches');
+        $this->load->model('data_store/Database_store_matches');
     }
 
     public static function createReportSelectionParameter($pParameterID, $pParameterName, 
