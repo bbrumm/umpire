@@ -52,7 +52,7 @@ class Missing_data_updater extends CI_Model {
         return true;
     }
 
-    public function runETLProcedure(IData_store_matches $pDataStoreMatches) {
+    public function runETLProcedure(IData_store_match_import $pDataStoreMatches) {
         $season = Season::createSeasonFromID($this->Match_import->findSeasonToUpdate($pDataStoreMatches));
         $importedFileID = $this->Match_import->findLatestImportedFile($pDataStoreMatches);
 

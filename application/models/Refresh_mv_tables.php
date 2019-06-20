@@ -32,8 +32,8 @@ class Refresh_mv_tables extends CI_Model {
     
     //TODO: A lot of this code is duplicated in model/Etl_procedure_steps.
     //Not the report tables, but the code to run queries and delete data
-    public function refreshMVTables(IData_store_matches $pDataStore, $season, $importedFileID) {
-        if (is_a($pDataStore, 'Array_store_matches')) {
+    public function refreshMVTables(IData_store_match_import $pDataStore, $season, $importedFileID) {
+        if (is_a($pDataStore, 'Array_store_match_import')) {
             //TODO remove this once I have refactored this code
         } else {
             $this->refreshMVTable1($season, $importedFileID);

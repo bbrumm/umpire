@@ -63,7 +63,7 @@ class FileImport extends CI_Controller {
 	private function importDataFromSpreadsheet() {
 		$data = array('upload_data' => $this->upload->data());
                 $fileLoader = new File_loader_import();
-                $dataStore = new Database_store_matches();
+                $dataStore = new Database_store_match_import();
                 $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
 		
 		return $fileImportStatus;

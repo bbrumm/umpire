@@ -140,11 +140,11 @@ class Match_import extends CI_Model
         $pFileLoader->runETLProcedure($pDataStore, $season, $importedFileID);
     }
 
-    public function findSeasonToUpdate(IData_store_matches $pDataStore) {
+    public function findSeasonToUpdate(IData_store_match_import $pDataStore) {
         return $pDataStore->findSeasonToUpdate();
     }
 
-    public function findLatestImportedFile($pDataStore) {
+    public function findLatestImportedFile(IData_store_match_import $pDataStore) {
         return $pDataStore->findLatestImportedFile();
     }
 

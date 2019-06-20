@@ -27,7 +27,7 @@ class Match_import_test extends TestCase
 
     public function test_ImportFile_ValidXLS() {
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_valid_xls.xls"
@@ -53,7 +53,7 @@ class Match_import_test extends TestCase
 
     public function test_ImportFile_ValidXLSX() {
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_valid_xlsx.xlsx"
@@ -80,7 +80,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_MissingColumnHeaderRow() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_missing_header_row.xlsx"
@@ -93,7 +93,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_BlankColumnHeaderRow() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_blank_header_row.xlsx"
@@ -106,7 +106,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_IncorrectColumnHeaderRow() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_incorrect_header_row.xlsx"
@@ -119,7 +119,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_MissingLastColumn() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_missing_last_col.xlsx"
@@ -132,7 +132,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_MissingSeveralColumns() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_missing_several_cols.xlsx"
@@ -144,7 +144,7 @@ class Match_import_test extends TestCase
 
     public function test_ImportFile_ExtraColumn() {
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_extra_column.xlsx"
@@ -171,7 +171,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_NoData() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_no_data.xlsx"
@@ -184,7 +184,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_NotExcel() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"license.txt"
@@ -197,7 +197,7 @@ class Match_import_test extends TestCase
     public function test_ImportFile_AnotherSheetSelected() {
         $this->expectException(Exception::class);
         $fileLoader = new File_loader_test();
-        $dataStore = new Array_store_matches();
+        $dataStore = new Array_store_match_import();
         $data = array (
             "upload_data"=>array(
                 "file_name"=>"test_another_sheet.xlsx"

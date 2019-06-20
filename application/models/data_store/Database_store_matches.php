@@ -17,7 +17,6 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     }
     
 
-
     /*
     private function getResultArrayFromQuery($queryString) {
         $query = $this->runQuery($queryString);
@@ -31,31 +30,6 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
     }
     */
 
-    //Match_import
-    public function findSeasonToUpdate() {
-        //echo "<pre>".print_r(debug_backtrace(2),true)."</pre>";
-
-        $queryString = "SELECT MAX(season.ID) AS season_id " .
-            "FROM season " .
-            "INNER JOIN match_import ON season.season_year = match_import.season;";
-        $query = $this->runQuery($queryString);
-        $resultArray = $query->result_array();
-        return $resultArray[0]['season_id'];
-    }
-    
-    public function findLatestImportedFile() {
-        $queryString = "SELECT MAX(imported_file_id) AS imported_file_id
-            FROM table_operations";
-        $query = $this->runQuery($queryString);
-        $resultArray = $query->result_array();
-        return $resultArray[0]['imported_file_id'];
-    }
-    
-    public function runETLProcedure($pSeason, $pImportedFileID) {
-        $etlSteps = new Etl_procedure_steps();
-        $etlSteps->runETLProcess($pSeason, $pImportedFileID);
-    }
-    
     public function loadSelectableReportOptions($pParameterID) {
         $queryString = "SELECT parameter_value_name, parameter_display_order " .
             "FROM report_selection_parameter_values " .
@@ -92,7 +66,8 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         $queryResultArray = $query->result_array();
 
         if (!isset($queryResultArray[0])) {
-            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for the report.<BR />Query:<BR />" . $queryForReport);
+            throw new Exception(
+                "Result Array is empty. This is probably due to the SQL query not returning any results for the report.<BR />Query:<BR />" . $queryForReport);
         }
         return $queryResultArray;
     }
@@ -107,7 +82,8 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         $queryResultArray = $query->result_array();
 
         if (!isset($queryResultArray[0])) {
-            throw new Exception("Result Array is empty. This is probably due to the SQL query not returning any results for the report.<BR />Query:<BR />" . $queryForReport);
+            throw new Exception(
+                "Result Array is empty. This is probably due to the SQL query not returning any results for the report.<BR />Query:<BR />" . $queryForReport);
         }
         return $queryResultArray;
     }

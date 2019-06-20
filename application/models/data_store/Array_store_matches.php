@@ -4,30 +4,9 @@ require_once 'IData_store_matches.php';
 class Array_store_matches extends CI_Model implements IData_store_matches
 {
 
-
     public function __construct() {
         $this->load->library('Array_library');
     }
-
-
-
-
-
-
-    public function findSeasonToUpdate() {
-        //TODO write code
-    }
-
-    public function findLatestImportedFile() {
-            //TODO write code
-    }
-
-    public function runETLProcedure($pSeason, $pImportedFileID) {
-        //TODO write code
-    }
-
-
-
 
     public function loadSelectableReportOptions($pParameterID) {
         $testData = array(
@@ -47,9 +26,7 @@ class Array_store_matches extends CI_Model implements IData_store_matches
 
         }
         return $selectableReportOptionArray;
-
     }
-
 
 
     public function loadReportData(Parent_report $separateReport, Report_instance $reportInstance) {
@@ -107,8 +84,5 @@ class Array_store_matches extends CI_Model implements IData_store_matches
         }
 
     }
-
-
-
 
 }
