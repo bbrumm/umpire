@@ -57,8 +57,9 @@ class ResetPasswordEntry extends CI_Controller {
         $userAuthModel = new User_authentication_model();
         $dbStore = new Database_store_user();
         //TODO: Change this function so I don't need to pass the POST values, assuming it's only called in one place
-        $passwordUpdated = $userAuthModel->updatePassword(
-            $dbStore, $_POST['username'], $_POST['password'], $_POST['confirmPassword']);
+        //$passwordUpdated = $userAuthModel->updatePassword(
+        //    $dbStore, $_POST['username'], $_POST['password'], $_POST['confirmPassword']);
+        $passwordUpdated =  $userAuthModel->updatePasswordFromPost($dbStore);
         if($passwordUpdated) {
             $this->showPasswordResetDonePage();
         } else {
