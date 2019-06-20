@@ -5,6 +5,9 @@
 */
 class Missing_data_updater extends CI_Model {
     
+    const RD_SELECTION_NEW = "new";
+    const RD_SELECTION_EXISTING = "existing";
+    
     public function __construct() {
         $this->load->database();
         $this->load->library('Debug_library');
@@ -39,8 +42,6 @@ class Missing_data_updater extends CI_Model {
     }
     
     public function updateDataAndRunETLProcedure(IData_store_matches $pDataStore, $pPostArray) {
-        //$this->debug_library->debugOutput("POST from updateDataAndRunETLProcedure", $pPostArray);
-        
         if (array_key_exists('competition', $pPostArray)) {
             $this->updateCompetitionTable($pDataStore, $pPostArray['competition']);
         }
@@ -84,7 +85,6 @@ class Missing_data_updater extends CI_Model {
     public function updateSingleCompetition(IData_store_matches $pDataStore, array $competitionData) {
         //Find league_id to use, based on parameters.
         //If there are more than one (sometimes there is two), it is because there are two competition names, so just pick the earliest one
-        //$leagueIDToUse = $this->findSingleLeagueIDFromParameters($competitionData);
         $leagueIDToUse = $pDataStore->findSingleLeagueIDFromParameters($competitionData);
         $pDataStore->updateSingleCompetition($leagueIDToUse, $competitionData);
         return $leagueIDToUse;
@@ -93,7 +93,6 @@ class Missing_data_updater extends CI_Model {
     public function insertNewLeague(IData_store_matches $pDataStore, array $competitionData) {
         //First, check if there is an age_group_division that exists, and insert one if it does not.
         $pDataStore->checkAndInsertAgeGroupDivision($competitionData);
-
         $insertedLeagueID = $pDataStore->insertNewLeague($competitionData);
         return $insertedLeagueID;
     }
@@ -101,13 +100,10 @@ class Missing_data_updater extends CI_Model {
     
     private function updateTeamAndClubTables(IData_store_matches $pDataStore, array $pPostData) {
         foreach ($pPostData['rdTeam'] as $teamID => $radioSelection) {
-            switch ($radioSelection) {
-                case 'new':
-                    $this->updateForNewClub($teamID, $pPostData);
-                    break;
-                case 'existing':
-                    $this->updateForExistingClub($teamID, $pPostData);
-                    break;
+            if ($radioSelection == self:RD_SELECTION_NEW) {
+                $this->updateForNewClub($teamID, $pPostData);
+            } elseif ($radioSelection == self:RD_SELECTION_EXISTING) {
+                $this->updateForExistingClub($teamID, $pPostData);
             }
         }
     }
