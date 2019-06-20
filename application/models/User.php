@@ -57,6 +57,15 @@ class User extends CI_Model
         return $obj;
     }
     
+    public static function createUserFromUserSubmittedData($pSubmittedData) {
+        $obj = new User();
+        $obj->setUsername($pSubmittedData['username']);
+        $obj->setFirstName($pSubmittedData['firstname']);
+        $obj->setLastName($pSubmittedData['lastname']);
+        $obj->setPassword(MD5($pSubmittedData['password']));
+        return $obj;
+    }
+    
     public static function createUserFromNameAndEmail($pUsername,
         $pFirstName, $pLastName, $pEmailAddress) {
         $obj = new User();
