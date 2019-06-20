@@ -14,9 +14,7 @@ class Useradminmodel extends CI_Model {
     
     public function addNewUser(IData_store_user_admin $pDataStore, $pSubmittedData) {
         if (strlen($pSubmittedData['password']) > 0) {
-            //TODO: Pass object instead of separate parameters
-            $newUser = User::createUserFromNameAndPW(
-                $pSubmittedData['username'], $pSubmittedData['firstname'], $pSubmittedData['lastname'], MD5($pSubmittedData['password']));
+            $newUser = User::createUserFromUserSubmittedData($pSubmittedData);
             $countOfMatchingUsers = $pDataStore->getCountOfMatchingUsers($newUser);
             if ($countOfMatchingUsers > 0) {
                 throw new Exception("Username already exists.");
