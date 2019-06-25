@@ -5,6 +5,7 @@ class Report_populator_model extends CI_Model {
 		$this->load->model('Report_instance');
 		$this->load->library('Array_library');
 		$this->load->model('Requested_report_model');
+        $this->load->model('data_store/Database_store_report_param');
 		$this->load->library('Debug_library');
 	}
 
