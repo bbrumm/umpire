@@ -14,6 +14,7 @@ class UserAdmin extends CI_Controller
         $this->load->model('Useradminmodel');
         $this->load->model('User_data_loader');
         $this->load->model('data_store/Database_store_user_admin');
+        $this->load->model('data_store/Database_store_user_permission');
         $this->load->model('data_store/Database_store_reference');
         $this->load->library('Debug_library');
         $this->load->library('Array_library');

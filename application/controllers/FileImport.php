@@ -22,6 +22,7 @@ class FileImport extends CI_Controller {
 	    $this->load->model('data_store/Database_store_matches');
         $this->load->model('data_store/Database_store_missing_data');
         $this->load->model('data_store/Database_store_reference');
+        $this->load->model('data_store/Database_store_match_import');
 	    $this->load->helper('form');
 	}
 
@@ -29,9 +30,9 @@ class FileImport extends CI_Controller {
 	    $this->setConfigForUpload();
             $uploadPassed = $this->uploadFileFromPost();
 	    if ( ! $uploadPassed) {
-		$this->displayUploadError();
+		    $this->displayUploadError();
 	    } else {
-		$fileImportStatus = $this->importDataFromSpreadsheet();
+		    $fileImportStatus = $this->importDataFromSpreadsheet();
                 if ($fileImportStatus) {
                     $this->showUploadComplete();
                 }
@@ -62,9 +63,9 @@ class FileImport extends CI_Controller {
 	
 	private function importDataFromSpreadsheet() {
 		$data = array('upload_data' => $this->upload->data());
-                $fileLoader = new File_loader_import();
-                $dataStore = new Database_store_match_import();
-                $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
+        $fileLoader = new File_loader_import();
+        $dataStore = new Database_store_match_import();
+        $fileImportStatus = $this->Match_import->fileImport($fileLoader, $dataStore, $data);
 		
 		return $fileImportStatus;
 	}
