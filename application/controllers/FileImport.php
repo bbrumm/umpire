@@ -72,7 +72,7 @@ class FileImport extends CI_Controller {
 
     //This function runs when the user presses "Update Reports" on the File Import page if missing data is found.
 	public function runETLProcess() {
-	    $databaseStore = new Database_store_matches();
+	    $databaseStore = new Database_store_match_import();
 	    $databaseStoreMissingData = new Database_store_missing_data();
 	    $this->Missing_data_updater->updateCompetitionAndTeamData($databaseStoreMissingData, $_POST);
         $this->Missing_data_updater->runETLProcedure($databaseStore, $_POST);
