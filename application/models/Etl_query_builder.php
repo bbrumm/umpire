@@ -150,7 +150,7 @@ FROM match_import
 INNER JOIN season ON match_import.season = season.season_year
 INNER JOIN competition_lookup ON (season.ID = competition_lookup.season_id) AND (match_import.competition_name = competition_lookup.competition_name)
 INNER JOIN league ON league.ID = competition_lookup.league_id
-ORDER BY match_import.Round, match_import.Date;";
+ORDER BY match_import.Round, STR_TO_DATE(match_import.date, '%d/%m/%Y');";
     }
 
     public function getInsertUmpireQuery() {
