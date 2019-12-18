@@ -1,5 +1,5 @@
 <?php
-require_once 'IData_store_user_admin.php';
+require_once 'IData_store_user_permission.php';
 /*
 * @property Object db
 * @property Object session
