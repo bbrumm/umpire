@@ -43,7 +43,7 @@ CREATE TABLE umpire_users (
 
 
 INSERT INTO umpire_users (id, user_name, user_email, user_password, first_name, last_name, activation_id, role_id, active)
-VALUES 
+VALUES
 (2,'bbrumm','brummthecar@gmail.com','2395e5df2a7cb538bbcfff229d69109c','Ben','Brumm','Fgo5cVCehLPbtJq',1,1),
 (3,'bbeveridge','jbbeveridge@bigpond.com','be07295bfc45fec5fb59b756bc8d811c','Brendan','Beveridge',NULL,2,1),
 (4,'jhillgrove','Jock@aflbarwon.com.au','609e966a95797e8c3c6b0884fec99d9c','Jason','Hillgrove',NULL,2,1),
@@ -66,7 +66,8 @@ VALUES
 (24, 'bbrummtest', 'brummthecar@gmail.com', MD5('test'), 'Ben', 'Brumm', 'odH07igcAaKqyxP', 2, 1),
 (25, 'bbtest2', 'None', '81dc9bdb52d04dc20036dbd8313ed055', 'bb1F', 'bb1L', 'D38wdVGvi4p5rzy', 3, 1),
 (31, 'adame', 'None', 'none', 'Adam', 'Edwick', NULL, 4, 1),
-(41, 'mdavison', 'None', 'TBC', 'Mark', 'Davison', NULL, 4, 1);
+(41, 'mdavison', 'None', 'TBC', 'Mark', 'Davison', NULL, 4, 1),
+(42, 'ljohnston', 'None', 'TBC', 'Leigh', 'Johnston', NULL, 4, 1);
 
 
 
@@ -144,7 +145,7 @@ CREATE TABLE user_permission_selection (
 );
 
 
-INSERT INTO user_permission_selection 
+INSERT INTO user_permission_selection
 VALUES (278,2,31),(279,3,31),(280,13,2),(281,13,6),(282,13,8),(283,13,9),(284,13,10),(285,13,11),(286,13,12),(287,13,13),(288,13,14),(289,13,15),(290,13,16),(291,13,18),(292,13,20),(293,13,21),
 (294,13,22),(295,13,23),(296,13,24),(297,13,25),(298,13,26),(299,13,28),(300,13,29),(301,13,30),(302,13,7),(303,13,17),(304,13,19),(305,13,32),(306,13,27),(307,14,2),(308,14,6),(309,14,7),(310,14,8),
 (311,14,9),(312,14,10),(313,14,11),(314,14,12),(315,14,13),(316,14,14),(317,14,15),(318,14,16),(319,14,17),(320,14,18),(321,14,19),(322,14,20),(323,14,21),(324,14,22),(325,14,23),(326,14,24),
@@ -194,7 +195,7 @@ VALUES (278,2,31),(279,3,31),(280,13,2),(281,13,6),(282,13,8),(283,13,9),(284,13
 
 
 
-INSERT INTO user_permission_selection 
+INSERT INTO user_permission_selection
 VALUES (200,4,31),(201,5,31),(202,7,31),(203,11,31),(204,12,31),(205,24,31),
 (100, 21, 29),
 (101, 21, 13),
@@ -256,6 +257,38 @@ INSERT INTO user_permission_selection (user_id, permission_selection_id) VALUES
 (31, 32),
 (31, 33),
 (31, 34);
+
+
+INSERT INTO user_permission_selection (user_id, permission_selection_id) VALUES
+(42, 2),
+(42, 6),
+(42, 7),
+(42, 8),
+(42, 9),
+(42, 10),
+(42, 11),
+(42, 12),
+(42, 13),
+(42, 14),
+(42, 15),
+(42, 16),
+(42, 17),
+(42, 18),
+(42, 19),
+(42, 20),
+(42, 21),
+(42, 22),
+(42, 23),
+(42, 24),
+(42, 25),
+(42, 26),
+(42, 27),
+(42, 28),
+(42, 29),
+(42, 30),
+(42, 32),
+(42, 33),
+(42, 34);
 
 
 
