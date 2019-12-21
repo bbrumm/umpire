@@ -45,7 +45,8 @@ class Report7 extends Parent_report implements IReport {
             "AND region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
             "AND umpire_type IN ('Field') ".
             ") AS sub ".
-            "ORDER BY league_sort_order, umpire_count;";
+            "GROUP BY short_league_name, umpire_count " .
+            "ORDER BY MIN(league_sort_order), umpire_count;";
         return $queryString;
     }
     

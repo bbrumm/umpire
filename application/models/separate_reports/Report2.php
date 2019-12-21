@@ -60,7 +60,8 @@ class Report2 extends Parent_report implements IReport {
                 "UNION ALL ".
 	            "SELECT 'Seniors', 1, 50, '2 Umpires' ".
             ") AS sub ".
-            "ORDER BY age_sort_order, league_sort_order;";
+            "GROUP BY age_group, short_league_name ".
+            "ORDER BY MIN(age_sort_order), MIN(league_sort_order);";
         
         return $queryString;
     }

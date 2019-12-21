@@ -1182,7 +1182,8 @@ ORDER BY id;";
             array('user_name'=>'rsteel', 'first_name'=>'Robert', 'last_name'=>'Steel', 'role_id'=>4, 'active'=>1),
             array('user_name'=>'bsmith', 'first_name'=>'Brad', 'last_name'=>'Smith', 'role_id'=>4, 'active'=>1),
             array('user_name'=>'adame', 'first_name'=>'Adam', 'last_name'=>'Edwick', 'role_id'=>4, 'active'=>1),
-            array('user_name'=>'mdavison', 'first_name'=>'Mark', 'last_name'=>'Davison', 'role_id'=>4, 'active'=>1)
+            array('user_name'=>'mdavison', 'first_name'=>'Mark', 'last_name'=>'Davison', 'role_id'=>4, 'active'=>1),
+            array('user_name'=>'ljohnston', 'first_name'=>'Leigh', 'last_name'=>'Johnston', 'role_id'=>4, 'active'=>1)
         );
         foreach ($expectedArray as $key=>$subArray) {
             $this->assertEquals($subArray['user_name'], $resultArray[$key]->user_name);

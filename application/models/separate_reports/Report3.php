@@ -62,7 +62,8 @@ class Report3 extends Parent_report implements IReport {
             	"('Seniors Boundary' , 'Seniors Goal', 'Reserves Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field') ".
             "AND age_group IN (". $pReportInstance->filterParameterAgeGroup->getFilterSQLValues() .") ".
             "AND region_name IN ('Total', ". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
-            "ORDER BY age_sort_order, umpire_type, short_league_name;";
+            "GROUP BY CONCAT('No ', age_group, ' ', umpire_type), short_league_name " .
+            "ORDER BY MIN(age_sort_order), CONCAT('No ', age_group, ' ', umpire_type), short_league_name;";
         return $queryString;
     }
 

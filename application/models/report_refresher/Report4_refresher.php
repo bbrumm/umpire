@@ -35,7 +35,7 @@ class Report4_refresher extends Report_table_refresher {
                 AND s.age_group = a.age_group
             )
             AND ti.date_year = ". $reportTableRefresher->getSeasonYear() ."
-            GROUP BY te.club_name, a.age_group, l.short_league_name
+            GROUP BY te.club_name, a.age_group, l.short_league_name, a.sort_order, l.league_sort_order, ti.date_year, l.region_name
             UNION ALL
             SELECT
             te.club_name,
@@ -60,7 +60,7 @@ class Report4_refresher extends Report_table_refresher {
                 AND s.age_group = a.age_group
             )
             AND ti.date_year = ". $reportTableRefresher->getSeasonYear() ."
-            GROUP BY te.club_name, a.age_group, l.short_league_name
+            GROUP BY te.club_name, a.age_group, l.short_league_name, a.sort_order, l.league_sort_order, ti.date_year, l.region_name
             UNION ALL
             SELECT
             te.club_name,
@@ -85,7 +85,7 @@ class Report4_refresher extends Report_table_refresher {
                 AND s.age_group = a.age_group
             )
             AND ti.date_year = ". $reportTableRefresher->getSeasonYear() ."
-            GROUP BY te.club_name, a.age_group, l.short_league_name;";
+            GROUP BY te.club_name, a.age_group, l.short_league_name, a.sort_order, l.league_sort_order, ti.date_year, l.region_name;";
         $reportTableRefresher->setDataRefreshQuery($queryString);
 
         return $reportTableRefresher;

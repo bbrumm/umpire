@@ -1,6 +1,20 @@
 <?php
-class Report_test extends TestCase
-{
+class Report_test extends TestCase {
+
+    //TODO: Add these to some kind of global const file
+    const UMPIRE_FIELD = "Field";
+    const UMPIRE_BOUNDARY = "Boundary";
+    const UMPIRE_GOAL = "Goal";
+
+    const UMPIRE_AGE_SENIORS = "Seniors";
+
+    const UMPIRE_LEAGUE_GFL = "GFL";
+
+    const UMPIRE_REGION_GEELONG = "Geelong";
+
+    const UMPIRE_SEASON_2018 = 2018;
+
+
     public function setUp() {
         $this->resetInstance();
         $_POST = array();
@@ -457,6 +471,47 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
         } finally {
             $output = ob_get_clean();
         }
+    }
+
+    //TODO: Move these to a separate file for testing report column queries
+    private function createReportInstance($pUmpireType, $pAge, $pShortLeague, $pRegion, $pSeasonYear) {
+        $reportInstance = new Report_instance();
+        $inputFilterUmpire = array($pUmpireType);
+        $inputFilterAge = array($pAge);
+        $inputFilterShortLeague = array($pShortLeague);
+        $inputFilterRegion = array($pRegion);
+        $inputSeasonYear = $pSeasonYear;
+        $inputPDFMode = false;
+        $inputRegion = false;
+        $reportInstance->filterParameterUmpireType->createFilterParameter($inputFilterUmpire, $inputPDFMode, $inputRegion);
+        $reportInstance->filterParameterAgeGroup->createFilterParameter($inputFilterAge, $inputPDFMode, $inputRegion);
+        $reportInstance->filterParameterLeague->createFilterParameter($inputFilterShortLeague, $inputPDFMode, $inputRegion);
+        $reportInstance->filterParameterRegion->createFilterParameter($inputFilterRegion, $inputPDFMode, $inputRegion);
+        $reportInstance->requestedReport->setSeason($inputSeasonYear);
+        return $reportInstance;
+    }
+
+    public function test_Report2ColumnQuery_SingleParams() {
+        $reportInstance = $this->createReportInstance(
+            self::UMPIRE_FIELD, self::UMPIRE_AGE_SENIORS, self::UMPIRE_LEAGUE_GFL,
+            self::UMPIRE_REGION_GEELONG, self::UMPIRE_SEASON_2018);
+
+        $currentReport = $this->CI->Report_factory->createReport(2);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>'Total', 'short_league_name'=>'')
+        );
+
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+
     }
 
 }

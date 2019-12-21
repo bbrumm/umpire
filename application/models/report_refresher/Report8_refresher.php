@@ -56,7 +56,7 @@ class Report8_refresher extends Report_table_refresher {
                 INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
                 INNER JOIN dw_dim_umpire u ON m.umpire_key = u.umpire_key
                 WHERE ti.date_year = ". $pSeasonYear ."
-                GROUP BY ti.date_year, u.first_name, u.last_name
+                GROUP BY ti.date_year, u.last_first_name, u.first_name, u.last_name
                 UNION ALL
                 SELECT DISTINCT
                 'Games Prior',

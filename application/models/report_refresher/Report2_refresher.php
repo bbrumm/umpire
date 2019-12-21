@@ -30,7 +30,7 @@ class Report2_refresher extends Report_table_refresher {
             INNER JOIN dw_dim_age_group a ON m.age_group_key = a.age_group_key
             INNER JOIN dw_dim_time ti ON m.time_key = ti.time_key
             WHERE ti.date_year = ". $reportTableRefresher->getSeasonYear() ."
-            GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.region_name, u.umpire_type, ti.date_year
+            GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.league_sort_order, l.region_name, u.umpire_type, ti.date_year
             UNION ALL
             SELECT
             u.last_first_name,
@@ -64,7 +64,7 @@ class Report2_refresher extends Report_table_refresher {
             WHERE u.umpire_type = 'Field'
             AND a.age_group = 'Seniors'
             AND ti.date_year = ". $reportTableRefresher->getSeasonYear() ."
-            GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.region_name, u.umpire_type, ti.date_year;";
+            GROUP BY u.last_first_name, l.short_league_name, a.age_group, a.sort_order, l.league_sort_order, l.region_name, u.umpire_type, ti.date_year;";
         $reportTableRefresher->setDataRefreshQuery($queryString);
 
         return $reportTableRefresher;

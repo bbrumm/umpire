@@ -28,8 +28,15 @@ class User_permission_loader_model extends CI_Model {
 
     private function findPermissionInArray(User $pUser, $permissionName, $selectionName) {
         $permissionArray = $pUser->getPermissionArray();
+
+        if (is_null($permissionArray)) {
+            throw new Exception("Default user permissions for this user do not exist. Please contact support.");
+        }
+
         $permissionFound = false;
         $permissionArrayCount = count($permissionArray);
+
+
         for($i=0; $i<$permissionArrayCount; $i++) {
             $userRolePermission = $permissionArray[$i];
             if ($this->permissionAndSelectionNamesMatchProvided($userRolePermission, $permissionName, $selectionName)) {
