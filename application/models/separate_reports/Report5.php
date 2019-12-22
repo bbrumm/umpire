@@ -3,27 +3,15 @@ require_once 'IReport.php';
 require_once 'Parent_report.php';
 
 class Report5 extends Parent_report implements IReport {
-
-    public function __construct() {
-        $this->load->helper('file');
-    }
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $sqlFilename = "report5_data.sql";
-        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
-        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceLeagueInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceSeasonYearInQueryString($sqlQuery, $pReportInstance);
-
-        return $sqlQuery;
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
         $sqlFilename = "report5_columns.sql";
-        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
-        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
-
-        return $sqlQuery;
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
     
     /*

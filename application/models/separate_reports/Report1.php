@@ -3,8 +3,6 @@ require_once 'IReport.php';
 require_once 'Parent_report.php';
 
 class Report1 extends Parent_report implements IReport {
-
-    //private $debugLibrary;
     
     public function __construct() {
         $this->load->library('Debug_library');
@@ -12,26 +10,12 @@ class Report1 extends Parent_report implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $sqlFilename = "report1_data.sql";
-        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
-        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceLeagueInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceAgeGroupInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceUmpireTypeInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceSeasonYearInQueryString($sqlQuery, $pReportInstance);
-
-        return $sqlQuery;
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
         $sqlFilename = "report1_columns.sql";
-        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
-        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceLeagueInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceAgeGroupInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceUmpireTypeInQueryString($sqlQuery, $pReportInstance);
-        $sqlQuery = $this->replaceSeasonYearInQueryString($sqlQuery, $pReportInstance);
-
-        return $sqlQuery;
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
 
     /*
