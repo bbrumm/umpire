@@ -35,6 +35,7 @@ class Report1 extends Parent_report implements IReport {
            "AND short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .") ".
            "AND region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
            "AND umpire_type IN (". $pReportInstance->filterParameterUmpireType->getFilterSQLValues() .") ".
+           "AND season_year = ". $pReportInstance->requestedReport->getSeason() ." ".
            "ORDER BY short_league_name, club_name;";
         //echo $queryString;
         return $queryString;
