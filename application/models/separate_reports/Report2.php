@@ -43,6 +43,10 @@ class Report2 extends Parent_report implements IReport {
 
     //TODO: Remove the Seniors and 2 Umpires if the Seniors are not selected.
     public function getReportColumnQuery(Report_instance $pReportInstance) {
+        //TODO: Get this query working with an external file
+       // $sqlFilename = "report2_columns.sql";
+
+
         $queryString = "SELECT DISTINCT age_group, short_league_name ".
             "FROM ( ".
                 "SELECT ".
