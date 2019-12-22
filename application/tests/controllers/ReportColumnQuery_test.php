@@ -39,6 +39,7 @@ class ReportColumnQuery_test extends TestCase {
     const UMPIRE_REGION_COLAC = "Colac";
 
     const UMPIRE_SPECIAL_TWOUMPIRES = "2 Umpires";
+    const UMPIRE_SPECIAL_THREEUMPIRES = "3 Umpires";
     const UMPIRE_TOTAL = "Total";
     const UMPIRE_SUBTOTAL_GAMES = "Games";
     const UMPIRE_SUBTOTAL_TOTAL = "Total";
@@ -515,4 +516,98 @@ FROM backup_report_07_2018;";
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
     }
+
+    public function test_Report7ColumnQuery_Geelong_Seniors() {
+        $reportInstance = $this->createReportInstance(
+            array(self::UMPIRE_FIELD), array(self::UMPIRE_AGE_SENIORS), array(self::UMPIRE_LEAGUE_BFL),
+            array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(7);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('short_league_name'=>self::UMPIRE_LEAGUE_BFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_BFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GDFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GDFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_WOMEN, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_WOMEN, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES)
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report7ColumnQuery_Geelong_Juniors() {
+        $reportInstance = $this->createReportInstance(
+            array(self::UMPIRE_FIELD), array(self::UMPIRE_AGE_U17), array(self::UMPIRE_LEAGUE_GJFL),
+            array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(7);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GJFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GJFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES)
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report7ColumnQuery_Geelong_SeniorsJuniors() {
+        $reportInstance = $this->createReportInstance(
+            array(self::UMPIRE_FIELD),
+            array(self::UMPIRE_AGE_SENIORS, self::UMPIRE_AGE_RESERVES, self::UMPIRE_AGE_U17),
+            array(self::UMPIRE_LEAGUE_GJFL, self::UMPIRE_LEAGUE_GFL),
+            array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(7);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('short_league_name'=>self::UMPIRE_LEAGUE_BFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_BFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GDFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GDFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GJFL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GJFL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_WOMEN, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_WOMEN, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES)
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report7ColumnQuery_Colac_Seniors() {
+        $reportInstance = $this->createReportInstance(
+            array(self::UMPIRE_FIELD), array(self::UMPIRE_AGE_SENIORS), array(self::UMPIRE_LEAGUE_CDFNL),
+            array(self::UMPIRE_REGION_COLAC));
+
+        $currentReport = $this->CI->Report_factory->createReport(7);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('short_league_name'=>self::UMPIRE_LEAGUE_CDFNL, 'umpire_count'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_CDFNL, 'umpire_count'=>self::UMPIRE_SPECIAL_THREEUMPIRES)
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    
 }
