@@ -609,5 +609,28 @@ FROM backup_report_07_2018;";
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
     }
 
-    
+    public function test_Report8ColumnQuery() {
+        $reportInstance = $this->createReportInstanceLimitedSelection(array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(8);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('season_year'=>'Games Prior'),
+            array('season_year'=>'2015'),
+            array('season_year'=>'2016'),
+            array('season_year'=>'2017'),
+            array('season_year'=>'2018'),
+            array('season_year'=>'2019'),
+            array('season_year'=>'Total Geelong'),
+            array('season_year'=>'Games Other Leagues'),
+            array('season_year'=>'Total Overall')
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
 }

@@ -20,20 +20,12 @@ class Report5 extends Parent_report implements IReport {
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT DISTINCT ".
-            "l.short_league_name, ".
-            "sub.subtotal ".
-            "FROM dw_dim_league l ".
-            "CROSS JOIN ( ".
-                "SELECT 'Games' AS subtotal ".
-                "UNION ".
-                "SELECT 'Total' ".
-                "UNION ".
-                "SELECT 'Pct' ".
-            ") AS sub ".
-            "WHERE l.region_name = ". $pReportInstance->filterParameterRegion->getFilterSQLValues() ." " .
-            "UNION ALL ".
-            "SELECT 'All', 'Total';";
+        $queryString = "SELECT ".
+            "short_league_name, ".
+            "subtotal ".
+            "FROM report_5_columns ".
+            "WHERE region_name = ". $pReportInstance->filterParameterRegion->getFilterSQLValues() ." ".
+            "ORDER BY sort_order ASC;";
         return $queryString;
     }
     

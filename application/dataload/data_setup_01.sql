@@ -615,5 +615,35 @@ CREATE TABLE match_played (
 INSERT INTO match_played (id, round_id, ground_id, match_time, home_team_id, away_team_id, match_staging_id)
 VALUES (1,1,1,'2015-04-03 14:10:00',1,1,1);
 
+CREATE TABLE report_5_columns (
+	short_league_name VARCHAR(50),
+	subtotal VARCHAR(50),
+	region_name VARCHAR(50),
+    sort_order INT(11)
+);
+
+
+INSERT INTO report_5_columns (short_league_name, subtotal, region_name, sort_order) VALUES
+('BFL', 'Games', 'Geelong', 10),
+('BFL', 'Total', 'Geelong', 20),
+('BFL', 'Pct', 'Geelong', 30),
+('GDFL', 'Games', 'Geelong', 40),
+('GDFL', 'Total', 'Geelong', 50),
+('GDFL', 'Pct', 'Geelong', 60),
+('GFL', 'Games', 'Geelong', 70),
+('GFL', 'Total', 'Geelong', 80),
+('GFL', 'Pct', 'Geelong', 90),
+('GJFL', 'Games', 'Geelong', 100),
+('GJFL', 'Total', 'Geelong', 110),
+('GJFL', 'Pct', 'Geelong', 120),
+('Women', 'Games', 'Geelong', 130),
+('Women', 'Total', 'Geelong', 140),
+('Women', 'Pct', 'Geelong', 150),
+('All', 'Total', 'Geelong', 160),
+('CDFNL', 'Games', 'Colac', 500),
+('CDFNL', 'Total', 'Colac', 510),
+('CDFNL', 'Pct', 'Colac', 520),
+('All', 'Total', 'Colac', 530);
+
 
 COMMIT;
