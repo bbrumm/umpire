@@ -3,6 +3,10 @@ require_once 'IReport.php';
 require_once 'Parent_report.php';
 
 class Report5 extends Parent_report implements IReport {
+
+    public function __construct() {
+        $this->load->helper('file');
+    }
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
         $queryString = "SELECT umpire_type, ".
@@ -20,13 +24,13 @@ class Report5 extends Parent_report implements IReport {
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT ".
-            "short_league_name, ".
-            "subtotal ".
-            "FROM report_5_columns ".
-            "WHERE region_name = ". $pReportInstance->filterParameterRegion->getFilterSQLValues() ." ".
-            "ORDER BY sort_order ASC;";
-        return $queryString;
+        $sqlFilename = "report5_columns.sql";
+        $sqlFilePath = "application/models/separate_reports/" . $sqlFilename;
+
+        $sqlQuery = file_get_contents($sqlFilePath);
+        $sqlQuery = str_replace(":region", $pReportInstance->filterParameterRegion->getFilterSQLValues(), $sqlQuery);
+
+        return $sqlQuery;
     }
     
     /*
