@@ -9,26 +9,19 @@ class Report5 extends Parent_report implements IReport {
     }
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT umpire_type, ".
-            "age_group, ".
-            "short_league_name, ".
-            "match_no_ump, ".
-            "total_match_count, ".
-            "match_pct ".
-            "FROM dw_mv_report_05 ".
-            "WHERE short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .") ".
-            "AND region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
-            "AND season_year = ". $pReportInstance->requestedReport->getSeason() ." ".
-            "ORDER BY umpire_type, age_sort_order, league_sort_order;";
-        return $queryString;
+        $sqlFilename = "report5_data.sql";
+        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
+        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceLeagueInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceSeasonYearInQueryString($sqlQuery, $pReportInstance);
+
+        return $sqlQuery;
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
         $sqlFilename = "report5_columns.sql";
-        $sqlFilePath = "application/models/separate_reports/" . $sqlFilename;
-
-        $sqlQuery = file_get_contents($sqlFilePath);
-        $sqlQuery = str_replace(":region", $pReportInstance->filterParameterRegion->getFilterSQLValues(), $sqlQuery);
+        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
+        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
 
         return $sqlQuery;
     }

@@ -649,3 +649,10 @@ define("QRY_MV08_DIFF", "SELECT
 	AND l.last_name = r.last_name
 	AND l.first_name = r.first_name
 	WHERE l.match_count <> r.match_count;");
+
+/*
+ * Constants for external SQL files
+ *
+ */
+
+define ("SQL_REPORT_FILE_PATH", "application/models/separate_reports/");

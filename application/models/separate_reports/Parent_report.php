@@ -8,6 +8,19 @@ class Parent_report extends CI_Model {
     }
 
     public function getReportDataQuery(Report_instance $pReportInstance) {}
+
+    public function replaceRegionInQueryString($sqlQuery, $pReportInstance) {
+        return str_replace(":pRegion", $pReportInstance->filterParameterRegion->getFilterSQLValues(), $sqlQuery);
+    }
+
+    public function replaceLeagueInQueryString($sqlQuery, $pReportInstance) {
+        return str_replace(":pLeague", $pReportInstance->filterParameterLeague->getFilterSQLValues(), $sqlQuery);
+    }
+
+    public function replaceSeasonYearInQueryString($sqlQuery, $pReportInstance) {
+        return str_replace(":pSeasonYear", $pReportInstance->requestedReport->getSeason(), $sqlQuery);
+    }
+
 	
 
     /* Explanation:
