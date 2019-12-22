@@ -40,6 +40,10 @@ class ReportColumnQuery_test extends TestCase {
 
     const UMPIRE_SPECIAL_TWOUMPIRES = "2 Umpires";
     const UMPIRE_TOTAL = "Total";
+    const UMPIRE_SUBTOTAL_GAMES = "Games";
+    const UMPIRE_SUBTOTAL_TOTAL = "Total";
+    const UMPIRE_SUBTOTAL_PCT = "Pct";
+    const UMPIRE_SUBTOTAL_ALL = "All";
 
     const UMPIRE_SEASON_2018 = 2018;
 
@@ -512,6 +516,56 @@ FROM backup_report_07_2018;";
             array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
             array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_UNDER_145, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
             array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U13, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report5ColumnQuery_Geelong() {
+        $reportInstance = $this->createReportInstanceLimitedSelection(array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(5);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('short_league_name'=>self::UMPIRE_LEAGUE_BFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_GAMES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_BFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_BFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_PCT),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GDFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_GAMES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GDFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GDFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_PCT),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_GAMES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_PCT),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GJFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_GAMES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GJFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_GJFL, 'subtotal'=>self::UMPIRE_SUBTOTAL_PCT),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_WOMEN, 'subtotal'=>self::UMPIRE_SUBTOTAL_GAMES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_WOMEN, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_WOMEN, 'subtotal'=>self::UMPIRE_SUBTOTAL_PCT),
+            array('short_league_name'=>self::UMPIRE_SUBTOTAL_ALL, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL)
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report5ColumnQuery_Colac() {
+        $reportInstance = $this->createReportInstanceLimitedSelection(array(self::UMPIRE_REGION_COLAC));
+
+        $currentReport = $this->CI->Report_factory->createReport(5);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('short_league_name'=>self::UMPIRE_LEAGUE_CDFNL, 'subtotal'=>self::UMPIRE_SUBTOTAL_GAMES),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_CDFNL, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL),
+            array('short_league_name'=>self::UMPIRE_LEAGUE_CDFNL, 'subtotal'=>self::UMPIRE_SUBTOTAL_PCT),
+            array('short_league_name'=>self::UMPIRE_SUBTOTAL_ALL, 'subtotal'=>self::UMPIRE_SUBTOTAL_TOTAL)
         );
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);

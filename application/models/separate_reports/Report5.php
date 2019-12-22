@@ -31,7 +31,7 @@ class Report5 extends Parent_report implements IReport {
                 "UNION ".
                 "SELECT 'Pct' ".
             ") AS sub ".
-            "WHERE l.short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .") ".
+            "WHERE l.region_name = ". $pReportInstance->filterParameterRegion->getFilterSQLValues() ." " .
             "UNION ALL ".
             "SELECT 'All', 'Total';";
         return $queryString;
