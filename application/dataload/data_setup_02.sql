@@ -155,7 +155,7 @@ CREATE TABLE report_column_display_order (
 );
 
 
-INSERT INTO report_column_display_order VALUES (8,'Games Prior',10),(8,'2015',20),(8,'2016',30),(8,'2017',40),(8,'2018',50),(8,'Total Geelong',60),(8,'Games Other Leagues',70),(8,'Total Overall',80);
+INSERT INTO report_column_display_order VALUES (8,'Games Prior',10),(8,'2015',20),(8,'2016',30),(8,'2017',40),(8,'2018',50),(8,'Total Geelong',60),(8,'Games Other Leagues',70),(8,'Total Overall',80),(8, 2019, 55);
 
 
 CREATE TABLE staging_all_ump_age_league (
