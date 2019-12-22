@@ -10,9 +10,11 @@ class ReportColumnQuery_test extends TestCase {
     const UMPIRE_AGE_SENIORS = "Seniors";
     const UMPIRE_AGE_RESERVES = "Reserves";
     const UMPIRE_AGE_COLTS = "Colts";
+    const UMPIRE_AGE_U15 = "Under 15";
 
     const UMPIRE_LEAGUE_GFL = "GFL";
     const UMPIRE_LEAGUE_GDFL = "GDFL";
+    const UMPIRE_LEAGUE_GJFL = "GJFL";
     const UMPIRE_LEAGUE_BFL = "BFL";
     const UMPIRE_LEAGUE_CDFNL = "CDFNL";
 
@@ -125,22 +127,21 @@ FROM backup_report_07_2018;";
 
 
     //TODO: Move these to a separate file for testing report column queries
-    private function createReportInstance($pArrayUmpireType, $pArrayAge, $pArrayShortLeague, $pArrayRegion, $pSeasonYear) {
+    private function createReportInstance($pArrayUmpireType, $pArrayAge, $pArrayShortLeague, $pArrayRegion) {
         $reportInstance = new Report_instance();
         $inputPDFMode = false;
-        $inputRegion = false;
         $reportInstance->filterParameterUmpireType->createFilterParameter($pArrayUmpireType, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterAgeGroup->createFilterParameter($pArrayAge, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterLeague->createFilterParameter($pArrayShortLeague, $inputPDFMode, $inputRegion);
         $reportInstance->filterParameterRegion->createFilterParameter($pArrayRegion, $inputPDFMode, $inputRegion);
-        $reportInstance->requestedReport->setSeason($pSeasonYear);
+        $reportInstance->requestedReport->setSeason(self::UMPIRE_SEASON_2018);
         return $reportInstance;
     }
 
     public function test_Report2ColumnQuery_SingleParams() {
         $reportInstance = $this->createReportInstance(
             array(self::UMPIRE_FIELD), array(self::UMPIRE_AGE_SENIORS), array(self::UMPIRE_LEAGUE_GFL),
-            array(self::UMPIRE_REGION_GEELONG), self::UMPIRE_SEASON_2018);
+            array(self::UMPIRE_REGION_GEELONG));
 
         $currentReport = $this->CI->Report_factory->createReport(2);
 
@@ -160,7 +161,7 @@ FROM backup_report_07_2018;";
     public function test_Report2ColumnQuery_SingleParams_V2() {
         $reportInstance = $this->createReportInstance(
             array(self::UMPIRE_BOUNDARY), array(self::UMPIRE_AGE_SENIORS), array(self::UMPIRE_LEAGUE_GFL),
-            array(self::UMPIRE_REGION_GEELONG), self::UMPIRE_SEASON_2018);
+            array(self::UMPIRE_REGION_GEELONG));
 
         $currentReport = $this->CI->Report_factory->createReport(2);
 
@@ -180,7 +181,7 @@ FROM backup_report_07_2018;";
     public function test_Report2ColumnQuery_SingleParams_V3() {
         $reportInstance = $this->createReportInstance(
             array(self::UMPIRE_BOUNDARY), array(self::UMPIRE_AGE_RESERVES), array(self::UMPIRE_LEAGUE_BFL),
-            array(self::UMPIRE_REGION_GEELONG), self::UMPIRE_SEASON_2018);
+            array(self::UMPIRE_REGION_GEELONG));
 
         $currentReport = $this->CI->Report_factory->createReport(2);
 
@@ -191,6 +192,82 @@ FROM backup_report_07_2018;";
         $resultArrayExpected = array(
             array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
             array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('age_group'=>'Total', 'short_league_name'=>'')
+        );
+        //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
+        //Fix the bug in the query in Report2.getReportColumnQuery.
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report2ColumnQuery_SingleParams_V4() {
+        $reportInstance = $this->createReportInstance(
+            array(self::UMPIRE_FIELD), array(self::UMPIRE_AGE_U15), array(self::UMPIRE_LEAGUE_GJFL),
+            array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(2);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('age_group'=>'Total', 'short_league_name'=>'')
+        );
+        //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
+        //Fix the bug in the query in Report2.getReportColumnQuery.
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report2ColumnQuery_MultipleParams() {
+        $reportInstance = $this->createReportInstance(
+            array(self::UMPIRE_FIELD, self::UMPIRE_BOUNDARY),
+            array(self::UMPIRE_AGE_SENIORS, self::UMPIRE_AGE_RESERVES),
+            array(self::UMPIRE_LEAGUE_GFL),
+            array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(2);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
+            array('age_group'=>'Total', 'short_league_name'=>'')
+        );
+        //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
+        //Fix the bug in the query in Report2.getReportColumnQuery.
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report2ColumnQuery_MultipleParams_V2() {
+        $reportInstance = $this->createReportInstance(
+            array(self::UMPIRE_FIELD, self::UMPIRE_BOUNDARY, self::UMPIRE_GOAL),
+            array(self::UMPIRE_AGE_SENIORS, self::UMPIRE_AGE_RESERVES),
+            array(self::UMPIRE_LEAGUE_GFL, self::UMPIRE_LEAGUE_BFL, self::UMPIRE_LEAGUE_GDFL),
+            array(self::UMPIRE_REGION_GEELONG));
+
+        $currentReport = $this->CI->Report_factory->createReport(2);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
+            array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
             array('age_group'=>'Total', 'short_league_name'=>'')
         );
         //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
