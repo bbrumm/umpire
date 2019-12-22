@@ -10,6 +10,7 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 application/import/*
+!application/import/test_for_travis.txt
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
