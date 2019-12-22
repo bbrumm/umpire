@@ -11,34 +11,27 @@ class Report1 extends Parent_report implements IReport {
     }
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT ".
-            "last_first_name, ".
-            "short_league_name, ".
-            "club_name, ".
-            "age_group, ".
-            "SUM(match_count) AS match_count ".
-            "FROM dw_mv_report_01 ".
-            "WHERE age_group IN (". $pReportInstance->filterParameterAgeGroup->getFilterSQLValues() .") ".
-            "AND short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .") ".
-            "AND region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
-            "AND umpire_type IN (". $pReportInstance->filterParameterUmpireType->getFilterSQLValues() .") ".
-            "AND season_year = ". $pReportInstance->requestedReport->getSeason() ." ".
-            "GROUP BY last_first_name, short_league_name, club_name ".
-            "ORDER BY last_first_name, short_league_name, club_name;";
-        return $queryString;
+        $sqlFilename = "report1_data.sql";
+        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
+        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceLeagueInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceAgeGroupInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceUmpireTypeInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceSeasonYearInQueryString($sqlQuery, $pReportInstance);
+
+        return $sqlQuery;
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT DISTINCT short_league_name, club_name ".
-           "FROM dw_mv_report_01 ".
-           "WHERE age_group IN (". $pReportInstance->filterParameterAgeGroup->getFilterSQLValues() .") ".
-           "AND short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .") ".
-           "AND region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
-           "AND umpire_type IN (". $pReportInstance->filterParameterUmpireType->getFilterSQLValues() .") ".
-           "AND season_year = ". $pReportInstance->requestedReport->getSeason() ." ".
-           "ORDER BY short_league_name, club_name;";
-        //echo $queryString;
-        return $queryString;
+        $sqlFilename = "report1_columns.sql";
+        $sqlQuery = file_get_contents(SQL_REPORT_FILE_PATH . $sqlFilename);
+        $sqlQuery = $this->replaceRegionInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceLeagueInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceAgeGroupInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceUmpireTypeInQueryString($sqlQuery, $pReportInstance);
+        $sqlQuery = $this->replaceSeasonYearInQueryString($sqlQuery, $pReportInstance);
+
+        return $sqlQuery;
     }
 
     /*

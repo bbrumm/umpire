@@ -21,6 +21,14 @@ class Parent_report extends CI_Model {
         return str_replace(":pSeasonYear", $pReportInstance->requestedReport->getSeason(), $sqlQuery);
     }
 
+    public function replaceAgeGroupInQueryString($sqlQuery, $pReportInstance) {
+        return str_replace(":pAgeGroup", $pReportInstance->filterParameterAgeGroup->getFilterSQLValues(), $sqlQuery);
+    }
+
+    public function replaceUmpireTypeInQueryString($sqlQuery, $pReportInstance) {
+        return str_replace(":pUmpireType", $pReportInstance->filterParameterUmpireType->getFilterSQLValues(), $sqlQuery);
+    }
+
 	
 
     /* Explanation:
