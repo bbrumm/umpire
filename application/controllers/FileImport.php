@@ -28,14 +28,14 @@ class FileImport extends CI_Controller {
 
 	function do_upload() {
 	    $this->setConfigForUpload();
-            $uploadPassed = $this->uploadFileFromPost();
+	    $uploadPassed = $this->uploadFileFromPost();
 	    if ( ! $uploadPassed) {
 		    $this->displayUploadError();
 	    } else {
 		    $fileImportStatus = $this->importDataFromSpreadsheet();
-                if ($fileImportStatus) {
-                    $this->showUploadComplete();
-                }
+            if ($fileImportStatus) {
+                $this->showUploadComplete();
+            }
 	    }
 	}
 	
