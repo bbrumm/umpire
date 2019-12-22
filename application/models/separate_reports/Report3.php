@@ -60,7 +60,7 @@ class Report3 extends Parent_report implements IReport {
             ") sub ".
             "WHERE CONCAT(age_group, ' ', umpire_type) IN ".
             	"('Seniors Boundary' , 'Seniors Goal', 'Reserves Goal', 'Colts Field', 'Under 16 Field', 'Under 14 Field', 'Under 12 Field') ".
-            "AND age_group IN (". $pReportInstance->filterParameterAgeGroup->getFilterSQLValues() .") ".
+            #"AND age_group IN (". $pReportInstance->filterParameterAgeGroup->getFilterSQLValues() .") ".
             "AND region_name IN ('Total', ". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
             "GROUP BY CONCAT('No ', age_group, ' ', umpire_type), short_league_name " .
             "ORDER BY MIN(age_sort_order), CONCAT('No ', age_group, ' ', umpire_type), short_league_name;";
