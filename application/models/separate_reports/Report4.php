@@ -24,7 +24,7 @@ class Report4 extends Parent_report implements IReport {
             "s.age_group, ".
             "s.short_league_name ".
             "FROM dw_mv_report_04 s ".
-            #"WHERE s.short_league_name IN (". $pReportInstance->filterParameterLeague->getFilterSQLValues() .") ".
+            "WHERE s.region_name = ". $pReportInstance->filterParameterRegion->getFilterSQLValues() ." " .
             "GROUP BY s.umpire_type, s.age_group, s.short_league_name " .
             "ORDER BY s.umpire_type, MIN(s.age_sort_order), MIN(s.league_sort_order);";
         return $queryString;

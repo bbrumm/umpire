@@ -10,17 +10,36 @@ class ReportColumnQuery_test extends TestCase {
     const UMPIRE_AGE_SENIORS = "Seniors";
     const UMPIRE_AGE_RESERVES = "Reserves";
     const UMPIRE_AGE_COLTS = "Colts";
+    const UMPIRE_AGE_U19 = "Under 19";
+    const UMPIRE_AGE_U18 = "Under 18";
+    const UMPIRE_AGE_U17 = "Under 17";
+    const UMPIRE_AGE_U16 = "Under 16";
     const UMPIRE_AGE_U15 = "Under 15";
+    const UMPIRE_AGE_U14 = "Under 14";
+    const UMPIRE_AGE_U13 = "Under 13";
+    const UMPIRE_AGE_U12 = "Under 12";
+    const UMPIRE_AGE_U19_GIRLS = "Under 19 Girls";
+    const UMPIRE_AGE_U18_GIRLS = "Under 18 Girls";
+    const UMPIRE_AGE_U15_GIRLS = "Under 15 Girls";
+    const UMPIRE_AGE_U12_GIRLS = "Under 12 Girls";
+    const UMPIRE_AGE_YOUTH_GIRLS = "Youth Girls";
+    const UMPIRE_AGE_JUNIOR_GIRLS = "Junior Girls";
+    const UMPIRE_AGE_UNDER_175 = "Under 17.5";
+    const UMPIRE_AGE_UNDER_145 = "Under 14.5";
 
     const UMPIRE_LEAGUE_GFL = "GFL";
     const UMPIRE_LEAGUE_GDFL = "GDFL";
     const UMPIRE_LEAGUE_GJFL = "GJFL";
     const UMPIRE_LEAGUE_BFL = "BFL";
     const UMPIRE_LEAGUE_CDFNL = "CDFNL";
+    const UMPIRE_LEAGUE_WOMEN = "Women";
 
 
     const UMPIRE_REGION_GEELONG = "Geelong";
     const UMPIRE_REGION_COLAC = "Colac";
+
+    const UMPIRE_SPECIAL_TWOUMPIRES = "2 Umpires";
+    const UMPIRE_TOTAL = "Total";
 
     const UMPIRE_SEASON_2018 = 2018;
 
@@ -192,8 +211,8 @@ FROM backup_report_07_2018;";
         $resultArrayActual = $query->result_array();
         $resultArrayExpected = array(
             array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
-            array('age_group'=>'Total', 'short_league_name'=>'')
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('age_group'=>self::UMPIRE_TOTAL, 'short_league_name'=>'')
         );
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
@@ -212,8 +231,8 @@ FROM backup_report_07_2018;";
         $resultArrayActual = $query->result_array();
         $resultArrayExpected = array(
             array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
-            array('age_group'=>'Total', 'short_league_name'=>'')
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
+            array('age_group'=>self::UMPIRE_TOTAL, 'short_league_name'=>'')
         );
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
@@ -231,9 +250,9 @@ FROM backup_report_07_2018;";
 
         $resultArrayActual = $query->result_array();
         $resultArrayExpected = array(
-            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
             array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
-            array('age_group'=>'Total', 'short_league_name'=>'')
+            array('age_group'=>self::UMPIRE_TOTAL, 'short_league_name'=>'')
         );
         //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
         //Fix the bug in the query in Report2.getReportColumnQuery.
@@ -253,9 +272,9 @@ FROM backup_report_07_2018;";
 
         $resultArrayActual = $query->result_array();
         $resultArrayExpected = array(
-            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
             array('age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('age_group'=>'Total', 'short_league_name'=>'')
+            array('age_group'=>self::UMPIRE_TOTAL, 'short_league_name'=>'')
         );
         //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
         //Fix the bug in the query in Report2.getReportColumnQuery.
@@ -278,9 +297,9 @@ FROM backup_report_07_2018;";
         $resultArrayActual = $query->result_array();
         $resultArrayExpected = array(
             array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
             array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('age_group'=>'Total', 'short_league_name'=>'')
+            array('age_group'=>self::UMPIRE_TOTAL, 'short_league_name'=>'')
         );
         //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
         //Fix the bug in the query in Report2.getReportColumnQuery.
@@ -305,11 +324,11 @@ FROM backup_report_07_2018;";
             array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
             array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
             array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
-            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>'2 Umpires'),
+            array('age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_SPECIAL_TWOUMPIRES),
             array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
             array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
             array('age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
-            array('age_group'=>'Total', 'short_league_name'=>'')
+            array('age_group'=>self::UMPIRE_TOTAL, 'short_league_name'=>'')
         );
         //TODO: A known bug means the 2 Umpires row is shown in all reports, regardless of if Seniors is selected.
         //Fix the bug in the query in Report2.getReportColumnQuery.
@@ -330,25 +349,25 @@ FROM backup_report_07_2018;";
             array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
             array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
             array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>'Women'),
+            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_TOTAL),
+            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
             array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
             array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
             array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>'Women'),
+            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_TOTAL),
+            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
             array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
             array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
             array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>'Total'),
+            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_TOTAL),
             array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>'Total'),
+            array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>self::UMPIRE_TOTAL),
             array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>'Total'),
+            array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>self::UMPIRE_TOTAL),
             array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>'Total'),
+            array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>self::UMPIRE_TOTAL),
             array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>'Total')
+            array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>self::UMPIRE_TOTAL)
         );
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
@@ -365,15 +384,15 @@ FROM backup_report_07_2018;";
         $resultArrayActual = $query->result_array();
         $resultArrayExpected = array(
             array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>'Total'),
+            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_TOTAL),
             array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>'Total'),
+            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_TOTAL),
             array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
-            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>'Total')
+            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_TOTAL),
+            array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>self::UMPIRE_TOTAL),
+            array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>self::UMPIRE_TOTAL),
+            array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>self::UMPIRE_TOTAL),
+            array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>self::UMPIRE_TOTAL)
         );
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
@@ -389,28 +408,110 @@ FROM backup_report_07_2018;";
 
         $resultArrayActual = $query->result_array();
         $resultArrayExpected = array(
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Seniors Boundary', 'short_league_name'=>'Women'),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>'Women'),
-            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
-            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
-            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
-            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>'Total'),
-            array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
-            array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>'Total')
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_COLTS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U19, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U18, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U17, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U16, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U14, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U13, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U12, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U19_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U18_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U15_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U12_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_YOUTH_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_JUNIOR_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_COLTS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U19, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U18, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U17, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U16, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U14, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U13, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U12, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U19_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U18_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U15_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U12_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_YOUTH_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_JUNIOR_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_BFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GDFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_COLTS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U19, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U18, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U17, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U16, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_WOMEN),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U14, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U13, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U12, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U19_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U18_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U15_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U12_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_YOUTH_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_JUNIOR_GIRLS, 'short_league_name'=>self::UMPIRE_LEAGUE_GJFL)
+        );
+
+        $this->assertEquals($resultArrayExpected, $resultArrayActual);
+    }
+
+    public function test_Report4ColumnQuery_Colac() {
+        $reportInstance = $this->createReportInstanceLimitedSelection(array(self::UMPIRE_REGION_COLAC));
+
+        $currentReport = $this->CI->Report_factory->createReport(4);
+
+        $queryString = $currentReport->getReportColumnQuery($reportInstance);
+        $query = $this->dbLocal->query($queryString);
+
+        $resultArrayActual = $query->result_array();
+        $resultArrayExpected = array(
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_COLTS, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U18, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_UNDER_175, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_UNDER_145, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_BOUNDARY, 'age_group'=>self::UMPIRE_AGE_U13, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U18, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_UNDER_175, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_UNDER_145, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_FIELD, 'age_group'=>self::UMPIRE_AGE_U13, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_SENIORS, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_RESERVES, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_COLTS, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U18, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_UNDER_175, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U15, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_UNDER_145, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
+            array('umpire_type'=>self::UMPIRE_GOAL, 'age_group'=>self::UMPIRE_AGE_U13, 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
         );
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
