@@ -5,30 +5,13 @@ require_once 'Parent_report.php';
 class Report4 extends Parent_report implements IReport {
     
     public function getReportDataQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT ".
-            "club_name, ".
-            "age_group, ".
-            "short_league_name, ".
-            "umpire_type, ".
-            "match_count ".
-            "FROM dw_mv_report_04 ".
-            "WHERE region_name IN (". $pReportInstance->filterParameterRegion->getFilterSQLValues() .") ".
-            "AND season_year = ". $pReportInstance->requestedReport->getSeason() ." ".
-            "ORDER BY club_name, age_sort_order, league_sort_order;";
-        return $queryString;
+        $sqlFilename = "report4_data.sql";
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT DISTINCT ".
-            "s.umpire_type, ".
-            "s.age_group, ".
-            "s.short_league_name ".
-            "FROM dw_mv_report_04 s ".
-            "WHERE s.region_name = ". $pReportInstance->filterParameterRegion->getFilterSQLValues() ." " .
-            "AND season_year = ". $pReportInstance->requestedReport->getSeason() ." ".
-            "GROUP BY s.umpire_type, s.age_group, s.short_league_name " .
-            "ORDER BY s.umpire_type, MIN(s.age_sort_order), MIN(s.league_sort_order);";
-        return $queryString;
+        $sqlFilename = "report4_columns.sql";
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
     
     /*

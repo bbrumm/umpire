@@ -8,21 +8,13 @@ class Report8 extends Parent_report implements IReport {
     const COL_TOTAL_OVERALL = 9;
 
     public function getReportDataQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT ".
-            "season_year, ".
-            "full_name, ".
-            "match_count ".
-            "FROM dw_mv_report_08 ".
-            "ORDER BY full_name, season_year;";
-        return $queryString;
+        $sqlFilename = "report8_data.sql";
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
     
     public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $queryString = "SELECT column_heading AS season_year ".
-            "FROM report_column_display_order ".
-            "WHERE report_id = 8 ".
-            "ORDER BY display_order;";
-        return $queryString;
+        $sqlFilename = "report8_columns.sql";
+        return $this->constructReportQuery($sqlFilename, $pReportInstance);
     }
     
     /*
