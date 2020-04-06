@@ -1,5 +1,5 @@
 <?php
-class Report_result extends CI_Model {
+class Report_resultTempinprogress extends CI_Model {
 
     private $resultArray;
     private $columnLabelResultArray;
@@ -17,7 +17,7 @@ class Report_result extends CI_Model {
     private $reportTitle;
 
     public function loadReport(IData_store_matches $pDataStore, IData_store_report_param $pDataStoreReportParam, Requested_report_model $pRequestedReport) {
-        //Load parameters and grouping structire
+        //Load parameters and grouping structure
         $this->loadReportParameters($pDataStoreReportParam, $pRequestedReport);
         $this->setReportTitle($pRequestedReport);
         //Load data from database

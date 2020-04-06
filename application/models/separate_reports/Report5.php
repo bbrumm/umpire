@@ -88,21 +88,22 @@ class Report5 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
+    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, Report_cell_collection $pColumnLabelFields) {
         $pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
+        $pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
         foreach ($pResultArray as $resultRow) {
             $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pFieldForRowLabel, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]];
+            $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]->getCellValue()];
             //Check if there is a second row that is being grouped.
             //This should only exist for report 5, according to the report_grouping_structure table
             if (array_key_exists(1, $pFieldForRowLabel)) {
-                $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]];
+                $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]->getCellValue()];
             }
-            foreach ($pFieldsForColumnLabel as $columnField) {
-                $rowArrayKey = $resultRow[$pFieldForRowLabel[0]] . " " . $resultRow[$pFieldForRowLabel[1]];
+            foreach ($pFieldsForColumnLabel as $singleColumnCell) {
+                $rowArrayKey = $resultRow[$pFieldForRowLabel[0]->getCellValue()] . " " . $resultRow[$pFieldForRowLabel[1]->getCellValue()];
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "short_league_name");
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "age_group");
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "umpire_type");

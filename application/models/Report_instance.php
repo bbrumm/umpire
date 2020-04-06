@@ -43,7 +43,9 @@ class Report_instance extends CI_Model {
 	    $this->reportParamLoader = new Report_param_loader();
 	    $this->load->model('separate_reports/Report_factory');
 	    $this->load->model('separate_reports/Report_cell');
+        $this->load->model('separate_reports/Report_cell_collection');
         $this->load->model('separate_reports/Report_array_output_formatter');
+
 
 	}
 	
@@ -156,6 +158,10 @@ class Report_instance extends CI_Model {
         $separateReport = Report_factory::createReport($this->requestedReport->getReportNumber());
         $queryResultArray = $pDataStore->loadReportData($separateReport, $this);
 
+        //TODO: Add first refactor here: change the queryResultArray into an object with stuff in it
+
+
+
         $this->setResultArray($separateReport, $queryResultArray);
 
         //Pivot the array so it can be displayed
@@ -214,14 +220,28 @@ class Report_instance extends CI_Model {
     public function setResultArray(IReport $pSeparateReport, $pResultArray) {
 	    $columnLabelArray = array();
 	    $rowLabelField = array();
+
+        $columnLabelCollection = new Report_cell_collection();
+        $rowLabelCollection = new Report_cell_collection();
+
+
         foreach ($this->reportDisplayOptions->getColumnGroup() as $columnGroupItem) {
-            $columnLabelArray[] = $columnGroupItem->getFieldName();
+            $singleReportCell = new Report_cell();
+            $singleReportCell->setCellValue($columnGroupItem->getFieldName());
+            $columnLabelArray[] = $singleReportCell;
         }
+
+        $columnLabelCollection->setReportCellArray($columnLabelArray);
+
         foreach ($this->reportDisplayOptions->getRowGroup() as $rowGroupItem) {
-            $rowLabelField[] = $rowGroupItem->getFieldName();
+            $singleReportCell = new Report_cell();
+            $singleReportCell->setCellValue($rowGroupItem->getFieldName());
+            $rowLabelField[] = $singleReportCell;
         }
+
+        $rowLabelCollection->setReportCellArray($rowLabelField);
         
-        $this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $rowLabelField, $columnLabelArray);
+        $this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $rowLabelField, $columnLabelCollection);
         //$this->debug_library->debugOutput("pResultArray:", $pResultArray);
 	}
 

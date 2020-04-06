@@ -72,7 +72,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         return $queryResultArray;
     }
 
-    public function loadReportDataNew(Parent_report $separateReport, Report_result $reportInstance) {
+    public function loadReportDataNew(Parent_report $separateReport, Report_resultTempinprogress $reportInstance) {
         $queryForReport = $separateReport->getReportDataQuery($reportInstance);
 
         //Run query and store result in array

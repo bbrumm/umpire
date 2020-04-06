@@ -120,11 +120,11 @@ class Parent_report extends CI_Model {
         *
         */
     public function resetCounterForRow($pCurrentCounterForRow, $pResultRow, $pFieldForRowLabel, $pPreviousRowLabel) {
-        if ($pResultRow[$pFieldForRowLabel[0]] != $pPreviousRowLabel[0]) {
+        if ($pResultRow[$pFieldForRowLabel[0]->getCellValue()] != $pPreviousRowLabel[0]) {
             //New row label, so reset counter
             return 0;
         } elseif (array_key_exists(1, $pFieldForRowLabel)) {
-            if ($pResultRow[$pFieldForRowLabel[1]] != $pPreviousRowLabel[1]) {
+            if ($pResultRow[$pFieldForRowLabel[1]->getCellValue()] != $pPreviousRowLabel[1]) {
                 //New row label, so reset counter
                 return 0;
             }
@@ -137,6 +137,7 @@ class Parent_report extends CI_Model {
     public function setPivotedArrayValue(&$pPivotedArray,
                                          $pResultRow, $pFieldForRowLabel,
                                          $pCounterForRow, $pivotArrayKeyName, $resultKeyName) {
-        $pPivotedArray[$pResultRow[$pFieldForRowLabel[0]]][$pCounterForRow][$pivotArrayKeyName] = $pResultRow[$resultKeyName];
+        //$pPivotedArray[$pResultRow[$pFieldForRowLabel[0]]][$pCounterForRow][$pivotArrayKeyName] = $pResultRow[$resultKeyName];
+        $pPivotedArray[$pResultRow[$pFieldForRowLabel[0]->getCellValue()]][$pCounterForRow][$pivotArrayKeyName] = $pResultRow[$resultKeyName];
     }
 }

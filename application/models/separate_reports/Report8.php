@@ -102,16 +102,17 @@ class Report8 extends Parent_report implements IReport {
         return (in_array($columnItem['season_year'], $validSeasonArray));
     }
 
-    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, array $pFieldsForColumnLabel) {
+    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, Report_cell_collection $pColumnLabelFields) {
         $pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
+        $pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
         foreach ($pResultArray as $resultRow) {
             $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pFieldForRowLabel, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]];
-            foreach ($pFieldsForColumnLabel as $columnField) {
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, $columnField, $columnField);
+            $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]->getCellValue()];
+            foreach ($pFieldsForColumnLabel as $singleColumnCell) {
+                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, $singleColumnCell->getCellValue(), $singleColumnCell->getCellValue());
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "match_count", "match_count");
             }
             $counterForRow++;

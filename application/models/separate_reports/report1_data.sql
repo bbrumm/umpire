@@ -10,5 +10,5 @@ AND short_league_name IN (:pLeague)
 AND region_name IN (:pRegion)
 AND umpire_type IN (:pUmpireType)
 AND season_year = :pSeasonYear
-GROUP BY last_first_name, short_league_name, club_name
-ORDER BY last_first_name, short_league_name, club_name;
+GROUP BY last_first_name, short_league_name, club_name, age_group
+ORDER BY last_first_name, short_league_name, club_name, age_group;
