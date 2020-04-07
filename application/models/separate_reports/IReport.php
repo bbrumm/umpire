@@ -13,6 +13,6 @@ interface IReport {
 
     public function isFieldMatchingColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
 
-    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, Report_cell_collection $pColumnLabelFields);
+    public function pivotQueryArray($pResultArray, Report_cell_collection $pRowLabelFields, Report_cell_collection $pColumnLabelFields);
     
 }

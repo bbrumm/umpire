@@ -88,28 +88,48 @@ class Report5 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, Report_cell_collection $pColumnLabelFields) {
+    public function pivotQueryArray($pResultArray, Report_cell_collection $pRowLabelFields, Report_cell_collection $pColumnLabelFields) {
         $pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
-        $pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
+        //$pFieldForRowLabel = $pRowLabelFields->getReportCellArray();
+        //$pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
+
+        $shortLeagueNameCell = new Report_cell();
+        $shortLeagueNameCell->setCellValue("short_league_name");
+
+        $ageGroupCell = new Report_cell();
+        $ageGroupCell->setCellValue("age_group");
+
+        $umpireTypeCell = new Report_cell();
+        $umpireTypeCell->setCellValue("umpire_type");
+
+        $matchNoUmpCell = new Report_cell();
+        $matchNoUmpCell->setCellValue("match_no_ump");
+
+        $totalMatchCountCell = new Report_cell();
+        $totalMatchCountCell->setCellValue("total_match_count");
+
+        $matchPctCell = new Report_cell();
+        $matchPctCell->setCellValue("match_pct");
+
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pFieldForRowLabel, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]->getCellValue()];
+            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pRowLabelFields, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$pRowLabelFields->getReportCellArray()[0]->getCellValue()];
             //Check if there is a second row that is being grouped.
             //This should only exist for report 5, according to the report_grouping_structure table
-            if (array_key_exists(1, $pFieldForRowLabel)) {
-                $previousRowLabel[1] = $resultRow[$pFieldForRowLabel[1]->getCellValue()];
+            if (array_key_exists(1, $pRowLabelFields->getReportCellArray())) {
+                $previousRowLabel[1] = $resultRow[$pRowLabelFields->getReportCellArray()[1]->getCellValue()];
             }
-            foreach ($pFieldsForColumnLabel as $singleColumnCell) {
-                $rowArrayKey = $resultRow[$pFieldForRowLabel[0]->getCellValue()] . " " . $resultRow[$pFieldForRowLabel[1]->getCellValue()];
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "short_league_name");
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "age_group");
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "umpire_type");
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "match_no_ump");
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "total_match_count");
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, "match_pct");
+            foreach ($pColumnLabelFields->getReportCellArray() as $singleColumnCell) {
+                $rowArrayKey = $resultRow[$pRowLabelFields->getReportCellArray()[0]->getCellValue()] . " " . $resultRow[$pRowLabelFields->getReportCellArray()[1]->getCellValue()];
+                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $shortLeagueNameCell);
+                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $ageGroupCell);
+                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $umpireTypeCell);
+                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $matchNoUmpCell);
+                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $totalMatchCountCell);
+                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $matchPctCell);
             }
             $counterForRow++;
         }
@@ -117,8 +137,17 @@ class Report5 extends Parent_report implements IReport {
     }
 
 
-    private function setPivotedArrayNamedValue(&$pPivotedArray, $pRowArrayKey, $pCounterForRow, $pResultRow, $pResultArrayKey) {
-        $pPivotedArray[$pRowArrayKey][$pCounterForRow][$pResultArrayKey] = $pResultRow[$pResultArrayKey];
+    private function setPivotedArrayNamedValue(&$pPivotedArray, $pRowArrayKey, $pCounterForRow, $pResultRow, Report_cell $pKeyCell) {
+        $pPivotedArray[
+            $pRowArrayKey
+        ][
+            $pCounterForRow
+        ][
+            $pKeyCell->getCellValue()
+        ] = $pResultRow[
+            $pKeyCell->getCellValue()
+        ];
     }
+
     
 }

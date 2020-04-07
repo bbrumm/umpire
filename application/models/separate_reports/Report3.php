@@ -107,19 +107,27 @@ class Report3 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, array $pFieldForRowLabel, Report_cell_collection $pColumnLabelFields) {
+    public function pivotQueryArray($pResultArray, Report_cell_collection $pRowLabelFields, Report_cell_collection $pColumnLabelFields) {
         $pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
-        $pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
+        //$pFieldForRowLabel = $pRowLabelFields->getReportCellArray();
+        //$pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
+
+        $matchCountCell = new Report_cell();
+        $matchCountCell->setCellValue("match_count");
+
+        $teamListCell = new Report_cell();
+        $teamListCell->setCellValue("team_list");
+
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pFieldForRowLabel, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$pFieldForRowLabel[0]->getCellValue()];
-            foreach ($pFieldsForColumnLabel as $singleColumnCell) {
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, $singleColumnCell->getCellValue(), $singleColumnCell->getCellValue());
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "match_count", "match_count");
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "team_list", "team_list");
+            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pRowLabelFields, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$pRowLabelFields->getReportCellArray()[0]->getCellValue()];
+            foreach ($pColumnLabelFields->getReportCellArray() as $singleColumnCell) {
+                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $singleColumnCell);
+                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $matchCountCell);
+                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $teamListCell);
 
             }
             $counterForRow++;

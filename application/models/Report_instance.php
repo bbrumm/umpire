@@ -241,7 +241,7 @@ class Report_instance extends CI_Model {
 
         $rowLabelCollection->setReportCellArray($rowLabelField);
         
-        $this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $rowLabelField, $columnLabelCollection);
+        $this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $rowLabelCollection, $columnLabelCollection);
         //$this->debug_library->debugOutput("pResultArray:", $pResultArray);
 	}
 
