@@ -37,10 +37,11 @@ class Report5 extends Parent_report implements IReport {
      *
      *
      */
-    public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields) {
+    public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
+        $pResultArray = $pReportCellCollection->getCollection();
 
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
@@ -88,63 +89,61 @@ class Report5 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, Report_cell_collection $mainReportCellCollection) {
-        $pivotedArray = array();
+    public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
+        //$pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
+        $mainReportCellCollection = new Report_cell_collection();
 
-        $shortLeagueNameCell = new Report_cell();
-        $shortLeagueNameCell->setCellValue("short_league_name");
 
-        $ageGroupCell = new Report_cell();
-        $ageGroupCell->setCellValue("age_group");
+        $columnNameForShortLeagueName = "short_league_name";
+        $columnNameForAgeGroup = "age_group";
+        $columnNameForUmpireType = "umpire_type";
+        $columnNameForMatchNoUmp = "match_no_ump";
+        $columnNameForTotalMatchCount = "total_match_count";
+        $columnNameForMatchPct = "match_pct";
 
-        $umpireTypeCell = new Report_cell();
-        $umpireTypeCell->setCellValue("umpire_type");
-
-        $matchNoUmpCell = new Report_cell();
-        $matchNoUmpCell->setCellValue("match_no_ump");
-
-        $totalMatchCountCell = new Report_cell();
-        $totalMatchCountCell->setCellValue("total_match_count");
-
-        $matchPctCell = new Report_cell();
-        $matchPctCell->setCellValue("match_pct");
 
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $mainReportCellCollection, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()];
+            $counterForRow = $this->resetCounterForRowUsingDisplayOptions($counterForRow, $resultRow, $pReportDisplayOptions, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+            $currentRowLabelFieldName = $pReportDisplayOptions->getRowGroup()[0]->getFieldName();
+
             //Check if there is a second row that is being grouped.
             //This should only exist for report 5, according to the report_grouping_structure table
-            if (array_key_exists(1, $mainReportCellCollection->getRowLabelFields())) {
-                $previousRowLabel[1] = $resultRow[$mainReportCellCollection->getRowLabelFields()[1]->getCellValue()];
+            if (array_key_exists(1, $pReportDisplayOptions->getRowGroup())) {
+                $previousRowLabel[1] = $resultRow[$pReportDisplayOptions->getRowGroup()[1]->getFieldName()];
             }
-            foreach ($mainReportCellCollection->getColumnLabelFields() as $singleColumnCell) {
-                $rowArrayKey = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()] . " " . $resultRow[$mainReportCellCollection->getRowLabelFields()[1]->getCellValue()];
+            foreach ($pReportDisplayOptions->getColumnGroup() as $singleReportGroupingStructure) {
+                $rowArrayKey = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()] . " " . $resultRow[$pReportDisplayOptions->getRowGroup()[1]->getFieldName()];
+                /*
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $shortLeagueNameCell);
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $ageGroupCell);
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $umpireTypeCell);
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $matchNoUmpCell);
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $totalMatchCountCell);
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $matchPctCell);
+                */
+
+                //$mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $singleReportGroupingStructure->getFieldName(), $rowArrayKey);
+                $mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $columnNameForShortLeagueName, $rowArrayKey);
+                $mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $columnNameForAgeGroup, $rowArrayKey);
+                $mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $columnNameForUmpireType, $rowArrayKey);
+                $mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $columnNameForMatchNoUmp, $rowArrayKey);
+                $mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $columnNameForTotalMatchCount, $rowArrayKey);
+                $mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $columnNameForMatchPct, $rowArrayKey);
+
+
             }
             $counterForRow++;
         }
-        return $pivotedArray;
+        //return $mainReportCellCollection->getCollection();
+        return $mainReportCellCollection;
     }
 
+    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
 
-    private function setPivotedArrayNamedValue(&$pPivotedArray, $pRowArrayKey, $pCounterForRow, $pResultRow, Report_cell $pKeyCell) {
-        $pPivotedArray[
-            $pRowArrayKey
-        ][
-            $pCounterForRow
-        ][
-            $pKeyCell->getCellValue()
-        ] = $pResultRow[
-            $pKeyCell->getCellValue()
-        ];
     }
 
     

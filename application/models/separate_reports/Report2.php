@@ -42,10 +42,11 @@ class Report2 extends Parent_report implements IReport {
      *
      *
      */
-    public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields) {
+    public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
+        $pResultArray = $pReportCellCollection->getCollection();
 
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
@@ -89,33 +90,48 @@ class Report2 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, Report_cell_collection $mainReportCellCollection) {
-        $pivotedArray = array();
+    public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
+        //$pivotedArray = array();
 	    $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
+        $mainReportCellCollection = new Report_cell_collection();
 
-        $matchCountCell = new Report_cell();
-        $matchCountCell->setCellValue("match_count");
+        //$matchCountCell = new Report_cell();
+        //$matchCountCell->setCellValue("match_count");
+        $columnNameForDataValues = "match_count";
 
-        $shortLeagueNameCell = new Report_cell();
-        $shortLeagueNameCell->setCellValue("short_league_name");
+        //$shortLeagueNameCell = new Report_cell();
+        //$shortLeagueNameCell->setCellValue("short_league_name");
+        $columnNameForShortLeagueName = "short_league_name";
 
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $mainReportCellCollection, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()];
-            foreach ($mainReportCellCollection->getColumnLabelFields() as $singleColumnCell) {
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $singleColumnCell);
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $matchCountCell);
+            $counterForRow = $this->resetCounterForRowUsingDisplayOptions($counterForRow, $resultRow, $pReportDisplayOptions, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+            $currentRowLabelFieldName = $pReportDisplayOptions->getRowGroup()[0]->getFieldName();
+
+            foreach ($pReportDisplayOptions->getColumnGroup() as $singleReportGroupingStructure) {
+                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $singleColumnCell);
+                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $matchCountCell);
+
+                $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $singleReportGroupingStructure->getFieldName(), $currentRowLabelFieldName);
+                $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $columnNameForDataValues, $currentRowLabelFieldName);
 
                 if ($resultRow['two_ump_flag'] == 1) {
                     //$this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "short_league_name", "2 Umpires");
-                    $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $shortLeagueNameCell);
+                    //$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $shortLeagueNameCell);
+
+                    $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $columnNameForShortLeagueName, $currentRowLabelFieldName);
                 }
             }
             $counterForRow++;
         }
-        return $pivotedArray;
+        //return $mainReportCellCollection->getCollection();
+        return $mainReportCellCollection;
+    }
+
+    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
+
     }
 
 

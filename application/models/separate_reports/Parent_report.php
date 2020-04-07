@@ -133,6 +133,23 @@ class Parent_report extends CI_Model {
         } else {
             return $pCurrentCounterForRow;
         }
+
+    }
+
+    public function resetCounterForRowUsingDisplayOptions($pCurrentCounterForRow, $pResultRow, Report_display_options $pReportDisplayOptions, $pPreviousRowLabel) {
+        if ($pResultRow[
+            $pReportDisplayOptions->getRowGroup()[0]->getFieldName()
+            ] != $pPreviousRowLabel[0]) {
+            //New row label, so reset counter
+            return 0;
+        } elseif (array_key_exists(1, $pReportDisplayOptions->getRowGroup())) {
+            if ($pResultRow[$pReportDisplayOptions->getRowGroup()[1]->getFieldName()] != $pPreviousRowLabel[1]) {
+                //New row label, so reset counter
+                return 0;
+            }
+        } else {
+            return $pCurrentCounterForRow;
+        }
     }
 
     //Uses an & character to pass by reference, because pivotedArray should be updated on each call

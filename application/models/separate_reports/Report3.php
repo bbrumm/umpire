@@ -41,9 +41,11 @@ class Report3 extends Parent_report implements IReport {
      *
      *
      */
-    public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields) {
+    public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
+        $pResultArray = $pReportCellCollection->getCollection();
+
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
             $resultOutputArray[$currentResultArrayRow][0] = $rowKey;
@@ -107,30 +109,46 @@ class Report3 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, Report_cell_collection $mainReportCellCollection) {
-        $pivotedArray = array();
+    public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
+        //$pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
+        $mainReportCellCollection = new Report_cell_collection();
 
-        $matchCountCell = new Report_cell();
+        $columnNameForDataValues = "match_count";
+        $columnNameForTeamList = "team_list";
+
+        /*$matchCountCell = new Report_cell();
         $matchCountCell->setCellValue("match_count");
 
         $teamListCell = new Report_cell();
-        $teamListCell->setCellValue("team_list");
+        $teamListCell->setCellValue("team_list");*/
+
 
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $mainReportCellCollection, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()];
-            foreach ($mainReportCellCollection->getColumnLabelFields() as $singleColumnCell) {
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $singleColumnCell);
+            $counterForRow = $this->resetCounterForRowUsingDisplayOptions($counterForRow, $resultRow, $pReportDisplayOptions, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+            $currentRowLabelFieldName = $pReportDisplayOptions->getRowGroup()[0]->getFieldName();
+            foreach ($pReportDisplayOptions->getColumnGroup() as $singleReportGroupingStructure) {
+                /*$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $singleColumnCell);
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $matchCountCell);
                 $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $teamListCell);
+                */
+
+                $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $singleReportGroupingStructure->getFieldName(), $currentRowLabelFieldName);
+                $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $columnNameForDataValues, $currentRowLabelFieldName);
+                $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $columnNameForTeamList, $currentRowLabelFieldName);
 
             }
             $counterForRow++;
         }
-        return $pivotedArray;
+        //return $mainReportCellCollection->getCollection();
+        return $mainReportCellCollection;
+    }
+
+    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
+
     }
     
 }

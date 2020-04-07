@@ -2,6 +2,8 @@
 class Report_instance extends CI_Model {
 
 	private $resultArray;
+	private $reportCellCollection;
+
 	private $reportTitle;
 	private $columnLabelResultArray;
 	//private $rowLabelResultArray;
@@ -72,7 +74,8 @@ class Report_instance extends CI_Model {
 	
 	
 	public function getResultArray() {
-	    return $this->resultArray;
+	    //return $this->resultArray;
+	    return $this->reportCellCollection->getCollection();
 	}
 	
 	public function getDisplayOptions() {
@@ -218,15 +221,22 @@ class Report_instance extends CI_Model {
 	
 	//TODO: Possibly refactor this now that I am using an array of cells
     public function setResultArray(IReport $pSeparateReport, $pResultArray) {
-	    $columnLabelArray = array();
-	    $rowLabelField = array();
+
+        //$this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $this->reportDisplayOptions);
+
+        $this->reportCellCollection = $pSeparateReport->pivotQueryArray($pResultArray, $this->reportDisplayOptions);
+
+        $pSeparateReport->translateResultsToReportCellCollection($pResultArray, $this->reportDisplayOptions);
+
+	    //$columnLabelArray = array();
+	    //$rowLabelField = array();
 
         //$columnLabelCollection = new Report_cell_collection();
         //$rowLabelCollection = new Report_cell_collection();
 
-        $mainReportCellCollection = new Report_cell_collection();
+        //$mainReportCellCollection = new Report_cell_collection();
 
-
+    /*
         foreach ($this->reportDisplayOptions->getColumnGroup() as $columnGroupItem) {
             $singleReportCell = new Report_cell();
             $singleReportCell->setCellValue($columnGroupItem->getFieldName());
@@ -244,8 +254,9 @@ class Report_instance extends CI_Model {
 
         //$rowLabelCollection->setReportCellArray($rowLabelField);
         $mainReportCellCollection->setRowLabelFields($rowLabelField);
-        
-        $this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $mainReportCellCollection);
+        */
+        //$this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $mainReportCellCollection, $this->reportDisplayOptions);
+
         //$this->debug_library->debugOutput("pResultArray:", $pResultArray);
 	}
 
@@ -257,9 +268,10 @@ class Report_instance extends CI_Model {
 	//TODO: I think there is some refactoring here if I am using a collection of objects
     private function setResultOutputArray(IReport $separateReport) {
         $columnLabelResultArray = $this->getColumnLabelResultArray();
-        $resultArray = $this->getResultArray();
+        //$resultArray = $this->getResultArray();
+
         $this->resultOutputArray = $separateReport->transformQueryResultsIntoOutputArray(
-            $resultArray, $columnLabelResultArray, $this->getReportColumnFields());
+            $this->reportCellCollection, $columnLabelResultArray, $this->getReportColumnFields());
     }
 
 	//TODO: I think there is some refactoring here if I am using a collection of objects

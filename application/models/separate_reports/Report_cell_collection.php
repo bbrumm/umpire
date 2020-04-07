@@ -38,22 +38,49 @@ class Report_cell_collection extends CI_Model {
         return $this->columnLabelFields;
     }
 
-    public function setPivotedArrayValue($pResultRow, $pCounterForRow, Report_cell $pivotArrayKeyCell) {
-
-        $this->pivotedArray[
+    public function addCurrentRowToCollection($pResultRow, $pCounterForRow, $pFieldName, $pRowLabelFieldName) {
+        //Add to pivotedArray to allow existing code to work
+         $this->pivotedArray[
             $pResultRow[
-                $this->getRowLabelFields()[0]->getCellValue()
+                $pRowLabelFieldName
             ]
         ][
             $pCounterForRow
         ][
-            $pivotArrayKeyCell->getCellValue()
-        ] = $pResultRow[
-            $pivotArrayKeyCell->getCellValue()
+            $pFieldName
+        ] =
+        $pResultRow[
+            $pFieldName
         ];
     }
 
-    public function getPivotedArray() {
+    public function addCurrentRowToCellCollection($pResultRow, $pCounterForRow, $pFieldName) {
+         //Also add it to a new Report_cell for the future code to work
+        $newReportCell = new Report_cell();
+        $newReportCell->setCellValue($pResultRow[$pFieldName]);
+        $newReportCell->setSourceResultRow($pResultRow);
+
+        $this->reportCellArray[$pCounterForRow][] = $newReportCell;
+
+    }
+
+    public function addReportCellToCollection($pRowNumber, Report_cell $pReportCell) {
+        $this->reportCellArray[$pRowNumber][] = $pReportCell;
+    }
+
+    public function addCurrentRowToCollectionWithName($pResultRow, $pCounterForRow, $pFieldName, $pRowArrayKey) {
+        $this->pivotedArray[
+            $pRowArrayKey
+        ][
+            $pCounterForRow
+        ][
+            $pFieldName
+        ] = $pResultRow[
+            $pFieldName
+        ];
+    }
+
+    public function getCollection() {
         return $this->pivotedArray;
     }
 

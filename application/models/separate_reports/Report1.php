@@ -43,9 +43,11 @@ class Report1 extends Parent_report implements IReport {
      *
      *
      */
-    public function transformQueryResultsIntoOutputArray($pResultArray, $columnLabelResultArray, $pReportColumnFields) {
+    public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
+
+        $pResultArray = $pReportCellCollection->getCollection();
 
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
@@ -68,33 +70,82 @@ class Report1 extends Parent_report implements IReport {
         return $resultOutputArray;
     }
 
-    public function pivotQueryArray($pResultArray, Report_cell_collection $mainReportCellCollection) {
-        //$pivotedArray = array();
+    public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
-        $matchCountCell = new Report_cell();
-        $matchCountCell->setCellValue("match_count");
+        $mainReportCellCollection = new Report_cell_collection();
+
+        $columnNameForDataValues = "match_count";
 
         //Loop through each row of results
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $mainReportCellCollection, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()];
+            $counterForRow = $this->resetCounterForRowUsingDisplayOptions($counterForRow, $resultRow, $pReportDisplayOptions, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+            $currentRowLabelFieldName = $pReportDisplayOptions->getRowGroup()[0]->getFieldName();
+            //Can previousRowLabel be a text value not an array? Maybe eventually, but it's inherited and other reports have multiple row labels
+
+
+            //$newReportCell = new Report_cell();
+            //$newReportCell->setCellValue($resultRow[$currentRowLabelFieldName]);
+            //$newReportCell->setSourceResultRow($resultRow);
+
+            //$mainReportCellCollection->addReportCellToCollection()
+
 
             //Loop through each column
-            foreach ($mainReportCellCollection->getColumnLabelFields() as $singleColumnCell) {
-                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $singleColumnCell);
-                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $matchCountCell);
-
+            foreach ($pReportDisplayOptions->getColumnGroup() as $singleReportGroupingStructure) {
                 //TODO: Refactor this function call and internals
-                $mainReportCellCollection->setPivotedArrayValue($resultRow, $counterForRow, $singleColumnCell);
-                $mainReportCellCollection->setPivotedArrayValue($resultRow, $counterForRow, $matchCountCell);
+
+                $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $singleReportGroupingStructure->getFieldName(), $currentRowLabelFieldName);
+                $mainReportCellCollection->addCurrentRowToCollection($resultRow, $counterForRow, $columnNameForDataValues, $currentRowLabelFieldName);
+
+                $mainReportCellCollection->addCurrentRowToCellCollection($resultRow, $counterForRow, $currentRowLabelFieldName);
+                $mainReportCellCollection->addCurrentRowToCellCollection($resultRow, $counterForRow, $columnNameForDataValues);
+
             }
             $counterForRow++;
         }
-        return $mainReportCellCollection->getPivotedArray();
+        //return $mainReportCellCollection->getCollection();
+        return $mainReportCellCollection;
+        //TODO: Return the collection object and use that as a parameter to the next function
     }
 
+    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
+        $mainReportCellCollection = new Report_cell_collection();
 
-    
+        $previousRowLabel = "";
+        $outputRowNumber = 0;
+
+        //Loop through each row of results
+        foreach ($pResultArray as $resultRow) {
+
+            $currentRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+
+            //Increase output row number if row label is different
+            if ($currentRowLabel != $previousRowLabel) {
+                $outputRowNumber++;
+                //Add new cell for row label
+                $newReportCell = new Report_cell();
+                $newReportCell->setCellValue($currentRowLabel);
+                $newReportCell->setSourceResultRow($resultRow);
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+            }
+            $previousRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+
+            $newReportCell = new Report_cell();
+            $newReportCell->setCellValue($resultRow["match_count"]);
+            $newReportCell->setSourceResultRow($resultRow);
+
+            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+
+        }
+
+
+
+
+    }
+
 }
