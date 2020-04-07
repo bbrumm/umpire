@@ -89,13 +89,11 @@ class Report2 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, Report_cell_collection $pRowLabelFields, Report_cell_collection $pColumnLabelFields) {
+    public function pivotQueryArray($pResultArray, Report_cell_collection $mainReportCellCollection) {
         $pivotedArray = array();
 	    $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
-        //$pFieldForRowLabel = $pRowLabelFields->getReportCellArray();
-        //$pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
 
         $matchCountCell = new Report_cell();
         $matchCountCell->setCellValue("match_count");
@@ -103,17 +101,16 @@ class Report2 extends Parent_report implements IReport {
         $shortLeagueNameCell = new Report_cell();
         $shortLeagueNameCell->setCellValue("short_league_name");
 
-
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pRowLabelFields, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$pRowLabelFields->getReportCellArray()[0]->getCellValue()];
-            foreach ($pColumnLabelFields->getReportCellArray() as $singleColumnCell) {
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $singleColumnCell);
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $matchCountCell);
+            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $mainReportCellCollection, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()];
+            foreach ($mainReportCellCollection->getColumnLabelFields() as $singleColumnCell) {
+                $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $singleColumnCell);
+                $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $matchCountCell);
 
                 if ($resultRow['two_ump_flag'] == 1) {
                     //$this->setPivotedArrayValue($pivotedArray, $resultRow, $pFieldForRowLabel, $counterForRow, "short_league_name", "2 Umpires");
-                    $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $shortLeagueNameCell);
+                    $this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $shortLeagueNameCell);
                 }
             }
             $counterForRow++;

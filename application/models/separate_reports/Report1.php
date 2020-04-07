@@ -68,25 +68,33 @@ class Report1 extends Parent_report implements IReport {
         return $resultOutputArray;
     }
 
-    public function pivotQueryArray($pResultArray, Report_cell_collection $pRowLabelFields, Report_cell_collection $pColumnLabelFields) {
-        $pivotedArray = array();
+    public function pivotQueryArray($pResultArray, Report_cell_collection $mainReportCellCollection) {
+        //$pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
         $matchCountCell = new Report_cell();
         $matchCountCell->setCellValue("match_count");
 
+        //Loop through each row of results
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pRowLabelFields, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$pRowLabelFields->getReportCellArray()[0]->getCellValue()];
-            foreach ($pColumnLabelFields->getReportCellArray() as $singleColumnCell) {
-            //foreach ($pFieldsForColumnLabel as $columnField) {
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $singleColumnCell);
-                $this->setPivotedArrayValue($pivotedArray, $resultRow, $pRowLabelFields, $counterForRow, $matchCountCell);
+            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $mainReportCellCollection, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()];
+
+            //Loop through each column
+            foreach ($mainReportCellCollection->getColumnLabelFields() as $singleColumnCell) {
+                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $singleColumnCell);
+                //$this->setPivotedArrayValue($pivotedArray, $resultRow, $mainReportCellCollection, $counterForRow, $matchCountCell);
+
+                //TODO: Refactor this function call and internals
+                $mainReportCellCollection->setPivotedArrayValue($resultRow, $counterForRow, $singleColumnCell);
+                $mainReportCellCollection->setPivotedArrayValue($resultRow, $counterForRow, $matchCountCell);
             }
             $counterForRow++;
         }
-        return $pivotedArray;
+        return $mainReportCellCollection->getPivotedArray();
     }
+
+
     
 }

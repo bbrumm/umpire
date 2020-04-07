@@ -119,14 +119,14 @@ class Parent_report extends CI_Model {
         *orders by the correct column
         *
         */
-    public function resetCounterForRow($pCurrentCounterForRow, $pResultRow, Report_cell_collection $pRowLabelCollection, $pPreviousRowLabel) {
+    public function resetCounterForRow($pCurrentCounterForRow, $pResultRow, Report_cell_collection $pMainReportCellCollection, $pPreviousRowLabel) {
         if ($pResultRow[
-            $pRowLabelCollection->getReportCellArray()[0]->getCellValue()
+            $pMainReportCellCollection->getRowLabelFields()[0]->getCellValue()
             ] != $pPreviousRowLabel[0]) {
             //New row label, so reset counter
             return 0;
-        } elseif (array_key_exists(1, $pRowLabelCollection->getReportCellArray())) {
-            if ($pResultRow[$pRowLabelCollection->getReportCellArray()[1]->getCellValue()] != $pPreviousRowLabel[1]) {
+        } elseif (array_key_exists(1, $pMainReportCellCollection->getRowLabelFields())) {
+            if ($pResultRow[$pMainReportCellCollection->getRowLabelFields()[1]->getCellValue()] != $pPreviousRowLabel[1]) {
                 //New row label, so reset counter
                 return 0;
             }
@@ -138,7 +138,7 @@ class Parent_report extends CI_Model {
     //Uses an & character to pass by reference, because pivotedArray should be updated on each call
     public function setPivotedArrayValue(&$pPivotedArray,
                                          $pResultRow,
-                                         Report_cell_collection $pRowLabelFields,
+                                         Report_cell_collection $pMainReportCellCollection,
                                          $pCounterForRow,
                                          Report_cell $pivotArrayKeyCell) {
 
@@ -146,7 +146,7 @@ class Parent_report extends CI_Model {
         //$pPivotedArray[$pResultRow[$pFieldForRowLabel[0]->getCellValue()]][$pCounterForRow][$pivotArrayKeyName] = $pResultRow[$resultKeyName];
         $pPivotedArray[
             $pResultRow[
-            $pRowLabelFields->getReportCellArray()[0]->getCellValue()
+            $pMainReportCellCollection->getRowLabelFields()[0]->getCellValue()
             ]
         ][
             $pCounterForRow

@@ -88,13 +88,11 @@ class Report5 extends Parent_report implements IReport {
     }
 
 
-    public function pivotQueryArray($pResultArray, Report_cell_collection $pRowLabelFields, Report_cell_collection $pColumnLabelFields) {
+    public function pivotQueryArray($pResultArray, Report_cell_collection $mainReportCellCollection) {
         $pivotedArray = array();
         $previousRowLabel = array();
         $counterForRow = 0;
         $previousRowLabel[0] = "";
-        //$pFieldForRowLabel = $pRowLabelFields->getReportCellArray();
-        //$pFieldsForColumnLabel = $pColumnLabelFields->getReportCellArray();
 
         $shortLeagueNameCell = new Report_cell();
         $shortLeagueNameCell->setCellValue("short_league_name");
@@ -115,15 +113,15 @@ class Report5 extends Parent_report implements IReport {
         $matchPctCell->setCellValue("match_pct");
 
         foreach ($pResultArray as $resultRow) {
-            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $pRowLabelFields, $previousRowLabel);
-            $previousRowLabel[0] = $resultRow[$pRowLabelFields->getReportCellArray()[0]->getCellValue()];
+            $counterForRow = $this->resetCounterForRow($counterForRow, $resultRow, $mainReportCellCollection, $previousRowLabel);
+            $previousRowLabel[0] = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()];
             //Check if there is a second row that is being grouped.
             //This should only exist for report 5, according to the report_grouping_structure table
-            if (array_key_exists(1, $pRowLabelFields->getReportCellArray())) {
-                $previousRowLabel[1] = $resultRow[$pRowLabelFields->getReportCellArray()[1]->getCellValue()];
+            if (array_key_exists(1, $mainReportCellCollection->getRowLabelFields())) {
+                $previousRowLabel[1] = $resultRow[$mainReportCellCollection->getRowLabelFields()[1]->getCellValue()];
             }
-            foreach ($pColumnLabelFields->getReportCellArray() as $singleColumnCell) {
-                $rowArrayKey = $resultRow[$pRowLabelFields->getReportCellArray()[0]->getCellValue()] . " " . $resultRow[$pRowLabelFields->getReportCellArray()[1]->getCellValue()];
+            foreach ($mainReportCellCollection->getColumnLabelFields() as $singleColumnCell) {
+                $rowArrayKey = $resultRow[$mainReportCellCollection->getRowLabelFields()[0]->getCellValue()] . " " . $resultRow[$mainReportCellCollection->getRowLabelFields()[1]->getCellValue()];
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $shortLeagueNameCell);
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $ageGroupCell);
                 $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $umpireTypeCell);

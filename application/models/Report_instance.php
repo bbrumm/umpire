@@ -221,8 +221,10 @@ class Report_instance extends CI_Model {
 	    $columnLabelArray = array();
 	    $rowLabelField = array();
 
-        $columnLabelCollection = new Report_cell_collection();
-        $rowLabelCollection = new Report_cell_collection();
+        //$columnLabelCollection = new Report_cell_collection();
+        //$rowLabelCollection = new Report_cell_collection();
+
+        $mainReportCellCollection = new Report_cell_collection();
 
 
         foreach ($this->reportDisplayOptions->getColumnGroup() as $columnGroupItem) {
@@ -231,7 +233,8 @@ class Report_instance extends CI_Model {
             $columnLabelArray[] = $singleReportCell;
         }
 
-        $columnLabelCollection->setReportCellArray($columnLabelArray);
+        //$columnLabelCollection->setReportCellArray($columnLabelArray);
+        $mainReportCellCollection->setColumnLabelFields($columnLabelArray);
 
         foreach ($this->reportDisplayOptions->getRowGroup() as $rowGroupItem) {
             $singleReportCell = new Report_cell();
@@ -239,9 +242,10 @@ class Report_instance extends CI_Model {
             $rowLabelField[] = $singleReportCell;
         }
 
-        $rowLabelCollection->setReportCellArray($rowLabelField);
+        //$rowLabelCollection->setReportCellArray($rowLabelField);
+        $mainReportCellCollection->setRowLabelFields($rowLabelField);
         
-        $this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $rowLabelCollection, $columnLabelCollection);
+        $this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $mainReportCellCollection);
         //$this->debug_library->debugOutput("pResultArray:", $pResultArray);
 	}
 
