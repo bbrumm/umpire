@@ -73,7 +73,7 @@ class Report_instance_test extends TestCase
         $this->assertEquals($expectedResultOutputArraySet, $actualResultOutputArraySet);
 
 
-        $expectedResultArray =
+        /*$expectedResultArray =
             Array (
                 'john' => Array (
                     Array ('short_league_name' => 'GFL', 'match_count' => 2, 'club_name' => 'Geelong'),
@@ -91,13 +91,83 @@ class Report_instance_test extends TestCase
                     Array ('short_league_name' => 'GFL','match_count' => 7, 'club_name' => 'Carlton')
                 )
             );
+        */
 
+
+        //TODO: Change this to be an array of Report_cell not array of arrays
+        /*
+         *
+         *
+         * Array (
+            0 => Array (
+                0 => Report_cell Object (...)
+                1 => Report_cell Object (...)
+         */
+        $expectedResultArray =
+            Array (
+                0 => Array (
+                    Report_cell::createNewReportCellWithHeaders('john', 'Name', null),
+                    Report_cell::createNewReportCellWithHeaders(2, 'GFL', 'Geelong'),
+                    Report_cell::createNewReportCellWithHeaders(1, 'BFL', 'Hawthorn')
+                ),
+                1 => Array (
+                    Report_cell::createNewReportCellWithHeaders('sue', 'Name', null),
+                    Report_cell::createNewReportCellWithHeaders(5, 'GFL', 'Melbourne'),
+                    Report_cell::createNewReportCellWithHeaders(7, 'BFL', 'Hawthorn')
+                ),
+                2 => Array (
+                    Report_cell::createNewReportCellWithHeaders('mark', 'Name', null),
+                    Report_cell::createNewReportCellWithHeaders(7, 'BFL', 'Hawthorn')
+                ),
+                3 => Array (
+                    Report_cell::createNewReportCellWithHeaders('matt', 'Name', null),
+                    Report_cell::createNewReportCellWithHeaders(7, 'BFL', 'Essendon'),
+                    Report_cell::createNewReportCellWithHeaders(7, 'GFL', 'Carlton')
+                )
+            );
 
         $resultArray = $this->obj->getResultArray();
         //echo "<pre>" . print_r($resultArray) . "</pre>";
         $actualResultArray = $resultArray;
-        $this->assertEquals($expectedResultArray, $actualResultArray);
+        $arrayOfDifferences = $this->compareExpectedActualReportCells($expectedResultArray, $actualResultArray);
 
+        $this->assertEmpty($arrayOfDifferences);
+        //$this->assertEquals($expectedResultArray, $actualResultArray);
+
+    }
+
+    private function compareExpectedActualReportCells($expectedArray, $actualArray) {
+        $arrayOfDifferences = array();
+        $arrayOfDifferencesRowNumber = 0;
+        $outerArrayCount = count($actualArray);
+
+        for($outerArrayIndex = 0; $outerArrayIndex <  $outerArrayCount; $outerArrayIndex++) {
+            $innerArrayCount = count($actualArray[$outerArrayIndex]);
+
+            for($innerArrayIndex = 0; $innerArrayIndex <  $innerArrayCount; $innerArrayIndex++) {
+                $expectedReportCell = $expectedArray[$outerArrayIndex][$innerArrayIndex];
+                $actualReportCell = $actualArray[$outerArrayIndex][$innerArrayIndex];
+                if (!$this->isReportCellMatchingSimpleFields($expectedReportCell, $actualReportCell)) {
+                    $arrayOfDifferences[$arrayOfDifferencesRowNumber]['expected'] = $expectedReportCell;
+                    $arrayOfDifferences[$arrayOfDifferencesRowNumber]['actual'] = $actualReportCell;
+                    $arrayOfDifferencesRowNumber++;
+                }
+            }
+        }
+
+        return $arrayOfDifferences;
+
+    }
+
+    private function isReportCellMatchingSimpleFields(Report_cell $expectedReportCell, Report_cell $actualReportCell) {
+        if($expectedReportCell->getCellValue() == $actualReportCell->getCellValue() &&
+            $expectedReportCell->getColumnHeaderValueFirst() == $actualReportCell->getColumnHeaderValueFirst() &&
+            $expectedReportCell->getColumnHeaderValueSecond() == $actualReportCell->getColumnHeaderValueSecond()
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function test_getColumnCountForHeadingCells_TwoHeadings() {

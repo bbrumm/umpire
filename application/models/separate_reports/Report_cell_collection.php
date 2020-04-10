@@ -81,7 +81,8 @@ class Report_cell_collection extends CI_Model {
     }
 
     public function getCollection() {
-        return $this->pivotedArray;
+        //return $this->pivotedArray;
+        return $this->reportCellArray;
     }
 
 }

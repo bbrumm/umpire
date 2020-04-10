@@ -121,7 +121,7 @@ for ($i=0; $i < $countReportParameters; $i++) {
 <br />
 
 <div class="reportSelectorRow">
-<input type="button" value="View Report" class="btn" onClick='validateReportSelections()'>
+<input type="button" id="viewReport" value="View Report" class="btn" onClick='validateReportSelections()'>
 <!--
 Why are these here?
 They are needed for reports where the drop-downs are disabled, as the next page needs values for these.

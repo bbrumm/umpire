@@ -85,20 +85,26 @@ class Parent_report extends CI_Model {
 
 
     private function isFieldMatchingOneColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
-        return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]]);
+        //return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]]);
+        return ($pColumnItem->getColumnHeaderValueFirst() == $pColumnHeadingSet[$pReportColumnFields[0]]);
     }
 
 	//This is used by Report3
 	//TODO: Clean up the link to Report3 so these function calls are consistent
-    public function isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
-        return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]] &&
+    public function isFieldMatchingTwoColumns(Report_cell $pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
+        //$pColumnItem is now a Report_cell
+        /*return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]] &&
             $pColumnItem[$pReportColumnFields[1]] == $pColumnHeadingSet[$pReportColumnFields[1]]);
+        */
+
+        return ($pColumnItem->getColumnHeaderValueFirst() == $pColumnHeadingSet[$pReportColumnFields[0]] &&
+            $pColumnItem->getColumnHeaderValueSecond() == $pColumnHeadingSet[$pReportColumnFields[1]]);
     }
 
     private function isFieldMatchingThreeColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
-        return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]] &&
-            $pColumnItem[$pReportColumnFields[1]] == $pColumnHeadingSet[$pReportColumnFields[1]] &&
-            $pColumnItem[$pReportColumnFields[2]] == $pColumnHeadingSet[$pReportColumnFields[2]]);
+        return ($pColumnItem->getColumnHeaderValueFirst() == $pColumnHeadingSet[$pReportColumnFields[0]] &&
+            $pColumnItem->getColumnHeaderValueSecond() == $pColumnHeadingSet[$pReportColumnFields[1]] &&
+            $pColumnItem->getColumnHeaderValueThird() == $pColumnHeadingSet[$pReportColumnFields[2]]);
     }
 
 
@@ -173,4 +179,131 @@ class Parent_report extends CI_Model {
             $pivotArrayKeyCell->getCellValue()
         ];
     }
+
+    public function transformReportCellCollectionIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
+        $resultOutputArray = [];
+        $currentResultArrayRowNumber = 0;
+
+        //Loop through each set of Report_cells. Each entry here is a single person or row of data.
+        foreach ($pReportCellCollection->getReportCellArray() as $setOfReportCellsForOneRow) {
+            $columnNumber = 0;
+
+            //Add row labels to output array. Once for each row
+            $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $setOfReportCellsForOneRow[0]->getCellValue();
+            $columnNumber++;
+            //Loop through each cell in this list
+
+            foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
+                foreach($setOfReportCellsForOneRow as $singleReportCell) {
+                    //Match the column headings to the values in the array
+                    if ($this->isFieldMatchingColumn($singleReportCell, $columnHeadingSet, $pReportColumnFields)) {
+                        $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $singleReportCell->getCellValue();
+                    }
+
+                }
+                $columnNumber++;
+            }
+            $currentResultArrayRowNumber++;
+        }
+        return $resultOutputArray;
+    }
+
+
+    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
+        $mainReportCellCollection = new Report_cell_collection();
+
+        $previousRowLabel = "";
+        $outputRowNumber = 0;
+
+        //Loop through each row of results
+        foreach ($pResultArray as $resultRow) {
+
+            $currentRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+
+            //Increase output row number if row label is different
+            if ($currentRowLabel != $previousRowLabel) {
+                //TODO: Move this increment to another place. It's causing the first index to be 1.
+                //But the first row's Name value needs to be added somewhere. Maybe two IF statements?
+
+                if ($previousRowLabel != "") {
+                    $outputRowNumber++;
+                }
+
+                //Add new cell for row label
+                $newReportCell = new Report_cell();
+                $newReportCell->setCellValue($currentRowLabel);
+                $newReportCell->setColumnHeaderValueFirst("Name");
+                $newReportCell->setSourceResultRow($resultRow);
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+
+            }
+            $previousRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+
+
+            if (get_class($this) == 'Report5') {
+                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_no_ump");
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "total_match_count");
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_pct");
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+                //$newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "subtotal");
+                //$mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+            } else {
+                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_count");
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+            }
+
+
+        }
+
+        return $mainReportCellCollection;
+    }
+
+
+    private function populateReportCell($pResultRow, Report_display_options $pReportDisplayOptions, $pCellValue) {
+        $newReportCell = new Report_cell();
+
+        $newReportCell->setCellValue($pResultRow[$pCellValue]);
+
+        //Set column header values. Add these to separate functions
+        $countColumnGroup = count($pReportDisplayOptions->getColumnGroup());
+        $newReportCell->setColumnHeaderValueFirst($pResultRow[$pReportDisplayOptions->getColumnGroup()[0]->getFieldName()]);
+
+        //Set the second col value if one exists
+        //TODO: this whole section should be refactored. It's too long.
+        if ($countColumnGroup > 1) {
+            if(get_class($this) == 'Report5') {
+                //Temporary code check to allow subtotals to be added. A subtotal means Games/Total/Pct.
+                //Match the column headings to the values in the array
+                $subtotalToColumnMap = array(
+                    'match_no_ump'=>'Games',
+                    'total_match_count'=>'Total',
+                    'match_pct'=>'Pct'
+                );
+
+                $newReportCell->setColumnHeaderValueSecond($subtotalToColumnMap[$pCellValue]);
+
+
+            } else {
+                $newReportCell->setColumnHeaderValueSecond($pResultRow[$pReportDisplayOptions->getColumnGroup()[1]->getFieldName()]);
+            }
+        }
+
+        if ($countColumnGroup > 2) {
+            $newReportCell->setColumnHeaderValueThird($pResultRow[$pReportDisplayOptions->getColumnGroup()[2]->getFieldName()]);
+        }
+
+
+
+        $newReportCell->setSourceResultRow($pResultRow);
+
+        return $newReportCell;
+    }
+
+
 }

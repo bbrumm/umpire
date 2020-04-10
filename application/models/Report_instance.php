@@ -224,9 +224,14 @@ class Report_instance extends CI_Model {
 
         //$this->resultArray = $pSeparateReport->pivotQueryArray($pResultArray, $this->reportDisplayOptions);
 
-        $this->reportCellCollection = $pSeparateReport->pivotQueryArray($pResultArray, $this->reportDisplayOptions);
 
-        $pSeparateReport->translateResultsToReportCellCollection($pResultArray, $this->reportDisplayOptions);
+
+        //if (get_class($pSeparateReport) == "Report1" || get_class($pSeparateReport) == "Report2") {
+            $this->reportCellCollection = $pSeparateReport->translateResultsToReportCellCollection($pResultArray, $this->reportDisplayOptions);
+        //} else {
+        //    $this->reportCellCollection = $pSeparateReport->pivotQueryArray($pResultArray, $this->reportDisplayOptions);
+        //}
+
 
 	    //$columnLabelArray = array();
 	    //$rowLabelField = array();
@@ -270,8 +275,15 @@ class Report_instance extends CI_Model {
         $columnLabelResultArray = $this->getColumnLabelResultArray();
         //$resultArray = $this->getResultArray();
 
-        $this->resultOutputArray = $separateReport->transformQueryResultsIntoOutputArray(
-            $this->reportCellCollection, $columnLabelResultArray, $this->getReportColumnFields());
+        //if (get_class($separateReport) == "Report1") {
+        //if (get_class($separateReport) == "Report5") {
+        //    $this->resultOutputArray = $separateReport->transformQueryResultsIntoOutputArray(
+        //        $this->reportCellCollection, $columnLabelResultArray, $this->getReportColumnFields());
+        //} else {
+            $this->resultOutputArray = $separateReport->transformReportCellCollectionIntoOutputArray(
+              $this->reportCellCollection, $columnLabelResultArray, $this->getReportColumnFields());
+        //}
+
     }
 
 	//TODO: I think there is some refactoring here if I am using a collection of objects
@@ -283,6 +295,17 @@ class Report_instance extends CI_Model {
             $this->getColumnLabelResultArray(),
             $this->getDisplayOptions(),
             $this->getColumnCountForHeadingCells());
+/*
+        echo "Result Output Array:<pre>";
+        print_r($this->getResultOutputArray());
+        echo "</pre>";
+
+
+        echo "Formatted Output Array:<pre>";
+	    print_r($this->formattedOutputArray);
+        echo "</pre>";
+*/
+
 	    return $this->formattedOutputArray;
     }
 

@@ -15,7 +15,18 @@ class Report_cell extends CI_Model {
     private $columnNumber;
     private $isHeader;
     private $sourceResultRow; //A temp variable to hold the resultRow array entry that the cell is sourced from. Helps to identify matches to other columns during debugging.
-    private $columnHeaderValue; //We will need more than one column header for some reports
+    private $columnHeaderValueFirst;
+    private $columnHeaderValueSecond;//We will need more than one column header for some reports
+    private $columnHeaderValueThird;
+
+    public static function createNewReportCellWithHeaders($pCellValue, $pColumnHeaderValueFirst, $pColumnHeaderValueSecond) {
+        $obj = new Report_cell();
+
+        $obj->setCellValue($pCellValue);
+        $obj->setColumnHeaderValueFirst($pColumnHeaderValueFirst);
+        $obj->setColumnHeaderValueSecond($pColumnHeaderValueSecond);
+        return $obj;
+    }
 
     //TODO: Add unit tests for this object
     public function setCellValue($pValue) {
@@ -41,6 +52,19 @@ class Report_cell extends CI_Model {
     public function setSourceResultRow($pValue) {
         $this->sourceResultRow = $pValue;
     }
+
+    public function setColumnHeaderValueFirst($pValue) {
+        $this->columnHeaderValueFirst = $pValue;
+    }
+
+    public function setColumnHeaderValueSecond($pValue) {
+        $this->columnHeaderValueSecond = $pValue;
+    }
+
+    public function setColumnHeaderValueThird($pValue) {
+        $this->columnHeaderValueThird = $pValue;
+    }
+
     
     public function getCellValue() {
         return $this->cellValue;
@@ -64,6 +88,18 @@ class Report_cell extends CI_Model {
 
     public function getSourceResultRow() {
         return $this->sourceResultRow;
+    }
+
+    public function getColumnHeaderValueFirst() {
+        return $this->columnHeaderValueFirst;
+    }
+
+    public function getColumnHeaderValueSecond() {
+        return $this->columnHeaderValueSecond;
+    }
+
+    public function getColumnHeaderValueThird() {
+        return $this->columnHeaderValueThird;
     }
 
 

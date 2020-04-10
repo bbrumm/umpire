@@ -3,11 +3,11 @@
 //Formatted output
 $formattedOutputArray = $loadedReportItem->getFormattedResultsForOutput();
 
-echo "<h1>". $loadedReportItem->getReportTitle() ."</h1>";
+echo "<h1 id='mainHeading'>". $loadedReportItem->getReportTitle() ."</h1>";
 echo "<div class='reportInformation'><span class='boldedText'>Last Game Date</span>: ". $loadedReportItem->getDisplayOptions()->getLastGameDate() ."</div>";
-echo "<div class='reportInformation'><span class='boldedText'>Umpire Discipline</span>: ". $loadedReportItem->filterParameterUmpireType->getFilterDisplayValues() ."</div>";
-echo "<div class='reportInformation'><span class='boldedText'>League</span>: ". $loadedReportItem->filterParameterLeague->getFilterDisplayValues() ."</div>";
-echo "<div class='reportInformation'><span class='boldedText'>Age Group</span>: ". $loadedReportItem->filterParameterAgeGroup->getFilterDisplayValues() ."</div>";
+echo "<div class='reportInformation' id='reportInfoUmpireDiscipline'><span class='boldedText'>Umpire Discipline</span>: ". $loadedReportItem->filterParameterUmpireType->getFilterDisplayValues() ."</div>";
+echo "<div class='reportInformation' id='reportInfoLeague'><span class='boldedText'>League</span>: ". $loadedReportItem->filterParameterLeague->getFilterDisplayValues() ."</div>";
+echo "<div class='reportInformation' id='reportInfoAgeGroup'><span class='boldedText'>Age Group</span>: ". $loadedReportItem->filterParameterAgeGroup->getFilterDisplayValues() ."</div>";
 echo "<br />";
 ?>
 <!-- 
@@ -17,7 +17,7 @@ echo "<br />";
      -->
 
 
-<span class='boldedText'>Search for Row</span>:<input type="text" id="search" placeholder="Type to search">
+<span class='boldedText' id='searchForRow'>Search for Row</span>:<input type="text" id="search" placeholder="Type to search">
 
 <div id='panelBelow'>
 <div id='moveLeftDown'>

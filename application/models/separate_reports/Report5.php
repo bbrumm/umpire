@@ -46,7 +46,9 @@ class Report5 extends Parent_report implements IReport {
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
             $totalForRow = 0;
-            $resultOutputArray[$currentResultArrayRow][0] = $currentRowItem[0]['umpire_type'];
+            //$resultOutputArray[$currentResultArrayRow][0] = $currentRowItem[0]['umpire_type'];
+            $resultOutputArray[$currentResultArrayRow][0] = $rowKey;
+
             foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
                 $columnNumber++;
                 //Loops through each value of $columnLabelResultArray.
@@ -142,9 +144,7 @@ class Report5 extends Parent_report implements IReport {
         return $mainReportCellCollection;
     }
 
-    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
 
-    }
 
     
 }

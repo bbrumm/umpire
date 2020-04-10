@@ -65,12 +65,13 @@ class Report2 extends Parent_report implements IReport {
                     if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
                         if($this->isShortLeagueNameSetTo2Umpires($columnHeadingSet)) {
                             //Set the "2 Umpires" match count to the total so far of rows marked as two_ump_flag=1
-                            $twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem['match_count'];
+                            //$twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem['match_count'];
+                            $twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem->getCellValue();
                             $resultOutputArray[$currentResultArrayRow][$columnNumber] = $twoUmpGamesForRow;
                         } else {
-                            $totalForRow = $totalForRow + $columnItem['match_count'];
+                            $totalForRow = $totalForRow + $columnItem->getCellValue();
                         }
-                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem->getCellValue();
                     }
                 }
             }
@@ -130,9 +131,7 @@ class Report2 extends Parent_report implements IReport {
         return $mainReportCellCollection;
     }
 
-    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
 
-    }
 
 
 }

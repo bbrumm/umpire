@@ -43,6 +43,10 @@ class Report1 extends Parent_report implements IReport {
      *
      *
      */
+
+
+
+
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
@@ -61,7 +65,8 @@ class Report1 extends Parent_report implements IReport {
                 foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
                     //Match the column headings to the values in the array
                     if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
-                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+                        //$resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
+                        $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem->getCellValue();
                     }
                 }
             }
@@ -108,44 +113,8 @@ class Report1 extends Parent_report implements IReport {
         }
         //return $mainReportCellCollection->getCollection();
         return $mainReportCellCollection;
-        //TODO: Return the collection object and use that as a parameter to the next function
     }
 
-    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
-        $mainReportCellCollection = new Report_cell_collection();
 
-        $previousRowLabel = "";
-        $outputRowNumber = 0;
-
-        //Loop through each row of results
-        foreach ($pResultArray as $resultRow) {
-
-            $currentRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
-
-            //Increase output row number if row label is different
-            if ($currentRowLabel != $previousRowLabel) {
-                $outputRowNumber++;
-                //Add new cell for row label
-                $newReportCell = new Report_cell();
-                $newReportCell->setCellValue($currentRowLabel);
-                $newReportCell->setSourceResultRow($resultRow);
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-            }
-            $previousRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
-
-            $newReportCell = new Report_cell();
-            $newReportCell->setCellValue($resultRow["match_count"]);
-            $newReportCell->setSourceResultRow($resultRow);
-
-            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-
-        }
-
-
-
-
-    }
 
 }

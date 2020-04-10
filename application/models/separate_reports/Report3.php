@@ -147,8 +147,6 @@ class Report3 extends Parent_report implements IReport {
         return $mainReportCellCollection;
     }
 
-    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
-
-    }
+    
     
 }

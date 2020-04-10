@@ -132,8 +132,6 @@ class Report8 extends Parent_report implements IReport {
         return $mainReportCellCollection;
     }
 
-    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
 
-    }
     
 }
