@@ -155,9 +155,7 @@ class Report2 extends Parent_report implements IReport {
                     //Match the column headings to the values in the array
                     if ($this->isFieldMatchingColumn($singleReportCell, $columnHeadingSet, $pReportColumnFields)) {
                         $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $singleReportCell->getCellValue();
-                        if ($columnHeadingSet['short_league_name'] != '2 Umpires') { //TODO Refactor this into separate function
-                            $gamesTotalForRow = $gamesTotalForRow + $singleReportCell->getCellValue();
-                        }
+                        $gamesTotalForRow = $this->updateTotalForRow($gamesTotalForRow, $singleReportCell, $columnHeadingSet);
 
                     }
 
@@ -171,6 +169,14 @@ class Report2 extends Parent_report implements IReport {
             $currentResultArrayRowNumber++;
         }
         return $resultOutputArray;
+    }
+
+    private function updateTotalForRow($pGamesTotalForRow, $singleReportCell, $columnHeadingSet) {
+        //Don't add total if the current column is for 2 Umpires. These are to be excluded from the total.
+        if ($columnHeadingSet['short_league_name'] != '2 Umpires') {
+            $pGamesTotalForRow = $pGamesTotalForRow + $singleReportCell->getCellValue();
+        }
+        return $pGamesTotalForRow;
     }
 
 
