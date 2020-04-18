@@ -46,7 +46,7 @@ class Report1 extends Parent_report implements IReport {
 
 
 
-
+/*
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
@@ -74,7 +74,8 @@ class Report1 extends Parent_report implements IReport {
         }
         return $resultOutputArray;
     }
-
+*/
+/*
     public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
         $previousRowLabel = array();
         $counterForRow = 0;
@@ -115,6 +116,6 @@ class Report1 extends Parent_report implements IReport {
         return $mainReportCellCollection;
     }
 
-
+*/
 
 }

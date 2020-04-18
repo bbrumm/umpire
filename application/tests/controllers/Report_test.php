@@ -124,7 +124,7 @@ VALUES ('Smith, John', 'GFL', 'Clubname', 'Seniors', 'Geelong', 'Field', 3, 2018
         $this->CI->session->set_userdata($sessionArray);
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>01 - Umpires and Clubs (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>01 - Umpires and Clubs (2018)</h1>";
         $this->assertContains($expected, $output);
         //Check that Create PDF is showing on header
         $linkName = "Create PDF";
@@ -152,7 +152,7 @@ VALUES ('Smith, John', 'GFL', 'Seniors', 1, 1, 0, 'Geelong', 'Field', 3, 2018);"
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>02 - Umpire Names by League (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>02 - Umpire Names by League (2018)</h1>";
         $this->assertContains($expected, $output);
     }
 
@@ -179,7 +179,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
     
@@ -208,7 +208,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
     
@@ -238,7 +238,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
     
@@ -269,7 +269,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
     
@@ -305,7 +305,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
 
@@ -329,7 +329,7 @@ VALUES ('Club name', 'Seniors', 'GFL', 'Geelong', 'Field', 1, 1, 5, 2018);";
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>04 - Summary by Club (Matches Where No Umpires Are Recorded) (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>04 - Summary by Club (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
 
@@ -353,7 +353,7 @@ VALUES ('Field', 'Seniors', 1, 'GFL', 2, 'Geelong', 4, 8, 50, 2018);";
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>05 - Games with Zero Umpires For Each League (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>05 - Games with Zero Umpires For Each League (2018)</h1>";
         $this->assertContains($expected, $output);
     }
 
@@ -377,7 +377,7 @@ VALUES ('Field', 'Seniors', 'Geelong', 'Smith, John', 'Jones, Susan', 2018, 6, '
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>06 - Umpire Pairing (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>06 - Umpire Pairing (2018)</h1>";
         $this->assertContains($expected, $output);
     }
 
@@ -401,7 +401,7 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>07 - Games with 2 or 3 Field Umpires (2018)</h1>";
+        $expected = "<h1 id='mainHeading'>07 - Games with 2 or 3 Field Umpires (2018)</h1>";
         $this->assertContains($expected, $output);
     }
 
@@ -416,7 +416,7 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>08 - Umpire Games Tally</h1>";
+        $expected = "<h1 id='mainHeading'>08 - Umpire Games Tally</h1>";
         $this->assertContains($expected, $output);
     }
     
@@ -431,7 +431,7 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1>08 - Umpire Games Tally</h1>";
+        $expected = "<h1 id='mainHeading'>08 - Umpire Games Tally</h1>";
         $this->assertContains($expected, $output);
     }
 

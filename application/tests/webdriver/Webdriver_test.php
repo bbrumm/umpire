@@ -46,7 +46,7 @@ class Webdriver_test extends TestCase
 
     public function setUp() {
         //TODO: Add class variable initialisation and check here, so we can run this code only once, to save time
-        $host = 'http://localhost:4444/'; // this is the default
+        $host = 'http://localhost:4444/wd/hub/'; // this is the default
         $options = new ChromeOptions();
         $options->addArguments(['--headless', 'window-size=1024,768']);
 

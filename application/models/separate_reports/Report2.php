@@ -131,6 +131,48 @@ class Report2 extends Parent_report implements IReport {
         return $mainReportCellCollection;
     }
 
+    //TODO: This was copied from Parent_report so I should refactor this
+    public function transformReportCellCollectionIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
+        $resultOutputArray = [];
+        $currentResultArrayRowNumber = 0;
+        $columnNumberForTotalValues = count($columnLabelResultArray);
+
+        //Loop through each set of Report_cells. Each entry here is a single person or row of data.
+        foreach ($pReportCellCollection->getReportCellArray() as $setOfReportCellsForOneRow) {
+            $columnNumber = 0;
+            $gamesTotalForRow = 0;
+
+            //Set total to 0 as a starting value
+            //$resultOutputArray[$currentResultArrayRowNumber][$columnNumberForTotalValues] = 0;
+
+            //Add row labels to output array. Once for each row
+            $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $setOfReportCellsForOneRow[0]->getCellValue();
+            $columnNumber++;
+            //Loop through each cell in this list
+
+            foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
+                foreach($setOfReportCellsForOneRow as $singleReportCell) {
+                    //Match the column headings to the values in the array
+                    if ($this->isFieldMatchingColumn($singleReportCell, $columnHeadingSet, $pReportColumnFields)) {
+                        $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $singleReportCell->getCellValue();
+                        if ($columnHeadingSet['short_league_name'] != '2 Umpires') { //TODO Refactor this into separate function
+                            $gamesTotalForRow = $gamesTotalForRow + $singleReportCell->getCellValue();
+                        }
+
+                    }
+
+                }
+                $columnNumber++;
+            }
+
+            //Add total value to output array
+            $resultOutputArray[$currentResultArrayRowNumber][$columnNumberForTotalValues] = $gamesTotalForRow;
+
+            $currentResultArrayRowNumber++;
+        }
+        return $resultOutputArray;
+    }
+
 
 
 
