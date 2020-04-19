@@ -2,7 +2,7 @@ SELECT
 weekend_date,
 CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group,
 short_league_name,
-GROUP_CONCAT(team_names) AS team_list, (
+GROUP_CONCAT(team_names ORDER BY team_names) AS team_list, (
   SELECT
   COUNT(DISTINCT match_id)
   FROM staging_no_umpires s2

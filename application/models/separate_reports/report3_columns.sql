@@ -2,21 +2,23 @@ SELECT DISTINCT
 CONCAT('No ', age_group, ' ', umpire_type) AS umpire_type_age_group,
 short_league_name
 FROM (
-SELECT
-s.age_group,
-s.umpire_type,
-s.short_league_name,
-s.region_name,
-s.age_sort_order
-FROM staging_all_ump_age_league s
-UNION ALL
-SELECT
-s.age_group,
-s.umpire_type,
-'Total',
-'Total',
-s.age_sort_order
-FROM staging_all_ump_age_league s
+  SELECT
+  s.age_group,
+  s.umpire_type,
+  s.short_league_name,
+  s.region_name,
+  s.age_sort_order
+  FROM staging_all_ump_age_league s
+  WHERE s.region_name = :pRegion
+  UNION ALL
+  SELECT
+  s.age_group,
+  s.umpire_type,
+  'Total',
+  'Total',
+  s.age_sort_order
+  FROM staging_all_ump_age_league s
+  WHERE s.region_name = :pRegion
 ) sub
 WHERE CONCAT(age_group, ' ', umpire_type) IN (
     'Seniors Boundary' ,

@@ -391,11 +391,7 @@ FROM backup_report_07_2018;";
             array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
             array('umpire_type_age_group'=>'No Seniors Goal', 'short_league_name'=>self::UMPIRE_TOTAL),
             array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_LEAGUE_CDFNL),
-            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_TOTAL),
-            array('umpire_type_age_group'=>'No Colts Field', 'short_league_name'=>self::UMPIRE_TOTAL),
-            array('umpire_type_age_group'=>'No Under 16 Field', 'short_league_name'=>self::UMPIRE_TOTAL),
-            array('umpire_type_age_group'=>'No Under 14 Field', 'short_league_name'=>self::UMPIRE_TOTAL),
-            array('umpire_type_age_group'=>'No Under 12 Field', 'short_league_name'=>self::UMPIRE_TOTAL)
+            array('umpire_type_age_group'=>'No Reserves Goal', 'short_league_name'=>self::UMPIRE_TOTAL)
         );
 
         $this->assertEquals($resultArrayExpected, $resultArrayActual);
