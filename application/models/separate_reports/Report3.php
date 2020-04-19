@@ -41,6 +41,8 @@ class Report3 extends Parent_report implements IReport {
      *
      *
      */
+
+    //Old function?
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
@@ -74,38 +76,60 @@ class Report3 extends Parent_report implements IReport {
         return $resultOutputArray;
     }
 
+    //New function
+    public function transformReportCellCollectionIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
+        $resultOutputArray = [];
+        $currentResultArrayRowNumber = 0;
+
+        //Loop through each set of Report_cells. Each entry here is a single person or row of data.
+        foreach ($pReportCellCollection->getReportCellArray() as $setOfReportCellsForOneRow) {
+            $columnNumber = 0;
+
+            //Add row labels to output array. Once for each row
+            $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $setOfReportCellsForOneRow[0]->getCellValue();
+            $columnNumber++;
+            //Loop through each cell in this list
+
+            foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
+                foreach($setOfReportCellsForOneRow as $singleReportCell) {
+                    //Match the column headings to the values in the array
+                    if ($this->isFieldMatchingColumnReport3($singleReportCell, $columnHeadingSet, $pReportColumnFields)) {
+                        $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $singleReportCell->getCellValue();
+                    }
+
+
+                    /*
+                     if ($this->isFieldMatchingColumn($singleReportCell, $columnHeadingSet, $pReportColumnFields)) {
+                        $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $singleReportCell->getCellValue();
+                    }
+                    */
+
+                }
+                $columnNumber++;
+            }
+            $currentResultArrayRowNumber++;
+        }
+        return $resultOutputArray;
+    }
+
     
 
 
     private function isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
-        return ($pColumnItem[$pReportColumnFields[0]] == $pColumnHeadingSet[$pReportColumnFields[0]] &&
-            $pColumnHeadingSet[$pReportColumnFields[1]] == 'Total');
+        //return ($pColumnItem->getColumnHeaderValueFirst() == $pColumnHeadingSet[$pReportColumnFields[0]] &&
+        //    $pColumnHeadingSet[$pReportColumnFields[1]] == 'Total');
+        return ($pColumnItem->getColumnHeaderValueFirst() == $pColumnHeadingSet[$pReportColumnFields[0]] &&
+            $pColumnItem->getColumnHeaderValueSecond() == 'Total');
     }
 
     public function isFieldMatchingColumnReport3($pColumnItem, $pColumnHeadingSet, $pReportColumnFields) {
         //TODO: Write a test to ensure that the report grouping structure only returns 2 columns for this report,
         //and the right number of rows for other reports.
         if ($pColumnHeadingSet[$pReportColumnFields[1]] == 'Total') {
-                    return $this->isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                } else {
-                    return $this->isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                }
-        /*
-        switch (count($pReportColumnFields)) {
-            case 1:
-                return $this->isFieldMatchingOneColumn($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-            case 2:
-                if ($pColumnHeadingSet[$pReportColumnFields[1]] == 'Total') {
-                    return $this->isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                } else {
-                    return $this->isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-                }
-            case 3:
-                return $this->isFieldMatchingThreeColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
-            default:
-                throw new InvalidArgumentException("Count of report column fields needs to be between 1 and 3.");
+            return $this->isFieldMatchingTwoColumnsWithTotal($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
+        } else {
+            return $this->isFieldMatchingTwoColumns($pColumnItem, $pColumnHeadingSet, $pReportColumnFields);
         }
-        */
     }
 
 

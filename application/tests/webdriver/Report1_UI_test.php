@@ -11,11 +11,41 @@ class Report1_UI_test extends TestCase
 
     const LEAGUE_BFL = "BFL";
     const LEAGUE_GFL = "GFL";
+    const LEAGUE_GDFL = "GDFL";
+    const LEAGUE_GJFL = "GJFL";
+    const LEAGUE_CDFNL = "CDFNL";
+    const LEAGUE_WOMEN = "Women";
+
     const UMP_TYPE_FIELD = "Field";
     const UMP_TYPE_BOUNDARY = "Boundary";
+    const UMP_TYPE_GOAL = "Goal";
+
+    //Age Group: Seniors, Reserves, Colts, Under 19, Under 18, Under 17.5, Under 17, Under 16, Under 15, Under 14.5, Under 14, Under 13, Under 12, Under 19 Girls, Under 18 Girls, Under 15 Girls, Under 12 Girls, Youth Girls, Junior Girls,'
     const AGE_GROUP_SENIORS = "Seniors";
     const AGE_GROUP_RESERVES = "Reserves";
+
+    const AGE_GROUP_COLTS = "Colts";
+    const AGE_GROUP_U19 = "Under 19";
+    const AGE_GROUP_U18 = "Under 18";
+    const AGE_GROUP_U175 = "Under 17.5";
+    const AGE_GROUP_U17 = "Under 17";
+    const AGE_GROUP_U16 = "Under 16";
+    const AGE_GROUP_U15 = "Under 15";
+    const AGE_GROUP_U145 = "Under 14.5";
+    const AGE_GROUP_U14 = "Under 14";
+    const AGE_GROUP_U13 = "Under 13";
+    const AGE_GROUP_U12 = "Under 12";
+    const AGE_GROUP_U19G = "Under 19 Girls";
+    const AGE_GROUP_U18G = "Under 18 Girls";
+    const AGE_GROUP_U15G = "Under 15 Girls";
+    const AGE_GROUP_U12G = "Under 12 Girls";
+    const AGE_GROUP_YG = "Youth Girls";
+    const AGE_GROUP_JG = "Junior Girls";
+
+
+    const REGION_GEELONG = "Geelong";
     const YEAR_2015 = 2015;
+    const YEAR_2017 = 2017;
     const YEAR_2018 = 2018;
 
     const EXPECTED_DATA_REPORT1_TEST1 = array(
@@ -244,6 +274,31 @@ class Report1_UI_test extends TestCase
         array('Wood, Taleitha', 4, '', '', '', '', 4)
     );
 
+    const EXPECTED_DATA_REPORT3_TEST1 = array(
+        array('01/04/2017', '', '', '', '', '', '', 'Thomson vs Bannockburn,Anakie vs Werribee Centrals', 'St Albans vs South Barwon', 3, '', '', '', '', '', '', '', '', '', '', '', '', ''),
+        array('08/04/2017', 'Newcomb vs Queenscliff', 'Werribee Centrals vs Winchelsea', '', 2, '', '', '', 'St Joseph\'s vs Bell Park', 1, '', '', '', '', '', '', '', '', '', '', '', '', ''),
+        array('15/04/2017', '', '', '', '', '', 'Portarlington vs Newcomb', '', '', 1, '', '', '', '', '', '', '', '', '', '', '', '', ''),
+        array('22/04/2017', '', 'Winchelsea vs Corio', '', 1, '', '', '', 'North Shore vs Colac', 1, '', '', '', '', '', '', '', '', '', 'Ogcc 3 vs St Joseph\'s 3,Ogcc 2 vs Geelong West Giants 2', 2, 'Swans Blue vs Lara Batman,Grovedale Smith vs Barwon Heads Gulls,Modewarre vs Barwon Heads Heads,Torquay Milliken vs Swans White,Flying Joeys vs Saints Blue,Drysdale Butcher vs Grovedale Dale,Bell Post Hill vs Little River,Aireys Eels vs Anglesea,Portarlington Blue vs Swans Red,Torquay Browning vs Lara Flinders,Corio vs Seagulls,Tigers Black vs Bell Park,St Albans Grinter vs Lara Hume,Ammos Blue vs Ammos Green,Leopold Brown vs Torquay Davies,Torquay Bruce vs Leopold Dowsett,Giants vs Ammos White,Torquay Stone vs Torquay Coleman,Portarlington Red vs Newcomb,Thomson vs Belmont Lions,Drysdale Wilton vs Ogcc Orange,Ogcc Blue vs Queenscliff,Saints Green vs Eagles,Leaping Joeys vs Tigers Gold,Inverleigh vs Lethbridge,Ogcc White vs Grovedale Delaney,Torquay Watson vs Winchelsea', 27),
+        array('29/04/2017', 'Newcomb vs Geelong Amateur', '', '', 2, 'Drysdale vs Spotswood', '', '', 'Grovedale vs Leopold', 2, 'Drysdale vs Spotswood', '', '', '', '', '', '', '', '', '', '', 'Lara Flinders vs St Albans Grinter,Little River vs Corio,Winchelsea vs Inverleigh,Saints Blue vs Saints Green,Queenscliff vs Leopold Brown,Swans White vs Aireys Eels,Newcomb vs Torquay Watson,Ogcc Orange vs Torquay Bruce,Belmont Lions vs Portarlington Blue,Tigers Gold vs Ammos Blue,Barwon Heads Heads vs Torquay Milliken,Bell Park vs Leaping Joeys,Torquay Davies vs Drysdale Butcher,Lara Hume vs Swans Blue,Torquay Coleman vs Portarlington Red,Giants vs Ammos Green,Leopold Dowsett vs Ogcc White,Grovedale Delaney vs Drysdale Wilton,Seagulls vs Torquay Stone,Torquay Browning vs Lara Batman,Lethbridge vs Bell Post Hill,Eagles vs Tigers Black,Anglesea vs Modewarre,Grovedale Dale vs Grovedale Smith,Swans Red vs Thomson,Barwon Heads Gulls vs Ogcc Blue,Ammos White vs Flying Joeys', 27),
+        array('06/05/2017', 'Queenscliff vs Anglesea', '', '', 1, '', '', '', '', '', '', '', '', '', '', 'Inverleigh vs Drysdale 2', 1, 'Anglesea vs Barwon Heads', 1, 'Drysdale Grigg vs Bell Park 1', 1, 'Grovedale Smith vs Torquay Bruce,Leaping Joeys vs Eagles,Torquay Browning vs Swans Blue,St Albans Grinter vs Queenscliff,Ogcc Blue vs Leopold Brown,Leopold Dowsett vs Grovedale Delaney,Anglesea vs Torquay Watson,Grovedale Dale vs Ogcc Orange,Corio vs Inverleigh,Bell Park vs Ammos Blue,Ammos Green vs Tigers Gold,Newcomb vs Lethbridge,Drysdale Wilton vs Portarlington Red,Saints Green vs Ammos White,Swans White vs Winchelsea,Torquay Davies vs Barwon Heads Heads,Thomson vs Portarlington Blue,Bell Post Hill vs Swans Red,Seagulls vs Little River,Lara Batman vs Drysdale Butcher,Barwon Heads Gulls vs Lara Hume,Belmont Lions vs Aireys Eels,Torquay Coleman vs Modewarre,Torquay Milliken vs Ogcc White,Flying Joeys vs Giants,Lara Flinders vs Torquay Stone,Tigers Black vs Saints Blue', 27),
+        array('13/05/2017', '', '', '', 1, 'North Geelong vs Spotswood', '', '', '', 1, 'North Geelong vs Spotswood', '', '', '', '', '', '', 'Ocean Grove 2 vs Modewarre', 1, '', '', 'Torquay Bruce vs St Albans Grinter,Portarlington Blue vs Torquay Coleman,Modewarre vs Bell Post Hill,Little River vs Lara Batman,Barwon Heads Heads vs Grovedale Dale,Ogcc Orange vs Swans Red,Eagles vs Ammos Blue,Saints Blue vs Leaping Joeys,Tigers Gold vs Bell Park,Torquay Stone vs Torquay Browning,Lara Hume vs Ogcc Blue,Ammos Green vs Flying Joeys,Grovedale Delaney vs Torquay Davies,Swans White vs Seagulls,Aireys Eels vs Torquay Watson,Corio vs Newcomb,Ammos White vs Tigers Black,Inverleigh vs Belmont Lions,Queenscliff vs Leopold Dowsett,Swans Blue vs Lara Flinders,Winchelsea vs Anglesea,Lethbridge vs Thomson,Portarlington Red vs Grovedale Smith,Ogcc White vs Barwon Heads Gulls,Drysdale Butcher vs Torquay Milliken,Giants vs Saints Green,Leopold Brown vs Drysdale Wilton', 27),
+        array('20/05/2017', '', '', '', 1, 'North Geelong vs Spotswood', '', '', '', 1, 'North Geelong vs Spotswood', '', '', '', '', '', '', 'Drysdale Richardson vs Geelong Amateur 2', 1, 'Drysdale Grigg vs Torquay Bumpstead', 1, 'Queenscliff vs Torquay Browning,Bell Park vs Ammos Green,Portarlington Red vs Lara Flinders,Swans Red vs Drysdale Wilton,Tigers Gold vs Eagles,Torquay Milliken vs Torquay Bruce,Bell Post Hill vs Corio,Leopold Dowsett vs Torquay Davies,Saints Green vs Flying Joeys,Ammos Blue vs Saints Blue,Lara Batman vs Aireys Eels,Torquay Stone vs Grovedale Dale,Modewarre vs Swans White,Seagulls vs Anglesea,Little River vs Newcomb,Inverleigh vs Thomson,Barwon Heads Gulls vs Grovedale Delaney,Tigers Black vs Giants,Ogcc White vs Swans Blue,Lara Hume vs Barwon Heads Heads,St Albans Grinter vs Ogcc Blue,Leaping Joeys vs Ammos White,Drysdale Butcher vs Torquay Coleman,Leopold Brown vs Grovedale Smith,Torquay Watson vs Ogcc Orange,Portarlington Blue vs Winchelsea,Lethbridge vs Belmont Lions', 27),
+        array('27/05/2017', 'Queenscliff vs Portarlington', '', '', 2, 'Drysdale vs Spotswood', '', '', 'Geelong West Giants vs Lara', 1, '', '', '', '', '', '', '', 'Drysdale Richardson vs Leopold Butteriss', 1, '', '', 'Ogcc White vs Lara Hume,Inverleigh vs Bell Post Hill,Torquay Coleman vs Torquay Milliken,Lara Flinders vs Queenscliff,Torquay Davies vs St Albans Grinter,Barwon Heads Heads vs Leopold Brown,Lara Batman vs Winchelsea,Flying Joeys vs Tigers Black,Grovedale Dale vs Leopold Dowsett,Torquay Watson vs Ogcc Blue,Saints Blue vs Tigers Gold,Anglesea vs Portarlington Blue,Eagles vs Bell Park,Drysdale Butcher vs Torquay Stone,Thomson vs Modewarre,Lethbridge vs Corio,Ammos Green vs Saints Green,Torquay Browning vs Barwon Heads Gulls,Newcomb vs Swans White,Grovedale Smith vs Ogcc Orange,Drysdale Wilton vs Seagulls,Aireys Eels vs Swans Red,Swans Blue vs Portarlington Red,Little River vs Belmont Lions,Grovedale Delaney vs Torquay Bruce,Giants vs Leaping Joeys,Ammos White vs Ammos Blue', 27),
+        array('03/06/2017', '', 'Bannockburn vs Corio', '', 1, '', '', '', 'Bell Park vs South Barwon', 1, '', '', '', '', '', '', '', 'Modewarre vs Grovedale 2', 1, 'Modewarre / Winchelsea vs Geelong West Giants 1', 1, 'Anglesea vs Lara Batman,Torquay Coleman vs Grovedale Dale,Grovedale Delaney vs Swans Blue,Ogcc Blue vs Grovedale Smith,Corio vs Thomson,Portarlington Blue vs Drysdale Wilton,Ammos Blue vs Saints Green,Ogcc Orange vs Torquay Davies,Barwon Heads Heads vs St Albans Grinter,Saints Blue vs Ammos Green,Inverleigh vs Newcomb,Leaping Joeys vs Tigers Black,Eagles vs Ammos White,Portarlington Red vs Torquay Browning,Torquay Stone vs Ogcc White,Barwon Heads Gulls vs Lara Flinders,Seagulls vs Aireys Eels,Flying Joeys vs Tigers Gold,Bell Post Hill vs Lethbridge,Winchelsea vs Swans Red,Belmont Lions vs Modewarre,Leopold Dowsett vs Drysdale Butcher,Torquay Bruce vs Queenscliff,Lara Hume vs Torquay Milliken,Bell Park vs Giants,Leopold Brown vs Torquay Watson,Swans White vs Little River', 27),
+        array('10/06/2017', '', '', '', '', '', 'Modewarre vs Queenscliff', 'Bell Post Hill vs Thomson', 'Bell Park vs Grovedale,Newtown & Chilwell vs Lara', 4, '', '', '', '', '', 'North Shore vs Winchelsea', 1, 'Geelong Amateur 1 vs St Albans Osborne,Ocean Grove 2 vs Grovedale 2,North Shore vs Anglesea', 3, 'Ogcc 1 vs St Mary\'s 1,Geelong Amateur 1 vs Newtown & Chilwell 2', 2, 'Lara Batman vs Drysdale Wilton,Ammos Green vs Tigers Black,St Albans Grinter vs Leopold Brown,Ogcc Orange vs Barwon Heads Heads,Ammos White vs Bell Park,Belmont Lions vs Thomson,Corio vs Inverleigh,Swans Red vs Anglesea,Lara Hume vs Torquay Coleman,Ogcc White vs Leopold Dowsett,Swans Blue vs Barwon Heads Gulls,Newcomb vs Modewarre,Grovedale Smith vs Torquay Watson,Tigers Gold vs Giants,Lara Flinders vs Torquay Bruce,Portarlington Blue vs Seagulls,Saints Blue vs Eagles,Aireys Eels vs Winchelsea,Bell Post Hill vs Little River,Grovedale Dale vs Drysdale Butcher,Grovedale Delaney vs Torquay Browning,Portarlington Red vs Queenscliff,Swans White vs Lethbridge,Torquay Milliken vs Torquay Stone,Ammos Blue vs Flying Joeys,Ogcc Blue vs Torquay Davies,Saints Green vs Leaping Joeys', 27),
+        array('17/06/2017', '', '', '', '', '', 'Newcomb vs Portarlington', '', '', 2, 'Drysdale vs Spotswood', '', '', '', '', '', '', 'Modewarre vs Ocean Grove 2', 1, 'Geelong Amateur 3 vs Torquay Pyers,Geelong Amateur 2 vs Belmont Lions', 2, 'Modewarre vs Seagulls,Torquay Stone vs Grovedale Delaney,Torquay Coleman vs Portarlington Red,Swans Blue vs Queenscliff,Torquay Watson vs Barwon Heads Heads,Ammos White vs Tigers Gold,Ogcc Blue vs Leopold Brown,Leaping Joeys vs Flying Joeys,Leopold Dowsett vs Lara Hume,Ogcc White vs Drysdale Butcher,Bell Park vs Saints Blue,Grovedale Dale vs Torquay Milliken,Ammos Green vs Eagles,Swans Red vs Portarlington Blue,Torquay Bruce vs Barwon Heads Gulls,St Albans Grinter vs Ogcc Orange,Lara Flinders vs Torquay Browning,Tigers Black vs Saints Green,Ammos Blue vs Giants,Little River vs Lethbridge,Swans White vs Bell Post Hill,Belmont Lions vs Inverleigh,Drysdale Wilton vs Aireys Eels,Newcomb vs Thomson,Winchelsea vs Anglesea,Torquay Davies vs Grovedale Smith,Lara Batman vs Corio', 27),
+        array('24/06/2017', '', '', '', 1, 'Drysdale vs Spotswood', 'Torquay vs Ocean Grove', '', 'Colac vs Geelong West Giants', 3, 'Drysdale vs Spotswood', '', '', '', '', '', '', 'Ocean Grove 2 vs Queenscliff', 1, '', '', 'Aireys Eels vs Portarlington Blue,Queenscliff vs Barwon Heads Gulls,Lara Batman vs Swans White,Bell Post Hill vs Newcomb,Thomson vs Lethbridge,Seagulls vs Anglesea,Ammos Green vs Leaping Joeys,Torquay Watson vs Torquay Davies,Torquay Bruce vs Portarlington Red,Giants vs Eagles,Lara Flinders vs Torquay Coleman,Ammos White vs Saints Blue,Modewarre vs St Albans Grinter,Winchelsea vs Drysdale Wilton,Torquay Browning vs Swans Blue,Torquay Stone vs Lara Hume,Barwon Heads Heads vs Ogcc Blue,Drysdale Butcher vs Grovedale Delaney,Corio vs Belmont Lions,Grovedale Smith vs Leopold Brown,Tigers Black vs Ammos Blue,Little River vs Inverleigh,Saints Green vs Tigers Gold,Torquay Milliken vs Leopold Dowsett,Flying Joeys vs Bell Park,Ogcc Orange vs Swans Red,Grovedale Dale vs Ogcc White', 27),
+        array('01/07/2017', '', '', '', '', '', '', 'Bell Post Hill vs Corio', 'North Shore vs St Mary\'s', 2, '', '', '', '', '', '', '', 'Queenscliff vs Grovedale 2,Lara 2 vs Ocean Grove 3', 2, 'Torquay Dunstan vs St Mary\'s 2,Torquay Pyers vs Ogcc 3', 2, 'Torquay Browning vs Torquay Bruce,Bell Park vs Saints Green,Torquay Milliken vs Drysdale Butcher,Barwon Heads Heads vs Grovedale Smith,Swans White vs Belmont Lions,Leopold Dowsett vs Torquay Stone,Seagulls vs Swans Red,Grovedale Delaney vs Ogcc White,Lethbridge vs Newcomb,Saints Blue vs Giants,Tigers Gold vs Tigers Black,Lara Batman vs Bell Post Hill,Corio vs Little River,Ogcc Blue vs Torquay Watson,Portarlington Blue vs Modewarre,Eagles vs Flying Joeys,Queenscliff vs Torquay Coleman,Swans Blue vs Lara Flinders,Barwon Heads Gulls vs Portarlington Red,Lara Hume vs Grovedale Dale,Leopold Brown vs Torquay Davies,Thomson vs Inverleigh,Anglesea vs Drysdale Wilton,Aireys Eels vs Ogcc Orange,St Albans Grinter vs Winchelsea,Ammos White vs Ammos Green,Ammos Blue vs Leaping Joeys', 27),
+        array('15/07/2017', '', '', 'Leopold vs St Albans', 2, 'North Geelong vs Spotswood', 'Modewarre vs Newcomb', '', '', 2, 'North Geelong vs Spotswood', '', '', '', '', 'North Shore vs Drysdale 2', 1, 'Inverleigh vs Ocean Grove 3', 1, '', '', 'Leopold Brown vs Barwon Heads Heads,Portarlington Red vs Lara Flinders,Ogcc White vs Torquay Milliken,Swans Red vs Aireys Eels,Newcomb vs Little River,Torquay Davies vs Ogcc Blue,Eagles vs Saints Green,Bell Post Hill vs Thomson,St Albans Grinter vs Anglesea,Grovedale Delaney vs Leopold Dowsett,Saints Blue vs Flying Joeys,Tigers Gold vs Leaping Joeys,Swans White vs Corio,Modewarre vs Ogcc Orange,Inverleigh vs Lara Batman,Portarlington Blue vs Winchelsea,Giants vs Ammos White,Torquay Watson vs Grovedale Smith,Bell Park vs Tigers Black,Torquay Coleman vs Barwon Heads Gulls,Drysdale Butcher vs Lara Hume,Queenscliff vs Torquay Browning,Torquay Stone vs Grovedale Dale,Belmont Lions vs Lethbridge,Ammos Green vs Ammos Blue,Drysdale Wilton vs Seagulls,Torquay Bruce vs Swans Blue', 27),
+        array('22/07/2017', '', '', '', '', '', '', 'Corio vs Winchelsea', 'St Joseph\'s vs North Shore', 2, '', '', '', '', '', 'Newcomb vs Inverleigh', 1, 'Drysdale Richardson vs St Joseph\'s Jackman', 1, '', '', 'Giants vs Ammos Green,Grovedale Smith vs Ogcc Blue,Barwon Heads Gulls vs Torquay Browning,Belmont Lions vs Bell Post Hill,Seagulls vs St Albans Grinter,Ammos Blue vs Tigers Gold,Leaping Joeys vs Bell Park,Lara Hume vs Ogcc White,Torquay Bruce vs Torquay Coleman,Saints Green vs Saints Blue,Drysdale Wilton vs Swans Red,Newcomb vs Corio,Flying Joeys vs Ammos White,Little River vs Lara Batman,Torquay Milliken vs Grovedale Delaney,Portarlington Blue vs Anglesea,Torquay Watson vs Leopold Brown,Portarlington Red vs Swans Blue,Tigers Black vs Eagles,Aireys Eels vs Modewarre,Drysdale Butcher vs Torquay Stone,Torquay Davies vs Barwon Heads Heads,Winchelsea vs Ogcc Orange,Thomson vs Swans White,Lethbridge vs Inverleigh,Queenscliff vs Lara Flinders,Leopold Dowsett vs Grovedale Dale', 27),
+        array('29/07/2017', '', '', '', 1, 'North Geelong vs Spotswood', '', '', 'Bell Park vs St Joseph\'s', 2, 'North Geelong vs Spotswood', '', '', '', '', '', '', '', '', 'Queenscliff vs Newtown & Chilwell 2', 1, 'Flying Joeys vs Giants,Leopold Brown vs Ogcc Blue,Barwon Heads Heads vs Torquay Watson,Saints Green vs Ammos White,Torquay Browning vs Portarlington Red,Torquay Milliken vs Lara Hume,Corio vs Bell Post Hill,Drysdale Butcher vs Leopold Dowsett,Swans Blue vs Torquay Coleman,St Albans Grinter vs Portarlington Blue,Grovedale Dale vs Grovedale Delaney,Little River vs Thomson,Torquay Stone vs Ogcc White,Seagulls vs Aireys Eels,Swans Red vs Winchelsea,Ammos Blue vs Bell Park,Torquay Davies vs Grovedale Smith,Anglesea vs Modewarre,Queenscliff vs Torquay Bruce,Lara Flinders vs Barwon Heads Gulls,Eagles vs Leaping Joeys,Lara Batman vs Lethbridge,Ogcc Orange vs Drysdale Wilton,Tigers Gold vs Ammos Green,Inverleigh vs Swans White,Tigers Black vs Saints Blue,Newcomb vs Belmont Lions', 27),
+        array('05/08/2017', '', '', '', 2, 'Drysdale vs Spotswood,North Geelong vs Spotswood', '', '', 'St Mary\'s vs South Barwon', 3, 'North Geelong vs Spotswood,Drysdale vs Spotswood', '', '', '', '', '', '', 'Drysdale Ruggles vs Torquay Papworth', 1, '', '', 'Saints Green vs Giants,Leaping Joeys vs Saints Blue,Barwon Heads Gulls vs Swans Blue,Ogcc Blue vs Barwon Heads Heads,Queenscliff vs Portarlington Red,Modewarre vs Drysdale Wilton,Winchelsea vs Seagulls,Torquay Coleman vs Torquay Browning,Swans White vs Newcomb,Eagles vs Ammos Blue,Lara Hume vs Torquay Stone,Lethbridge vs Corio,Belmont Lions vs Little River,Bell Park vs Tigers Gold,Ogcc White vs Grovedale Dale,Bell Post Hill vs Inverleigh,Ammos White vs Tigers Black,Flying Joeys vs Ammos Green,Swans Red vs St Albans Grinter,Ogcc Orange vs Portarlington Blue,Grovedale Delaney vs Drysdale Butcher,Torquay Davies vs Torquay Watson,Grovedale Smith vs Leopold Brown,Leopold Dowsett vs Torquay Milliken,Anglesea vs Aireys Eels,Thomson vs Lara Batman,Lara Flinders vs Torquay Bruce', 27),
+        array('12/08/2017', '', '', '', 1, 'North Geelong vs Spotswood', '', '', '', 2, 'North Geelong vs Spotswood,Drysdale vs Spotswood', '', '', '', '', 'Belmont Lions vs Drysdale 2,Corio vs Newcomb', 2, 'Geelong Amateur 1 vs Bannockburn 1', 1, 'Geelong Amateur 2 vs Corio', 1, 'Bell Post Hill vs Swans White,Lethbridge vs Little River,Swans Red vs Modewarre,Tigers Gold vs Eagles,Leopold Brown vs Torquay Davies,Tigers Black vs Saints Green,Giants vs Ammos Blue,Torquay Coleman vs Lara Flinders,Grovedale Dale vs Torquay Milliken,Leopold Dowsett vs Lara Hume,Barwon Heads Heads vs Grovedale Smith,Drysdale Wilton vs St Albans Grinter,Ogcc Blue vs Torquay Watson,Anglesea vs Ogcc Orange,Leaping Joeys vs Flying Joeys,Drysdale Butcher vs Ogcc White,Swans Blue vs Torquay Browning,Belmont Lions vs Lara Batman,Ammos Green vs Bell Park,Seagulls vs Portarlington Blue,Saints Blue vs Ammos White,Torquay Stone vs Grovedale Delaney,Inverleigh vs Newcomb,Aireys Eels vs Winchelsea,Barwon Heads Gulls vs Queenscliff,Thomson vs Corio,Torquay Bruce vs Portarlington Red', 27),
+        array('19/08/2017', '', '', '', '', '', '', 'Inverleigh vs Corio', '', 1, '', '', '', '', '', '', '', '', '', '', '', '', ''),
+        array('26/08/2017', '', '', 'Leopold vs North Shore', 1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
+ );
+
+
     public function setUp() {
         //TODO: Add class variable initialisation and check here, so we can run this code only once, to save time
         $host = 'http://localhost:4444/wd/hub'; // this is the default. If I get a JSON decoding error, try adding or removing /wd/hub/
@@ -459,6 +514,45 @@ class Report1_UI_test extends TestCase
         $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT2_TEST1); //
     }
 
+    public function test_DisplayReport3() {
+        $this->login();
 
+        //Make checkbox selections
+        $this->clickElement($this::REGION_GEELONG);
+
+
+        //Change report
+        $this->selectReportFromSelectionBox(3);
+
+        //Change year
+        $this->selectReportYear($this::YEAR_2017);
+
+        //Click "View Report"
+        $this->clickElement("viewReport");
+
+        //Assert page
+        //TODO: Fix this defect that adds an extra comma to the end when it shouldn't
+        $this->assertUmpireDisciplineIsCorrect($this::UMP_TYPE_FIELD . ", " . $this::UMP_TYPE_BOUNDARY . ", " . $this::UMP_TYPE_GOAL. ",");
+        $this->assertLeagueIsCorrect($this::LEAGUE_BFL . ", ". $this::LEAGUE_GFL . ", ". $this::LEAGUE_GDFL . ", ". $this::LEAGUE_GJFL . ", ". $this::LEAGUE_CDFNL . ", ". $this::LEAGUE_WOMEN . ",");
+        $this->assertAgeGroupIsCorrect($this::AGE_GROUP_SENIORS . ", ". $this::AGE_GROUP_RESERVES . ", ".
+            $this::AGE_GROUP_COLTS . ", ". $this::AGE_GROUP_U19 . ", ". $this::AGE_GROUP_U18 . ", ".
+            $this::AGE_GROUP_U175 . ", ". $this::AGE_GROUP_U17 . ", ". $this::AGE_GROUP_U16 . ", ".
+            $this::AGE_GROUP_U15 . ", ". $this::AGE_GROUP_U145 . ", ". $this::AGE_GROUP_U14 . ", ".
+            $this::AGE_GROUP_U13 . ", ". $this::AGE_GROUP_U12 . ", ". $this::AGE_GROUP_U19G . ", ".
+            $this::AGE_GROUP_U18G . ", ". $this::AGE_GROUP_U15G . ", ". $this::AGE_GROUP_U12G . ", ".
+            $this::AGE_GROUP_YG . ", ". $this::AGE_GROUP_JG . ",");
+        $this->assertSearchRowIsShown();
+
+        //Assert table
+        $this->assertColumnHeadersAreCorrect(
+            array("Week (Sat)", "No Seniors Boundary", "No Seniors Goal", "No Reserves Goal", "No Colts Field", "No Under 16 Field", "No Under 14 Field", "No Under 12 Field"),
+            array('', $this::LEAGUE_BFL, $this::LEAGUE_GDFL, $this::LEAGUE_GFL, "Total", $this::LEAGUE_WOMEN,
+                $this::LEAGUE_BFL, $this::LEAGUE_GDFL, $this::LEAGUE_GFL, "Total", $this::LEAGUE_WOMEN,
+                $this::LEAGUE_BFL, $this::LEAGUE_GDFL, $this::LEAGUE_GFL, "Total",
+                $this::LEAGUE_GJFL, "Total", $this::LEAGUE_GJFL, "Total", $this::LEAGUE_GJFL, "Total", $this::LEAGUE_GJFL, "Total")
+        );
+
+        $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT3_TEST1);
+    }
 
 }

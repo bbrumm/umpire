@@ -10,9 +10,21 @@ GROUP_CONCAT(team_names) AS team_list, (
   AND s2.umpire_type = s.umpire_type
   AND s2.weekend_date = s.weekend_date
   AND short_league_name IN (:pLeague)
+  AND short_league_name IN (
+     SELECT DISTINCT short_league_name
+     FROM league l
+            INNER JOIN region r ON l.region_id = r.id
+     WHERE region_name = :pRegion
+  )
 ) AS match_count
 FROM staging_no_umpires s
 WHERE short_league_name IN (:pLeague)
+AND short_league_name IN (
+   SELECT DISTINCT short_league_name
+   FROM league l
+          INNER JOIN region r ON l.region_id = r.id
+   WHERE region_name = :pRegion
+   )
 AND season_year = :pSeasonYear
 AND CONCAT(age_group, ' ', umpire_type) IN (
   'Seniors Boundary',

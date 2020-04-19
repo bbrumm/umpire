@@ -222,9 +222,6 @@ class Parent_report extends CI_Model {
 
             //Increase output row number if row label is different
             if ($currentRowLabel != $previousRowLabel) {
-                //TODO: Move this increment to another place. It's causing the first index to be 1.
-                //But the first row's Name value needs to be added somewhere. Maybe two IF statements?
-
                 if ($previousRowLabel != "") {
                     $outputRowNumber++;
                 }
@@ -253,6 +250,18 @@ class Parent_report extends CI_Model {
 
                 //$newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "subtotal");
                 //$mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+            } elseif (get_class($this) == 'Report3') {
+
+                //if ($resultRow['short_league_name'] == 'Total') {
+
+                //Add match_count which is already a total for the report
+                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_count");
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+                //Add team_list
+                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "team_list");
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
             } else {
                 $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_count");
                 $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
@@ -281,14 +290,19 @@ class Parent_report extends CI_Model {
                 //Temporary code check to allow subtotals to be added. A subtotal means Games/Total/Pct.
                 //Match the column headings to the values in the array
                 $subtotalToColumnMap = array(
-                    'match_no_ump'=>'Games',
-                    'total_match_count'=>'Total',
-                    'match_pct'=>'Pct'
+                    'match_no_ump' => 'Games',
+                    'total_match_count' => 'Total',
+                    'match_pct' => 'Pct'
                 );
 
                 $newReportCell->setColumnHeaderValueSecond($subtotalToColumnMap[$pCellValue]);
 
-
+            } elseif(get_class($this) == 'Report3') {
+                if ($pCellValue == "match_count") {
+                    $newReportCell->setColumnHeaderValueSecond("Total");
+                } else {
+                    $newReportCell->setColumnHeaderValueSecond($pResultRow[$pReportDisplayOptions->getColumnGroup()[1]->getFieldName()]);
+                }
             } else {
                 $newReportCell->setColumnHeaderValueSecond($pResultRow[$pReportDisplayOptions->getColumnGroup()[1]->getFieldName()]);
             }
