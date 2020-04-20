@@ -312,6 +312,82 @@ class Report_UI_test extends TestCase
         array('19/08/2017', '', '', 'Apollo Bay vs Birregurra', 1, '', '')
     );
 
+    const EXPECTED_DATA_REPORT4_TEST1 = array(
+        array('Aireys Inlet', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Ammos', '', '', '', '', '', '', '', '', '', '', 44, '', '', '', '', '', '', '', '', '', 44, '', '', '', '', '', '', '', '', 44, '', '', ''),
+        array('Anakie', '', '', '', '', '', 18, '', '', '', '', '', '', '', '', '', '', '', 1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+        array('Anglesea', '', '', '', 16, '', '', 17, '', 15, 18, 16, '', '', '', '', 17, '', '', '', 1, 16, '', '', 1, '', 1, 5, 14, 16, 16, '', '', ''),
+        array('Bannockburn', '', '', '', '', '', 15, 16, '', 29, 16, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 1, 29, 16, '', '', '', ''),
+        array('Barwon Heads', '', '', '', 16, '', '', 16, '', 15, 32, 32, 12, 15, 15, '', 17, '', '', '', 1, 32, '', 15, 1, '', 1, 2, 16, 32, 32, 13, 13, 15),
+        array('Bell Park', '', '', '', '', 18, '', 12, '', 28, 32, 16, '', '', '', '', '', 14, '', '', '', 16, '', '', '', '', '', '', 28, 32, 16, '', '', ''),
+        array('Bell Post Hill', '', '', '', '', '', 17, '', '', '', 18, 16, 15, '', '', '', '', '', 2, '', '', 16, '', '', '', '', '', '', '', 16, 16, 13, '', ''),
+        array('Belmont Lions', '', '', '', '', '', 17, 12, '', 15, 16, 16, '', '', '', '', '', '', '', 1, '', 16, '', '', '', '', '', 2, 16, 16, 16, '', '', ''),
+        array('Colac', '', '', '', '', 17, '', 12, '', 14, 16, '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', '', 9, 16, '', '', '', ''),
+        array('Colac Imperials', '', '', '', '', '', '', '', '', '', '', '', 14, 17, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 13, 15, ''),
+        array('Corio', '', '', '', '', '', 18, 15, '', '', 16, 16, '', '', '', '', '', '', '', 1, '', 16, '', '', '', '', '', 1, '', 16, 16, '', '', ''),
+        array('Drysdale', '', '', 6, 13, '', '', 25, '', 30, 16, 32, '', 14, '', 1, 16, '', '', 3, '', 32, '', '', 1, 6, 1, 5, 29, 16, 32, '', 13, ''),
+        array('Eagles', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('East Geelong', '', '', '', '', '', 18, '', '', 15, 17, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 15, 16, '', '', '', ''),
+        array('Flying Joeys', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Geelong Amateur', '', '', '', 12, '', '', 12, '', 25, 54, '', 13, 17, 15, '', 18, '', '', '', '', '', '', 15, 1, '', 1, 3, 29, 48, '', 13, 15, 15),
+        array('Geelong West', '', '', '', '', 19, 14, 32, '', 28, 34, '', 14, 13, '', '', '', 19, '', '', '', '', '', '', '', '', '', 2, 30, 32, '', 15, 13, ''),
+        array('Giants', '', '', '', '', '', '', '', '', '', '', 16, '', '', 15, '', '', '', '', '', '', 16, '', 15, '', '', '', '', '', '', 16, '', '', 15),
+        array('Grovedale', '', '', '', '', 16, '', 12, '', 25, 32, 46, 16, 13, 25, '', '', 16, '', '', '', 46, '', 25, '', '', '', '', 28, 32, 46, 14, 13, 25),
+        array('Inverleigh', '', '', '', '', '', 14, 12, '', 15, '', 16, '', '', '', '', '', '', 1, 2, 1, 16, '', '', '', '', '', 2, 16, '', 16, '', '', ''),
+        array('Lara', '', '', '', '', 13, '', 15, '', 30, 32, 48, 16, 17, 29, '', '', 17, '', '', 1, 48, 1, 29, '', '', '', 2, 31, 32, 48, 14, 14, 29),
+        array('Leaping Joeys', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Leopold', '', '', '', '', 18, '', 29, '', 30, 33, 32, '', '', 15, '', '', 10, '', '', '', 32, '', 15, '', '', '', 2, 30, 32, 32, '', '', 15),
+        array('Lethbridge', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Little River', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Modewarre', '', '', '', 17, '', '', '', '', 15, 19, 16, 16, '', '', '', 17, '', '', '', 1, 16, '', '', 1, '', 1, '', 16, 16, 16, 15, '', ''),
+        array('Modewarre / Grovedale', '', '', '', '', '', '', 14, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 1, '', '', '', '', '', ''),
+        array('Newcomb', 1, '', '', 16, '', '', 14, '', '', 16, 16, '', '', 15, '', 18, '', '', 2, '', 16, '', 15, 1, '', 1, 5, '', 16, 16, '', '', 15),
+        array('Newtown & Chilwell', '', '', '', '', 18, '', 13, '', 10, 48, '', 14, 15, 14, '', '', 18, '', '', '', '', 1, 14, '', '', '', '', 15, 48, '', 15, 15, 14),
+        array('North Geelong', '', '', 6, '', '', 15, 14, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 6, '', 1, '', '', '', '', '', ''),
+        array('North Shore', '', '', '', '', 18, '', 14, '', 15, '', '', '', '', '', '', '', 18, '', 1, '', '', '', '', '', '', '', 2, 14, '', '', '', '', ''),
+        array('Ocean Grove', '', '', '', 16, '', '', 31, '', 44, '', '', '', 13, 37, '', 17, '', '', '', 3, '', '', 37, 1, '', 1, 6, 45, '', '', '', 13, 37),
+        array('Ogcc', '', '', '', '', '', '', '', '', '', 52, 48, '', '', '', '', '', '', '', '', '', 48, '', '', '', '', '', '', '', 48, 48, '', '', ''),
+        array('Portarlington', '', '', '', 16, '', '', '', '', '', 19, 32, '', '', '', '', 15, '', '', '', '', 32, '', '', 1, '', 1, '', '', 16, 32, '', '', ''),
+        array('Queenscliff', 1, '', '', 15, '', '', 18, '', 15, 16, 16, 13, '', '', '', 17, '', '', '', '', 16, '', '', 1, '', 1, 3, 16, 16, 16, 13, '', ''),
+        array('Saints', '', '', '', '', '', '', '', '', '', '', 30, '', '', '', '', '', '', '', '', '', 30, '', '', '', '', '', '', '', '', 30, '', '', ''),
+        array('Seagulls', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('South Barwon', '', '', '', '', 16, '', 21, '', 11, 32, '', '', '', '', '', '', 14, '', '', '', '', '', '', '', '', '', 2, 12, 32, '', '', '', ''),
+        array('Spotswood', '', '', 12, '', '', '', '', '', '', '', '', '', '', '', 1, '', '', '', '', '', '', '', '', '', 12, '', '', '', '', '', '', '', ''),
+        array('St Albans', '', '', '', '', 18, '', 15, '', 16, 16, 16, '', 15, '', '', '', 16, '', '', '', 16, '', '', '', '', '', 1, 14, 16, 16, '', 13, ''),
+        array('St Joseph\'s', '', '', '', '', 16, '', 29, 1, 14, 50, '', 11, 15, 15, '', '', 16, '', '', '', '', '', 15, '', '', '', 1, 14, 48, '', 13, 15, 15),
+        array('St Joseph\'s Hill', '', '', '', '', '', '', '', '', 15, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 15, '', '', '', '', ''),
+        array('St Joseph\'s Podbury', '', '', '', '', '', '', '', '', 13, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 13, '', '', '', '', ''),
+        array('St Mary\'s', '', '', '', '', 17, '', 21, 1, 20, 52, '', 15, 16, '', '', '', 16, '', '', '', '', '', '', '', '', '', 2, 29, 48, '', 14, 13, ''),
+        array('Swans', '', '', '', '', '', '', '', '', '', '', 48, '', '', 15, '', '', '', '', '', '', 48, '', 15, '', '', '', '', '', '', 48, '', '', 15),
+        array('Thomson', '', '', '', '', '', 17, '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Tigers', '', '', '', '', '', '', '', '', '', '', '', '', '', 15, '', '', '', '', '', '', '', '', 15, '', '', '', '', '', '', '', '', '', 15),
+        array('Tigers Black', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Tigers Gold', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', 16, '', '', ''),
+        array('Torquay', '', '', '', 17, '', '', 30, '', '', '', 102, '', 16, 27, '', 18, '', '', '', '', 102, '', 27, 1, '', 1, 2, '', '', 102, '', 15, 27),
+        array('Torquay Bumpstead', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', ''),
+        array('Torquay Dunstan', '', '', '', '', '', '', '', '', '', 17, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', ''),
+        array('Torquay Jones', '', '', '', '', '', '', '', '', 15, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 15, '', '', '', '', ''),
+        array('Torquay Nairn', '', '', '', '', '', '', '', '', '', 17, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', ''),
+        array('Torquay Papworth', '', '', '', '', '', '', '', '', 13, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 14, '', '', '', '', ''),
+        array('Torquay Pyers', '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 16, '', '', '', ''),
+        array('Torquay Scott', '', '', '', '', '', '', '', '', '', '', '', 15, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 15, '', ''),
+        array('Werribee Centrals', '', 1, '', '', '', 16, 15, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 3, '', '', '', '', '', ''),
+        array('Winchelsea', '', 1, '', '', '', 17, 8, '', '', '', 16, '', '', '', '', '', '', '', '', '', 16, '', '', '', '', '', 2, '', '', 16, '', '', '')
+    );
+
+    const EXPECTED_DATA_REPORT4_TEST2 = array(
+        array('Alvie', 17, 16, 18, 17, '', 18, '', 5, 14, 18),
+        array('Apollo Bay', 18, 17, 18, 18, 7, 18, '', 2, 17, 18),
+        array('Birregurra', 17, 17, 18, 16, 5, 18, 1, 4, 17, 18),
+        array('Colac Imperials', 18, 11, 18, 18, '', 18, '', 1, 15, 18),
+        array('Irrewarra-beeac', 17, 16, 18, 17, 6, 18, '', 1, 16, 18),
+        array('Lorne', 17, 16, 18, 16, 4, 18, 1, 3, 16, 18),
+        array('Otway Districts', 18, 17, 18, 18, 4, 18, '', 3, 14, 18),
+        array('Simpson', 18, 16, 18, 18, 7, 18, '', 1, 17, 18),
+        array('South Colac', 18, 13, 18, 18, 3, 18, '', 2, 15, 18),
+        array('Western Eagles', 18, 7, 18, 18, 4, 18, '', '', 15, 18)
+    );
+
 
     public function setUp() {
         //TODO: Add class variable initialisation and check here, so we can run this code only once, to save time
@@ -604,6 +680,101 @@ class Report_UI_test extends TestCase
         );
 
         $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT3_TEST2);
+    }
+
+    public function test_DisplayReport4_Geelong() {
+        $this->login();
+
+        //Make checkbox selections
+        $this->clickElement($this::REGION_GEELONG);
+
+        //Change report
+        $this->selectReportFromSelectionBox(4);
+
+        //Change year
+        $this->selectReportYear($this::YEAR_2017);
+
+        //Click "View Report"
+        $this->clickElement("viewReport");
+
+        //Assert page
+        //TODO: Fix this defect that adds an extra comma to the end when it shouldn't
+        $this->assertUmpireDisciplineIsCorrect($this::UMP_TYPE_FIELD . ", " . $this::UMP_TYPE_BOUNDARY . ", " . $this::UMP_TYPE_GOAL. ",");
+        $this->assertLeagueIsCorrect($this::LEAGUE_BFL . ", ". $this::LEAGUE_GFL . ", ". $this::LEAGUE_GDFL . ", ". $this::LEAGUE_GJFL . ", ". $this::LEAGUE_CDFNL . ", ". $this::LEAGUE_WOMEN . ",");
+        $this->assertAgeGroupIsCorrect($this::AGE_GROUP_SENIORS . ", ". $this::AGE_GROUP_RESERVES . ", ".
+            $this::AGE_GROUP_COLTS . ", ". $this::AGE_GROUP_U19 . ", ". $this::AGE_GROUP_U18 . ", ".
+            $this::AGE_GROUP_U175 . ", ". $this::AGE_GROUP_U17 . ", ". $this::AGE_GROUP_U16 . ", ".
+            $this::AGE_GROUP_U15 . ", ". $this::AGE_GROUP_U145 . ", ". $this::AGE_GROUP_U14 . ", ".
+            $this::AGE_GROUP_U13 . ", ". $this::AGE_GROUP_U12 . ", ". $this::AGE_GROUP_U19G . ", ".
+            $this::AGE_GROUP_U18G . ", ". $this::AGE_GROUP_U15G . ", ". $this::AGE_GROUP_U12G . ", ".
+            $this::AGE_GROUP_YG . ", ". $this::AGE_GROUP_JG . ",");
+        $this->assertSearchRowIsShown();
+
+        //Assert table
+        $this->assertColumnHeadersAreCorrect(
+            array("Club", $this::UMP_TYPE_BOUNDARY, $this::UMP_TYPE_FIELD, $this::UMP_TYPE_GOAL),
+            array('', $this::AGE_GROUP_SENIORS, $this::AGE_GROUP_RESERVES, $this::AGE_GROUP_COLTS,
+                $this::AGE_GROUP_U19, $this::AGE_GROUP_U16, $this::AGE_GROUP_U14,
+                $this::AGE_GROUP_U12, $this::AGE_GROUP_U19G, $this::AGE_GROUP_U15G, $this::AGE_GROUP_U12G,
+                $this::AGE_GROUP_SENIORS, $this::AGE_GROUP_RESERVES, $this::AGE_GROUP_COLTS,
+                $this::AGE_GROUP_U16, $this::AGE_GROUP_U12, $this::AGE_GROUP_U19G, $this::AGE_GROUP_U12G,
+                $this::AGE_GROUP_SENIORS, $this::AGE_GROUP_RESERVES, $this::AGE_GROUP_COLTS,
+                $this::AGE_GROUP_U16, $this::AGE_GROUP_U14,
+                $this::AGE_GROUP_U12, $this::AGE_GROUP_U19G, $this::AGE_GROUP_U15G, $this::AGE_GROUP_U12G),
+            array('', $this::LEAGUE_BFL, $this::LEAGUE_GDFL, $this::LEAGUE_WOMEN,
+                $this::LEAGUE_BFL, $this::LEAGUE_GFL, $this::LEAGUE_GDFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL,
+                $this::LEAGUE_GJFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL,
+                $this::LEAGUE_GJFL, $this::LEAGUE_WOMEN,
+                $this::LEAGUE_BFL, $this::LEAGUE_GFL, $this::LEAGUE_GDFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL,
+                $this::LEAGUE_GJFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL,
+                $this::LEAGUE_BFL, $this::LEAGUE_WOMEN,
+                $this::LEAGUE_BFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL,
+                $this::LEAGUE_GJFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL, $this::LEAGUE_GJFL)
+        );
+
+        $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT4_TEST1);
+    }
+
+    public function test_DisplayReport4_Colac() {
+        $this->login();
+
+        //Make checkbox selections
+        $this->clickElement($this::REGION_COLAC);
+
+        //Change report
+        $this->selectReportFromSelectionBox(4);
+
+        //Change year
+        $this->selectReportYear($this::YEAR_2017);
+
+        //Click "View Report"
+        $this->clickElement("viewReport");
+
+        //Assert page
+        //TODO: Fix this defect that adds an extra comma to the end when it shouldn't
+        $this->assertUmpireDisciplineIsCorrect($this::UMP_TYPE_FIELD . ", " . $this::UMP_TYPE_BOUNDARY . ", " . $this::UMP_TYPE_GOAL. ",");
+        $this->assertLeagueIsCorrect($this::LEAGUE_BFL . ", ". $this::LEAGUE_GFL . ", ". $this::LEAGUE_GDFL . ", ". $this::LEAGUE_GJFL . ", ". $this::LEAGUE_CDFNL . ", ". $this::LEAGUE_WOMEN . ",");
+        $this->assertAgeGroupIsCorrect($this::AGE_GROUP_SENIORS . ", ". $this::AGE_GROUP_RESERVES . ", ".
+            $this::AGE_GROUP_COLTS . ", ". $this::AGE_GROUP_U19 . ", ". $this::AGE_GROUP_U18 . ", ".
+            $this::AGE_GROUP_U175 . ", ". $this::AGE_GROUP_U17 . ", ". $this::AGE_GROUP_U16 . ", ".
+            $this::AGE_GROUP_U15 . ", ". $this::AGE_GROUP_U145 . ", ". $this::AGE_GROUP_U14 . ", ".
+            $this::AGE_GROUP_U13 . ", ". $this::AGE_GROUP_U12 . ", ". $this::AGE_GROUP_U19G . ", ".
+            $this::AGE_GROUP_U18G . ", ". $this::AGE_GROUP_U15G . ", ". $this::AGE_GROUP_U12G . ", ".
+            $this::AGE_GROUP_YG . ", ". $this::AGE_GROUP_JG . ",");
+        $this->assertSearchRowIsShown();
+
+        //Assert table
+        $this->assertColumnHeadersAreCorrect(
+            array("Club", $this::UMP_TYPE_BOUNDARY, $this::UMP_TYPE_FIELD, $this::UMP_TYPE_GOAL),
+            array('', $this::AGE_GROUP_RESERVES, $this::AGE_GROUP_U175, $this::AGE_GROUP_U145,
+                $this::AGE_GROUP_RESERVES, $this::AGE_GROUP_U175, $this::AGE_GROUP_U145,
+                $this::AGE_GROUP_SENIORS, $this::AGE_GROUP_RESERVES, $this::AGE_GROUP_U175, $this::AGE_GROUP_U145),
+            array('', $this::LEAGUE_CDFNL, $this::LEAGUE_CDFNL, $this::LEAGUE_CDFNL, $this::LEAGUE_CDFNL,
+                $this::LEAGUE_CDFNL, $this::LEAGUE_CDFNL, $this::LEAGUE_CDFNL, $this::LEAGUE_CDFNL,
+                $this::LEAGUE_CDFNL, $this::LEAGUE_CDFNL)
+        );
+
+        $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT4_TEST2);
     }
 
 }
