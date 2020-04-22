@@ -68,6 +68,23 @@ class Report_cell_collection extends CI_Model {
         $this->reportCellArray[$pRowNumber][] = $pReportCell;
     }
 
+    public function addReportTotalCellToCollection($pRowNumber, Report_cell $pReportCell) {
+        $this->reportCellArray[$pRowNumber]["rowTotal"] = $pReportCell;
+    }
+
+    public function updateTotalReportCell($pRowNumber, Report_cell $pReportCell) {
+        if (!array_key_exists("rowTotal", $this->reportCellArray[$pRowNumber])) {
+            $this->reportCellArray[$pRowNumber]["rowTotal"] = $pReportCell;
+        } else {
+            //Get the current reportCell in the total column
+            $currentRowTotalReportCell = $this->reportCellArray[$pRowNumber]["rowTotal"];
+            //Add the new total value to it
+            $currentRowTotalReportCell->setCellValue($currentRowTotalReportCell->getCellValue() + $pReportCell->getCellValue());
+            //Update the report cell to the array
+            $this->reportCellArray[$pRowNumber]["rowTotal"] = $currentRowTotalReportCell;
+        }
+    }
+
     public function addCurrentRowToCollectionWithName($pResultRow, $pCounterForRow, $pFieldName, $pRowArrayKey) {
         $this->pivotedArray[
             $pRowArrayKey

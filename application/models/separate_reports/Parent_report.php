@@ -180,6 +180,8 @@ class Parent_report extends CI_Model {
         ];
     }
 
+
+
     public function transformReportCellCollectionIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRowNumber = 0;
@@ -191,6 +193,12 @@ class Parent_report extends CI_Model {
             //Add row labels to output array. Once for each row
             $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $setOfReportCellsForOneRow[0]->getCellValue();
             $columnNumber++;
+
+            //Add second column of row labels for report 5
+            if (get_class($this) == 'Report5') {
+                $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $setOfReportCellsForOneRow[1]->getCellValue();
+                $columnNumber++;
+            }
             //Loop through each cell in this list
 
             foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
@@ -208,34 +216,76 @@ class Parent_report extends CI_Model {
         return $resultOutputArray;
     }
 
+    private function hasRowLabelChanged($currentRowLabel, $previousRowLabel) {
+        return $currentRowLabel != $previousRowLabel;
+    }
+
+    private function setRowLabel($pResultRow, $pReportDisplayOptions) {
+        if (get_class($this) == 'Report5') {
+            //Return two columns for report 5: umpire type and age group
+            return array(
+                $pResultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()],
+                $pResultRow[$pReportDisplayOptions->getRowGroup()[1]->getFieldName()]
+            );
+        } else {
+            return array(
+                $pResultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()]
+            );
+        }
+    }
+
 
     public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
         $mainReportCellCollection = new Report_cell_collection();
 
         $previousRowLabel = "";
         $outputRowNumber = 0;
+        //$totalForRow = 0;
 
         //Loop through each row of results
         foreach ($pResultArray as $resultRow) {
 
-            $currentRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+            $currentRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
 
             //Increase output row number if row label is different
-            if ($currentRowLabel != $previousRowLabel) {
+            if ($this->hasRowLabelChanged($currentRowLabel, $previousRowLabel)) {
                 if ($previousRowLabel != "") {
+                    //Add row total for previous row, if this is report 5
+
+                    /*
+                    if (get_class($this) == 'Report5') {
+                        $newReportCell = new Report_cell();
+                        $newReportCell->setCellValue($totalForRow);
+                        $newReportCell->setColumnHeaderValueFirst("All");
+                        $newReportCell->setColumnHeaderValueSecond("Total");
+                        $mainReportCellCollection->addReportTotalCellToCollection($outputRowNumber, $newReportCell);
+                        //$mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+                    }
+                    */
                     $outputRowNumber++;
+                    //$totalForRow = 0;
                 }
 
                 //Add new cell for row label
                 $newReportCell = new Report_cell();
-                $newReportCell->setCellValue($currentRowLabel);
+                $newReportCell->setCellValue($currentRowLabel[0]);
                 $newReportCell->setColumnHeaderValueFirst("Name");
                 $newReportCell->setSourceResultRow($resultRow);
                 $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
 
+                //Add second label cell for Report 5
+                if (get_class($this) == 'Report5') {
+                    $newReportCell = new Report_cell();
+                    $newReportCell->setCellValue($currentRowLabel[1]);
+                    $newReportCell->setColumnHeaderValueFirst("Age Group");
+                    $newReportCell->setSourceResultRow($resultRow);
+                    $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+                }
+
 
             }
-            $previousRowLabel = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()];
+            $previousRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
 
 
             if (get_class($this) == 'Report5') {
@@ -250,6 +300,20 @@ class Parent_report extends CI_Model {
 
                 //$newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "subtotal");
                 //$mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+                /*if ($this->isSubtotalGames($resultRow)) {
+                    $totalForRow = $totalForRow + $resultRow['match_no_ump'];
+                }*/
+                //$totalForRow = $totalForRow + $resultRow["match_no_ump"];
+
+                //Update total for this row
+                $newReportCell = new Report_cell();
+                $newReportCell->setCellValue($resultRow["match_no_ump"]);
+                $newReportCell->setColumnHeaderValueFirst("All");
+                $newReportCell->setColumnHeaderValueSecond("Total");
+                $mainReportCellCollection->updateTotalReportCell($outputRowNumber, $newReportCell);
+
+
             } elseif (get_class($this) == 'Report3') {
 
                 //if ($resultRow['short_league_name'] == 'Total') {
@@ -272,6 +336,12 @@ class Parent_report extends CI_Model {
 
         return $mainReportCellCollection;
     }
+
+    /*
+    private function isSubtotalGames($resultRow) {
+        return ($resultRow['subtotal'] == 'Games');
+    }
+*/
 
 
     private function populateReportCell($pResultRow, Report_display_options $pReportDisplayOptions, $pCellValue) {

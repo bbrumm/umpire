@@ -388,6 +388,53 @@ class Report_UI_test extends TestCase
         array('Western Eagles', 18, 7, 18, 18, 4, 18, '', '', 15, 18)
     );
 
+    const EXPECTED_DATA_REPORT5_TEST1 = array(
+        array('Boundary', 'Seniors', 1, 96, 1, 1, 114, 0, 0, 114, 0, '', '', '', 12, 14, 85, 14),
+        array('Boundary', 'Reserves', 77, 98, 78, 98, 114, 85, 102, 115, 88, '', '', '', '', '', '', 277),
+        array('Boundary', 'Colts', '', '', '', '', '', '', '', '', '', 247, 345, 71, '', '', '', 247),
+        array('Boundary', 'Under 19', '', '', '', '', '', '', '', '', '', 1, 1, 100, '', '', '', 1),
+        array('Boundary', 'Under 16', '', '', '', '', '', '', '', '', '', 265, 321, 82, '', '', '', 265),
+        array('Boundary', 'Under 14', '', '', '', '', '', '', '', '', '', 384, 392, 97, '', '', '', 384),
+        array('Boundary', 'Under 12', '', '', '', '', '', '', '', '', '', 432, 432, 100, '', '', '', 432),
+        array('Boundary', 'Under 19 Girls', '', '', '', '', '', '', '', '', '', 92, 98, 93, '', '', '', 92),
+        array('Boundary', 'Under 15 Girls', '', '', '', '', '', '', '', '', '', 98, 98, 100, '', '', '', 98),
+        array('Boundary', 'Under 12 Girls', '', '', '', '', '', '', '', '', '', 128, 128, 100, '', '', '', 128),
+        array('Field', 'Seniors', 0, 96, 0, 0, 114, 0, 0, 114, 0, '', '', '', 1, 14, 7, 1),
+        array('Field', 'Reserves', 85, 98, 86, 2, 114, 1, 95, 115, 82, '', '', '', '', '', '', 182),
+        array('Field', 'Colts', '', '', '', '', '', '', '', '', '', 5, 345, 1, '', '', '', 5),
+        array('Field', 'Under 19', '', '', '', '', '', '', '', '', '', 0, 1, 0, '', '', '', 0),
+        array('Field', 'Under 16', '', '', '', '', '', '', '', '', '', 4, 321, 1, '', '', '', 4),
+        array('Field', 'Under 14', '', '', '', '', '', '', '', '', '', 0, 392, 0, '', '', '', 0),
+        array('Field', 'Under 12', '', '', '', '', '', '', '', '', '', 432, 432, 100, '', '', '', 432),
+        array('Field', 'Under 19 Girls', '', '', '', '', '', '', '', '', '', 1, 98, 1, '', '', '', 1),
+        array('Field', 'Under 15 Girls', '', '', '', '', '', '', '', '', '', 0, 98, 0, '', '', '', 0),
+        array('Field', 'Under 12 Girls', '', '', '', '', '', '', '', '', '', 128, 128, 100, '', '', '', 128),
+        array('Goal', 'Seniors', 5, 96, 5, 0, 114, 0, 0, 114, 0, '', '', '', 12, 14, 85, 17),
+        array('Goal', 'Reserves', 5, 98, 5, 0, 114, 0, 0, 115, 0, '', '', '', '', '', '', 5),
+        array('Goal', 'Colts', '', '', '', '', '', '', '', '', '', 29, 345, 8, '', '', '', 29),
+        array('Goal', 'Under 19', '', '', '', '', '', '', '', '', '', 0, 1, 0, '', '', '', 0),
+        array('Goal', 'Under 16', '', '', '', '', '', '', '', '', '', 276, 321, 85, '', '', '', 276),
+        array('Goal', 'Under 14', '', '', '', '', '', '', '', '', '', 368, 392, 93, '', '', '', 368),
+        array('Goal', 'Under 12', '', '', '', '', '', '', '', '', '', 432, 432, 100, '', '', '', 432),
+        array('Goal', 'Under 19 Girls', '', '', '', '', '', '', '', '', '', 90, 98, 91, '', '', '', 90),
+        array('Goal', 'Under 15 Girls', '', '', '', '', '', '', '', '', '', 90, 98, 91, '', '', '', 90),
+        array('Goal', 'Under 12 Girls', '', '', '', '', '', '', '', '', '', 128, 128, 100, '', '', '', 128)
+    );
+
+    const EXPECTED_DATA_REPORT5_TEST2 = array(
+        array('Boundary', 'Seniors', 0, 96, 0, 0),
+        array('Boundary', 'Reserves', 88, 96, 91, 88),
+        array('Boundary', 'Under 17.5', 73, 96, 76, 73),
+        array('Boundary', 'Under 14.5', 90, 96, 93, 90),
+        array('Field', 'Seniors', 0, 96, 0, 0),
+        array('Field', 'Reserves', 87, 96, 90, 87),
+        array('Field', 'Under 17.5', 20, 96, 20, 20),
+        array('Field', 'Under 14.5', 90, 96, 93, 90),
+        array('Goal', 'Seniors', 1, 96, 1, 1),
+        array('Goal', 'Reserves', 11, 96, 11, 11),
+        array('Goal', 'Under 17.5', 78, 96, 81, 78),
+        array('Goal', 'Under 14.5', 90, 96, 93, 90)
+    );
 
     public function setUp() {
         //TODO: Add class variable initialisation and check here, so we can run this code only once, to save time
@@ -775,6 +822,82 @@ class Report_UI_test extends TestCase
         );
 
         $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT4_TEST2);
+    }
+
+    public function test_DisplayReport5_Geelong() {
+        $this->login();
+
+        //Make checkbox selections
+        $this->clickElement($this::REGION_GEELONG);
+
+        //Change report
+        $this->selectReportFromSelectionBox(5);
+
+        //Change year
+        $this->selectReportYear($this::YEAR_2017);
+
+        //Click "View Report"
+        $this->clickElement("viewReport");
+
+        //Assert page
+        //TODO: Fix this defect that adds an extra comma to the end when it shouldn't
+        $this->assertUmpireDisciplineIsCorrect($this::UMP_TYPE_FIELD . ", " . $this::UMP_TYPE_BOUNDARY . ", " . $this::UMP_TYPE_GOAL. ",");
+        $this->assertLeagueIsCorrect($this::LEAGUE_BFL . ", ". $this::LEAGUE_GFL . ", ". $this::LEAGUE_GDFL . ", ". $this::LEAGUE_GJFL . ", ". $this::LEAGUE_CDFNL . ", ". $this::LEAGUE_WOMEN . ",");
+        $this->assertAgeGroupIsCorrect($this::AGE_GROUP_SENIORS . ", ". $this::AGE_GROUP_RESERVES . ", ".
+            $this::AGE_GROUP_COLTS . ", ". $this::AGE_GROUP_U19 . ", ". $this::AGE_GROUP_U18 . ", ".
+            $this::AGE_GROUP_U175 . ", ". $this::AGE_GROUP_U17 . ", ". $this::AGE_GROUP_U16 . ", ".
+            $this::AGE_GROUP_U15 . ", ". $this::AGE_GROUP_U145 . ", ". $this::AGE_GROUP_U14 . ", ".
+            $this::AGE_GROUP_U13 . ", ". $this::AGE_GROUP_U12 . ", ". $this::AGE_GROUP_U19G . ", ".
+            $this::AGE_GROUP_U18G . ", ". $this::AGE_GROUP_U15G . ", ". $this::AGE_GROUP_U12G . ", ".
+            $this::AGE_GROUP_YG . ", ". $this::AGE_GROUP_JG . ",");
+        $this->assertSearchRowIsShown();
+
+        //Assert table
+        $this->assertColumnHeadersAreCorrect(
+            array("Discipline", "Age Group", $this::LEAGUE_BFL, $this::LEAGUE_GDFL, $this::LEAGUE_GFL,
+                $this::LEAGUE_GJFL, $this::LEAGUE_WOMEN, "All"),
+            array("", "", "Games", "Total", "Pct", "Games", "Total", "Pct", "Games", "Total", "Pct",
+                "Games", "Total", "Pct", "Games", "Total", "Pct", "Total")
+        );
+
+        $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT5_TEST1);
+    }
+
+    public function test_DisplayReport5_Colac() {
+        $this->login();
+
+        //Make checkbox selections
+        $this->clickElement($this::REGION_COLAC);
+
+        //Change report
+        $this->selectReportFromSelectionBox(5);
+
+        //Change year
+        $this->selectReportYear($this::YEAR_2017);
+
+        //Click "View Report"
+        $this->clickElement("viewReport");
+
+        //Assert page
+        //TODO: Fix this defect that adds an extra comma to the end when it shouldn't
+        $this->assertUmpireDisciplineIsCorrect($this::UMP_TYPE_FIELD . ", " . $this::UMP_TYPE_BOUNDARY . ", " . $this::UMP_TYPE_GOAL. ",");
+        $this->assertLeagueIsCorrect($this::LEAGUE_BFL . ", ". $this::LEAGUE_GFL . ", ". $this::LEAGUE_GDFL . ", ". $this::LEAGUE_GJFL . ", ". $this::LEAGUE_CDFNL . ", ". $this::LEAGUE_WOMEN . ",");
+        $this->assertAgeGroupIsCorrect($this::AGE_GROUP_SENIORS . ", ". $this::AGE_GROUP_RESERVES . ", ".
+            $this::AGE_GROUP_COLTS . ", ". $this::AGE_GROUP_U19 . ", ". $this::AGE_GROUP_U18 . ", ".
+            $this::AGE_GROUP_U175 . ", ". $this::AGE_GROUP_U17 . ", ". $this::AGE_GROUP_U16 . ", ".
+            $this::AGE_GROUP_U15 . ", ". $this::AGE_GROUP_U145 . ", ". $this::AGE_GROUP_U14 . ", ".
+            $this::AGE_GROUP_U13 . ", ". $this::AGE_GROUP_U12 . ", ". $this::AGE_GROUP_U19G . ", ".
+            $this::AGE_GROUP_U18G . ", ". $this::AGE_GROUP_U15G . ", ". $this::AGE_GROUP_U12G . ", ".
+            $this::AGE_GROUP_YG . ", ". $this::AGE_GROUP_JG . ",");
+        $this->assertSearchRowIsShown();
+
+        //Assert table
+        $this->assertColumnHeadersAreCorrect(
+            array("Discipline", "Age Group", $this::LEAGUE_CDFNL, "All"),
+            array("", "", "Games", "Total", "Pct", "Total")
+        );
+
+        $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT5_TEST2);
     }
 
 }
