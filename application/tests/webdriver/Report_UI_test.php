@@ -436,7 +436,11 @@ class Report_UI_test extends TestCase
         array('Goal', 'Under 14.5', 90, 96, 93, 90)
     );
 
+
+
+
     public function setUp() {
+        $this->resetInstance();
         //TODO: Add class variable initialisation and check here, so we can run this code only once, to save time
         $host = 'http://localhost:4444/wd/hub'; // this is the default. If I get a JSON decoding error, try adding or removing /wd/hub/
         $options = new ChromeOptions();
@@ -446,8 +450,9 @@ class Report_UI_test extends TestCase
         $capabilities = DesiredCapabilities::chrome();
         $capabilities->setCapability(ChromeOptions::CAPABILITY, $options);
 
-
         $this->driver = RemoteWebDriver::create($host, $capabilities);
+
+        $this->CI->load->library('UI_test_expected_results');
     }
 
     public function tearDown() {
@@ -527,6 +532,7 @@ class Report_UI_test extends TestCase
         $actualSearchTextbox = $this->getElement("search");
         $this->assertTrue($actualSearchTextbox->isDisplayed());
     }
+
 
     private function assertColumnHeadersAreCorrect($pExpectedColumnHeadersFirstRow, $pExpectedColumnHeadersSecondRow) {
         $this->assertSingleRowOfHeaderColumns(1, $pExpectedColumnHeadersFirstRow);
@@ -898,6 +904,42 @@ class Report_UI_test extends TestCase
         );
 
         $this->assertTableDataIsCorrect($this::EXPECTED_DATA_REPORT5_TEST2);
+    }
+
+    public function test_DisplayReport6_Geelong() {
+        $uiExpectedResults = new UI_test_expected_results();
+        $this->login();
+
+        //Make checkbox selections
+        $this->clickElement($this::REGION_GEELONG);
+
+        //Make checkbox selections
+        $this->clickElement($this::LEAGUE_BFL);
+        $this->clickElement($this::UMP_TYPE_FIELD);
+        $this->clickElement($this::AGE_GROUP_RESERVES);
+
+        //Change report
+        $this->selectReportFromSelectionBox(6);
+
+        //Change year
+        $this->selectReportYear($this::YEAR_2017);
+
+        //Click "View Report"
+        $this->clickElement("viewReport");
+
+        //Assert page
+        //TODO: Fix this defect that adds an extra comma to the end when it shouldn't
+        $this->assertUmpireDisciplineIsCorrect($this::UMP_TYPE_FIELD );
+        $this->assertLeagueIsCorrect($this::LEAGUE_BFL);
+        $this->assertAgeGroupIsCorrect($this::AGE_GROUP_RESERVES);
+        $this->assertSearchRowIsShown();
+
+        //Assert table
+        $this->assertSingleRowOfHeaderColumns(
+            1, $uiExpectedResults::EXPECTED_DATA_REPORT6_COLHEADERS
+        );
+
+        $this->assertTableDataIsCorrect($uiExpectedResults::EXPECTED_DATA_REPORT6_TEST1);
     }
 
 }
