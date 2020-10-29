@@ -9,7 +9,13 @@ class Database_store_user_permission_test extends TestCase
         $this->obj = $this->CI->Database_store_user_permission;
     }
 
+    private function setSessionData() {
+        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+    }
+
     public function test_AddUserPrivilege_Valid() {
+        $this->setSessionData();
         //Input
         $sampleUsername = 'testuser_addpriv';
         $sampleEmail = 'test@test.com';
@@ -73,6 +79,7 @@ class Database_store_user_permission_test extends TestCase
     }
 
     public function test_RemoveUserPrivilege_Valid() {
+        $this->setSessionData();
         $permissionSelectionID = 10001;
         $sampleUserID = 25; //username of bbtest2
         $sampleUsername = "bbtest2";

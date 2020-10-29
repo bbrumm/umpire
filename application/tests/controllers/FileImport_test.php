@@ -13,8 +13,14 @@ class FileImport_test extends TestCase
     }
 */
 
+    private function setSessionData() {
+        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+    }
+
 
     public function test_ImportFile() {
+        $this->setSessionData();
 
         $filename = "2018_Appointments_Master 2018_08_08.xls";
         $fileNameFull = "application/tests/import/". $filename;
@@ -72,6 +78,7 @@ class FileImport_test extends TestCase
 */
 
     public function test_ImportFile_NewData() {
+        $this->setSessionData();
 
         $filename = "test_new_data.xlsx";
         $fileNameFull = "application/tests/import/". $filename;

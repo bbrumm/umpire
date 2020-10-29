@@ -40,6 +40,26 @@ class Integration_test extends TestCase
         $this->dbLocal->close();
     }
 
+    public function test_Season2019Exists() {
+        $queryString = "SELECT COUNT(*) AS rc FROM season WHERE season_year = 2019;";
+        $query = $this->dbLocal->query($queryString);
+        $resultArray = $query->result();
+        $expectedResult = 1;
+        $this->assertEquals($expectedResult, $resultArray[0]->rc);
+
+        $this->dbLocal->close();
+    }
+
+    public function test_Season2020Exists() {
+        $queryString = "SELECT COUNT(*) AS rc FROM season WHERE season_year = 2020;";
+        $query = $this->dbLocal->query($queryString);
+        $resultArray = $query->result();
+        $expectedResult = 1;
+        $this->assertEquals($expectedResult, $resultArray[0]->rc);
+
+        $this->dbLocal->close();
+    }
+
 
     //TODO: Write more tests like this. It compares prod v local
     public function test_SeasonLocalVsProd() {

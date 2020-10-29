@@ -46,7 +46,7 @@ class Match_import extends CI_Model
         
         $dataFile = $pFileLoader->getImportedFilePathAndName($data);
 
-        $objPHPExcel = PHPExcel_IOFactory::load($dataFile);
+        $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load($dataFile);
         $importedFile->setDataSheet($objPHPExcel->getActiveSheet());
         $columns = $this->findColumnsFromSpreadsheet($importedFile);
         $importedFile->setSheetData($columns);

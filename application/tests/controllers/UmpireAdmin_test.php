@@ -7,6 +7,11 @@ class UmpireAdmin_test extends TestCase
         $this->dbLocal = $this->CI->load->database('default', TRUE);
     }
 
+    private function setSessionData() {
+        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+    }
+
     public function test_LoadPage() {
         $output = $this->request('POST', ['UmpireAdmin', 'loadPage']);
         $expected = "<h2>Umpire Administration</h2>";
@@ -14,6 +19,7 @@ class UmpireAdmin_test extends TestCase
     }
 
     public function test_UpdateUmpireGamesPlayed_Single() {
+        $this->setSessionData();
         //Original values are 166 and 0
         $newGeelongPrior = 167;
         $newOtherLeagues = 1;
@@ -51,6 +57,7 @@ class UmpireAdmin_test extends TestCase
     }
 
     public function test_UpdateUmpireGamesPlayed_SingleGamesPriorOnly() {
+        $this->setSessionData();
         //Original values are 166 and 0
         $newGeelongPrior = 167;
         $newOtherLeagues = 0;
@@ -88,6 +95,7 @@ class UmpireAdmin_test extends TestCase
     }
 
     public function test_UpdateUmpireGamesPlayed_SingleGamesOtherOnly() {
+        $this->setSessionData();
         //Original values are 166 and 0
         $newGeelongPrior = 166;
         $newOtherLeagues = 5;
@@ -124,6 +132,7 @@ class UmpireAdmin_test extends TestCase
     }
 
     public function test_UpdateUmpireGamesPlayed_TwoUpdates() {
+        $this->setSessionData();
         //Original values are 166 and 0
         $newGeelongPrior = 168;
         $newOtherLeagues = 2;
@@ -172,6 +181,7 @@ class UmpireAdmin_test extends TestCase
     }
 
     public function test_UpdateUmpireGamesPlayed_TwoUpdatesAlternate() {
+        $this->setSessionData();
         //Original values are 166 and 0
         $newGeelongPrior = 168;
         $newOtherLeagues = 0;
@@ -220,6 +230,8 @@ class UmpireAdmin_test extends TestCase
     }
 
     public function test_UpdateUmpireGamesPlayed_TwoUmpireNoChange() {
+        $this->setSessionData();
+
         //Original values are 166 and 0
         $newGeelongPrior = 166;
         $newOtherLeagues = 0;

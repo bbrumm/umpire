@@ -10,6 +10,11 @@ class Report_test extends TestCase {
         $this->importDWData();
     }
 
+    private function setSessionData() {
+        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+    }
+
     private function importDWData() {
         if ($this->dataAlreadyImported() == false) {
             //Import data so that these report tests run on real data
@@ -102,6 +107,8 @@ FROM backup_report_07_2018;";
     }
 
     public function test_Report1() {
+
+        $this->setSessionData();
         /*$queryString = "INSERT INTO dw_mv_report_01
 (last_first_name, short_league_name, club_name, age_group, region_name, umpire_type, match_count, season_year)
 VALUES ('Smith, John', 'GFL', 'Clubname', 'Seniors', 'Geelong', 'Field', 3, 2018);";
@@ -120,9 +127,6 @@ VALUES ('Smith, John', 'GFL', 'Clubname', 'Seniors', 'Geelong', 'Field', 3, 2018
             'chkLeagueHidden'=>'GFL'
         );
 
-        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
-        $this->CI->session->set_userdata($sessionArray);
-
         $output = $this->request('POST', ['Report', 'index'], $postArray);
         $expected = "<h1 id='mainHeading'>01 - Umpires and Clubs (2018)</h1>";
         $this->assertContains($expected, $output);
@@ -133,6 +137,8 @@ VALUES ('Smith, John', 'GFL', 'Clubname', 'Seniors', 'Geelong', 'Field', 3, 2018
     }
 
     public function test_Report2() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO dw_mv_report_02
 (last_first_name, short_league_name, age_group, age_sort_order, league_sort_order, two_ump_flag, region_name, umpire_type, match_count, season_year)
 VALUES ('Smith, John', 'GFL', 'Seniors', 1, 1, 0, 'Geelong', 'Field', 3, 2018);";
@@ -157,6 +163,8 @@ VALUES ('Smith, John', 'GFL', 'Seniors', 1, 1, 0, 'Geelong', 'Field', 3, 2018);"
     }
 
     public function test_Report3() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO staging_no_umpires
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
@@ -184,6 +192,8 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
     }
 
     public function test_Report3_2017() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO staging_no_umpires
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
@@ -211,6 +221,8 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
     }
     
     public function test_Report3_TwoUmpireTypes() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO staging_no_umpires
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
@@ -240,6 +252,8 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
     }
     
     public function test_Report3_TwoUmpireTypesAndAges() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO staging_no_umpires
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
@@ -270,6 +284,8 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
     }
     
      public function test_Report3_TwoUmpireTypesAndAgesAndLeagues() {
+         $this->setSessionData();
+
         /*$queryString = "INSERT INTO staging_no_umpires
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
@@ -301,6 +317,8 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
     }
     
     public function test_Report3_ThreeOfSeveralParameters() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO staging_no_umpires
 (weekend_date, age_group, umpire_type, short_league_name, team_names, match_id, season_year)
 VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018);";
@@ -337,6 +355,8 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
     }
 
     public function test_Report4() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO dw_mv_report_04
 (club_name, age_group, short_league_name, region_name, umpire_type, age_sort_order, league_sort_order, match_count, season_year)
 VALUES ('Club name', 'Seniors', 'GFL', 'Geelong', 'Field', 1, 1, 5, 2018);";
@@ -361,6 +381,8 @@ VALUES ('Club name', 'Seniors', 'GFL', 'Geelong', 'Field', 1, 1, 5, 2018);";
     }
 
     public function test_Report5() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO dw_mv_report_05
 (umpire_type, age_group, age_sort_order, short_league_name, league_sort_order, region_name, match_no_ump, total_match_count, match_pct, season_year)
 VALUES ('Field', 'Seniors', 1, 'GFL', 2, 'Geelong', 4, 8, 50, 2018);";
@@ -385,6 +407,8 @@ VALUES ('Field', 'Seniors', 1, 'GFL', 2, 'Geelong', 4, 8, 50, 2018);";
     }
 
     public function test_Report6() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO dw_mv_report_06
 (umpire_type, age_group, region_name, first_umpire, second_umpire, season_year, match_count, short_league_name)
 VALUES ('Field', 'Seniors', 'Geelong', 'Smith, John', 'Jones, Susan', 2018, 6, 'GFL');";
@@ -409,6 +433,8 @@ VALUES ('Field', 'Seniors', 'Geelong', 'Smith, John', 'Jones, Susan', 2018, 6, '
     }
 
     public function test_Report7() {
+        $this->setSessionData();
+
         /*$queryString = "INSERT INTO dw_mv_report_07
 (umpire_type, age_group, region_name, short_league_name, season_year, age_sort_order, league_sort_order, umpire_count, match_count)
 VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
@@ -433,6 +459,8 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
     }
 
     public function test_Report8() {
+        $this->setSessionData();
+
         $postArray = array(
             'reportName'=>'8',
             'season'=>2018,
@@ -448,6 +476,8 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
     }
     
     public function test_Report8_MultiParam() {
+        $this->setSessionData();
+
         $postArray = array(
             'reportName'=>'8',
             'season'=>2018,
@@ -463,6 +493,8 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
     }
 
     public function test_ReportNumberNotFound() {
+        $this->setSessionData();
+
         $this->expectException(Exception::class);
         $postArray = array(
             'reportName'=>'12',

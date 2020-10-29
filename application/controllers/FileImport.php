@@ -32,6 +32,7 @@ class FileImport extends CI_Controller {
 	    if ( ! $uploadPassed) {
 		    $this->displayUploadError();
 	    } else {
+	        //TODO: Add logic here to show exceptions from this (e.g. "A required column is missing from the imported file") on the screen, instead of an exception
 		    $fileImportStatus = $this->importDataFromSpreadsheet();
             if ($fileImportStatus) {
                 $this->showUploadComplete();
@@ -54,11 +55,11 @@ class FileImport extends CI_Controller {
 	
 	private function displayUploadError() {
 		$error = array('error' => $this->upload->display_errors());
-	        $data['test'] = "Test Report";
-	        $this->load->helper(array('form', 'url'));
-	        $this->load->view('templates/header', $data);
-	        $this->load->view('upload_form', $error);
-	        $this->load->view('templates/footer');
+        $data['test'] = "Test Report";
+        $this->load->helper(array('form', 'url'));
+        $this->load->view('templates/header', $data);
+        $this->load->view('upload_form', $error);
+        $this->load->view('templates/footer');
 	}
 	
 	private function importDataFromSpreadsheet() {

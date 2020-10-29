@@ -7,10 +7,14 @@ class Header_test extends TestCase
         $this->dbLocal = $this->CI->load->database('default', TRUE);
     }
 
-    //bbrummtest is an Admin user so should see everything
-    public function test_HomePage() {
+    private function setSessionData() {
         $sessionArray['logged_in'] = array('username' => 'bbrummtest');
         $this->CI->session->set_userdata($sessionArray);
+    }
+
+    //bbrummtest is an Admin user so should see everything
+    public function test_HomePage() {
+        $this->setSessionData();
         $linkName = "Home Page";
 
         $output = $this->request('POST', ['Home', 'index']);
@@ -19,8 +23,7 @@ class Header_test extends TestCase
     }
 
     public function test_ImportFile() {
-        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
-        $this->CI->session->set_userdata($sessionArray);
+        $this->setSessionData();
         $linkName = "Import File";
 
         $output = $this->request('POST', ['Home', 'index']);
@@ -29,8 +32,7 @@ class Header_test extends TestCase
     }
 
     public function test_UserAdmin() {
-        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
-        $this->CI->session->set_userdata($sessionArray);
+        $this->setSessionData();
         $linkName = "User Admin";
 
         $output = $this->request('POST', ['Home', 'index']);
@@ -39,8 +41,7 @@ class Header_test extends TestCase
     }
 
     public function test_UmpireAdmin() {
-        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
-        $this->CI->session->set_userdata($sessionArray);
+        $this->setSessionData();
         $linkName = "Umpire Admin";
 
         $output = $this->request('POST', ['Home', 'index']);
@@ -51,8 +52,7 @@ class Header_test extends TestCase
     //Create PDF link is tested in the Report_test file, because that's where the DW is checked and imported
 
     public function test_CreatePDFNotOnHomePage() {
-        $sessionArray['logged_in'] = array('username' => 'bbrummtest');
-        $this->CI->session->set_userdata($sessionArray);
+        $this->setSessionData();
         $linkName = "Create PDF";
 
         $output = $this->request('POST', ['Home', 'index']);

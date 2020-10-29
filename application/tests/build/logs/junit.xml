@@ -1,0 +1,1350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="592" assertions="2309" errors="24" failures="9" skipped="0" time="59.023075">
+    <testsuite name="unittests" tests="451" assertions="582" errors="3" failures="8" skipped="0" time="1.680121">
+      <testsuite name="Database_store_report_param_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_report_param_test.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.069254">
+        <testcase name="test_LoadAllGroupingStructures_Report1" class="Database_store_report_param_test" classname="Database_store_report_param_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_report_param_test.php" line="10" assertions="1" time="0.056934"/>
+        <testcase name="test_LoadAllGroupingStructures_ReportDoesNotExist" class="Database_store_report_param_test" classname="Database_store_report_param_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_report_param_test.php" line="17" assertions="1" time="0.012320"/>
+      </testsuite>
+      <testsuite name="Database_store_user_admin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_admin_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.006646">
+        <testcase name="test_InsertNewUser_Exception" class="Database_store_user_admin_test" classname="Database_store_user_admin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_admin_test.php" line="11" assertions="1" time="0.006646"/>
+      </testsuite>
+      <testsuite name="Database_store_user_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_permission_test.php" tests="3" assertions="5" errors="0" failures="0" skipped="0" time="0.046196">
+        <testcase name="test_AddUserPrivilege_Valid" class="Database_store_user_permission_test" classname="Database_store_user_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_permission_test.php" line="12" assertions="2" time="0.031521">
+          <system-out>
+&lt;div style="border:1px solid #990000; padding-left:20px; margin:0 0 10px 0; background:#ffe6e6; font-family: Arial, Helvetica, sans-serif;"&gt;
+
+&lt;h4&gt;A PHP Error was encountered&lt;/h4&gt;
+
+&lt;p&gt;&lt;b&gt;Severity:&lt;/b&gt;    Notice
+&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Message:&lt;/b&gt;     Trying to access array offset on value of type null
+&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Filename:&lt;/b&gt;    /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_user_permission.php
+&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Line Number:&lt;/b&gt; 123&lt;/p&gt;
+
+
+&lt;p&gt;&lt;b&gt;Backtrace:&lt;/b&gt;&lt;/p&gt;
+	File: /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_user_permission.php
+	Line: 123
+	Function: _error_handler
+
+	File: /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_user_permission.php
+	Line: 88
+	Function: logPrivilegeChange
+
+	File: /Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_permission_test.php
+	Line: 43
+	Function: addUserPrivilege
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestCase.php
+	Line: 1071
+	Function: invokeArgs
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestCase.php
+	Line: 939
+	Function: runTest
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestResult.php
+	Line: 698
+	Function: runBare
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestCase.php
+	Line: 894
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestSuite.php
+	Line: 755
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestSuite.php
+	Line: 755
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestSuite.php
+	Line: 755
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/TextUI/TestRunner.php
+	Line: 545
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/TextUI/Command.php
+	Line: 195
+	Function: doRun
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/TextUI/Command.php
+	Line: 148
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit
+	Line: 53
+	Function: main
+
+
+&lt;/div&gt;</system-out>
+        </testcase>
+        <testcase name="test_RemoveUserPrivilege_Valid" class="Database_store_user_permission_test" classname="Database_store_user_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_permission_test.php" line="75" assertions="2" time="0.010383">
+          <system-out>
+&lt;div style="border:1px solid #990000; padding-left:20px; margin:0 0 10px 0; background:#ffe6e6; font-family: Arial, Helvetica, sans-serif;"&gt;
+
+&lt;h4&gt;A PHP Error was encountered&lt;/h4&gt;
+
+&lt;p&gt;&lt;b&gt;Severity:&lt;/b&gt;    Notice
+&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Message:&lt;/b&gt;     Trying to access array offset on value of type null
+&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Filename:&lt;/b&gt;    /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_user_permission.php
+&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Line Number:&lt;/b&gt; 123&lt;/p&gt;
+
+
+&lt;p&gt;&lt;b&gt;Backtrace:&lt;/b&gt;&lt;/p&gt;
+	File: /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_user_permission.php
+	Line: 123
+	Function: _error_handler
+
+	File: /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_user_permission.php
+	Line: 117
+	Function: logPrivilegeChange
+
+	File: /Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_permission_test.php
+	Line: 99
+	Function: removeUserPrivilege
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestCase.php
+	Line: 1071
+	Function: invokeArgs
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestCase.php
+	Line: 939
+	Function: runTest
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestResult.php
+	Line: 698
+	Function: runBare
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestCase.php
+	Line: 894
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestSuite.php
+	Line: 755
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestSuite.php
+	Line: 755
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/Framework/TestSuite.php
+	Line: 755
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/TextUI/TestRunner.php
+	Line: 545
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/TextUI/Command.php
+	Line: 195
+	Function: doRun
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/src/TextUI/Command.php
+	Line: 148
+	Function: run
+
+	File: /Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit
+	Line: 53
+	Function: main
+
+
+&lt;/div&gt;</system-out>
+        </testcase>
+        <testcase name="test_AddUserPrivilege_Exception" class="Database_store_user_permission_test" classname="Database_store_user_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_permission_test.php" line="127" assertions="1" time="0.004292"/>
+      </testsuite>
+      <testsuite name="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" tests="11" assertions="11" errors="0" failures="0" skipped="0" time="0.062494">
+        <testcase name="test_GetUserFromUsername_Valid" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="12" assertions="1" time="0.006949"/>
+        <testcase name="test_GetUserFromUsername_UsernameDoesNotExist" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="18" assertions="1" time="0.004547"/>
+        <testcase name="test_CheckUserExistsForReset_Valid" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="24" assertions="1" time="0.005366"/>
+        <testcase name="test_LogPasswordResetRequest_Valid" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="33" assertions="1" time="0.011004"/>
+        <testcase name="test_LogPasswordResetRequest_NullDatetime" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="50" assertions="1" time="0.005266"/>
+        <testcase name="test_LogPasswordResetRequest_NullActivationID" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="66" assertions="1" time="0.005678"/>
+        <testcase name="test_LogPasswordResetRequest_NullIP" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="84" assertions="1" time="0.004570"/>
+        <testcase name="test_LogPasswordResetRequest_NullUsername" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="102" assertions="1" time="0.004346"/>
+        <testcase name="test_LogPasswordResetRequest_NullEmail" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="119" assertions="1" time="0.003713"/>
+        <testcase name="testStoreActivationID_Valid" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="136" assertions="1" time="0.006277"/>
+        <testcase name="test_CreateUserFromActivationID_NoUsers" class="Database_store_user_test" classname="Database_store_user_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Database_store_user_test.php" line="176" assertions="1" time="0.004777"/>
+      </testsuite>
+      <testsuite name="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" tests="11" assertions="8" errors="3" failures="8" skipped="0" time="0.077235">
+        <testcase name="test_ImportFile_ValidXLS" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="28" assertions="0" time="0.012722">
+          <error type="Error">Match_import_test::test_ImportFile_ValidXLS
+Error: Class 'PHPExcel_IOFactory' not found
+
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:37
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_ImportFile_ValidXLSX" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="54" assertions="0" time="0.007372">
+          <error type="Error">Match_import_test::test_ImportFile_ValidXLSX
+Error: Class 'PHPExcel_IOFactory' not found
+
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:63
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_ImportFile_MissingColumnHeaderRow" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="80" assertions="1" time="0.007164">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_MissingColumnHeaderRow
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:90
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_ImportFile_BlankColumnHeaderRow" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="93" assertions="1" time="0.006211">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_BlankColumnHeaderRow
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:103
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_ImportFile_IncorrectColumnHeaderRow" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="106" assertions="1" time="0.005999">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_IncorrectColumnHeaderRow
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:116
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_ImportFile_MissingLastColumn" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="119" assertions="1" time="0.005871">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_MissingLastColumn
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:129
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_ImportFile_MissingSeveralColumns" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="132" assertions="1" time="0.007230">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_MissingSeveralColumns
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:142
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_ImportFile_ExtraColumn" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="145" assertions="0" time="0.006250">
+          <error type="Error">Match_import_test::test_ImportFile_ExtraColumn
+Error: Class 'PHPExcel_IOFactory' not found
+
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:154
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_ImportFile_NoData" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="171" assertions="1" time="0.006135">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_NoData
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:181
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_ImportFile_NotExcel" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="184" assertions="1" time="0.006421">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_NotExcel
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:194
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_ImportFile_AnotherSheetSelected" class="Match_import_test" classname="Match_import_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php" line="197" assertions="1" time="0.005860">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Match_import_test::test_ImportFile_AnotherSheetSelected
+Failed asserting that exception of type "Error" matches expected exception "Exception". Message was: "Class 'PHPExcel_IOFactory' not found" at
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/tests/models/Match_import_test.php:207
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+.
+
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+      </testsuite>
+      <testsuite name="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" tests="14" assertions="20" errors="0" failures="0" skipped="0" time="0.058697">
+        <testcase name="test_GetPossibleLeaguesForComp" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="12" assertions="2" time="0.006007"/>
+        <testcase name="test_GetClubsForTeam" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="23" assertions="2" time="0.004267"/>
+        <testcase name="test_GetRegions" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="34" assertions="2" time="0.003922"/>
+        <testcase name="test_GetAgeGroups" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="45" assertions="2" time="0.004063"/>
+        <testcase name="test_GetShortLeagueNames" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="56" assertions="2" time="0.004668"/>
+        <testcase name="test_GetDivisions" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="67" assertions="2" time="0.003904"/>
+        <testcase name="test_UpdateSingleCompetition" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="78" assertions="1" time="0.004294"/>
+        <testcase name="test_InsertNewLeague" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="88" assertions="1" time="0.004141"/>
+        <testcase name="test_updateTeamAndClubData_OneTeamInsert" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="100" assertions="1" time="0.003890"/>
+        <testcase name="test_updateTeamAndClubData_TwoTeamsInsert" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="123" assertions="1" time="0.003727"/>
+        <testcase name="test_updateTeamAndClubData_OneTeamUpdate" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="148" assertions="1" time="0.003754"/>
+        <testcase name="test_updateTeamAndClubData_TwoTeamsUpdate" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="171" assertions="1" time="0.004361"/>
+        <testcase name="test_updateTeamAndClubData_MissingValues" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="194" assertions="1" time="0.003951"/>
+        <testcase name="test_updateTeamAndClubData_NoCompetition" class="Missing_data_updater_test" classname="Missing_data_updater_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Missing_data_updater_test.php" line="209" assertions="1" time="0.003748"/>
+      </testsuite>
+      <testsuite name="Parent_report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Parent_report_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.005658">
+        <testcase name="test_IsFieldMatchingColumn_Exception" class="Parent_report_test" classname="Parent_report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Parent_report_test.php" line="11" assertions="1" time="0.005658"/>
+      </testsuite>
+      <testsuite name="Report1_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report1_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.046886">
+        <testcase name="test_GetDataQuery" class="Report1_test" classname="Report1_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report1_test.php" line="9" assertions="1" time="0.021984"/>
+        <testcase name="test_GetReportColumnQuery" class="Report1_test" classname="Report1_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report1_test.php" line="28" assertions="1" time="0.006711"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report1_test" classname="Report1_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report1_test.php" line="45" assertions="1" time="0.004754"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report1_test" classname="Report1_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report1_test.php" line="64" assertions="1" time="0.004764"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report1_test" classname="Report1_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report1_test.php" line="83" assertions="1" time="0.004324"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report1_test" classname="Report1_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report1_test.php" line="101" assertions="1" time="0.004349"/>
+      </testsuite>
+      <testsuite name="Report2_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report2_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.032462">
+        <testcase name="test_GetDataQuery" class="Report2_test" classname="Report2_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report2_test.php" line="12" assertions="1" time="0.005396"/>
+        <testcase name="test_GetReportColumnQuery" class="Report2_test" classname="Report2_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report2_test.php" line="39" assertions="1" time="0.009397"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report2_test" classname="Report2_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report2_test.php" line="62" assertions="1" time="0.004422"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report2_test" classname="Report2_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report2_test.php" line="81" assertions="1" time="0.004658"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report2_test" classname="Report2_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report2_test.php" line="100" assertions="1" time="0.004269"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report2_test" classname="Report2_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report2_test.php" line="118" assertions="1" time="0.004320"/>
+      </testsuite>
+      <testsuite name="Report3_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report3_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.031487">
+        <testcase name="test_GetDataQuery" class="Report3_test" classname="Report3_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report3_test.php" line="10" assertions="1" time="0.005344"/>
+        <testcase name="test_GetReportColumnQuery" class="Report3_test" classname="Report3_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report3_test.php" line="29" assertions="1" time="0.005666"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report3_test" classname="Report3_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report3_test.php" line="48" assertions="1" time="0.006490"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report3_test" classname="Report3_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report3_test.php" line="64" assertions="1" time="0.005548"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report3_test" classname="Report3_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report3_test.php" line="80" assertions="1" time="0.004268"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report3_test" classname="Report3_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report3_test.php" line="95" assertions="1" time="0.004171"/>
+      </testsuite>
+      <testsuite name="Report4_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report4_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.033382">
+        <testcase name="test_GetDataQuery" class="Report4_test" classname="Report4_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report4_test.php" line="10" assertions="1" time="0.008614"/>
+        <testcase name="test_GetReportColumnQuery" class="Report4_test" classname="Report4_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report4_test.php" line="23" assertions="1" time="0.006093"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report4_test" classname="Report4_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report4_test.php" line="37" assertions="1" time="0.005017"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report4_test" classname="Report4_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report4_test.php" line="56" assertions="1" time="0.004647"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report4_test" classname="Report4_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report4_test.php" line="75" assertions="1" time="0.004603"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report4_test" classname="Report4_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report4_test.php" line="93" assertions="1" time="0.004408"/>
+      </testsuite>
+      <testsuite name="Report5_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report5_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.032738">
+        <testcase name="test_GetDataQuery" class="Report5_test" classname="Report5_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report5_test.php" line="9" assertions="1" time="0.008333"/>
+        <testcase name="test_GetReportColumnQuery" class="Report5_test" classname="Report5_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report5_test.php" line="24" assertions="1" time="0.006062"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report5_test" classname="Report5_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report5_test.php" line="35" assertions="1" time="0.005157"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report5_test" classname="Report5_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report5_test.php" line="54" assertions="1" time="0.004652"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report5_test" classname="Report5_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report5_test.php" line="73" assertions="1" time="0.004273"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report5_test" classname="Report5_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report5_test.php" line="90" assertions="1" time="0.004261"/>
+      </testsuite>
+      <testsuite name="Report6_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report6_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.029977">
+        <testcase name="test_GetDataQuery" class="Report6_test" classname="Report6_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report6_test.php" line="10" assertions="1" time="0.006128"/>
+        <testcase name="test_GetReportColumnQuery" class="Report6_test" classname="Report6_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report6_test.php" line="29" assertions="1" time="0.005969"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report6_test" classname="Report6_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report6_test.php" line="49" assertions="1" time="0.004326"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report6_test" classname="Report6_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report6_test.php" line="68" assertions="1" time="0.004405"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report6_test" classname="Report6_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report6_test.php" line="87" assertions="1" time="0.004567"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report6_test" classname="Report6_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report6_test.php" line="105" assertions="1" time="0.004582"/>
+      </testsuite>
+      <testsuite name="Report7_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report7_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.030987">
+        <testcase name="test_GetDataQuery" class="Report7_test" classname="Report7_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report7_test.php" line="10" assertions="1" time="0.006251"/>
+        <testcase name="test_GetReportColumnQuery" class="Report7_test" classname="Report7_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report7_test.php" line="29" assertions="1" time="0.005858"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report7_test" classname="Report7_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report7_test.php" line="51" assertions="1" time="0.005395"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report7_test" classname="Report7_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report7_test.php" line="70" assertions="1" time="0.004934"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report7_test" classname="Report7_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report7_test.php" line="89" assertions="1" time="0.004316"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report7_test" classname="Report7_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report7_test.php" line="107" assertions="1" time="0.004233"/>
+      </testsuite>
+      <testsuite name="Report8_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report8_test.php" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.028994">
+        <testcase name="test_GetDataQuery" class="Report8_test" classname="Report8_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report8_test.php" line="10" assertions="1" time="0.005822"/>
+        <testcase name="test_GetReportColumnQuery" class="Report8_test" classname="Report8_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report8_test.php" line="19" assertions="1" time="0.005645"/>
+        <testcase name="test_GetDataQueryNullParam" class="Report8_test" classname="Report8_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report8_test.php" line="27" assertions="1" time="0.004297"/>
+        <testcase name="test_GetDataQueryEmptyParam" class="Report8_test" classname="Report8_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report8_test.php" line="46" assertions="1" time="0.004458"/>
+        <testcase name="test_GetReportColumnQueryNullParam" class="Report8_test" classname="Report8_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report8_test.php" line="65" assertions="1" time="0.004466"/>
+        <testcase name="test_GetReportColumnQueryEmptyParam" class="Report8_test" classname="Report8_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report8_test.php" line="83" assertions="1" time="0.004306"/>
+      </testsuite>
+      <testsuite name="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" tests="17" assertions="17" errors="0" failures="0" skipped="0" time="0.045332">
+        <testcase name="test_SetCellValue_String" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="10" assertions="1" time="0.002774"/>
+        <testcase name="test_SetCellValue_Number" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="18" assertions="1" time="0.002641"/>
+        <testcase name="test_SetCellValue_Null" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="26" assertions="1" time="0.002996"/>
+        <testcase name="test_SetCellValue_LongString" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="34" assertions="1" time="0.002613"/>
+        <testcase name="test_SetFormatClass_String" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="42" assertions="1" time="0.002569"/>
+        <testcase name="test_SetFormatClass_Number" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="50" assertions="1" time="0.002579"/>
+        <testcase name="test_SetFormatClass_Null" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="58" assertions="1" time="0.002485"/>
+        <testcase name="test_SetRowNumber_String" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="66" assertions="1" time="0.003096"/>
+        <testcase name="test_SetRowNumber_Number" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="74" assertions="1" time="0.002945"/>
+        <testcase name="test_SetRowNumber_Null" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="82" assertions="1" time="0.002526"/>
+        <testcase name="test_SetRowNumber_Zero" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="90" assertions="1" time="0.002517"/>
+        <testcase name="test_SetRowNumber_HighNumber" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="98" assertions="1" time="0.002476"/>
+        <testcase name="test_SetColumnNumber_String" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="106" assertions="1" time="0.002591"/>
+        <testcase name="test_SetColumnNumber_Number" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="114" assertions="1" time="0.002635"/>
+        <testcase name="test_SetColumnNumber_Null" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="122" assertions="1" time="0.002694"/>
+        <testcase name="test_SetColumnNumber_Zero" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="130" assertions="1" time="0.002549"/>
+        <testcase name="test_SetColumnNumber_HighNumber" class="Report_cell_Test" classname="Report_cell_Test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_cell_test.php" line="138" assertions="1" time="0.002646"/>
+      </testsuite>
+      <testsuite name="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" tests="14" assertions="14" errors="0" failures="0" skipped="0" time="0.057004">
+        <testcase name="test_ColumnGroup" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="10" assertions="1" time="0.003910"/>
+        <testcase name="test_RowGroup" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="16" assertions="1" time="0.003869"/>
+        <testcase name="test_FieldToDisplay" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="22" assertions="1" time="0.003993"/>
+        <testcase name="test_NoDataValue" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="28" assertions="1" time="0.003745"/>
+        <testcase name="test_MergeColumnGroup" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="34" assertions="1" time="0.003802"/>
+        <testcase name="test_ColourCells" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="40" assertions="1" time="0.003896"/>
+        <testcase name="test_ColumnHeadingLabel" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="46" assertions="1" time="0.003985"/>
+        <testcase name="test_FirstColumnFormat" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="52" assertions="1" time="0.003767"/>
+        <testcase name="test_ColumnHeadingSizeText" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="58" assertions="1" time="0.004271"/>
+        <testcase name="test_PDFResolution" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="64" assertions="1" time="0.005004"/>
+        <testcase name="test_PDFPaperSize" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="70" assertions="1" time="0.004601"/>
+        <testcase name="test_PDFOrientation" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="76" assertions="1" time="0.003915"/>
+        <testcase name="test_LastGameDate" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="82" assertions="1" time="0.003918"/>
+        <testcase name="test_CreateObject" class="Report_display_options_test" classname="Report_display_options_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_display_options_test.php" line="88" assertions="1" time="0.004328"/>
+      </testsuite>
+      <testsuite name="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" tests="13" assertions="13" errors="0" failures="0" skipped="0" time="0.046280">
+        <testcase name="test_Report1" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="17" assertions="1" time="0.003492"/>
+        <testcase name="test_Report2" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="22" assertions="1" time="0.003908"/>
+        <testcase name="test_Report3" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="27" assertions="1" time="0.003444"/>
+        <testcase name="test_Report4" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="32" assertions="1" time="0.003781"/>
+        <testcase name="test_Report5" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="37" assertions="1" time="0.003878"/>
+        <testcase name="test_Report6" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="42" assertions="1" time="0.003441"/>
+        <testcase name="test_Report7" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="47" assertions="1" time="0.003372"/>
+        <testcase name="test_Report8" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="52" assertions="1" time="0.003467"/>
+        <testcase name="test_Report9" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="57" assertions="1" time="0.003456"/>
+        <testcase name="test_ReportDecimal" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="62" assertions="1" time="0.003465"/>
+        <testcase name="test_ReportZero" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="68" assertions="1" time="0.003524"/>
+        <testcase name="test_ReportText" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="73" assertions="1" time="0.003429"/>
+        <testcase name="test_ReportNull" class="Report_factory_test" classname="Report_factory_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_factory_test.php" line="78" assertions="1" time="0.003623"/>
+      </testsuite>
+      <testsuite name="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" tests="15" assertions="15" errors="0" failures="0" skipped="0" time="0.050178">
+        <testcase name="test_dummy" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="9" assertions="1" time="0.003308"/>
+        <testcase name="test_createFilterParameter_ValuesOKSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="13" assertions="1" time="0.003232"/>
+        <testcase name="test_createFilterParameter_ValuesOKDisplay" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="23" assertions="1" time="0.003063"/>
+        <testcase name="test_createFilterParameter_SingleValueSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="33" assertions="1" time="0.003062"/>
+        <testcase name="test_createFilterParameter_SingleValueDisplay" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="43" assertions="1" time="0.004221"/>
+        <testcase name="test_createFilterParameter_ValuesOKPDFSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="55" assertions="1" time="0.003267"/>
+        <testcase name="test_createFilterParameter_SingleValuePDFSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="84" assertions="1" time="0.003077"/>
+        <testcase name="test_createFilterParameter_SeveralValuesRegionSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="105" assertions="1" time="0.003185"/>
+        <testcase name="test_createFilterParameter_SeveralValuesRegionDisplay" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="115" assertions="1" time="0.002968"/>
+        <testcase name="test_createFilterParameter_SingleArrayValueRegionSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="125" assertions="1" time="0.003314"/>
+        <testcase name="test_createFilterParameter_SingleArrayValueRegionDisplay" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="135" assertions="1" time="0.003122"/>
+        <testcase name="test_createFilterParameter_SingleValueRegionSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="145" assertions="1" time="0.003356"/>
+        <testcase name="test_createFilterParameter_SingleValueRegionDisplay" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="155" assertions="1" time="0.003163"/>
+        <testcase name="test_createFilterParameter_StringSQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="165" assertions="1" time="0.003881"/>
+        <testcase name="test_createFilterParameter_EmptyArraySQL" class="Report_filter_parameter_test" classname="Report_filter_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_filter_parameter_test.php" line="173" assertions="1" time="0.003959"/>
+      </testsuite>
+      <testsuite name="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" tests="10" assertions="10" errors="0" failures="0" skipped="0" time="0.027349">
+        <testcase name="test_ObjectType" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="8" assertions="1" time="0.002833"/>
+        <testcase name="test_ReportGroupingStructureID" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="15" assertions="1" time="0.002596"/>
+        <testcase name="test_GroupingType" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="23" assertions="1" time="0.003178"/>
+        <testcase name="test_FieldName" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="31" assertions="1" time="0.002460"/>
+        <testcase name="test_FieldGroupOrder" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="40" assertions="1" time="0.002737"/>
+        <testcase name="test_MergeField" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="49" assertions="1" time="0.002730"/>
+        <testcase name="test_GroupHeading" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="58" assertions="1" time="0.003054"/>
+        <testcase name="test_GroupSizeText" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="67" assertions="1" time="0.002642"/>
+        <testcase name="test_NullParams" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="75" assertions="1" time="0.002665"/>
+        <testcase name="test_EmptyStringParams" class="Report_grouping_structure_test" classname="Report_grouping_structure_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_grouping_structure_test.php" line="83" assertions="1" time="0.002453"/>
+      </testsuite>
+      <testsuite name="Report_instance_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_instance_test.php" tests="5" assertions="10" errors="0" failures="0" skipped="0" time="0.023378">
+        <testcase name="test_SetReportType" class="Report_instance_test" classname="Report_instance_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_instance_test.php" line="10" assertions="3" time="0.005376"/>
+        <testcase name="test_LoadReportResults" class="Report_instance_test" classname="Report_instance_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_instance_test.php" line="40" assertions="4" time="0.004442"/>
+        <testcase name="test_getColumnCountForHeadingCells_TwoHeadings" class="Report_instance_test" classname="Report_instance_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_instance_test.php" line="173" assertions="1" time="0.004710"/>
+        <testcase name="test_getColumnCountForHeadingCells_OneHeading" class="Report_instance_test" classname="Report_instance_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_instance_test.php" line="214" assertions="1" time="0.004363"/>
+        <testcase name="test_getColumnCountForHeadingCells_ThreeHeadings" class="Report_instance_test" classname="Report_instance_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_instance_test.php" line="247" assertions="1" time="0.004487"/>
+      </testsuite>
+      <testsuite name="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" tests="7" assertions="8" errors="0" failures="0" skipped="0" time="0.025134">
+        <testcase name="test_GetReportParameter" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="12" assertions="1" time="0.003285"/>
+        <testcase name="test_GetReportGroupingStructureArray" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="19" assertions="2" time="0.003638"/>
+        <testcase name="test_loadAllParametersTest" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="30" assertions="1" time="0.003516"/>
+        <testcase name="test_loadAllParametersTestV2" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="41" assertions="1" time="0.004436"/>
+        <testcase name="test_loadAllParametersTestNotFound" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="52" assertions="1" time="0.003571"/>
+        <testcase name="test_loadAllGroupingStructuresForReport" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="60" assertions="1" time="0.003389"/>
+        <testcase name="test_loadAllGroupingStructuresForReportNotFound" class="Report_param_loader_test" classname="Report_param_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_param_loader_test.php" line="71" assertions="1" time="0.003299"/>
+      </testsuite>
+      <testsuite name="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" tests="8" assertions="8" errors="0" failures="0" skipped="0" time="0.022525">
+        <testcase name="test_ReportTitle" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="20" assertions="1" time="0.002794"/>
+        <testcase name="test_ValueFieldID" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="27" assertions="1" time="0.003311"/>
+        <testcase name="test_NoValueDisplay" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="34" assertions="1" time="0.003053"/>
+        <testcase name="test_FirstColumnFormat" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="41" assertions="1" time="0.002620"/>
+        <testcase name="test_ColourCells" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="48" assertions="1" time="0.002865"/>
+        <testcase name="test_PDFOrientation" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="55" assertions="1" time="0.002777"/>
+        <testcase name="test_PDFPaperSize" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="62" assertions="1" time="0.002655"/>
+        <testcase name="test_PDFResolution" class="Report_parameter_test" classname="Report_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_parameter_test.php" line="69" assertions="1" time="0.002450"/>
+      </testsuite>
+      <testsuite name="Report_populator_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_populator_model_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.004158">
+        <testcase name="test_dummy" class="Report_populator_model_test" classname="Report_populator_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_populator_model_test.php" line="10" assertions="1" time="0.004158"/>
+      </testsuite>
+      <testsuite name="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" tests="8" assertions="14" errors="0" failures="0" skipped="0" time="0.031363">
+        <testcase name="test_createReportSelectionParameterID" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="8" assertions="1" time="0.004359"/>
+        <testcase name="test_createReportSelectionParameterName" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="20" assertions="1" time="0.003567"/>
+        <testcase name="test_createReportSelectionParameterDisplayOrder" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="32" assertions="1" time="0.003307"/>
+        <testcase name="test_createReportSelectionParameterAllowMultiple" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="44" assertions="1" time="0.004451"/>
+        <testcase name="test_createReportSelectionParameterIDNull" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="56" assertions="1" time="0.003625"/>
+        <testcase name="test_createReportSelectionParameterIDEmpty" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="68" assertions="1" time="0.004075"/>
+        <testcase name="test_initialiseSelectableReportOptions_OneValue" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="80" assertions="3" time="0.003502"/>
+        <testcase name="test_initialiseSelectableReportOptions_TwoValues" class="Report_selection_parameter_test" classname="Report_selection_parameter_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_parameter_test.php" line="107" assertions="5" time="0.004477"/>
+      </testsuite>
+      <testsuite name="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" tests="19" assertions="19" errors="0" failures="0" skipped="0" time="0.063974">
+        <testcase name="test_CreateReportSelection" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="8" assertions="1" time="0.003893"/>
+        <testcase name="test_CreateReportSelectionEmptyID" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="22" assertions="1" time="0.003588"/>
+        <testcase name="test_CreateReportSelectionNullID" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="35" assertions="1" time="0.002677"/>
+        <testcase name="test_CreateReportSelectionTextID" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="48" assertions="1" time="0.002827"/>
+        <testcase name="test_CreateReportSelectionZeroEnabled" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="61" assertions="1" time="0.002602"/>
+        <testcase name="test_CreateReportSelectionRegionEnabledTwo" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="75" assertions="1" time="0.002748"/>
+        <testcase name="test_CreateReportSelectionLeagueEnabledTwo" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="88" assertions="1" time="0.002718"/>
+        <testcase name="test_CreateReportSelectionAgeGroupEnabledTwo" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="101" assertions="1" time="0.002911"/>
+        <testcase name="test_CreateReportSelectionUmpireTypeEnabledTwo" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="114" assertions="1" time="0.002780"/>
+        <testcase name="test_CreateReportSelectionRegionEnabledText" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="127" assertions="1" time="0.003624"/>
+        <testcase name="test_CreateReportSelectionLeagueEnabledText" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="140" assertions="1" time="0.003701"/>
+        <testcase name="test_CreateReportSelectionAgeGroupEnabledText" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="153" assertions="1" time="0.004502"/>
+        <testcase name="test_CreateReportSelectionUmpireTypeEnabledText" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="166" assertions="1" time="0.002886"/>
+        <testcase name="test_CreateReportSelectionIDName" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="179" assertions="1" time="0.002821"/>
+        <testcase name="test_CreateReportSelectionName" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="188" assertions="1" time="0.004074"/>
+        <testcase name="test_CreateReportSelectionRegion" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="202" assertions="1" time="0.004507"/>
+        <testcase name="test_CreateReportSelectionLeague" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="216" assertions="1" time="0.003859"/>
+        <testcase name="test_CreateReportSelectionAgeGroup" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="230" assertions="1" time="0.004488"/>
+        <testcase name="test_CreateReportSelectionUmpireType" class="Report_selection_test" classname="Report_selection_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_selection_test.php" line="244" assertions="1" time="0.002768"/>
+      </testsuite>
+      <testsuite name="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" tests="9" assertions="9" errors="0" failures="0" skipped="0" time="0.024979">
+        <testcase name="test_DisableKeys_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="9" assertions="1" time="0.002885"/>
+        <testcase name="test_DisableKeysForSpecificTable_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="15" assertions="1" time="0.003439"/>
+        <testcase name="test_EnableKeys_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="20" assertions="1" time="0.002722"/>
+        <testcase name="test_EnableKeysForSpecificTable_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="26" assertions="1" time="0.002627"/>
+        <testcase name="test_TableInsertOperation_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="31" assertions="1" time="0.002627"/>
+        <testcase name="test_TableUpdateOperation_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="37" assertions="1" time="0.002528"/>
+        <testcase name="test_TableDeleteOperation_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="43" assertions="1" time="0.002773"/>
+        <testcase name="test_TableInsertOperationForSpecificTable_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="49" assertions="1" time="0.002761"/>
+        <testcase name="test_TableDeleteOperationForSpecificTable_Exception" class="Report_table_refresher_test" classname="Report_table_refresher_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Report_table_refresher_test.php" line="54" assertions="1" time="0.002617"/>
+      </testsuite>
+      <testsuite name="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" tests="10" assertions="10" errors="0" failures="0" skipped="0" time="0.025638">
+        <testcase name="test_ReportNumber" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="8" assertions="1" time="0.002442"/>
+        <testcase name="test_Season" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="23" assertions="1" time="0.002738"/>
+        <testcase name="test_Region" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="38" assertions="1" time="0.002417"/>
+        <testcase name="test_AgeGroup" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="53" assertions="1" time="0.002605"/>
+        <testcase name="test_UmpireType" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="68" assertions="1" time="0.002801"/>
+        <testcase name="test_League" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="83" assertions="1" time="0.002543"/>
+        <testcase name="test_PDFMode" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="98" assertions="1" time="0.002789"/>
+        <testcase name="test_ReportNumberText" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="113" assertions="1" time="0.002489"/>
+        <testcase name="test_SeasonText" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="126" assertions="1" time="0.002378"/>
+        <testcase name="test_PDFModeText" class="Requested_report_model_test" classname="Requested_report_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Requested_report_model_test.php" line="139" assertions="1" time="0.002436"/>
+      </testsuite>
+      <testsuite name="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" tests="8" assertions="9" errors="0" failures="0" skipped="0" time="0.020952">
+        <testcase name="test_SeasonID" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="8" assertions="1" time="0.002625"/>
+        <testcase name="test_SeasonIDText" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="17" assertions="1" time="0.002511"/>
+        <testcase name="test_SeasonYearEarly" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="26" assertions="1" time="0.002420"/>
+        <testcase name="test_SeasonYearMin" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="33" assertions="1" time="0.002443"/>
+        <testcase name="test_SeasonYearRecent" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="42" assertions="1" time="0.003094"/>
+        <testcase name="test_SeasonYearFuture" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="51" assertions="1" time="0.002710"/>
+        <testcase name="test_SeasonYearText" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="60" assertions="1" time="0.002638"/>
+        <testcase name="test_CreateSeasonFromID" class="Season_test" classname="Season_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Season_test.php" line="67" assertions="2" time="0.002511"/>
+      </testsuite>
+      <testsuite name="Selectable_report_option_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Selectable_report_option_test.php" tests="3" assertions="3" errors="0" failures="0" skipped="0" time="0.007127">
+        <testcase name="test_OptionName" class="Selectable_report_option_test" classname="Selectable_report_option_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Selectable_report_option_test.php" line="11" assertions="1" time="0.002381"/>
+        <testcase name="test_OptionValue" class="Selectable_report_option_test" classname="Selectable_report_option_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Selectable_report_option_test.php" line="17" assertions="1" time="0.002404"/>
+        <testcase name="test_OptionDisplayOrder" class="Selectable_report_option_test" classname="Selectable_report_option_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Selectable_report_option_test.php" line="23" assertions="1" time="0.002342"/>
+      </testsuite>
+      <testsuite name="Table_operation_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Table_operation_test.php" tests="5" assertions="5" errors="0" failures="0" skipped="0" time="0.012355">
+        <testcase name="test_ImportedFileID" class="Table_operation_test" classname="Table_operation_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Table_operation_test.php" line="12" assertions="1" time="0.002453"/>
+        <testcase name="test_ProcessedTableID" class="Table_operation_test" classname="Table_operation_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Table_operation_test.php" line="18" assertions="1" time="0.002490"/>
+        <testcase name="test_OperationID" class="Table_operation_test" classname="Table_operation_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Table_operation_test.php" line="24" assertions="1" time="0.002596"/>
+        <testcase name="test_OperationDateTime" class="Table_operation_test" classname="Table_operation_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Table_operation_test.php" line="30" assertions="1" time="0.002416"/>
+        <testcase name="test_RowCount" class="Table_operation_test" classname="Table_operation_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Table_operation_test.php" line="36" assertions="1" time="0.002400"/>
+      </testsuite>
+      <testsuite name="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" tests="11" assertions="11" errors="0" failures="0" skipped="0" time="0.028052">
+        <testcase name="test_ID" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="15" assertions="1" time="0.003119"/>
+        <testcase name="test_FirstName" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="23" assertions="1" time="0.002584"/>
+        <testcase name="test_LastName" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="31" assertions="1" time="0.002516"/>
+        <testcase name="test_GamesPlayedPrior" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="40" assertions="1" time="0.002446"/>
+        <testcase name="test_GamesPlayedPriorText" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="48" assertions="1" time="0.002552"/>
+        <testcase name="test_GamesPlayedOtherLeagues" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="56" assertions="1" time="0.002523"/>
+        <testcase name="test_GamesPlayedOtherLeaguesText" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="64" assertions="1" time="0.002465"/>
+        <testcase name="test_OldGamesPlayedPrior" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="72" assertions="1" time="0.002409"/>
+        <testcase name="test_OldGamesPlayedPriorText" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="80" assertions="1" time="0.002515"/>
+        <testcase name="test_OldGamesPlayedOtherLeagues" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="88" assertions="1" time="0.002540"/>
+        <testcase name="test_OldGamesPlayedOtherLeaguesText" class="Umpire_test" classname="Umpire_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpire_test.php" line="96" assertions="1" time="0.002383"/>
+      </testsuite>
+      <testsuite name="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" tests="8" assertions="45" errors="0" failures="0" skipped="0" time="0.028650">
+        <testcase name="test_GetAllUmpiresAndValues_ManyRecords" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="12" assertions="4" time="0.004233"/>
+        <testcase name="test_GetAllUmpiresAndValues_NoRecords" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="33" assertions="1" time="0.003408"/>
+        <testcase name="test_UpdateUmpireValues_Valid" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="41" assertions="9" time="0.003417"/>
+        <testcase name="test_UpdateUmpireValues_NoValuesInArray" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="76" assertions="3" time="0.003249"/>
+        <testcase name="test_UpdateUmpireValues_NoMatchingUmpires" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="91" assertions="9" time="0.004032"/>
+        <testcase name="test_UpdateUmpireValues_ArrayHasText" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="118" assertions="1" time="0.003283"/>
+        <testcase name="test_UpdateUmpireValues_MultipleUpdates" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="134" assertions="9" time="0.003412"/>
+        <testcase name="test_UpdateUmpireValues_NoChanges" class="Umpireadminmodel_test" classname="Umpireadminmodel_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/Umpireadminmodel_test.php" line="168" assertions="9" time="0.003616"/>
+      </testsuite>
+      <testsuite name="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" tests="23" assertions="56" errors="0" failures="0" skipped="0" time="0.083483">
+        <testcase name="test_addNewUser" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="11" assertions="1" time="0.004886"/>
+        <testcase name="test_addNewUser_EmptyUsername" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="26" assertions="1" time="0.003191"/>
+        <testcase name="test_addNewUser_EmptyNames" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="40" assertions="1" time="0.003889"/>
+        <testcase name="test_addNewUser_EmptyPassword" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="55" assertions="1" time="0.003473"/>
+        <testcase name="test_TranslateUserFormActive" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="70" assertions="4" time="0.003632"/>
+        <testcase name="test_RemovePrivileges" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="101" assertions="2" time="0.004068"/>
+        <testcase name="test_RemovePrivileges_UsernameNotFound" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="138" assertions="2" time="0.003331"/>
+        <testcase name="test_RemovePrivileges_PermissionNotFound" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="176" assertions="2" time="0.004099"/>
+        <testcase name="test_RemovePrivileges_DeleteTwo" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="209" assertions="2" time="0.003563"/>
+        <testcase name="test_AddPrivileges" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="250" assertions="2" time="0.003524"/>
+        <testcase name="test_AddPrivileges_UsernameNotFound" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="285" assertions="2" time="0.003366"/>
+        <testcase name="test_AddPrivileges_PermissionExists" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="319" assertions="2" time="0.003347"/>
+        <testcase name="test_UpdateUserRoles" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="354" assertions="2" time="0.003389"/>
+        <testcase name="test_UpdateUserRoles_UsernameMissing" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="386" assertions="2" time="0.003191"/>
+        <testcase name="test_UpdateUserRoles_UsernameHasRole" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="418" assertions="2" time="0.003842"/>
+        <testcase name="test_UpdateUserActive" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="452" assertions="2" time="0.003225"/>
+        <testcase name="test_UpdateUserActive_UsernameMissing" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="485" assertions="2" time="0.003499"/>
+        <testcase name="test_UpdateUserActive_SetInactive" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="518" assertions="2" time="0.003724"/>
+        <testcase name="test_UpdateUserActive_SetInvalid" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="551" assertions="2" time="0.003319"/>
+        <testcase name="test_UpdateUserActive_SetNull" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="584" assertions="2" time="0.003279"/>
+        <testcase name="test_SavePrivileges_OneUser" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="617" assertions="6" time="0.004542"/>
+        <testcase name="test_SavePrivileges_NoChanges" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="703" assertions="6" time="0.003477"/>
+        <testcase name="test_SavePrivileges_TwoUsers" class="User_admin_model_test" classname="User_admin_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_admin_test.php" line="775" assertions="6" time="0.003627"/>
+      </testsuite>
+      <testsuite name="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" tests="11" assertions="11" errors="0" failures="0" skipped="0" time="0.030247">
+        <testcase name="test_Login_ValidOneResult" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="10" assertions="1" time="0.004209"/>
+        <testcase name="test_Login_ValidTwoResults" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="26" assertions="1" time="0.002943"/>
+        <testcase name="test_Login_InvalidPassword" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="42" assertions="1" time="0.002685"/>
+        <testcase name="test_Login_NoPassword" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="53" assertions="1" time="0.002643"/>
+        <testcase name="test_Login_UsernameButNoPassword" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="69" assertions="1" time="0.002555"/>
+        <testcase name="test_Login_NoUsernameAndNoPassword" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="80" assertions="1" time="0.002522"/>
+        <testcase name="test_CheckUserActive_OneActive" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="91" assertions="1" time="0.002435"/>
+        <testcase name="test_CheckUserActive_OneInactive" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="100" assertions="1" time="0.002561"/>
+        <testcase name="test_CheckUserActive_TwoActive" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="109" assertions="1" time="0.002743"/>
+        <testcase name="test_CheckUserActive_TwoButOneActive" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="118" assertions="1" time="0.002553"/>
+        <testcase name="test_CheckUserActive_NoUsername" class="User_authentication_model_test" classname="User_authentication_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_authentication_model_test.php" line="127" assertions="1" time="0.002398"/>
+      </testsuite>
+      <testsuite name="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" tests="19" assertions="35" errors="0" failures="0" skipped="0" time="0.067646">
+        <testcase name="test_GetAllUsers" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="11" assertions="4" time="0.004009"/>
+        <testcase name="test_GetAllUsersArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="32" assertions="1" time="0.004094"/>
+        <testcase name="test_GetRoleArray" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="41" assertions="4" time="0.003870"/>
+        <testcase name="test_GetRoleArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="57" assertions="1" time="0.003919"/>
+        <testcase name="test_GetReportArray" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="66" assertions="3" time="0.003371"/>
+        <testcase name="test_GetReportArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="81" assertions="1" time="0.003312"/>
+        <testcase name="test_GetRegionArray" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="89" assertions="2" time="0.004127"/>
+        <testcase name="test_GetRegionArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="103" assertions="1" time="0.003316"/>
+        <testcase name="test_GetUmpireDisciplineArray" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="109" assertions="2" time="0.003237"/>
+        <testcase name="test_GetUmpireDisciplineArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="124" assertions="1" time="0.003430"/>
+        <testcase name="test_GetAgeGroupArray" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="131" assertions="2" time="0.003426"/>
+        <testcase name="test_GetAgeGroupArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="146" assertions="1" time="0.003565"/>
+        <testcase name="test_GetLeagueArray" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="152" assertions="2" time="0.003642"/>
+        <testcase name="test_GetLeagueArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="167" assertions="1" time="0.003329"/>
+        <testcase name="test_GetPermissionArray" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="176" assertions="2" time="0.003392"/>
+        <testcase name="test_GetPermissionArrayEmpty" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="190" assertions="1" time="0.003416"/>
+        <testcase name="test_GetAllUserPermissionsFromDB" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="198" assertions="2" time="0.003646"/>
+        <testcase name="test_GetAllUserRolesFromDB" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="213" assertions="2" time="0.003245"/>
+        <testcase name="test_GetAllUserActiveFromDB" class="User_data_loader_test" classname="User_data_loader_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_data_loader_test.php" line="230" assertions="2" time="0.003300"/>
+      </testsuite>
+      <testsuite name="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" tests="36" assertions="36" errors="0" failures="0" skipped="0" time="0.099663">
+        <testcase name="testValidatePassword" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="11" assertions="1" time="0.003206"/>
+        <testcase name="testValidatePasswordNoMatch" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="19" assertions="1" time="0.002628"/>
+        <testcase name="testValidatePasswordNoMatchAndShort" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="27" assertions="1" time="0.002950"/>
+        <testcase name="testValidatePasswordShortMatch" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="35" assertions="1" time="0.003077"/>
+        <testcase name="test_CheckUserExistsForReset" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="43" assertions="1" time="0.002840"/>
+        <testcase name="test_CheckUserExistsForReset_NoMatch" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="52" assertions="1" time="0.002774"/>
+        <testcase name="test_CheckUserExistsForReset_TwoRecordsMatch" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="61" assertions="1" time="0.002568"/>
+        <testcase name="test_CheckUserExistsForReset_UserMatchEmailNoMatch" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="70" assertions="1" time="0.002745"/>
+        <testcase name="test_CheckUserExistsForReset_UserNoMatchEmailMatch" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="79" assertions="1" time="0.002533"/>
+        <testcase name="test_LogPasswordResetRequest" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="88" assertions="1" time="0.002515"/>
+        <testcase name="test_LogPasswordResetRequest_MissingUsername" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="106" assertions="1" time="0.002437"/>
+        <testcase name="test_StoreActivationID" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="124" assertions="1" time="0.002556"/>
+        <testcase name="test_StoreActivationID_UserNotFound" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="134" assertions="1" time="0.002590"/>
+        <testcase name="test_CreateUserFromActivationID" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="144" assertions="1" time="0.002505"/>
+        <testcase name="test_CreateUserFromActivationID_NotFound" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="155" assertions="1" time="0.002567"/>
+        <testcase name="test_CreateUserFromActivationID_TwoUsersFound" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="167" assertions="1" time="0.003747"/>
+        <testcase name="test_UpdatePassword" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="179" assertions="1" time="0.003529"/>
+        <testcase name="test_UpdatePassword_SamePW" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="189" assertions="1" time="0.002855"/>
+        <testcase name="test_UpdatePassword_Empty" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="199" assertions="1" time="0.002700"/>
+        <testcase name="test_UpdatePassword_Null" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="209" assertions="1" time="0.002992"/>
+        <testcase name="test_UpdatePassword_UserNotFound" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="221" assertions="1" time="0.002627"/>
+        <testcase name="test_UpdatePassword_TwoUsersFound" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="230" assertions="1" time="0.002570"/>
+        <testcase name="test_Validate_UserExists" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="242" assertions="1" time="0.002911"/>
+        <testcase name="test_Validate_UserExistsButWrongPW" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="252" assertions="1" time="0.002949"/>
+        <testcase name="test_Validate_MissingUsername" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="262" assertions="1" time="0.002914"/>
+        <testcase name="test_Validate_EmptyValues" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="272" assertions="1" time="0.002885"/>
+        <testcase name="test_Validate_EmptyPassword" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="282" assertions="1" time="0.002801"/>
+        <testcase name="test_Validate_NullValues" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="293" assertions="1" time="0.002719"/>
+        <testcase name="test_Validate_TwoResults" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="304" assertions="1" time="0.002677"/>
+        <testcase name="test_Validate_SQLInjection" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="316" assertions="1" time="0.002756"/>
+        <testcase name="test_Validate_SQLInjectionCreate" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="326" assertions="1" time="0.002788"/>
+        <testcase name="test_UpdateEmailAddress" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="336" assertions="1" time="0.002697"/>
+        <testcase name="test_UpdateEmailAddress_EmailEmpty" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="345" assertions="1" time="0.002491"/>
+        <testcase name="test_UpdateEmailAddress_EmailNull" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="354" assertions="1" time="0.002523"/>
+        <testcase name="test_UpdateEmailAddress_UserNotFound" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="363" assertions="1" time="0.002429"/>
+        <testcase name="test_UpdateEmailAddress_TwoUsersFound" class="User_maintenance_model_test" classname="User_maintenance_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_maintenance_model_test.php" line="372" assertions="1" time="0.002613"/>
+      </testsuite>
+      <testsuite name="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" tests="16" assertions="20" errors="0" failures="0" skipped="0" time="0.042696">
+        <testcase name="test_getUserFromUsername" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="11" assertions="3" time="0.002564"/>
+        <testcase name="test_getUserFromUsername_UserNotFound" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="24" assertions="1" time="0.002482"/>
+        <testcase name="test_getUserFromUsername_TwoUsers" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="31" assertions="3" time="0.002762"/>
+        <testcase name="test_UserHasSpecificPermission" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="44" assertions="1" time="0.002678"/>
+        <testcase name="test_UserHasSpecificPermission_SelectionNotInArray" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="55" assertions="1" time="0.002569"/>
+        <testcase name="test_UserHasSpecificPermission_PermissionNotInArray" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="66" assertions="1" time="0.002994"/>
+        <testcase name="test_UserHasSpecificPermission_Empty" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="77" assertions="1" time="0.003169"/>
+        <testcase name="test_UserHasSpecificPermission_Null" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="88" assertions="1" time="0.002674"/>
+        <testcase name="test_UserHasImportFilePermission" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="99" assertions="1" time="0.002551"/>
+        <testcase name="test_UserHasImportFilePermission_No" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="108" assertions="1" time="0.002528"/>
+        <testcase name="test_UserCanSeeAdminPage" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="117" assertions="1" time="0.002594"/>
+        <testcase name="test_UserCanSeeAdminPage_No" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="126" assertions="1" time="0.002621"/>
+        <testcase name="test_UserCanSeeDataTestPage" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="135" assertions="1" time="0.002619"/>
+        <testcase name="test_UserCanSeeDataTest_No" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="144" assertions="1" time="0.002594"/>
+        <testcase name="test_UserCanCreatePDF" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="153" assertions="1" time="0.002599"/>
+        <testcase name="test_UserCanCreatePDF_No" class="User_permission_loader_model_test" classname="User_permission_loader_model_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_permission_loader_model_test.php" line="162" assertions="1" time="0.002699"/>
+      </testsuite>
+      <testsuite name="User_role_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_role_permission_test.php" tests="6" assertions="9" errors="0" failures="0" skipped="0" time="0.016220">
+        <testcase name="test_ID" class="User_role_permission_test" classname="User_role_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_role_permission_test.php" line="11" assertions="1" time="0.002589"/>
+        <testcase name="test_PermissionId" class="User_role_permission_test" classname="User_role_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_role_permission_test.php" line="17" assertions="1" time="0.002613"/>
+        <testcase name="test_PermissionName" class="User_role_permission_test" classname="User_role_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_role_permission_test.php" line="24" assertions="1" time="0.003083"/>
+        <testcase name="test_SelectionName" class="User_role_permission_test" classname="User_role_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_role_permission_test.php" line="31" assertions="1" time="0.002683"/>
+        <testcase name="test_CreateFromRow" class="User_role_permission_test" classname="User_role_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_role_permission_test.php" line="37" assertions="4" time="0.002631"/>
+        <testcase name="test_CreateFromRowNullData" class="User_role_permission_test" classname="User_role_permission_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_role_permission_test.php" line="56" assertions="1" time="0.002621"/>
+      </testsuite>
+      <testsuite name="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" tests="55" assertions="74" errors="0" failures="0" skipped="0" time="0.140350">
+        <testcase name="test_ID" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="11" assertions="1" time="0.002726"/>
+        <testcase name="test_IDNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="17" assertions="1" time="0.003215"/>
+        <testcase name="test_IDEmptyString" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="23" assertions="1" time="0.002603"/>
+        <testcase name="test_Username" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="29" assertions="1" time="0.002675"/>
+        <testcase name="test_Username255" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="35" assertions="1" time="0.002627"/>
+        <testcase name="test_Username256" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="41" assertions="1" time="0.002640"/>
+        <testcase name="test_Username300" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="47" assertions="1" time="0.002699"/>
+        <testcase name="test_UsernameNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="53" assertions="1" time="0.002635"/>
+        <testcase name="test_UsernameEmptyString" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="59" assertions="1" time="0.002616"/>
+        <testcase name="test_Password" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="65" assertions="1" time="0.002975"/>
+        <testcase name="test_PasswordNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="71" assertions="1" time="0.002721"/>
+        <testcase name="test_PasswordEmpty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="77" assertions="1" time="0.002608"/>
+        <testcase name="test_FirstName" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="83" assertions="1" time="0.002631"/>
+        <testcase name="test_FirstNameNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="89" assertions="1" time="0.002672"/>
+        <testcase name="test_FirstNameEmpty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="95" assertions="1" time="0.002498"/>
+        <testcase name="test_LastName" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="101" assertions="1" time="0.002464"/>
+        <testcase name="test_LastNameNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="107" assertions="1" time="0.002589"/>
+        <testcase name="test_LastNameEmpty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="113" assertions="1" time="0.002480"/>
+        <testcase name="test_RoleName" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="119" assertions="1" time="0.002435"/>
+        <testcase name="test_RoleNameNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="125" assertions="1" time="0.002530"/>
+        <testcase name="test_RoleNameEmpty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="131" assertions="1" time="0.002467"/>
+        <testcase name="test_SubRoleName" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="137" assertions="1" time="0.002588"/>
+        <testcase name="test_SubRoleNameNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="143" assertions="1" time="0.002497"/>
+        <testcase name="test_SubRoleNameEmpty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="149" assertions="1" time="0.002476"/>
+        <testcase name="test_PasswordResetURL" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="156" assertions="1" time="0.002346"/>
+        <testcase name="test_PasswordResetURLNotURL" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="162" assertions="1" time="0.002504"/>
+        <testcase name="test_PasswordResetURLNumber" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="168" assertions="1" time="0.002448"/>
+        <testcase name="test_PasswordResetURLNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="174" assertions="1" time="0.002509"/>
+        <testcase name="test_PasswordResetURLEmpty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="180" assertions="1" time="0.002371"/>
+        <testcase name="test_EmailAddress" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="186" assertions="1" time="0.002536"/>
+        <testcase name="test_EmailAddress255" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="192" assertions="1" time="0.002441"/>
+        <testcase name="test_EmailAddress256" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="198" assertions="1" time="0.002469"/>
+        <testcase name="test_EmailAddress300" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="204" assertions="1" time="0.002475"/>
+        <testcase name="test_EmailAddressNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="210" assertions="1" time="0.002507"/>
+        <testcase name="test_EmailAddressEmptyString" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="216" assertions="1" time="0.002540"/>
+        <testcase name="test_ActivationID" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="222" assertions="1" time="0.002531"/>
+        <testcase name="test_ActivationID200" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="228" assertions="1" time="0.002556"/>
+        <testcase name="test_ActivationID201" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="234" assertions="1" time="0.002511"/>
+        <testcase name="test_ActivationID300" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="240" assertions="1" time="0.002606"/>
+        <testcase name="test_ActivationIDNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="246" assertions="1" time="0.002648"/>
+        <testcase name="test_ActivationIDEmptyString" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="252" assertions="1" time="0.002450"/>
+        <testcase name="test_Active0" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="258" assertions="1" time="0.002432"/>
+        <testcase name="test_Active1" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="265" assertions="1" time="0.002494"/>
+        <testcase name="test_ActiveEmpty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="272" assertions="1" time="0.002522"/>
+        <testcase name="test_ActiveNull" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="279" assertions="1" time="0.002401"/>
+        <testcase name="test_Active0String" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="286" assertions="1" time="0.002540"/>
+        <testcase name="test_Active1String" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="293" assertions="1" time="0.002454"/>
+        <testcase name="test_Active2" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="300" assertions="1" time="0.002567"/>
+        <testcase name="test_ActiveTextValue" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="306" assertions="1" time="0.002444"/>
+        <testcase name="test_CreateUserFromNameAndRole" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="313" assertions="8" time="0.002457"/>
+        <testcase name="test_CreateUserFromNameAndPW" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="334" assertions="5" time="0.002470"/>
+        <testcase name="test_CreateUserFromNameAndPW_MissingUsername" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="350" assertions="5" time="0.002545"/>
+        <testcase name="test_CreateUserFromNameAndPW_MissingFirstname" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="366" assertions="5" time="0.002518"/>
+        <testcase name="test_SetPermissionArray" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="382" assertions="1" time="0.002569"/>
+        <testcase name="test_SetPermissionArray_Empty" class="User_test" classname="User_test" file="/Applications/MAMP/htdocs/umpire/application/tests/models/User_test.php" line="397" assertions="1" time="0.002422"/>
+      </testsuite>
+      <testsuite name="Array_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Array_library_test.php" tests="5" assertions="6" errors="0" failures="0" skipped="0" time="0.015134">
+        <testcase name="test_FindArrayDBObjectDiff_NoDiff" class="Array_library_test" classname="Array_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Array_library_test.php" line="12" assertions="1" time="0.003095"/>
+        <testcase name="test_FindArrayDBObjectDiff_FirstHasExtraElement" class="Array_library_test" classname="Array_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Array_library_test.php" line="31" assertions="1" time="0.002892"/>
+        <testcase name="test_FindArrayDBObjectDiff_SecondHasExtraElement" class="Array_library_test" classname="Array_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Array_library_test.php" line="51" assertions="1" time="0.003059"/>
+        <testcase name="test_FindArrayDBObjectDiff_FirstHasMoreElements" class="Array_library_test" classname="Array_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Array_library_test.php" line="71" assertions="2" time="0.003075"/>
+        <testcase name="test_SearchMultiArrayForThreeValues_Valid" class="Array_library_test" classname="Array_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Array_library_test.php" line="96" assertions="1" time="0.003013"/>
+      </testsuite>
+      <testsuite name="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" tests="16" assertions="16" errors="0" failures="0" skipped="0" time="0.040245">
+        <testcase name="testLevel1Table" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="12" assertions="1" time="0.002528"/>
+        <testcase name="testLevel2Table" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="20" assertions="1" time="0.002515"/>
+        <testcase name="testLevel3Table" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="28" assertions="1" time="0.002896"/>
+        <testcase name="testLevel4Table" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="36" assertions="1" time="0.002637"/>
+        <testcase name="testLevel5Table" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="44" assertions="1" time="0.002507"/>
+        <testcase name="testLevel6Table" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="52" assertions="1" time="0.002389"/>
+        <testcase name="testLevelNullTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="60" assertions="1" time="0.002427"/>
+        <testcase name="testLevelInvalidTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="68" assertions="1" time="0.002502"/>
+        <testcase name="testLevel1NoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="76" assertions="1" time="0.002390"/>
+        <testcase name="testLevel2NoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="84" assertions="1" time="0.002452"/>
+        <testcase name="testLevel3NoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="92" assertions="1" time="0.002430"/>
+        <testcase name="testLevel4NoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="100" assertions="1" time="0.002536"/>
+        <testcase name="testLevel5NoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="108" assertions="1" time="0.002394"/>
+        <testcase name="testLevel6NoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="116" assertions="1" time="0.002427"/>
+        <testcase name="testLevelNullNoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="124" assertions="1" time="0.002544"/>
+        <testcase name="testLevelInvalidNoTable" class="CellFormattingHelper_test" classname="CellFormattingHelper_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/CellFormattingHelper_test.php" line="132" assertions="1" time="0.002671"/>
+      </testsuite>
+      <testsuite name="Debug_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Debug_library_test.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.006915">
+        <testcase name="test_ArrayDebug" class="Debug_library_test" classname="Debug_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Debug_library_test.php" line="12" assertions="1" time="0.003466"/>
+        <testcase name="test_TextDebug" class="Debug_library_test" classname="Debug_library_test" file="/Applications/MAMP/htdocs/umpire/application/tests/helpers/Debug_library_test.php" line="25" assertions="1" time="0.003449"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="integration" tests="141" assertions="1727" errors="21" failures="1" skipped="0" time="57.342954">
+      <testsuite name="Ajax_post_controller_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Ajax_post_controller_test.php" tests="4" assertions="6" errors="0" failures="0" skipped="0" time="0.255583">
+        <testcase name="test_UserDataSubmit" class="Ajax_post_controller_test" classname="Ajax_post_controller_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Ajax_post_controller_test.php" line="12" assertions="1" time="0.011421"/>
+        <testcase name="test_UpdateSingleCompetition" class="Ajax_post_controller_test" classname="Ajax_post_controller_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Ajax_post_controller_test.php" line="25" assertions="1" time="0.029183"/>
+        <testcase name="test_UpdateSingleCompetition_LeagueDoesNotExist" class="Ajax_post_controller_test" classname="Ajax_post_controller_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Ajax_post_controller_test.php" line="56" assertions="2" time="0.012044"/>
+        <testcase name="test_UpdateUmpireGames" class="Ajax_post_controller_test" classname="Ajax_post_controller_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Ajax_post_controller_test.php" line="99" assertions="2" time="0.202935"/>
+      </testsuite>
+      <testsuite name="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" tests="9" assertions="9" errors="0" failures="0" skipped="0" time="0.033239">
+        <testcase name="testErrorGeneralCLI" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="10" assertions="1" time="0.005195"/>
+        <testcase name="testErrorGeneralHTML" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="20" assertions="1" time="0.004330"/>
+        <testcase name="testError404CLI" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="27" assertions="1" time="0.003494"/>
+        <testcase name="testError404HTML" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="36" assertions="1" time="0.003461"/>
+        <testcase name="testErrorDBCLI" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="43" assertions="1" time="0.003195"/>
+        <testcase name="testErrorDBHTML" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="52" assertions="1" time="0.003285"/>
+        <testcase name="testErrorExceptionCLI" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="59" assertions="1" time="0.003577"/>
+        <testcase name="testErrorExceptionHTML" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="69" assertions="1" time="0.003398"/>
+        <testcase name="testErrorPHPHTML" class="ErrorView_test" classname="ErrorView_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ErrorView_test.php" line="77" assertions="1" time="0.003304"/>
+      </testsuite>
+      <testsuite name="FileImport_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/FileImport_test.php" tests="3" assertions="1" errors="2" failures="0" skipped="0" time="0.079239">
+        <testcase name="test_ImportFile" class="FileImport_test" classname="FileImport_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/FileImport_test.php" line="17" assertions="0" time="0.031441">
+          <error type="Error">FileImport_test::test_ImportFile
+Error: Class 'PHPExcel_IOFactory' not found
+
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/controllers/FileImport.php:68
+/Applications/MAMP/htdocs/umpire/application/controllers/FileImport.php:35
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/FileImport_test.php:38
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_ImportFile_Invalid" class="FileImport_test" classname="FileImport_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/FileImport_test.php" line="43" assertions="1" time="0.013300"/>
+        <testcase name="test_ImportFile_NewData" class="FileImport_test" classname="FileImport_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/FileImport_test.php" line="74" assertions="0" time="0.034498">
+          <error type="Error">FileImport_test::test_ImportFile_NewData
+Error: Class 'PHPExcel_IOFactory' not found
+
+/Applications/MAMP/htdocs/umpire/application/models/Match_import.php:49
+/Applications/MAMP/htdocs/umpire/application/controllers/FileImport.php:68
+/Applications/MAMP/htdocs/umpire/application/controllers/FileImport.php:35
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/FileImport_test.php:93
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+      </testsuite>
+      <testsuite name="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" tests="11" assertions="11" errors="0" failures="0" skipped="0" time="4.433727">
+        <testcase name="test_DataValid" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="12" assertions="1" time="0.009139"/>
+        <testcase name="test_SubmitChangePasswordForm_Valid" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="27" assertions="1" time="2.880317"/>
+        <testcase name="test_SubmitChangePasswordForm_DoesNotMatch" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="40" assertions="1" time="0.014406"/>
+        <testcase name="test_SubmitChangePasswordForm_UsernameNotFound" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="52" assertions="1" time="0.010698"/>
+        <testcase name="test_SubmitChangePasswordForm_UsernameNull" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="64" assertions="1" time="0.008009"/>
+        <testcase name="test_SubmitChangePasswordForm_EmailNull" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="76" assertions="1" time="0.008280"/>
+        <testcase name="test_SubmitChangePasswordForm_UsernameEmpty" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="88" assertions="1" time="0.007533"/>
+        <testcase name="test_SubmitChangePasswordForm_EmailEmpty" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="100" assertions="1" time="0.007349"/>
+        <testcase name="test_SubmitChangePasswordForm_UsernameInjection" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="112" assertions="1" time="0.008563"/>
+        <testcase name="test_SubmitChangePasswordForm_ValidButNotSent" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="126" assertions="1" time="1.460387"/>
+        <testcase name="test_SubmitChangePasswordForm_ValidButSendFalse" class="ForgotPassword_test" classname="ForgotPassword_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ForgotPassword_test.php" line="139" assertions="1" time="0.019046"/>
+      </testsuite>
+      <testsuite name="Header_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Header_test.php" tests="5" assertions="5" errors="0" failures="0" skipped="0" time="0.072966">
+        <testcase name="test_HomePage" class="Header_test" classname="Header_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Header_test.php" line="11" assertions="1" time="0.021701"/>
+        <testcase name="test_ImportFile" class="Header_test" classname="Header_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Header_test.php" line="21" assertions="1" time="0.011043"/>
+        <testcase name="test_UserAdmin" class="Header_test" classname="Header_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Header_test.php" line="31" assertions="1" time="0.010721"/>
+        <testcase name="test_UmpireAdmin" class="Header_test" classname="Header_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Header_test.php" line="41" assertions="1" time="0.011477"/>
+        <testcase name="test_CreatePDFNotOnHomePage" class="Header_test" classname="Header_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Header_test.php" line="53" assertions="1" time="0.018024"/>
+      </testsuite>
+      <testsuite name="HomeController_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/HomeController_test.php" tests="5" assertions="24" errors="0" failures="0" skipped="0" time="0.211038">
+        <testcase name="test_LoadPage" class="HomeController_test" classname="HomeController_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/HomeController_test.php" line="12" assertions="1" time="0.012246"/>
+        <testcase name="test_LoadPage_NotLoggedIn" class="HomeController_test" classname="HomeController_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/HomeController_test.php" line="45" assertions="1" time="0.006945"/>
+        <testcase name="test_LoadPage_Logout" class="HomeController_test" classname="HomeController_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/HomeController_test.php" line="54" assertions="2" time="0.013896"/>
+        <testcase name="test_LoadPage_brendan" class="HomeController_test" classname="HomeController_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/HomeController_test.php" line="80" assertions="1" time="0.010046"/>
+        <testcase name="test_LoadPage_allOtherUsers" class="HomeController_test" classname="HomeController_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/HomeController_test.php" line="90" assertions="19" time="0.167905"/>
+      </testsuite>
+      <testsuite name="ImportFileSelector_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ImportFileSelector_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.008721">
+        <testcase name="test_LoadPage" class="ImportFileSelector_test" classname="ImportFileSelector_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ImportFileSelector_test.php" line="12" assertions="1" time="0.008721"/>
+      </testsuite>
+      <testsuite name="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" tests="39" assertions="1608" errors="0" failures="0" skipped="0" time="50.687769">
+        <testcase name="test_SeasonsExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="28" assertions="6" time="1.153840"/>
+        <testcase name="test_SeasonLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="45" assertions="1" time="1.346154"/>
+        <testcase name="test_AgeGroupsExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="60" assertions="20" time="1.134862"/>
+        <testcase name="test_AgeGroupLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="78" assertions="1" time="1.478739"/>
+        <testcase name="test_AgeGroupsMatchDivisions" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="95" assertions="159" time="1.263860"/>
+        <testcase name="test_AgeGroupDivisionLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="196" assertions="1" time="1.455386"/>
+        <testcase name="test_DivisionsExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="218" assertions="11" time="1.123966"/>
+        <testcase name="test_DivisionLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="235" assertions="1" time="1.299113"/>
+        <testcase name="test_ClubNamesExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="251" assertions="166" time="1.325849"/>
+        <testcase name="test_ClubNamesAreNotDuplicated" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="433" assertions="1" time="1.282814"/>
+        <testcase name="test_ClubsLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="449" assertions="1" time="1.686877"/>
+        <testcase name="test_TeamsLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="465" assertions="1" time="1.129762"/>
+        <testcase name="test_LeaguesHaveCorrectRegion" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="530" assertions="13" time="1.239824"/>
+        <testcase name="test_PermissionsExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="554" assertions="10" time="1.183194"/>
+        <testcase name="test_PermissionsLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="569" assertions="1" time="1.449118"/>
+        <testcase name="test_PermissionCategorySelectionOrder" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="582" assertions="103" time="1.308846"/>
+        <testcase name="test_ShortLeagueNamesExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="639" assertions="7" time="1.213084"/>
+        <testcase name="test_ShortLeagueNameLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="654" assertions="1" time="1.370105"/>
+        <testcase name="test_ReportNamesExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="683" assertions="9" time="1.223600"/>
+        <testcase name="test_ReportNameLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="698" assertions="1" time="1.368344"/>
+        <testcase name="test_ReportValuesAreCorrect" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="711" assertions="97" time="1.151881"/>
+        <testcase name="test_ReportValuesLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="866" assertions="12" time="1.377783"/>
+        <testcase name="test_UmpireTypesExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="908" assertions="4" time="1.215834"/>
+        <testcase name="test_UmpireTypeLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="923" assertions="1" time="1.153307"/>
+        <testcase name="test_UserPermissionsAreCorrect" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="940" assertions="29" time="1.125537"/>
+        <testcase name="test_AllRegularUsersHaveRequiredPermissions" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="974" assertions="203" time="1.145078"/>
+        <testcase name="test_UserPermissionsArePopulated" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1082" assertions="1" time="1.220680"/>
+        <testcase name="test_ValidSelectionCombinationsAreCorrect" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1100" assertions="88" time="1.213124"/>
+        <testcase name="test_UsersAreCorrect" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1156" assertions="111" time="1.225455"/>
+        <testcase name="test_UsersLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1202" assertions="1" time="1.362879"/>
+        <testcase name="test_CheckForDuplicateUsers" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1233" assertions="1" time="1.127061"/>
+        <testcase name="test_RegionsExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1247" assertions="3" time="1.127565"/>
+        <testcase name="test_RegionLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1262" assertions="1" time="1.317563"/>
+        <testcase name="test_ReportSelectionParametersExist" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1278" assertions="9" time="1.206436"/>
+        <testcase name="test_ReportSelectionParameterValues" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1301" assertions="61" time="1.144631"/>
+        <testcase name="test_RoleValues" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1351" assertions="6" time="1.130576"/>
+        <testcase name="test_RoleLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1366" assertions="1" time="1.509684"/>
+        <testcase name="test_RolePermissionSelection" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1378" assertions="461" time="1.411651"/>
+        <testcase name="test_RolePermissionSelectionLocalVsProd" class="Integration_test" classname="Integration_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Integration_test.php" line="1517" assertions="4" time="2.483708"/>
+      </testsuite>
+      <testsuite name="Login_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Login_test.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.016114">
+        <testcase name="test_LoadPage" class="Login_test" classname="Login_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Login_test.php" line="12" assertions="1" time="0.016114"/>
+      </testsuite>
+      <testsuite name="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" tests="18" assertions="18" errors="0" failures="1" skipped="0" time="0.606894">
+        <testcase name="test_Report1ColumnQuery_SingleParams" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="175" assertions="1" time="0.082565"/>
+        <testcase name="test_Report2ColumnQuery_SingleParams" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="204" assertions="1" time="0.043727"/>
+        <testcase name="test_Report2ColumnQuery_SingleParams_V2" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="224" assertions="1" time="0.027600"/>
+        <testcase name="test_Report2ColumnQuery_SingleParams_V3" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="244" assertions="1" time="0.033160"/>
+        <testcase name="test_Report2ColumnQuery_SingleParams_V4" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="266" assertions="1" time="0.029435"/>
+        <testcase name="test_Report2ColumnQuery_MultipleParams" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="288" assertions="1" time="0.026557"/>
+        <testcase name="test_Report2ColumnQuery_MultipleParams_V2" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="313" assertions="1" time="0.029799"/>
+        <testcase name="test_Report3ColumnQuery_Geelong" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="342" assertions="1" time="0.030167">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">ReportColumnQuery_test::test_Report3ColumnQuery_Geelong
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+-        'umpire_type_age_group' =&gt; 'No Reserves Goal'
++        'umpire_type_age_group' =&gt; 'No Under 16 Field'
+         'short_league_name' =&gt; 'BFL'
+     )
+     11 =&gt; Array (
+-        'umpire_type_age_group' =&gt; 'No Reserves Goal'
+-        'short_league_name' =&gt; 'GDFL'
++        'umpire_type_age_group' =&gt; 'No Under 16 Field'
++        'short_league_name' =&gt; 'Total'
+     )
+     12 =&gt; Array (
+         'umpire_type_age_group' =&gt; 'No Reserves Goal'
+-        'short_league_name' =&gt; 'GFL'
++        'short_league_name' =&gt; 'BFL'
+     )
+     13 =&gt; Array (
+         'umpire_type_age_group' =&gt; 'No Reserves Goal'
+-        'short_league_name' =&gt; 'Total'
++        'short_league_name' =&gt; 'GDFL'
+     )
+     14 =&gt; Array (
+-        'umpire_type_age_group' =&gt; 'No Colts Field'
+-        'short_league_name' =&gt; 'GJFL'
++        'umpire_type_age_group' =&gt; 'No Reserves Goal'
++        'short_league_name' =&gt; 'GFL'
+     )
+     15 =&gt; Array (
+-        'umpire_type_age_group' =&gt; 'No Colts Field'
++        'umpire_type_age_group' =&gt; 'No Reserves Goal'
+         'short_league_name' =&gt; 'Total'
+     )
+     16 =&gt; Array (
+-        'umpire_type_age_group' =&gt; 'No Under 16 Field'
++        'umpire_type_age_group' =&gt; 'No Colts Field'
+         'short_league_name' =&gt; 'GJFL'
+     )
+     17 =&gt; Array (
+-        'umpire_type_age_group' =&gt; 'No Under 16 Field'
++        'umpire_type_age_group' =&gt; 'No Colts Field'
+         'short_league_name' =&gt; 'Total'
+     )
+     18 =&gt; Array (
+-        'umpire_type_age_group' =&gt; 'No Under 14 Field'
++        'umpire_type_age_group' =&gt; 'No Under 16 Field'
+         'short_league_name' =&gt; 'GJFL'
+     )
+     19 =&gt; Array (
+         'umpire_type_age_group' =&gt; 'No Under 14 Field'
+-        'short_league_name' =&gt; 'Total'
++        'short_league_name' =&gt; 'GJFL'
+     )
+     20 =&gt; Array (
+-        'umpire_type_age_group' =&gt; 'No Under 12 Field'
+-        'short_league_name' =&gt; 'GJFL'
++        'umpire_type_age_group' =&gt; 'No Under 14 Field'
++        'short_league_name' =&gt; 'Total'
+     )
+     21 =&gt; Array (
+         'umpire_type_age_group' =&gt; 'No Under 12 Field'
+-        'short_league_name' =&gt; 'Total'
++        'short_league_name' =&gt; 'GJFL'
+     )
++    22 =&gt; Array (...)
+
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php:376
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</failure>
+        </testcase>
+        <testcase name="test_Report3ColumnQuery_Colac" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="379" assertions="1" time="0.032107"/>
+        <testcase name="test_Report4ColumnQuery_Geelong" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="400" assertions="1" time="0.030945"/>
+        <testcase name="test_Report4ColumnQuery_Colac" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="442" assertions="1" time="0.024767"/>
+        <testcase name="test_Report5ColumnQuery_Geelong" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="466" assertions="1" time="0.061501"/>
+        <testcase name="test_Report5ColumnQuery_Colac" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="497" assertions="1" time="0.026160"/>
+        <testcase name="test_Report7ColumnQuery_Geelong_Seniors" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="516" assertions="1" time="0.027941"/>
+        <testcase name="test_Report7ColumnQuery_Geelong_Juniors" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="541" assertions="1" time="0.025662"/>
+        <testcase name="test_Report7ColumnQuery_Geelong_SeniorsJuniors" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="560" assertions="1" time="0.024865"/>
+        <testcase name="test_Report7ColumnQuery_Colac_Seniors" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="589" assertions="1" time="0.024844"/>
+        <testcase name="test_Report8ColumnQuery" class="ReportColumnQuery_test" classname="ReportColumnQuery_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ReportColumnQuery_test.php" line="608" assertions="1" time="0.025091"/>
+      </testsuite>
+      <testsuite name="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" tests="15" assertions="3" errors="13" failures="0" skipped="0" time="0.483927">
+        <testcase name="test_Report1" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="104" assertions="2" time="0.113532"/>
+        <testcase name="test_Report2" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="135" assertions="0" time="0.025101">
+          <error type="RuntimeException">Report_test::test_Report2
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:154
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report3" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="159" assertions="0" time="0.030874">
+          <error type="RuntimeException">Report_test::test_Report3
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:181
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report3_2017" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="186" assertions="0" time="0.029442">
+          <error type="RuntimeException">Report_test::test_Report3_2017
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:208
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report3_TwoUmpireTypes" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="213" assertions="0" time="0.027734">
+          <error type="RuntimeException">Report_test::test_Report3_TwoUmpireTypes
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:237
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report3_TwoUmpireTypesAndAges" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="242" assertions="0" time="0.025753">
+          <error type="RuntimeException">Report_test::test_Report3_TwoUmpireTypesAndAges
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:267
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report3_TwoUmpireTypesAndAgesAndLeagues" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="272" assertions="0" time="0.029675">
+          <error type="RuntimeException">Report_test::test_Report3_TwoUmpireTypesAndAgesAndLeagues
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:298
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report3_ThreeOfSeveralParameters" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="303" assertions="0" time="0.027004">
+          <error type="RuntimeException">Report_test::test_Report3_ThreeOfSeveralParameters
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:334
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report4" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="339" assertions="0" time="0.025178">
+          <error type="RuntimeException">Report_test::test_Report4
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:358
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report5" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="363" assertions="0" time="0.026584">
+          <error type="RuntimeException">Report_test::test_Report5
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:382
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report6" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="387" assertions="0" time="0.025916">
+          <error type="RuntimeException">Report_test::test_Report6
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:406
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report7" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="411" assertions="0" time="0.027288">
+          <error type="RuntimeException">Report_test::test_Report7
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:430
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report8" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="435" assertions="0" time="0.023677">
+          <error type="RuntimeException">Report_test::test_Report8
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:445
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_Report8_MultiParam" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="450" assertions="0" time="0.023415">
+          <error type="RuntimeException">Report_test::test_Report8_MultiParam
+RuntimeException: Trying to access array offset on value of type null on line 17 in file /Applications/MAMP/htdocs/umpire/application/controllers/Report.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:17
+/Applications/MAMP/htdocs/umpire/application/controllers/Report.php:22
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php:460
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_ReportNumberNotFound" class="Report_test" classname="Report_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/Report_test.php" line="465" assertions="1" time="0.022754"/>
+      </testsuite>
+      <testsuite name="ResetPasswordEntry_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ResetPasswordEntry_test.php" tests="6" assertions="13" errors="0" failures="0" skipped="0" time="0.057053">
+        <testcase name="test_LoadPage" class="ResetPasswordEntry_test" classname="ResetPasswordEntry_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ResetPasswordEntry_test.php" line="18" assertions="1" time="0.010600"/>
+        <testcase name="test_SubmitNewPassword_Valid" class="ResetPasswordEntry_test" classname="ResetPasswordEntry_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ResetPasswordEntry_test.php" line="32" assertions="4" time="0.012274"/>
+        <testcase name="test_SubmitNewPassword_IncorrectPW" class="ResetPasswordEntry_test" classname="ResetPasswordEntry_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ResetPasswordEntry_test.php" line="69" assertions="2" time="0.008767"/>
+        <testcase name="test_SubmitNewPassword_MissingPW" class="ResetPasswordEntry_test" classname="ResetPasswordEntry_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ResetPasswordEntry_test.php" line="98" assertions="2" time="0.008229"/>
+        <testcase name="test_SubmitNewPassword_PWDoesNotMatch" class="ResetPasswordEntry_test" classname="ResetPasswordEntry_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ResetPasswordEntry_test.php" line="125" assertions="2" time="0.008649"/>
+        <testcase name="test_SubmitNewPassword_UsernameDoesNotExist" class="ResetPasswordEntry_test" classname="ResetPasswordEntry_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/ResetPasswordEntry_test.php" line="152" assertions="2" time="0.008534"/>
+      </testsuite>
+      <testsuite name="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" tests="7" assertions="5" errors="6" failures="0" skipped="0" time="0.115730">
+        <testcase name="test_LoadPage" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="10" assertions="1" time="0.018519"/>
+        <testcase name="test_UpdateUmpireGamesPlayed_Single" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="16" assertions="0" time="0.016312">
+          <error type="RuntimeException">UmpireAdmin_test::test_UpdateUmpireGamesPlayed_Single
+RuntimeException: Trying to access array offset on value of type null on line 72 in file /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:72
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:66
+/Applications/MAMP/htdocs/umpire/application/models/Umpireadminmodel.php:33
+/Applications/MAMP/htdocs/umpire/application/controllers/UmpireAdmin.php:41
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php:27
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_UpdateUmpireGamesPlayed_SingleGamesPriorOnly" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="53" assertions="0" time="0.017196">
+          <error type="RuntimeException">UmpireAdmin_test::test_UpdateUmpireGamesPlayed_SingleGamesPriorOnly
+RuntimeException: Trying to access array offset on value of type null on line 72 in file /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:72
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:66
+/Applications/MAMP/htdocs/umpire/application/models/Umpireadminmodel.php:33
+/Applications/MAMP/htdocs/umpire/application/controllers/UmpireAdmin.php:41
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php:64
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_UpdateUmpireGamesPlayed_SingleGamesOtherOnly" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="90" assertions="0" time="0.014684">
+          <error type="RuntimeException">UmpireAdmin_test::test_UpdateUmpireGamesPlayed_SingleGamesOtherOnly
+RuntimeException: Trying to access array offset on value of type null on line 72 in file /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:72
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:66
+/Applications/MAMP/htdocs/umpire/application/models/Umpireadminmodel.php:33
+/Applications/MAMP/htdocs/umpire/application/controllers/UmpireAdmin.php:41
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php:101
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_UpdateUmpireGamesPlayed_TwoUpdates" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="126" assertions="0" time="0.017136">
+          <error type="RuntimeException">UmpireAdmin_test::test_UpdateUmpireGamesPlayed_TwoUpdates
+RuntimeException: Trying to access array offset on value of type null on line 72 in file /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:72
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:66
+/Applications/MAMP/htdocs/umpire/application/models/Umpireadminmodel.php:33
+/Applications/MAMP/htdocs/umpire/application/controllers/UmpireAdmin.php:41
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php:143
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_UpdateUmpireGamesPlayed_TwoUpdatesAlternate" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="174" assertions="0" time="0.016066">
+          <error type="RuntimeException">UmpireAdmin_test::test_UpdateUmpireGamesPlayed_TwoUpdatesAlternate
+RuntimeException: Trying to access array offset on value of type null on line 72 in file /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:72
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:66
+/Applications/MAMP/htdocs/umpire/application/models/Umpireadminmodel.php:33
+/Applications/MAMP/htdocs/umpire/application/controllers/UmpireAdmin.php:41
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php:191
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+        <testcase name="test_UpdateUmpireGamesPlayed_TwoUmpireNoChange" class="UmpireAdmin_test" classname="UmpireAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php" line="222" assertions="4" time="0.015816">
+          <error type="RuntimeException">UmpireAdmin_test::test_UpdateUmpireGamesPlayed_TwoUmpireNoChange
+RuntimeException: Trying to access array offset on value of type null on line 72 in file /Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php
+
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:169
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:72
+/Applications/MAMP/htdocs/umpire/application/models/data_store/Database_store_umpire_admin.php:66
+/Applications/MAMP/htdocs/umpire/application/models/Umpireadminmodel.php:33
+/Applications/MAMP/htdocs/umpire/application/controllers/UmpireAdmin.php:41
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:368
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:257
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestRequest.php:153
+/Applications/MAMP/htdocs/umpire/application/tests/_ci_phpunit_test/CIPHPUnitTestCase.php:144
+/Applications/MAMP/htdocs/umpire/application/tests/controllers/UmpireAdmin_test.php:244
+/Applications/MAMP/htdocs/umpire/vendor/phpunit/phpunit/phpunit:53
+</error>
+        </testcase>
+      </testsuite>
+      <testsuite name="UpdateProfile_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UpdateProfile_test.php" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="0.046655">
+        <testcase name="test_DataValid" class="UpdateProfile_test" classname="UpdateProfile_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UpdateProfile_test.php" line="11" assertions="1" time="0.012657"/>
+        <testcase name="test_UpdateEmail_Valid" class="UpdateProfile_test" classname="UpdateProfile_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UpdateProfile_test.php" line="25" assertions="1" time="0.012722"/>
+        <testcase name="test_UpdateEmail_NotValid" class="UpdateProfile_test" classname="UpdateProfile_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UpdateProfile_test.php" line="43" assertions="1" time="0.011234"/>
+        <testcase name="test_UpdateEmail_Empty" class="UpdateProfile_test" classname="UpdateProfile_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UpdateProfile_test.php" line="61" assertions="1" time="0.010042"/>
+      </testsuite>
+      <testsuite name="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" tests="8" assertions="13" errors="0" failures="0" skipped="0" time="0.194022">
+        <testcase name="test_LoadPage" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="13" assertions="1" time="0.031848"/>
+        <testcase name="test_LoadPage_NotLoggedIn" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="22" assertions="1" time="0.008354"/>
+        <testcase name="test_LoadPage_WithMessage" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="31" assertions="2" time="0.030457"/>
+        <testcase name="test_AddNewUser_Valid" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="43" assertions="3" time="0.040426"/>
+        <testcase name="test_AddNewUser_AlreadyExists" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="82" assertions="2" time="0.010873"/>
+        <testcase name="test_SaveUserPrivileges" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="117" assertions="2" time="0.058193"/>
+        <testcase name="test_UserHasImportFilePermission_AdminUser" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="146" assertions="1" time="0.008327"/>
+        <testcase name="test_UserHasImportFilePermission_NotAdminUser" class="UserAdmin_test" classname="UserAdmin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/UserAdmin_test.php" line="162" assertions="1" time="0.005544"/>
+      </testsuite>
+      <testsuite name="VerifyLogin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/VerifyLogin_test.php" tests="5" assertions="5" errors="0" failures="0" skipped="0" time="0.040277">
+        <testcase name="testIndex_CorrectDetails" class="VerifyLogin_test" classname="VerifyLogin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/VerifyLogin_test.php" line="15" assertions="1" time="0.009820"/>
+        <testcase name="testIndex_IncorrectPW" class="VerifyLogin_test" classname="VerifyLogin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/VerifyLogin_test.php" line="27" assertions="1" time="0.008412"/>
+        <testcase name="testIndex_IncorrectUsername" class="VerifyLogin_test" classname="VerifyLogin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/VerifyLogin_test.php" line="39" assertions="1" time="0.007984"/>
+        <testcase name="testIndex_MissingUsername" class="VerifyLogin_test" classname="VerifyLogin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/VerifyLogin_test.php" line="51" assertions="1" time="0.006920"/>
+        <testcase name="testIndex_MissingPassword" class="VerifyLogin_test" classname="VerifyLogin_test" file="/Applications/MAMP/htdocs/umpire/application/tests/controllers/VerifyLogin_test.php" line="63" assertions="1" time="0.007141"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
