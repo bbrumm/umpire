@@ -24,38 +24,64 @@ class Integration_test extends TestCase
     }
 
 
-
-    public function test_SeasonsExist() {
-        $queryString = "SELECT season_year FROM season ORDER BY id;";
+    private function findCountForSeason($pSeasonYear) {
+        $queryString = "SELECT COUNT(*) AS rc FROM season WHERE season_year = $pSeasonYear;";
         $query = $this->dbLocal->query($queryString);
         $resultArray = $query->result();
-        $expectedArray = array(2015, 2016, 2017, 2018, 2019);
-        foreach ($expectedArray as $key=>$value) {
-            $this->assertEquals($value, $resultArray[$key]->season_year);
-        }
+        return $resultArray[0]->rc;
+    }
 
-        $expectedCount = count($expectedArray);
-        $actualCount = count($resultArray);
-        $this->assertEquals($expectedCount, $actualCount);
+    public function test_Season2015Exists() {
+        $seasonToTest = 2015;
+        $expectedResult = 1;
+        $actualResult = $this->findCountForSeason($seasonToTest);
+        $this->assertEquals($expectedResult, $actualResult);
+
         $this->dbLocal->close();
     }
 
-    public function test_Season2019Exists() {
-        $queryString = "SELECT COUNT(*) AS rc FROM season WHERE season_year = 2019;";
-        $query = $this->dbLocal->query($queryString);
-        $resultArray = $query->result();
+    public function test_Season2016Exists() {
+        $seasonToTest = 2016;
         $expectedResult = 1;
-        $this->assertEquals($expectedResult, $resultArray[0]->rc);
+        $actualResult = $this->findCountForSeason($seasonToTest);
+        $this->assertEquals($expectedResult, $actualResult);
+
+        $this->dbLocal->close();
+    }
+
+    public function test_Season2017Exists() {
+        $seasonToTest = 2017;
+        $expectedResult = 1;
+        $actualResult = $this->findCountForSeason($seasonToTest);
+        $this->assertEquals($expectedResult, $actualResult);
+
+        $this->dbLocal->close();
+    }
+
+    public function test_Season2018Exists() {
+        $seasonToTest = 2018;
+        $expectedResult = 1;
+        $actualResult = $this->findCountForSeason($seasonToTest);
+        $this->assertEquals($expectedResult, $actualResult);
+
+        $this->dbLocal->close();
+    }
+
+
+    public function test_Season2019Exists() {
+        $seasonToTest = 2019;
+        $expectedResult = 1;
+        $actualResult = $this->findCountForSeason($seasonToTest);
+        $this->assertEquals($expectedResult, $actualResult);
 
         $this->dbLocal->close();
     }
 
     public function test_Season2020Exists() {
-        $queryString = "SELECT COUNT(*) AS rc FROM season WHERE season_year = 2020;";
-        $query = $this->dbLocal->query($queryString);
-        $resultArray = $query->result();
+        $seasonToTest = 2020;
         $expectedResult = 1;
-        $this->assertEquals($expectedResult, $resultArray[0]->rc);
+        $actualResult = $this->findCountForSeason($seasonToTest);
+        $this->assertEquals($expectedResult, $actualResult);
 
         $this->dbLocal->close();
     }
