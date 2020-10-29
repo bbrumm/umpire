@@ -191,7 +191,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         $this->assertContains($expected, $output);
     }
 
-    public function test_Report3_2017() {
+    public function test_Report3_2018() {
         $this->setSessionData();
 
         /*$queryString = "INSERT INTO staging_no_umpires
@@ -204,7 +204,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
 
         $postArray = array(
             'reportName'=>'3',
-            'season'=>2017,
+            'season'=>2018,
             'rdRegion'=>'Geelong',
             'chkRegionHidden'=>'Geelong',
             //'chkAgeGroup'=>array('Seniors'),
@@ -216,7 +216,7 @@ VALUES ('2018-04-07 00:00:00', 'Seniors', 'Goal', 'Women', 'A vs B', 40001, 2018
         );
 
         $output = $this->request('POST', ['Report', 'index'], $postArray);
-        $expected = "<h1 id='mainHeading'>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2017)</h1>";
+        $expected = "<h1 id='mainHeading'>03 - Summary by Week (Matches Where No Umpires Are Recorded) (2018)</h1>";
         $this->assertContains($expected, $output);
     }
     
