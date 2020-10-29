@@ -495,7 +495,7 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
     public function test_ReportNumberNotFound() {
         $this->setSessionData();
 
-        $this->expectException(Exception::class);
+        //$this->expectException(Exception::class);
         $postArray = array(
             'reportName'=>'12',
             'season'=>2018,
@@ -512,11 +512,17 @@ VALUES ('Field', 'Seniors', 'Geelong', 'GFL', 2018, 1, 1, 2, 6);";
         //Load page
         //This is done to prevent this error message:
         //"Test code or tested code did not (only) close its own output buffers"
+        /*
         try {
             $output = $this->request('POST', ['Report', 'index'], $postArray);
         } finally {
             $output = ob_get_clean();
-        }
+        }*/
+
+        $output = $this->request('POST', ['Report', 'index'], $postArray);
+        $expected = "Error generating report";
+        $this->assertContains($expected, $output);
+
     }
 
 

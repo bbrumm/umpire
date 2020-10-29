@@ -39,12 +39,17 @@ class Report extends CI_Controller {
 	        $this->findValueFromPostOrHidden($_POST, 'chkLeague', 'chkLeagueHidden'),
 	        false
 	    );
-	   
-	    $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
-	    $data['title'] = 'Test Report';
+        $data['reportErrorMessage'] = "";
+	    try {
+            $data['loadedReportItem'] = $reportPopulator->getReport($requestedReport);
+        } catch (Exception $e) {
+            //$data['loadedReportItem'] = new Report_instance();
+	        $data['reportErrorMessage'] = "Error generating report: " . $e->getMessage();;
+        }
+	    $data['title'] = 'Report';
 	    $data['PDFLayout'] = FALSE;
 	    $data['debugLibrary'] = new Debug_library();
-            $this->outputHiddenValues();
+	    $this->outputHiddenValues();
 	    $this->load->view('templates/header', $data);
 	    $this->load->view('report/single_report_view', $data);
 	    $this->load->view('templates/footer');
