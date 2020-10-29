@@ -55,6 +55,7 @@ class FileImport extends CI_Controller {
 	
 	private function displayUploadError() {
 		$error = array('error' => $this->upload->display_errors());
+		$data = array();
         $data['test'] = "Test Report";
         $this->load->helper(array('form', 'url'));
         $this->load->view('templates/header', $data);
@@ -81,7 +82,6 @@ class FileImport extends CI_Controller {
 	}
 	
 	private function showUploadComplete() {
-	    $dataStore = new Database_store_matches();
 	    $dataStoreReference = new Database_store_reference();
 	    $data = array();
 	    $data['missing_data'] = $this->Match_import->findMissingDataOnImport();

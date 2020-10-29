@@ -1,4 +1,7 @@
 <?php
+/*
+* @property Object db
+*/
 class Season_selector extends CI_Model {
 
     function __construct() {
