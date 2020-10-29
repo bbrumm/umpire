@@ -88,6 +88,7 @@ class Integration_test extends TestCase
 
 
     //TODO: Write more tests like this. It compares prod v local
+    /*
     public function test_SeasonLocalVsProd() {
         $queryString = "SELECT season_year FROM season ORDER BY id;";
         $queryProd = $this->db->query($queryString);
@@ -100,7 +101,7 @@ class Integration_test extends TestCase
         $this->assertEmpty($arrayDifferences);
         $this->db->close();
         $this->dbLocal->close();
-    }
+    }*/
 
 
     public function test_AgeGroupsExist() {

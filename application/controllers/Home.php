@@ -16,6 +16,7 @@ class Home extends CI_Controller {
         $this->load->model('Season');
         $this->load->model('User');
         $this->load->model('data_store/Database_store_matches');
+        $this->load->model('Season_selector');
 
         if($this->session->userdata('logged_in')) {
             $this->session->userdata('logged_in');
@@ -113,20 +114,10 @@ class Home extends CI_Controller {
     }
     
     private function getListOfSeasons() {
-        $queryString = "SELECT DISTINCT season_year
-            FROM season
-            ORDER BY season_year;";
-        
-        $query = $this->runQuery($queryString);
-        $allSeasons = array();
-        
-        foreach ($query->result() as $row) {
-            $season = new Season();
-            $season->setSeasonYear($row->season_year);
-            
-            $allSeasons[] = $season;
-        }
-        return $allSeasons;
+        $seasonSelector = new Season_selector();
+        $currentYear = date('Y');
+        return $seasonSelector->getListOfSeasons($currentYear);
+
     }
     
     private function getListOfValidCombinations() {

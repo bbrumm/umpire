@@ -42,6 +42,16 @@ class HomeController_test extends TestCase
 
     }
 
+    public function test_SeasonDefaultIsCurrentYear() {
+        $sessionArray['logged_in'] = array('username'=>'bbrummtest');
+        $this->CI->session->set_userdata($sessionArray);
+        $output = $this->request('POST', ['Home', 'index']);
+        $currentYear = date('Y');
+
+        $expectedValue = "<option value='". $currentYear ."' selected>". $currentYear ."</option>";
+        $this->assertContains($expectedValue, $output);
+    }
+
     public function test_LoadPage_NotLoggedIn() {
         $sessionArray['logged_in'] = null;
         $this->CI->session->set_userdata($sessionArray);
