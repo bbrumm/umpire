@@ -530,7 +530,13 @@ CREATE TABLE season (
   PRIMARY KEY (ID)
 );
 
-INSERT INTO season VALUES (1,2015),(2,2016),(3,2017),(4,2018),(5, 2019),(6,2020);
+INSERT INTO season VALUES
+(1,2015),(2,2016),(3,2017),(4,2018),(5, 2019),(6,2020),(7, 2021),
+(8, 2022),
+(9, 2023),
+(10, 2024),
+(11, 2025);
+
 
 CREATE TABLE valid_selection_combinations (
   id int(11) DEFAULT NULL,
