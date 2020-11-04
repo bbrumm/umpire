@@ -6,16 +6,14 @@ class Report8 extends Parent_report implements IReport {
 
     const COL_TOTAL_GEELONG = 7;
     const COL_TOTAL_OVERALL = 9;
+    public $reportDataQueryFilename = "report8_data.sql";
+    public $reportColumnQueryFilename = "report8_columns.sql";
 
-    public function getReportDataQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report8_data.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
+    public function __construct() {
+        $this->load->model('separate_reports/Report_query_builder');
+        $this->load->model('separate_reports/Field_column_matcher');
     }
-    
-    public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report8_columns.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
-    }
+
     
     /*
      * columnLabelResultArray example:
@@ -44,6 +42,7 @@ class Report8 extends Parent_report implements IReport {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
         $pResultArray = $pReportCellCollection->getCollection();
+        $fieldColumnMatcher = new Field_column_matcher();
 
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
@@ -60,7 +59,7 @@ class Report8 extends Parent_report implements IReport {
                     $resultOutputArray = $this->addColumnHeadingsForTotals($resultOutputArray, $currentResultArrayRow, $columnNumber);
                     
                     //Match the column headings to the values in the array
-                    if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
+                    if ($fieldColumnMatcher->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
                         $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
 
                         if ($this->seasonYearNeedsTotal($columnItem)) {

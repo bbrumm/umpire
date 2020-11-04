@@ -3,19 +3,15 @@ require_once 'IReport.php';
 require_once 'Parent_report.php';
 
 class Report2 extends Parent_report implements IReport {
-    
-    public function getReportDataQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report2_data.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
-    }
 
-    //TODO: Remove the Seniors and 2 Umpires if the Seniors are not selected.
-    public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report2_columns.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
-    }
-	
+    public $reportDataQueryFilename = "report2_data.sql";
+    public $reportColumnQueryFilename = "report2_columns.sql";
 
+
+    public function __construct() {
+        $this->load->model('separate_reports/Report_query_builder');
+        $this->load->model('separate_reports/Field_column_matcher');
+    }
 
     /*
      * columnLabelResultArray example:
@@ -47,6 +43,7 @@ class Report2 extends Parent_report implements IReport {
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
         $pResultArray = $pReportCellCollection->getCollection();
+        $fieldColumnMatcher = new Field_column_matcher();
 
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
@@ -62,7 +59,7 @@ class Report2 extends Parent_report implements IReport {
                 foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
                     //Loop through each row and column intersection in the result array
                     //Match the column headings to the values in the array
-                    if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
+                    if ($fieldColumnMatcher->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
                         if($this->isShortLeagueNameSetTo2Umpires($columnHeadingSet)) {
                             //Set the "2 Umpires" match count to the total so far of rows marked as two_ump_flag=1
                             //$twoUmpGamesForRow = $twoUmpGamesForRow + $columnItem['match_count'];
@@ -136,6 +133,7 @@ class Report2 extends Parent_report implements IReport {
         $resultOutputArray = [];
         $currentResultArrayRowNumber = 0;
         $columnNumberForTotalValues = count($columnLabelResultArray);
+        $fieldColumnMatcher = new Field_column_matcher();
 
         //Loop through each set of Report_cells. Each entry here is a single person or row of data.
         foreach ($pReportCellCollection->getReportCellArray() as $setOfReportCellsForOneRow) {
@@ -153,7 +151,7 @@ class Report2 extends Parent_report implements IReport {
             foreach ($columnLabelResultArray as $columnHeadingSet) { //Maps to an output column
                 foreach($setOfReportCellsForOneRow as $singleReportCell) {
                     //Match the column headings to the values in the array
-                    if ($this->isFieldMatchingColumn($singleReportCell, $columnHeadingSet, $pReportColumnFields)) {
+                    if ($fieldColumnMatcher->isFieldMatchingColumn($singleReportCell, $columnHeadingSet, $pReportColumnFields)) {
                         $resultOutputArray[$currentResultArrayRowNumber][$columnNumber] = $singleReportCell->getCellValue();
                         $gamesTotalForRow = $this->updateTotalForRow($gamesTotalForRow, $singleReportCell, $columnHeadingSet);
 

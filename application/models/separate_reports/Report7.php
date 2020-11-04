@@ -3,16 +3,15 @@ require_once 'IReport.php';
 require_once 'Parent_report.php';
 
 class Report7 extends Parent_report implements IReport {
-    
-    public function getReportDataQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report7_data.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
+
+    public $reportDataQueryFilename = "report7_data.sql";
+    public $reportColumnQueryFilename = "report7_columns.sql";
+
+    public function __construct() {
+        $this->load->model('separate_reports/Report_query_builder');
+        $this->load->model('separate_reports/Field_column_matcher');
     }
-    
-    public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report7_columns.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
-    }
+
     
     /*
      * columnLabelResultArray example:
@@ -41,6 +40,7 @@ class Report7 extends Parent_report implements IReport {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
         $pResultArray = $pReportCellCollection->getCollection();
+        $fieldColumnMatcher = new Field_column_matcher();
 
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
@@ -53,7 +53,7 @@ class Report7 extends Parent_report implements IReport {
                 foreach ($currentRowItem as $columnKey => $columnItem) { //Maps to a single match_count, not necessarily a column
                     //Loop through each row and column intersection in the result array
                     //Match the column headings to the values in the array
-                    if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
+                    if ($fieldColumnMatcher->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
 
                         $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem['match_count'];
                     }

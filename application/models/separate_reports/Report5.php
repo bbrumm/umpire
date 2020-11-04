@@ -3,15 +3,13 @@ require_once 'IReport.php';
 require_once 'Parent_report.php';
 
 class Report5 extends Parent_report implements IReport {
-    
-    public function getReportDataQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report5_data.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
-    }
-    
-    public function getReportColumnQuery(Report_instance $pReportInstance) {
-        $sqlFilename = "report5_columns.sql";
-        return $this->constructReportQuery($sqlFilename, $pReportInstance);
+
+    public $reportDataQueryFilename = "report5_data.sql";
+    public $reportColumnQueryFilename = "report5_columns.sql";
+
+    public function __construct() {
+        $this->load->model('separate_reports/Report_query_builder');
+        $this->load->model('separate_reports/Field_column_matcher');
     }
     
     /*
@@ -42,6 +40,7 @@ class Report5 extends Parent_report implements IReport {
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
         $currentResultArrayRow = 0;
         $pResultArray = $pReportCellCollection->getCollection();
+        $fieldColumnMatcher = new Field_column_matcher();
 
         foreach ($pResultArray as $rowKey => $currentRowItem) { //Maps to a single row of output
             $columnNumber = 0;
@@ -71,7 +70,7 @@ class Report5 extends Parent_report implements IReport {
 
                     $columnItem['subtotal'] = $columnHeadingSet['subtotal'];
 
-                    if ($this->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
+                    if ($fieldColumnMatcher->isFieldMatchingColumn($columnItem, $columnHeadingSet, $pReportColumnFields)) {
                         $resultOutputArray[$currentResultArrayRow][$columnNumber] = $columnItem[$subtotalToColumnMap[$columnHeadingSet['subtotal']]];
                         if ($this->isSubtotalGames($columnHeadingSet)) {
                             $totalForRow = $totalForRow + $columnItem['match_no_ump'];
@@ -88,6 +87,15 @@ class Report5 extends Parent_report implements IReport {
     
     private function isSubtotalGames($columnHeadingSet) {
         return ($columnHeadingSet['subtotal'] == 'Games');
+    }
+
+    public function setRowLabel($pResultRow, $pReportDisplayOptions) {
+        //Return two columns for report 5: umpire type and age group
+        return array(
+            $pResultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()],
+            $pResultRow[$pReportDisplayOptions->getRowGroup()[1]->getFieldName()]
+        );
+
     }
 
 
