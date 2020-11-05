@@ -45,6 +45,7 @@ class Report3 extends Parent_report implements IReport {
      */
 
     //Old function?
+    /*
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
@@ -78,6 +79,7 @@ class Report3 extends Parent_report implements IReport {
         }
         return $resultOutputArray;
     }
+    */
 
     //New function
     public function transformReportCellCollectionIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {

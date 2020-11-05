@@ -38,6 +38,8 @@ class Report2 extends Parent_report implements IReport {
      *
      *
      */
+
+    /*
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
@@ -78,7 +80,9 @@ class Report2 extends Parent_report implements IReport {
         }
         return $resultOutputArray;
     }
+    */
 
+    /*
     private function isShortLeagueNameSetTo2Umpires($pColumnHeadingSet) {
         if ($pColumnHeadingSet['short_league_name'] == '2 Umpires') {
             return true;
@@ -86,7 +90,7 @@ class Report2 extends Parent_report implements IReport {
             return false;
         }
     }
-
+*/
 
     public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
         //$pivotedArray = array();

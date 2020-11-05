@@ -36,6 +36,8 @@ class Report7 extends Parent_report implements IReport {
      *
      *
      */
+
+    /*
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
@@ -64,7 +66,7 @@ class Report7 extends Parent_report implements IReport {
         }
         return $resultOutputArray;
     }
-
+    */
 
 
     public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {

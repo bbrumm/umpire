@@ -38,6 +38,8 @@ class Report8 extends Parent_report implements IReport {
      *
      *
      */
+
+    /*
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         $currentResultArrayRow = 0;
@@ -80,13 +82,17 @@ class Report8 extends Parent_report implements IReport {
         return $resultOutputArray;
     }
 
+    */
+
+    /*
     private function addMatchCountToTotal($totalValue, $columnItem) {
         return $totalValue + $columnItem['match_count'];
 
     }
+    */
 
+    /*
     private function addColumnHeadingsForTotals($resultOutputArray, $currentResultArrayRow, $columnNumber) {
-        //TODO: Update this logic to remove the specific year numbers, and the hardcoding of column 6 and 8
         if ($columnNumber == Report8::COL_TOTAL_GEELONG) {
             //Add extra column for report 8, after column 5 (array index 5 which is column 6).
             //Column heading is called Total Geelong, the heading does not come from column data.
@@ -97,11 +103,14 @@ class Report8 extends Parent_report implements IReport {
         }
         return $resultOutputArray;
     }
+    */
 
+    /*
     private function seasonYearNeedsTotal($columnItem) {
         $validSeasonArray = array('Games Prior', '2015', '2016', '2017', '2018', '2019');
         return (in_array($columnItem['season_year'], $validSeasonArray));
     }
+    */
 
     public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
         //$pivotedArray = array();

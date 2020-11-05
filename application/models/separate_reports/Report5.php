@@ -35,6 +35,8 @@ class Report5 extends Parent_report implements IReport {
      *
      *
      */
+
+    /*
     public function transformQueryResultsIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {
         $resultOutputArray = [];
         //$countItemsInColumnHeadingSet = count($columnLabelResultArray[0]);
@@ -84,10 +86,15 @@ class Report5 extends Parent_report implements IReport {
         }
         return $resultOutputArray;
     }
-    
+
+    */
+
+
+    /*
     private function isSubtotalGames($columnHeadingSet) {
         return ($columnHeadingSet['subtotal'] == 'Games');
     }
+    */
 
     public function setRowLabel($pResultRow, $pReportDisplayOptions) {
         //Return two columns for report 5: umpire type and age group
