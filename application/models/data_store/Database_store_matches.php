@@ -71,7 +71,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
         }
         return $queryResultArray;
     }
-
+/*
     public function loadReportDataNew(Parent_report $separateReport, Report_resultTempinprogress $reportInstance) {
         $queryForReport = $separateReport->getReportDataQuery($reportInstance);
 
@@ -86,7 +86,7 @@ class Database_store_matches extends CI_Model implements IData_store_matches {
                 "Error 001: Result Array is empty. This is probably due to missing data for the report (the SQL query not returning any results for the report).");
         }
         return $queryResultArray;
-    }
+    }*/
 
     public function findLastGameDateForSelectedSeason(Requested_report_model $requestedReport) {
         $queryString = "SELECT DATE_FORMAT(MAX(match_time), '%a %d %b %Y, %h:%i %p') AS last_date 

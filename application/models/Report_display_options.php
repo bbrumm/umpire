@@ -35,7 +35,7 @@ class Report_display_options extends CI_Model {
 	    
 	    return $instance;
 	}
-
+/*
     public static function createReportDisplayOptionsNew(Report_resultTempinprogress $pReportResult) {
 
         //TODO: Refactor this object or this function as it seems to be duplicating the Report_Parameter object
@@ -50,7 +50,7 @@ class Report_display_options extends CI_Model {
 
         return $instance;
     }
-	
+	*/
 	
 	
 	//GET functions

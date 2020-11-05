@@ -91,7 +91,7 @@ class Report2 extends Parent_report implements IReport {
         }
     }
 */
-
+/*
     public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
         //$pivotedArray = array();
 	    $previousRowLabel = array();
@@ -131,6 +131,7 @@ class Report2 extends Parent_report implements IReport {
         //return $mainReportCellCollection->getCollection();
         return $mainReportCellCollection;
     }
+*/
 
     //TODO: This was copied from Parent_report so I should refactor this
     public function transformReportCellCollectionIntoOutputArray(Report_cell_collection $pReportCellCollection, $columnLabelResultArray, $pReportColumnFields) {

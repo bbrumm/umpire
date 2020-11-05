@@ -105,7 +105,7 @@ class Report5 extends Parent_report implements IReport {
 
     }
 
-
+/*
     public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
         //$pivotedArray = array();
         $previousRowLabel = array();
@@ -134,14 +134,7 @@ class Report5 extends Parent_report implements IReport {
             }
             foreach ($pReportDisplayOptions->getColumnGroup() as $singleReportGroupingStructure) {
                 $rowArrayKey = $resultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()] . " " . $resultRow[$pReportDisplayOptions->getRowGroup()[1]->getFieldName()];
-                /*
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $shortLeagueNameCell);
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $ageGroupCell);
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $umpireTypeCell);
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $matchNoUmpCell);
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $totalMatchCountCell);
-                $this->setPivotedArrayNamedValue($pivotedArray, $rowArrayKey, $counterForRow, $resultRow, $matchPctCell);
-                */
+
 
                 //$mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $singleReportGroupingStructure->getFieldName(), $rowArrayKey);
                 $mainReportCellCollection->addCurrentRowToCollectionWithName($resultRow, $counterForRow, $columnNameForShortLeagueName, $rowArrayKey);
@@ -158,7 +151,7 @@ class Report5 extends Parent_report implements IReport {
         //return $mainReportCellCollection->getCollection();
         return $mainReportCellCollection;
     }
-
+*/
 
     public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
         $mainReportCellCollection = new Report_cell_collection();

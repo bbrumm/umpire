@@ -128,7 +128,7 @@ class Report3 extends Parent_report implements IReport {
         }
     }
 
-
+/*
     public function pivotQueryArray($pResultArray, Report_display_options $pReportDisplayOptions) {
         //$pivotedArray = array();
         $previousRowLabel = array();
@@ -154,7 +154,7 @@ class Report3 extends Parent_report implements IReport {
         //return $mainReportCellCollection->getCollection();
         return $mainReportCellCollection;
     }
-
+*/
 
 
     public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
