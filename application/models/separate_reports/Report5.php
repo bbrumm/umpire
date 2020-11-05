@@ -153,6 +153,67 @@ class Report5 extends Parent_report implements IReport {
     }
 
 
+    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
+        $mainReportCellCollection = new Report_cell_collection();
+        $previousRowLabel = "";
+        $outputRowNumber = 0;
+
+        //Loop through each row of results
+        foreach ($pResultArray as $resultRow) {
+
+            $currentRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
+
+            //Increase output row number if row label is different
+            if ($this->hasRowLabelChanged($currentRowLabel, $previousRowLabel)) {
+                if ($previousRowLabel != "") {
+                    $outputRowNumber++;
+                }
+
+                //Add new cell for row label
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber,
+                    $this->addNameCellForRowLabel($currentRowLabel, $resultRow));
+
+
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber,
+                    $this->addAgeGroupCellForRowLabel($currentRowLabel, $resultRow));
+
+            }
+            $previousRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
+
+            $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_no_ump");
+            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+            $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "total_match_count");
+            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+            $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_pct");
+            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+            //Update total for this row
+            $newReportCell = new Report_cell();
+            $newReportCell->setCellValue($resultRow["match_no_ump"]);
+            $newReportCell->setColumnHeaderValueFirst("All");
+            $newReportCell->setColumnHeaderValueSecond("Total");
+            $mainReportCellCollection->updateTotalReportCell($outputRowNumber, $newReportCell);
+
+
+        }
+
+        return $mainReportCellCollection;
+    }
+
+    public function determineSecondColumnHeaderValue($pResultRow, $pReportDisplayOptions, $pCellValue) {
+        //Temporary code check to allow subtotals to be added. A subtotal means Games/Total/Pct.
+        //Match the column headings to the values in the array
+        $subtotalToColumnMap = array(
+            'match_no_ump' => 'Games',
+            'total_match_count' => 'Total',
+            'match_pct' => 'Pct'
+        );
+
+        return $subtotalToColumnMap[$pCellValue];
+
+    }
 
     
 }

@@ -1,5 +1,7 @@
 <?php
-
+/*
+* @property Object reportColumnQueryFilename
+*/
 class Parent_report extends CI_Model {
     
     public function __construct() {
@@ -42,9 +44,6 @@ class Parent_report extends CI_Model {
      *
      *
      */
-
-
-    //Add common methods here which the subclasses can use
 
     public function formatOutputArrayForView($pResultOutputArray, $pLoadedColumnGroupings,
                                              $pReportDisplayOptions, $pColumnCountForHeadingCells) {
@@ -153,137 +152,114 @@ class Parent_report extends CI_Model {
         return $resultOutputArray;
     }
 
-    private function hasRowLabelChanged($currentRowLabel, $previousRowLabel) {
+    public function hasRowLabelChanged($currentRowLabel, $previousRowLabel) {
         return $currentRowLabel != $previousRowLabel;
     }
 
     public function setRowLabel($pResultRow, $pReportDisplayOptions) {
-        /*if (get_class($this) == 'Report5') {
-            //Return two columns for report 5: umpire type and age group
-            return array(
-                $pResultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()],
-                $pResultRow[$pReportDisplayOptions->getRowGroup()[1]->getFieldName()]
-            );
-        } else {
-        */
-            return array(
-                $pResultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()]
-            );
-        //}
+        return array(
+            $pResultRow[$pReportDisplayOptions->getRowGroup()[0]->getFieldName()]
+        );
     }
 
 
     public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
         $mainReportCellCollection = new Report_cell_collection();
-        $previousRowLabel = "";
         $outputRowNumber = 0;
 
-        //Loop through each row of results
-        foreach ($pResultArray as $resultRow) {
+        $rowCount = count($pResultArray);
 
-            $currentRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
+        //Loop through each row of results
+        for ($i=0; $i < $rowCount; $i++) {
+            $currentRowLabel = $this->calculateCurrentRowLabel($pResultArray, $i, $pReportDisplayOptions);
+            $previousRowLabel = $this->calculatePreviousRowLabel($pResultArray, $i, $pReportDisplayOptions);
+            $outputRowNumber = $this->determineOutputRowNumber($outputRowNumber, $currentRowLabel, $previousRowLabel);
 
             //Increase output row number if row label is different
             if ($this->hasRowLabelChanged($currentRowLabel, $previousRowLabel)) {
-                if ($previousRowLabel != "") {
-                    $outputRowNumber++;
-                }
-
                 //Add new cell for row label
-                $newReportCell = new Report_cell();
-                $newReportCell->setCellValue($currentRowLabel[0]);
-                $newReportCell->setColumnHeaderValueFirst("Name");
-                $newReportCell->setSourceResultRow($resultRow);
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber,
+                    $this->addNameCellForRowLabel($currentRowLabel, $pResultArray[$i]));
 
-                //Add second label cell for Report 5
-                if (get_class($this) == 'Report5') {
-                    $newReportCell = new Report_cell();
-                    $newReportCell->setCellValue($currentRowLabel[1]);
-                    $newReportCell->setColumnHeaderValueFirst("Age Group");
-                    $newReportCell->setSourceResultRow($resultRow);
-                    $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-                }
             }
-            $previousRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
 
-            if (get_class($this) == 'Report5') {
-                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_no_ump");
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "total_match_count");
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_pct");
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-                //Update total for this row
-                $newReportCell = new Report_cell();
-                $newReportCell->setCellValue($resultRow["match_no_ump"]);
-                $newReportCell->setColumnHeaderValueFirst("All");
-                $newReportCell->setColumnHeaderValueSecond("Total");
-                $mainReportCellCollection->updateTotalReportCell($outputRowNumber, $newReportCell);
-
-            } elseif (get_class($this) == 'Report3') {
-
-                //Add match_count which is already a total for the report
-                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_count");
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-                //Add team_list
-                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "team_list");
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-
-            } else {
-                $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_count");
-                $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
-            }
+            $newReportCell = $this->populateReportCell($pResultArray[$i], $pReportDisplayOptions, "match_count");
+            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
         }
 
         return $mainReportCellCollection;
     }
 
+    private function determineOutputRowNumber($outputRowNumber, $currentRowLabel, $previousRowLabel) {
+        if ($this->hasRowLabelChanged($currentRowLabel, $previousRowLabel) &&
+            $previousRowLabel != "" ) {
+            return ++$outputRowNumber;
+        } else {
+            return $outputRowNumber;
+        }
+    }
 
-    private function populateReportCell($pResultRow, Report_display_options $pReportDisplayOptions, $pCellValue) {
+    private function calculatePreviousRowLabel($pResultArray, $pRowCounter, $pReportDisplayOptions) {
+        //Return blank if this is the first result, otherwise calculate it.
+        if ($pRowCounter == 0) {
+            return "";
+        } else {
+            return $this->setRowLabel($pResultArray[$pRowCounter - 1], $pReportDisplayOptions);
+        }
+    }
+
+    private function calculateCurrentRowLabel($pResultArray, $pRowCounter, $pReportDisplayOptions) {
+        return $this->setRowLabel($pResultArray[$pRowCounter], $pReportDisplayOptions);;
+    }
+
+    public function addNameCellForRowLabel($currentRowLabel, $resultRow) {
+        return $this->addCellForRowLabel($currentRowLabel, $resultRow, 0, "Name");
+    }
+
+    public function addAgeGroupCellForRowLabel($currentRowLabel, $resultRow) {
+        return $this->addCellForRowLabel($currentRowLabel, $resultRow, 1, "Age Group");
+    }
+
+
+    private function addCellForRowLabel($currentRowLabel, $resultRow, $currentRowLabelOffset, $columnHeaderValueFirst) {
+        //Add new cell for row label
+        $newReportCell = new Report_cell();
+        $newReportCell->setCellValue($currentRowLabel[$currentRowLabelOffset]);
+        $newReportCell->setColumnHeaderValueFirst($columnHeaderValueFirst);
+        $newReportCell->setSourceResultRow($resultRow);
+        return $newReportCell;
+    }
+
+
+    public function populateReportCell($pResultRow, Report_display_options $pReportDisplayOptions, $pCellValue) {
+        $countColumnGroup = count($pReportDisplayOptions->getColumnGroup());
+
         $newReportCell = new Report_cell();
         $newReportCell->setCellValue($pResultRow[$pCellValue]);
-
-        //Set column header values. Add these to separate functions
-        $countColumnGroup = count($pReportDisplayOptions->getColumnGroup());
-        $newReportCell->setColumnHeaderValueFirst($pResultRow[$pReportDisplayOptions->getColumnGroup()[0]->getFieldName()]);
+        $newReportCell->setColumnHeaderValueFirst(
+            $this->extractColumnHeaderValue($pResultRow, $pReportDisplayOptions, 0));
 
         //Set the second col value if one exists
-        //TODO: this whole section should be refactored. It's too long.
         if ($countColumnGroup > 1) {
-            if(get_class($this) == 'Report5') {
-                //Temporary code check to allow subtotals to be added. A subtotal means Games/Total/Pct.
-                //Match the column headings to the values in the array
-                $subtotalToColumnMap = array(
-                    'match_no_ump' => 'Games',
-                    'total_match_count' => 'Total',
-                    'match_pct' => 'Pct'
-                );
-
-                $newReportCell->setColumnHeaderValueSecond($subtotalToColumnMap[$pCellValue]);
-
-            } elseif(get_class($this) == 'Report3') {
-                if ($pCellValue == "match_count") {
-                    $newReportCell->setColumnHeaderValueSecond("Total");
-                } else {
-                    $newReportCell->setColumnHeaderValueSecond($pResultRow[$pReportDisplayOptions->getColumnGroup()[1]->getFieldName()]);
-                }
-            } else {
-                $newReportCell->setColumnHeaderValueSecond($pResultRow[$pReportDisplayOptions->getColumnGroup()[1]->getFieldName()]);
-            }
+            $newReportCell->setColumnHeaderValueSecond(
+                $this->determineSecondColumnHeaderValue($pResultRow, $pReportDisplayOptions, $pCellValue));
         }
 
         if ($countColumnGroup > 2) {
-            $newReportCell->setColumnHeaderValueThird($pResultRow[$pReportDisplayOptions->getColumnGroup()[2]->getFieldName()]);
+            $newReportCell->setColumnHeaderValueThird(
+                $this->extractColumnHeaderValue($pResultRow, $pReportDisplayOptions, 2));
         }
 
         $newReportCell->setSourceResultRow($pResultRow);
         return $newReportCell;
+    }
+
+    public function extractColumnHeaderValue($pResultRow, $pReportDisplayOptions, $pColumnIndex) {
+        return $pResultRow[$pReportDisplayOptions->getColumnGroup()[$pColumnIndex]->getFieldName()];
+    }
+
+    public function determineSecondColumnHeaderValue($pResultRow, $pReportDisplayOptions, $pCellValue) {
+        return $this->extractColumnHeaderValue($pResultRow, $pReportDisplayOptions, 1);
     }
 
 }

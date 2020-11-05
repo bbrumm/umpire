@@ -153,6 +153,52 @@ class Report3 extends Parent_report implements IReport {
         return $mainReportCellCollection;
     }
 
+
+
+    public function translateResultsToReportCellCollection($pResultArray, Report_display_options $pReportDisplayOptions) {
+        $mainReportCellCollection = new Report_cell_collection();
+        $previousRowLabel = "";
+        $outputRowNumber = 0;
+
+        //Loop through each row of results
+        foreach ($pResultArray as $resultRow) {
+
+            $currentRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
+
+            //Increase output row number if row label is different
+            if ($this->hasRowLabelChanged($currentRowLabel, $previousRowLabel)) {
+                if ($previousRowLabel != "") {
+                    $outputRowNumber++;
+                }
+
+                //Add new cell for row label
+                $mainReportCellCollection->addReportCellToCollection($outputRowNumber,
+                    $this->addNameCellForRowLabel($currentRowLabel, $resultRow));
+
+            }
+            $previousRowLabel = $this->setRowLabel($resultRow, $pReportDisplayOptions);
+
+            //Add match_count which is already a total for the report
+            $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "match_count");
+            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+            //Add team_list
+            $newReportCell = $this->populateReportCell($resultRow, $pReportDisplayOptions, "team_list");
+            $mainReportCellCollection->addReportCellToCollection($outputRowNumber, $newReportCell);
+
+        }
+
+        return $mainReportCellCollection;
+    }
+
+    public function determineSecondColumnHeaderValue($pResultRow, $pReportDisplayOptions, $pCellValue) {
+        if ($pCellValue == "match_count") {
+            return "Total";
+        } else {
+            return $this->extractColumnHeaderValue($pResultRow, $pReportDisplayOptions, 1);
+        }
+    }
+
     
     
 }
