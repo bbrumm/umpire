@@ -84,7 +84,7 @@ class Report_cell_collection_test extends TestCase {
     }
 
     //Current Row to Cell Collection
-    public function test_AddCurrentRowToCollection_Valid() {
+    public function test_AddCurrentRowToCellCollection_Valid() {
         $inputResultRow = array('GFL'=>5);
         $inputCounterForRow = 1;
         $inputFieldName = "GFL";
@@ -143,6 +143,32 @@ class Report_cell_collection_test extends TestCase {
         $expectedCellValue = $newReportCell;
         $actualCellValue = $updatedCollection[2]["rowTotal"];
         $this->assertEquals($expectedCellValue, $actualCellValue);
+
+    }
+
+    public function test_AddCurrentRowToCollection_Valid() {
+        $inputResultRow = array(
+            'GFL'=>5
+        );
+        $inputCounterForRow = 1;
+        $inputFieldName = "GFL";
+        $inputRowLabelFieldName = "GFL";
+
+        //Add to collection
+        $this->obj->addCurrentRowToCollection(
+            $inputResultRow, $inputCounterForRow, $inputFieldName, $inputRowLabelFieldName);
+
+        //Get array
+        $actualArray = $this->obj->getPivotedArray();
+
+        //Analyse collection
+        $actualCountOfCollection = count($actualArray);
+        $expectedCountOfCollection = 1;
+
+        //Assert
+        $this->assertEquals($expectedCountOfCollection, $actualCountOfCollection);
+
+
 
     }
 

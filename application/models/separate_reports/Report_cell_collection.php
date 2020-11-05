@@ -10,7 +10,10 @@ class Report_cell_collection extends CI_Model {
     private $columnLabelFields; //As above
     private $pivotedArray;
 
-
+    //TODO: Remove this function once the pivotedArray feature is no longer needed
+    public function getPivotedArray() {
+        return $this->pivotedArray;
+    }
 
     public function setReportCellArray($pValue) {
         $this->reportCellArray = $pValue;

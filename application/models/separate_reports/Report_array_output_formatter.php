@@ -177,7 +177,8 @@ class Report_array_output_formatter extends CI_Model {
         if ($this->isFirstColumnFormatDate($pReportDisplayOptions)) {
             $weekDate = date_create($pResultOutputArray[$pRowCounter][$columnCounter]);
             return date_format($weekDate, 'd/m/Y');
-        }}
+        }
+    }
     
     private function isValueInResults($columnCounter, $pResultOutputArray, $pRowCounter) {
       return array_key_exists($columnCounter, $pResultOutputArray[$pRowCounter]);
