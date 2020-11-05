@@ -3,9 +3,7 @@
 //The collection represents the table that is written to the screen and displayed.
 class Report_cell_collection extends CI_Model {
 
-    public function __construct() {
-
-    }
+    public function __construct() {}
 
     private $reportCellArray;
     private $rowLabelFields; //TODO: These variables will need to be refactored, they are only temporary
