@@ -1,7 +1,7 @@
 {
 	"require": {
 		"php": "^7.2",
-		"dompdf/dompdf": "^0.8",
+		"dompdf/dompdf": "^1.2",
 		"phpoffice/phpspreadsheet": "1.15.0",
 		"sendgrid/sendgrid": "~5.0.9",
 		"php-webdriver/webdriver": "1.8.2"
